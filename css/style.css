@@ -1342,3 +1342,64 @@ li.com-arte { display: flex; align-items: center; gap: 10px; }
   position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 14px;
   background: rgba(0, 0, 0, 0.55); color: #fff; font-size: 0.95rem; letter-spacing: 0.06em;
 }
+
+/* ===================== Missão numa tela só (sem rolar a página) =====================
+   Palco em cima, um topo curto, o texto no meio (só ele rola), a barra de menus embaixo.
+   Mapa, Diário, Bolsa e Loja abrem por cima de tudo, num fundo opaco. */
+#tela-cena.ativa {
+  display: flex; flex-direction: column; height: 100vh; height: 100dvh; min-height: 0;
+  padding: 8px 10px 0; overflow: hidden;
+}
+#tela-cena .palco { flex: none; width: min(100%, 980px, calc(34dvh * 16 / 9)); max-height: none; margin: 0 auto 6px; }
+#tela-cena .cena { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; }
+#tela-cena .cena-topo { flex: none; padding: 6px 10px; gap: 4px 10px; border-radius: 10px; }
+#tela-cena .cena-topo .tag { display: none; }
+#tela-cena .cena-onde { font-size: 0.82rem; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#tela-cena .relogio i { width: 9px; height: 7px; }
+#tela-cena .narrador-ligar, #tela-cena .narrador .btn-secundario { font-size: 0.78rem; padding: 2px 6px; }
+#tela-cena .narrador-estado { font-size: 0.72rem; }
+.cena-corpo { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; margin-top: 6px; animation: none; }
+.cena-corpo .cena-grupo { margin-top: 10px; }
+.cena-barra {
+  flex: none; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px;
+  padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
+}
+.cena-barra button {
+  display: grid; justify-items: center; gap: 1px; padding: 6px 2px; border-radius: 10px;
+  border: 1px solid var(--painel-borda); background: var(--painel); color: var(--texto); font: inherit; cursor: pointer;
+}
+.cena-barra button:hover:not(:disabled) { border-color: var(--acento); }
+.cena-barra button:disabled { opacity: 0.4; cursor: default; }
+.cena-barra b { font-weight: 400; font-size: 1.05rem; color: var(--acento); line-height: 1.1; }
+.cena-barra span { font-size: 0.68rem; letter-spacing: 0.04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+/* painel por cima de tudo, sem transparência */
+.painel-sobre {
+  position: fixed; inset: 0; z-index: 60; overflow-y: auto; overscroll-behavior: contain;
+  background: var(--fundo); padding: 14px 12px calc(14px + env(safe-area-inset-bottom));
+}
+.painel-sobre .cena-painel {
+  max-width: 980px; margin: 0 auto; padding: 0; border: 0; background: none; backdrop-filter: none;
+  animation: surgir 0.25s ease both;
+}
+.painel-sobre .cena-painel > h3 {
+  position: sticky; top: -14px; z-index: 3; margin: -14px -12px 10px; padding: 14px 12px 10px;
+  background: var(--fundo); border-bottom: 1px solid var(--painel-borda);
+}
+.painel-sobre .cena-painel > h3 .btn-texto {
+  border: 1px solid var(--acento); border-radius: 8px; padding: 6px 14px; color: var(--acento);
+}
+body.tema-x .painel-sobre, body.tema-x .painel-sobre .cena-painel > h3 { background: #030a06; }
+body.tema-y .painel-sobre, body.tema-y .painel-sobre .cena-painel > h3 { background: #120c06; }
+body.tema-z .painel-sobre, body.tema-z .painel-sobre .cena-painel > h3 { background: #030914; }
+
+/* na missão, o controle de música sobe para não cobrir a barra de menus */
+body:has(#tela-cena.ativa) .controle-musica { top: 12px; bottom: auto; right: 14px; }
+
+@media (min-width: 900px) {
+  #tela-cena .palco { width: min(100%, 980px, calc(40dvh * 16 / 9)); }
+  .cena-barra { max-width: 980px; width: 100%; margin: 0 auto; }
+  .cena-barra span { font-size: 0.78rem; }
+}
+/* com um painel aberto por cima, o controle de música não cobre o botão Fechar */
+body:has(.painel-sobre) .controle-musica { display: none; }

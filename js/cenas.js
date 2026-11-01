@@ -165,6 +165,8 @@ const Cenas = (() => {
   }
 
   let viagem = null; // { titulo, linhas } enquanto o jogador está a caminho
+  let rolarTopo = true; // a próxima tela de texto começa do alto
+  let ultimoTexto = "";
 
   // Chave da arte do palco: a cena da história, a abertura da profissão ou o lugar
   function palcoAtual() {
@@ -208,6 +210,9 @@ const Cenas = (() => {
 
   function render() {
     const m = missao();
+    const chaveTexto = `${camp.cena}|${camp.lugar}|${resultado ? resultado.texto : ""}|${viagem ? 1 : 0}`;
+    if (chaveTexto !== ultimoTexto) rolarTopo = true;
+    ultimoTexto = chaveTexto;
     const ctx = contexto();
     const cena = camp.cena ? m.cenas[camp.cena] : null;
     const lugar = m.lugares[camp.lugar];
@@ -269,24 +274,27 @@ const Cenas = (() => {
           <button class="btn-texto narrador-ligar" data-acao="narrador-voz" hidden></button>
           <span class="narrador-estado sub"></span>
         </span>` : ""}
-        <button class="btn-texto narrador-ligar" data-acao="vozes" aria-pressed="${Vozes.ligadas()}">${Vozes.ligadas() ? "🗣 Vozes ligadas" : "🗣 Vozes desligadas"}</button>
+        <button class="btn-texto narrador-ligar" data-acao="vozes" aria-pressed="${Vozes.ligadas()}">${Vozes.ligadas() ? "🗣 Vozes" : "🗣 Sem vozes"}</button>
+        <button class="btn-texto narrador-ligar" data-acao="sons" aria-pressed="${Som.ligado()}">${Som.ligado() ? "🔔 Sons" : "🔕 Sem sons"}</button>
       </header>
-      <div class="cena-grade">
-        <main class="cena-corpo">
-          ${corpo}
-          ${livre ? livreHtml() : ""}
-        </main>
-        <aside class="cena-lado">
-          <button class="btn-secundario" data-painel="mapa" ${cena ? "disabled" : ""}>Mapa</button>
-          <button class="btn-secundario" data-painel="diario">Diário · ${camp.pistas.length}</button>
-          <button class="btn-secundario" data-painel="bolsa">Bolsa · ${esc(Vida.dinheiroTexto(m.eixo, Vida.garantir(ativo()).dinheiro[m.eixo]))}</button>
-          <button class="btn-secundario" data-acao="ficha">Ficha</button>
-          <button class="btn-secundario" data-acao="tradutor">Tradutor</button>
-          <button class="btn-texto" data-acao="mesa">‹ Mesa</button>
-        </aside>
-      </div>
-      ${painel ? painelHtml() : ""}
-      ${grupoHtml()}`;
+      <main class="cena-corpo" id="cena-corpo">
+        ${corpo}
+        ${livre ? livreHtml() : ""}
+        ${grupoHtml()}
+      </main>
+      <nav class="cena-barra" aria-label="Menu da missão">
+        <button data-painel="mapa" ${cena ? "disabled" : ""}><b>◎</b><span>Mapa</span></button>
+        <button data-painel="diario"><b>✎</b><span>Diário · ${camp.pistas.length}</span></button>
+        <button data-painel="bolsa"><b>⛁</b><span>${esc(Vida.dinheiroTexto(m.eixo, Vida.garantir(ativo()).dinheiro[m.eixo]))}</span></button>
+        <button data-acao="ficha"><b>☰</b><span>Ficha</span></button>
+        <button data-acao="tradutor"><b>${EIXOS[m.eixo].glifo}</b><span>Tradutor</span></button>
+        <button data-acao="mesa"><b>‹</b><span>Mesa</span></button>
+      </nav>
+      ${painel ? `<div class="painel-sobre" role="dialog" aria-modal="true">${painelHtml()}</div>` : ""}`;
+    // texto novo começa do topo (a área do texto rola sozinha, a página não)
+    const corpoEl = document.getElementById("cena-corpo");
+    if (corpoEl && rolarTopo) corpoEl.scrollTop = 0;
+    rolarTopo = false;
     // quem fala aparece no palco (o retrato); depois o palco volta para o lugar
     if (!viagem) Palco.mostrar(resultado && resultado.npc ? palcoNpc(resultado.npc) : palcoAtual());
     if (resultado && resultado.fala) Vozes.falar(resultado.fala);
@@ -805,6 +813,8 @@ const Cenas = (() => {
 
     const m = missao();
     if (viagem) return;
+    // todo botão da missão faz o seu clique; menus têm o som próprio
+    if (t.dataset.painel === undefined && !t.dataset.ir) Som.tocar(["ficha", "tradutor", "mesa"].includes(t.dataset.acao) ? "abrir" : "clique");
     if (t.dataset.opcao !== undefined) {
       const doLugar = t.dataset.lugar === "1";
       const lista = doLugar ? acoesDoLugar() : m.cenas[camp.cena].opcoes;
@@ -812,9 +822,13 @@ const Cenas = (() => {
     }
     if (t.dataset.painel !== undefined) {
       painel = t.dataset.painel || null;
+      Som.tocar(painel ? "abrir" : "fechar");
       return render();
     }
-    if (t.dataset.ir) return irPara(t.dataset.ir);
+    if (t.dataset.ir) {
+      Som.tocar("viajar");
+      return irPara(t.dataset.ir);
+    }
     if (t.dataset.usarPertence) {
       const p = ativo();
       fichaMudou(p, Vida.usar(p, t.dataset.usarPertence, m.eixo));
@@ -828,6 +842,10 @@ const Cenas = (() => {
     }
     const acao = t.dataset.acao;
     if (acao === "chamado") return entrarCena("chamado");
+    if (acao === "sons") {
+      Som.alternar();
+      return render();
+    }
     if (acao === "vozes") {
       Vozes.alternar();
       return render();
@@ -873,6 +891,14 @@ const Cenas = (() => {
     }
     if (acao === "tradutor") return Tradutor.abrir(missao().eixo);
     if (acao === "mesa") return abrirMesa();
+  });
+
+  document.addEventListener("keydown", (ev) => {
+    if (ev.key === "Escape" && painel && document.querySelector("#tela-cena.ativa")) {
+      painel = null;
+      Som.tocar("fechar");
+      render();
+    }
   });
 
   document.addEventListener("submit", (ev) => {
