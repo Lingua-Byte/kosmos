@@ -24,6 +24,12 @@
       color: #1a1406; background: var(--ouro); border: 0; border-radius: 12px; cursor: pointer;
     }
     .instalar[disabled] { opacity: 0.5; cursor: default; }
+    .baixar { display: grid; gap: 10px; }
+    a.instalar { text-align: center; text-decoration: none; }
+    a.instalar small { display: block; font-weight: 400; font-size: 0.8rem; letter-spacing: 0; opacity: 0.8; }
+    .secundario { text-align: center; color: var(--ouro); font-size: 0.9rem; }
+    .ou { text-align: center; color: var(--suave); margin: 22px 0 8px; font-size: 0.9rem; }
+    .secundario-botao { background: none; color: var(--ouro); border: 1px solid var(--ouro); font-size: 1rem; padding: 12px; }
     .estado { text-align: center; color: var(--suave); min-height: 1.5em; margin: 10px 0 24px; }
     section { border: 1px solid var(--borda); border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; }
     section.destaque { border-color: var(--ouro); }
@@ -38,26 +44,32 @@
   <main>
     <img class="icone" src="icones/icone-192.png" alt="">
     <h1>KOSMOS</h1>
-    <p class="sub">Instale o jogo como app: tela cheia, ícone próprio, funciona sem internet e se atualiza sozinho.</p>
+    <p class="sub">Baixe o app para Android ou PC. Ele se atualiza sozinho sempre que o jogo muda: não precisa baixar de novo.</p>
 
-    <button class="instalar" id="instalar">⬇ Instalar o KOSMOS</button>
+    <div class="baixar">
+      <a class="instalar" data-sistema-baixar="android" href="https://github.com/Lingua-Byte/kosmos/releases/download/apps/KOSMOS.apk" download>⬇ Baixar para Android <small>KOSMOS.apk · 4 MB</small></a>
+      <a class="instalar" data-sistema-baixar="pc" href="https://github.com/Lingua-Byte/kosmos/releases/download/apps/KOSMOS-instalador.exe" download>⬇ Baixar para PC (Windows) <small>instalador · 75 MB</small></a>
+      <a class="secundario" href="https://github.com/Lingua-Byte/kosmos/releases/download/apps/KOSMOS-portatil.exe" download>PC sem instalar (versão portátil · 74 MB)</a>
+    </div>
+    <p class="ou">ou instale direto pelo navegador:</p>
+    <button class="instalar secundario-botao" id="instalar">Instalar pelo navegador</button>
     <p class="estado" id="estado"></p>
 
     <section data-sistema="android">
       <h2>Android</h2>
       <ol>
-        <li>Abra esta página no <b>Chrome</b>.</li>
-        <li>Toque em <b>Instalar o KOSMOS</b> acima. Se o botão não fizer nada, toque no menu <b>⋮</b> do Chrome e escolha <b>Instalar app</b> (ou <b>Adicionar à tela inicial</b>).</li>
-        <li>O ícone do KOSMOS aparece na tela do celular, junto dos outros apps.</li>
+        <li>Toque em <b>Baixar para Android</b> e abra o arquivo baixado.</li>
+        <li>Se o Android pedir, <b>permita instalar apps desta fonte</b> (Chrome ou Arquivos).</li>
+        <li>Toque em <b>Instalar</b>. Se o Play Protect avisar, toque em <b>Instalar mesmo assim</b>: o app não vem da Play Store.</li>
       </ol>
     </section>
 
     <section data-sistema="pc">
       <h2>PC (Windows, Mac ou Linux)</h2>
       <ol>
-        <li>Abra esta página no <b>Chrome</b> ou no <b>Edge</b>.</li>
-        <li>Clique em <b>Instalar o KOSMOS</b> acima, ou no ícone de instalar que aparece no fim da barra de endereço (um monitor com uma seta).</li>
-        <li>O KOSMOS abre numa janela própria e ganha atalho no menu Iniciar e na área de trabalho.</li>
+        <li>Clique em <b>Baixar para PC</b> e abra o instalador.</li>
+        <li>Se aparecer “O Windows protegeu o computador”, clique em <b>Mais informações → Executar assim mesmo</b> (o app não tem assinatura paga).</li>
+        <li>O KOSMOS ganha atalho no menu Iniciar e na área de trabalho e abre numa janela própria.</li>
       </ol>
     </section>
 
@@ -84,6 +96,8 @@
     const meu = document.querySelector(`[data-sistema="${sistema}"]`);
     meu.classList.add("destaque");
     meu.parentNode.insertBefore(meu, document.querySelector("section"));
+    const baixarMeu = document.querySelector(`[data-sistema-baixar="${sistema}"]`);
+    if (baixarMeu) baixarMeu.parentNode.prepend(baixarMeu);
 
     const instalado = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
 
