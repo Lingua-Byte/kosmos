@@ -1,11 +1,14 @@
 // Oficina do Autor: editor de perguntas, NPCs, missões (storylets) e tabelas dos geradores.
-// Tudo fica em dados/oficina.json. Rodando pelo servidor do PC (ferramentas/servidor.py), cada
-// mudança é salva direto no arquivo do projeto; em outro lugar (GitHub Pages), fica guardada
-// só neste navegador, e o botão Exportar baixa o arquivo.
+// Onde os textos ficam:
+//   · Conectada à nuvem (repositório privado do GitHub, ver nuvem.js): celular e PC veem a mesma
+//     coisa; cada aparelho guarda também uma cópia, para funcionar sem internet.
+//   · Sem nuvem, pelo servidor do PC (ferramentas/servidor.py): salva em site/dados/oficina.json.
+//   · Sem nenhum dos dois: fica só neste navegador (o botão Exportar baixa o arquivo).
 
 const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-const RASCUNHO = "kosmos.oficina.rascunho";
+const LOCAL = "kosmos.oficina.local"; // { dados, base, sha }: cópia deste aparelho
+const RASCUNHO_ANTIGO = "kosmos.oficina.rascunho";
 const EIXOS_NOMES = { x: "∃ X · Urbano", y: "ᛉ Y · Medieval", z: "◉ Z · Espacial", lime: "Lime", todos: "Todos os eixos" };
 
 let mundo = null;
@@ -16,65 +19,276 @@ let eixoGerador = "y";
 let gerado = { npc: null, missao: null };
 let salvarAgendado = null;
 
+// estado da nuvem: base = última versão igual à da nuvem (para juntar mudanças de dois aparelhos)
+let base = null;
+let baseSha = null;
+let enviando = false;
+let comServidor = false;
+let redesenharDepois = false;
+
+const vazio = () => ({ versao: 1, perguntas: [], npcs: [], storylets: [], tabelas: {} });
+const copia = (o) => JSON.parse(JSON.stringify(o));
+
+function normalizar(m) {
+  m = m || vazio();
+  for (const k of ["perguntas", "npcs", "storylets"]) m[k] = m[k] || [];
+  m.tabelas = m.tabelas || {};
+  return m;
+}
+
 // ======================= Carregar e salvar =======================
 
-async function carregar() {
-  let doArquivo = null;
+function lerLocal() {
+  try {
+    const l = JSON.parse(localStorage.getItem(LOCAL));
+    if (l) return l;
+    const antigo = JSON.parse(localStorage.getItem(RASCUNHO_ANTIGO));
+    return antigo ? { dados: antigo } : null;
+  } catch {
+    return null;
+  }
+}
+
+function guardarLocal() {
+  try {
+    localStorage.setItem(LOCAL, JSON.stringify({ dados: mundo, base, sha: baseSha }));
+    localStorage.removeItem(RASCUNHO_ANTIGO);
+  } catch {}
+}
+
+async function doArquivo() {
   try {
     const r = await fetch("dados/oficina.json", { cache: "no-store" });
-    if (r.ok) doArquivo = await r.json();
+    if (r.ok) return await r.json();
   } catch {}
-  let rascunho = null;
-  try {
-    rascunho = JSON.parse(localStorage.getItem(RASCUNHO));
-  } catch {}
-  // Sem o servidor do PC (GitHub Pages, app do celular), o que fica neste aparelho é o trabalho atual.
-  // Com o servidor, mudanças antigas presas no navegador só voltam se o autor quiser.
-  let comServidor = false;
+  return null;
+}
+
+async function carregar() {
   try {
     comServidor = (await fetch("__versao", { cache: "no-store" })).ok;
   } catch {}
-  if (rascunho && (!doArquivo || !comServidor || confirm("Há mudanças guardadas só neste navegador que ainda não foram salvas no projeto. Usar essas mudanças?"))) {
-    mundo = rascunho;
-    mudou();
-  } else mundo = doArquivo || { versao: 1, perguntas: [], npcs: [], storylets: [], tabelas: {} };
-  for (const k of ["perguntas", "npcs", "storylets"]) mundo[k] = mundo[k] || [];
-  mundo.tabelas = mundo.tabelas || {};
-  npcAtual = mundo.npcs[0]?.id || null;
-  missaoAtual = mundo.storylets[0]?.id || null;
   try {
     aba = sessionStorage.getItem("oficina.aba") || aba;
   } catch {}
+  const guardado = lerLocal();
+
+  if (Nuvem.config()) {
+    if (guardado) ({ dados: mundo, base, sha: baseSha } = { dados: guardado.dados, base: guardado.base || null, sha: guardado.sha || null });
+    if (mundo) mostrar();
+    await sincronizar();
+    if (!mundo) {
+      mundo = normalizar((await doArquivo()) || null);
+      mostrar();
+    }
+    return;
+  }
+
+  // sem nuvem: o arquivo do PC; mudanças presas neste navegador voltam se o autor quiser
+  const arquivo = await doArquivo();
+  if (guardado && guardado.dados && (!arquivo || !comServidor || confirm("Há mudanças guardadas só neste navegador que ainda não foram salvas no projeto. Usar essas mudanças?"))) {
+    mundo = guardado.dados;
+    if (comServidor) mudou();
+    else estadoSalvo("guardado só neste aparelho · conecte a ☁ Nuvem", "aviso");
+  } else mundo = arquivo;
+  mostrar();
+  if (!comServidor && !Nuvem.config()) estadoSalvo("conecte a ☁ Nuvem para sincronizar", "aviso");
+}
+
+function mostrar() {
+  mundo = normalizar(mundo);
+  if (!mundo.npcs.some((n) => n.id === npcAtual)) npcAtual = mundo.npcs[0]?.id || null;
+  if (!mundo.storylets.some((s) => s.id === missaoAtual)) missaoAtual = mundo.storylets[0]?.id || null;
   render();
 }
 
 function mudou() {
   estadoSalvo("salvando…", "");
+  guardarLocal();
   clearTimeout(salvarAgendado);
-  salvarAgendado = setTimeout(salvar, 700);
+  salvarAgendado = setTimeout(salvar, Nuvem.config() ? 2000 : 700);
 }
 
 async function salvar() {
+  if (Nuvem.config()) return salvarNuvem();
   try {
     const r = await fetch("__oficina", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(mundo) });
     if (!r.ok) throw new Error(r.status);
-    try {
-      localStorage.removeItem(RASCUNHO);
-    } catch {}
     estadoSalvo("✓ salvo no projeto", "ok");
   } catch {
-    try {
-      localStorage.setItem(RASCUNHO, JSON.stringify(mundo));
-    } catch {}
-    estadoSalvo("guardado só neste navegador · use Exportar", "aviso");
+    estadoSalvo("guardado só neste aparelho · conecte a ☁ Nuvem", "aviso");
   }
 }
+
+// No PC, a nuvem também é copiada para o arquivo do projeto (o jogo e o Claude leem dali)
+function espelharNoPC() {
+  if (comServidor) fetch("__oficina", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(mundo) }).catch(() => {});
+}
+
+async function salvarNuvem() {
+  if (enviando) {
+    clearTimeout(salvarAgendado);
+    salvarAgendado = setTimeout(salvar, 1500);
+    return;
+  }
+  enviando = true;
+  const enviado = copia(mundo);
+  try {
+    baseSha = await Nuvem.enviar(enviado, baseSha);
+    base = enviado;
+    guardarLocal();
+    espelharNoPC();
+    if (!Nuvem.igual(mundo, enviado)) mudou(); // escreveu algo enquanto enviava
+    else estadoSalvo(`☁ sincronizado ${new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`, "ok");
+  } catch (e) {
+    if (e.status === 409) {
+      enviando = false;
+      return sincronizar(); // outro aparelho salvou antes: junta e envia de novo
+    }
+    estadoSalvo(`☁ não sincronizou (${e.message}) · guardado no aparelho`, "aviso");
+  } finally {
+    enviando = false;
+  }
+}
+
+// Busca a versão da nuvem e junta com a deste aparelho
+async function sincronizar({ primeiraVez = false } = {}) {
+  if (!Nuvem.config() || enviando) return;
+  let remoto;
+  try {
+    remoto = await Nuvem.baixar();
+  } catch (e) {
+    estadoSalvo(`☁ sem conexão (${e.message}) · guardado no aparelho`, "aviso");
+    return;
+  }
+  if (!remoto.dados) {
+    // nuvem vazia: este aparelho manda o que tem (ou os textos do projeto)
+    if (!mundo) mundo = normalizar(await doArquivo());
+    baseSha = null;
+    base = null;
+    mostrar();
+    return salvarNuvem();
+  }
+  if (remoto.sha === baseSha) {
+    if (mundo && !Nuvem.igual(mundo, base)) salvarNuvem(); // mudanças daqui ainda não enviadas
+    else estadoSalvo("☁ sincronizado", "ok");
+    return;
+  }
+  const antes = mundo;
+  if (!mundo || (primeiraVez && !Nuvem.igual(mundo, remoto.dados) && !confirm("A nuvem já tem textos. Juntar com o que está neste aparelho? (Onde os dois forem diferentes, vale o deste aparelho.)\n\nCancelar = usar só o que está na nuvem."))) {
+    mundo = remoto.dados;
+  } else {
+    mundo = Nuvem.juntar(base, mundo, remoto.dados);
+  }
+  base = remoto.dados;
+  baseSha = remoto.sha;
+  guardarLocal();
+  espelharNoPC();
+  if (!antes || !Nuvem.igual(antes, mundo)) redesenhar();
+  if (!Nuvem.igual(mundo, base)) salvarNuvem();
+  else estadoSalvo("☁ sincronizado", "ok");
+}
+
+// Não redesenha no meio da digitação: espera o campo perder o foco
+function redesenhar() {
+  const foco = document.activeElement;
+  if (foco && foco.closest && foco.closest("#conteudo") && /INPUT|TEXTAREA|SELECT/.test(foco.tagName)) {
+    redesenharDepois = true;
+    return;
+  }
+  mostrar();
+}
+document.addEventListener("focusout", () => {
+  if (!redesenharDepois) return;
+  setTimeout(() => {
+    if (/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || "")) return;
+    redesenharDepois = false;
+    mostrar();
+  }, 50);
+});
+
+// Olha a nuvem de tempos em tempos e quando o app volta para a tela
+setInterval(() => document.visibilityState === "visible" && sincronizar(), 30000);
+document.addEventListener("visibilitychange", () => document.visibilityState === "visible" && sincronizar());
 
 function estadoSalvo(texto, classe) {
   const el = $("#estado-salvo");
   el.textContent = texto;
   el.className = "estado-salvo " + classe;
 }
+
+// ---------- Conectar à nuvem ----------
+const dialogoNuvem = $("#dialogo-nuvem");
+
+function renderNuvem() {
+  const c = Nuvem.config();
+  dialogoNuvem.innerHTML = c
+    ? `<h2>☁ Nuvem</h2>
+       <p>Este aparelho está conectado a <b>${esc(c.repo)}</b>. Tudo o que você escreve aqui aparece nos outros aparelhos conectados.</p>
+       <div class="linha-botoes">
+         <button class="btn primario" data-nuvem="sincronizar">Sincronizar agora</button>
+         <button class="btn perigo" data-nuvem="desconectar">Desconectar este aparelho</button>
+         <button class="btn" data-nuvem="fechar">Fechar</button>
+       </div>`
+    : `<h2>☁ Conectar à nuvem</h2>
+       <p>Os textos ficam num repositório <b>privado</b> do GitHub: só você vê, e o celular e o PC mostram sempre a mesma coisa.</p>
+       <ol class="passos-nuvem">
+         <li>No GitHub, crie um token em <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Settings → Fine-grained tokens</a>.</li>
+         <li>Em <i>Repository access</i>, escolha <b>Only select repositories</b> e marque o repositório dos textos.</li>
+         <li>Em <i>Permissions → Repository permissions</i>, dê <b>Contents: Read and write</b>.</li>
+         <li>Gere, copie e cole abaixo. Faça isso uma vez no PC e uma vez no celular.</li>
+       </ol>
+       <label class="campo"><span>Repositório</span><input id="nuvem-repo" value="Lingua-Byte/kosmos-autor"></label>
+       <label class="campo"><span>Token</span><input id="nuvem-token" type="password" autocomplete="off" placeholder="github_pat_…"></label>
+       <p id="nuvem-erro" class="erro"></p>
+       <div class="linha-botoes">
+         <button class="btn primario" data-nuvem="conectar">Conectar</button>
+         <button class="btn" data-nuvem="fechar">Cancelar</button>
+       </div>
+       <p class="ajuda">O token fica guardado só neste aparelho e só dá acesso a esse repositório.</p>`;
+}
+
+$("#btn-nuvem").addEventListener("click", () => {
+  renderNuvem();
+  dialogoNuvem.showModal();
+});
+
+dialogoNuvem.addEventListener("click", async (ev) => {
+  const acao = ev.target.closest("[data-nuvem]")?.dataset.nuvem;
+  if (!acao) return;
+  if (acao === "fechar") return dialogoNuvem.close();
+  if (acao === "desconectar") {
+    if (!confirm("Desconectar este aparelho? Os textos continuam na nuvem e nos outros aparelhos.")) return;
+    Nuvem.configurar(null);
+    base = baseSha = null;
+    guardarLocal();
+    estadoSalvo("desconectado da nuvem", "aviso");
+    return dialogoNuvem.close();
+  }
+  if (acao === "sincronizar") {
+    dialogoNuvem.close();
+    return sincronizar();
+  }
+  if (acao === "conectar") {
+    const c = { repo: $("#nuvem-repo").value.trim(), token: $("#nuvem-token").value.trim() };
+    const erro = $("#nuvem-erro");
+    if (!/^[\w.-]+\/[\w.-]+$/.test(c.repo) || !c.token) {
+      erro.textContent = "Preencha o repositório (dono/nome) e o token.";
+      return;
+    }
+    erro.textContent = "Conectando…";
+    try {
+      await Nuvem.baixar(c);
+    } catch (e) {
+      erro.textContent = `Não conectou: ${e.message}.`;
+      return;
+    }
+    Nuvem.configurar(c);
+    base = baseSha = null;
+    dialogoNuvem.close();
+    await sincronizar({ primeiraVez: true });
+  }
+});
 
 $("#btn-exportar").addEventListener("click", () => {
   const a = document.createElement("a");
@@ -90,9 +304,9 @@ $("#btn-importar").addEventListener("change", async (ev) => {
     const dados = JSON.parse(await arq.text());
     if (!dados.storylets || !dados.npcs) throw new Error();
     if (!confirm("Substituir tudo o que está na Oficina pelo arquivo importado?")) return;
-    mundo = dados;
+    mundo = normalizar(dados);
     mudou();
-    render();
+    mostrar();
   } catch {
     alert("Esse arquivo não parece uma Oficina do KOSMOS.");
   }

@@ -153,3 +153,16 @@ summary { cursor: pointer; color: var(--suave); font-size: 0.85rem; margin-botto
   .lateral { position: static; max-height: none; }
   .topo, .abas, .conteudo { padding-left: 16px; padding-right: 16px; }
 }
+
+/* Nuvem */
+.dialogo {
+  width: min(560px, calc(100vw - 32px)); background: var(--painel); color: var(--texto);
+  border: 1px solid var(--borda); border-radius: 14px; padding: 20px;
+}
+.dialogo::backdrop { background: rgba(0, 0, 0, 0.6); }
+.dialogo h2 { margin-top: 0; }
+.dialogo a { color: var(--azul); }
+.passos-nuvem { padding-left: 20px; }
+.passos-nuvem li { margin-bottom: 6px; }
+.linha-botoes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.erro { color: var(--sepia); min-height: 1.2em; margin: 0; }
