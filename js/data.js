@@ -383,3 +383,46 @@ const FRASES = [
 function fraseAleatoria() {
   return FRASES[Math.floor(Math.random() * FRASES.length)];
 }
+
+// ---------- Vida comum: dinheiro, pertences e condições ----------
+// Cada vida do personagem tem a sua carteira (a moeda muda de eixo para eixo).
+// Pertences são coisas do dia a dia que se gastam; como os equipamentos, existem nos três eixos
+// com outro nome (a bolsa se "traduz"). Não pesam na carga, mas a bolsa tem limite.
+// Condições são o corpo cobrando: fome, cansaço, ferimento, abalo. Cada uma tira 1 dado
+// de um atributo até ser resolvida com uma ação comum (comer, dormir, um curativo, um banho).
+
+const MOEDAS = {
+  x: { nome: "reais", formato: (v) => `R$ ${v}` },
+  y: { nome: "pratas", formato: (v) => `${v} ${v === 1 ? "prata" : "pratas"}` },
+  z: { nome: "créditos", formato: (v) => `${v} ${v === 1 ? "crédito" : "créditos"}` },
+};
+
+const DINHEIRO_INICIAL = { x: 200, y: 15, z: 120 };
+
+const BOLSA_MAX = 10; // unidades de pertences que cabem na bolsa
+
+// efeito: tira: [condições que resolve] · poe: [condições que causa] · dissonancia: ± · renovarItens: usos de equipamento voltam
+const PERTENCES = [
+  { chave: "comida", nomes: { x: "Lanche", y: "Pão e queijo", z: "Ração de bordo" }, preco: { x: 25, y: 2, z: 12 }, tira: ["fome"], efeito: "Mata a fome." },
+  { chave: "cafe", nomes: { x: "Café", y: "Chá de ervas", z: "Estimulante" }, preco: { x: 8, y: 1, z: 4 }, tira: ["cansaco"], efeito: "Espanta o cansaço por um tempo." },
+  { chave: "remedio", nomes: { x: "Analgésico e curativos", y: "Unguento e ataduras", z: "Kit de sutura" }, preco: { x: 30, y: 3, z: 20 }, tira: ["ferido"], efeito: "Cuida de um ferimento." },
+  { chave: "calmante", nomes: { x: "Calmante", y: "Infusão de valeriana", z: "Sedativo leve" }, preco: { x: 45, y: 4, z: 30 }, tira: ["abalado"], dissonancia: -1, efeito: "Acalma: −1 Dissonância." },
+  { chave: "bebida", nomes: { x: "Cerveja", y: "Hidromel", z: "Destilado da hidroponia" }, preco: { x: 12, y: 1, z: 10 }, tira: ["abalado"], poe: ["cansaco"], efeito: "Relaxa, mas cansa." },
+  { chave: "bateria", nomes: { x: "Bateria portátil", y: "Óleo de lamparina", z: "Célula de energia" }, preco: { x: 60, y: 2, z: 25 }, renovarItens: true, efeito: "Recarrega os equipamentos: usos voltam." },
+];
+
+const CONDICOES = {
+  fome: { nome: "Com fome", dados: { corpo: -1 }, resolve: "comer" },
+  cansaco: { nome: "Cansado", dados: { mente: -1 }, resolve: "dormir ou um café" },
+  ferido: { nome: "Ferido", dados: { corpo: -1 }, resolve: "um curativo" },
+  abalado: { nome: "Abalado", dados: { essencia: -1 }, resolve: "um banho, uma conversa, algo que acalme" },
+};
+
+// Preço de equipamentos vendidos em lojas (por eixo)
+const PRECO_EQUIPAMENTO = {
+  luz: { x: 50, y: 2, z: 30 },
+  kit_medico: { x: 120, y: 8, z: 70 },
+  ferramentas: { x: 90, y: 6, z: 60 },
+  comunicador: { x: 900, y: 20, z: 300 },
+  protecao: { x: 600, y: 40, z: 350 },
+};

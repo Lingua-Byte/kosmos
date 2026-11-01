@@ -12,6 +12,12 @@
 //   4. Olho do furacão: Testes de Convergência de intensidade 1 → 2 → 3 (tutorial).
 //   5. O rádio, o ataque, o salto.
 //
+// Ações comuns (comum: true): a vida segue, mesmo com a cidade estranha. Comer, dormir, tomar banho,
+// trabalhar, comprar. Não testam nada, quase nunca gastam tempo e não puxam para o fenômeno.
+// repetivel: true = pode fazer de novo. tempo = marcas do relógio (padrão 1).
+// Efeitos da vida comum: dinheiro (±), pertence: { comida: 1 }, condicao: "-fome" / "abalado", renovarItens.
+// Lugares com loja: loja: { nome, itens: [{ pertence: "comida" } | { equip: "kit_medico" }] }.
+//
 // Textos podem ser funções de ctx = { p (personagem da vez), camp (campanha), trabalho }.
 // =====================================================================
 
@@ -258,6 +264,22 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           sucesso: { texto: "Ele não olha para trás. Vira na avenida e se junta a outros, todos no mesmo passo. Você anota o caminho: a Praça Central.", pista: "Os afetados caminham em sincronia para a Praça Central." },
           falha: { texto: "Você o perde na esquina. Mas o poste à sua frente pisca três vezes rápido e uma longa, como se apontasse.", efeitos: { exposicao: 1 } },
         },
+        {
+          id: "ponto", comum: true, texto: "Fechar o expediente e bater o ponto", palavras: ["ponto", "expedient", "turno", "receb", "salario"],
+          resultado: { texto: "Você termina o que estava fazendo, salva tudo e bate o ponto. A hora extra de hoje vai entrar na conta: R$ 180. Pelo menos isso continua funcionando.", efeitos: { dinheiro: 180 } },
+        },
+        {
+          id: "copa-cafe", comum: true, repetivel: true, tempo: 0, texto: "Pegar um café na copa", palavras: ["cafe", "copa"],
+          resultado: { texto: "A garrafa térmica ainda está morna. Café forte, meio amargo. Ajuda.", efeitos: { condicao: "-cansaco" } },
+        },
+        {
+          id: "copa-lanche", comum: true, tempo: 0, texto: "Pegar o lanche esquecido na geladeira da copa", palavras: ["lanche", "geladeira", "comida", "comer"],
+          resultado: { texto: "Um sanduíche embrulhado, com um bilhete: “Não é seu, Marcos.” Marcos não vai voltar hoje.", efeitos: { pertence: { comida: 1 } } },
+        },
+        {
+          id: "carregar", comum: true, repetivel: true, texto: "Pôr os aparelhos para carregar na tomada da mesa", palavras: ["carreg", "tomada", "bateria"],
+          resultado: { texto: "Você espera a bateria subir olhando pela vidraça. Lá fora, as pessoas continuam passando.", efeitos: { renovarItens: true } },
+        },
       ],
     },
 
@@ -281,8 +303,56 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           falha: { texto: "Alguém lá embaixo está parado, olhando para a sua janela. Quando você pisca, não está mais lá.", efeitos: { exposicao: 1 } },
         },
         {
-          id: "descansar", texto: "Descansar um pouco", palavras: ["descans", "dormir", "deitar", "respir"], tempo: 2,
-          resultado: { texto: "Você fecha os olhos por um momento. O silêncio ajuda. Quando abre, a rua está mais cheia.", efeitos: { dissonancia: -1 } },
+          id: "descansar", comum: true, repetivel: true, texto: "Dormir um pouco", palavras: ["descans", "dormir", "deitar", "cochil", "sono"], tempo: 2,
+          resultado: { texto: "Você apaga assim que encosta no travesseiro. Sem sonhos, ou sem sonhos que você lembre. Quando acorda, a rua está mais cheia.", efeitos: { dissonancia: -1, condicao: "-cansaco" } },
+        },
+        {
+          id: "geladeira", comum: true, tempo: 0, texto: "Esquentar o que sobrou na geladeira", palavras: ["geladeira", "comer", "comida", "jantar", "esquent"],
+          resultado: { texto: "Arroz, feijão e um resto de frango. Comida quente, no silêncio da cozinha. Por alguns minutos, tudo parece normal.", efeitos: { condicao: "-fome" } },
+        },
+        {
+          id: "cozinhar", comum: true, texto: "Cozinhar com o que tem nos armários", palavras: ["cozinh", "armario", "macarrao", "fazer comida"],
+          resultado: { texto: "Um macarrão rápido. Você come um prato e guarda o resto em potes, para levar.", efeitos: { condicao: "-fome", pertence: { comida: 2 } } },
+        },
+        {
+          id: "pedir-comida", comum: true, repetivel: true, texto: "Pedir comida por aplicativo", palavras: ["pedir", "aplicativo", "delivery", "entrega"], req: { item: "comunicador", dinheiro: 40 },
+          resultado: { texto: "O entregador demora, mas chega. Diz que as ruas do centro estão fechadas e que nunca viu tanta gente andando a pé àquela hora.", efeitos: { dinheiro: -40, condicao: "-fome" } },
+        },
+        {
+          id: "banho", comum: true, repetivel: true, tempo: 0, texto: "Tomar um banho quente", palavras: ["banho", "chuveiro", "lavar"],
+          resultado: { texto: "A água quente leva embora um pouco do peso do dia. Você fica mais tempo do que precisava.", efeitos: { condicao: "-abalado" } },
+        },
+        {
+          id: "cafe-casa", comum: true, repetivel: true, tempo: 0, texto: "Passar um café", palavras: ["cafe", "coar", "passar"],
+          resultado: { texto: "O cheiro de café enche a cozinha. É o cheiro mais normal do mundo.", efeitos: { condicao: "-cansaco" } },
+        },
+        {
+          id: "sofa", comum: true, repetivel: true, texto: "Deitar no sofá e ouvir música", palavras: ["sofa", "musica", "ouvir", "relax"],
+          resultado: { texto: "Uma playlist antiga, fone no ouvido, olhos no teto. O mundo fica do tamanho da sala.", efeitos: { condicao: "-abalado" } },
+        },
+        {
+          id: "reserva", comum: true, tempo: 0, texto: "Pegar o dinheiro guardado na lata de biscoito", palavras: ["dinheiro", "lata", "reserva", "guardado"],
+          resultado: { texto: "A reserva de emergência, dobrada com elástico: R$ 150. Se não é uma emergência hoje, nada é.", efeitos: { dinheiro: 150 } },
+        },
+        {
+          id: "remedios", comum: true, tempo: 0, texto: "Procurar na caixa de remédios", palavras: ["remedio", "caixa", "curativo", "farmac"],
+          resultado: { texto: "Analgésico, esparadrapo, um calmante que o médico receitou e você nunca tomou.", efeitos: { pertence: { remedio: 1, calmante: 1 } } },
+        },
+        {
+          id: "gaveta", comum: true, tempo: 0, texto: "Revirar a gaveta da bagunça", palavras: ["gaveta", "bagunca", "revirar", "procurar"],
+          resultado: { texto: "Pilhas, um isqueiro, elásticos, chaves que você não sabe de onde são e uma bateria portátil carregada.", efeitos: { pertence: { bateria: 1 } } },
+        },
+        {
+          id: "trancar", comum: true, tempo: 0, texto: "Trancar portas e janelas", palavras: ["trancar", "porta", "chave", "fechar"],
+          resultado: { texto: "Você confere a porta duas vezes, fecha as cortinas, passa a corrente. Não sabe bem do que está se protegendo. Mas ajuda.", efeitos: { condicao: "-abalado" } },
+        },
+        {
+          id: "familia", comum: true, tempo: 0, texto: "Mandar mensagem para a família", palavras: ["mensagem", "familia", "mae", "pai", "irma"], req: { item: "comunicador" },
+          resultado: { texto: "Respondem com um áudio: está tudo bem, é a TV que exagera, vai dormir. Você quer acreditar.", efeitos: { condicao: "-abalado" } },
+        },
+        {
+          id: "vizinha", comum: true, texto: "Bater na porta da vizinha", palavras: ["vizinh", "bater", "dona"],
+          resultado: { texto: "Dona Cida abre com a corrente passada. Pergunta se você também está ouvindo “aquela musiquinha”, diz que não vai sair de casa nem morta e insiste que você leve um pedaço de bolo de fubá.", efeitos: { pertence: { comida: 1 }, condicao: "-abalado" } },
         },
       ],
     },
@@ -307,7 +377,16 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           id: "medidor", texto: "Usar o medidor de radiação", palavras: ["medidor", "geiger", "radiac", "medir"], req: { item: "detector" },
           resultado: { texto: "O ponteiro sobe sozinho quando você aponta para o leste. Para a Praça Central.", pista: "A radiação aumenta na direção da Praça Central." },
         },
+        {
+          id: "triagem", comum: true, repetivel: true, texto: "Pedir um curativo na triagem", palavras: ["curativo", "triagem", "ferid", "machuc"], req: { condicao: "ferido" },
+          resultado: { texto: "Uma técnica de enfermagem limpa e fecha o ferimento sem perguntar como foi. “Hoje ninguém sabe como foi”, ela diz.", efeitos: { condicao: "-ferido" } },
+        },
+        {
+          id: "espera", comum: true, repetivel: true, texto: "Sentar na sala de espera e respirar", palavras: ["sentar", "espera", "respir", "calma"],
+          resultado: { texto: "Cadeiras de plástico, cheiro de álcool, uma TV sem som. Você respira até as mãos pararem de tremer.", efeitos: { condicao: "-abalado" } },
+        },
       ],
+      loja: { nome: "Lanchonete do hospital", itens: [{ pertence: "comida" }, { pertence: "cafe" }] },
     },
 
     delegacia: {
@@ -325,6 +404,14 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           id: "radio", texto: "Escutar o rádio da polícia", palavras: ["radio", "escut", "ouv", "frequenc"], situacao: "investigar",
           sucesso: { texto: () => `Entre as vozes das viaturas, uma voz calma, que não é de ninguém, repete: “${fraseAleatoria()}”`, pista: "No rádio da polícia, uma voz calma repete frases que não são de ninguém." },
           falha: { texto: "Só estática. Mas a estática tem ritmo.", efeitos: { exposicao: 1 } },
+        },
+        {
+          id: "cafe-delegacia", comum: true, repetivel: true, tempo: 0, texto: "Tomar o café da recepção", palavras: ["cafe", "recepc", "copo"],
+          resultado: { texto: "Café de garrafa térmica em copo de plástico. Morno, doce demais. Serve.", efeitos: { condicao: "-cansaco" } },
+        },
+        {
+          id: "boletim", comum: true, texto: "Registrar um boletim de ocorrência", palavras: ["boletim", "ocorrencia", "registrar", "denunc"],
+          resultado: { texto: "O escrivão digita devagar, com dois dedos. Pergunta seu nome, endereço, o que aconteceu. Quando você termina, ele imprime o boletim, carimba e diz que alguém vai entrar em contato. Os dois sabem que ninguém vai.", efeitos: { condicao: "-abalado" } },
         },
       ],
     },
@@ -352,7 +439,52 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           },
           falha: { texto: "No escuro, algo responde aos seus passos com os mesmos passos. Você sobe correndo.", efeitos: { exposicao: 2 } },
         },
+        {
+          id: "banco", comum: true, repetivel: true, texto: "Sentar no banco da entrada e descansar as pernas", palavras: ["sentar", "banco", "descans", "pernas"],
+          resultado: { texto: "O banco de concreto é frio. Um gato aparece, cheira seus sapatos e vai embora. Suas pernas agradecem.", efeitos: { condicao: "-cansaco" } },
+        },
       ],
+      loja: { nome: "Máquina automática (ainda funciona)", itens: [{ pertence: "comida" }, { pertence: "cafe" }] },
+    },
+
+    mercado: {
+      nome: "Mercadinho do Seu Antônio",
+      icone: "▤",
+      mapa: { x: 18, y: 48 },
+      descricao: "Luz amarela, rádio baixinho atrás do balcão. As prateleiras de água e de enlatados estão quase vazias; o resto está igual a sempre.",
+      acoes: [
+        {
+          id: "antonio", comum: true, texto: "Conversar com o Seu Antônio", palavras: ["antonio", "convers", "dono", "balcao"],
+          resultado: { texto: "Ele reclama do movimento: todo mundo levou água e pilha, ninguém levou o pão. Diz que já viu de tudo nesse bairro e que amanhã abre no horário. Você sai mais calmo do que entrou.", efeitos: { condicao: "-abalado" } },
+        },
+        {
+          id: "repor", comum: true, texto: "Ajudar a repor as prateleiras", palavras: ["ajudar", "repor", "prateleira", "trabalh"],
+          resultado: { texto: "Meia hora carregando caixas do estoque. O Seu Antônio paga em dinheiro vivo e ainda põe um pacote de biscoito na sua mão.", efeitos: { dinheiro: 60, pertence: { comida: 1 } } },
+        },
+        {
+          id: "banca", comum: true, tempo: 0, texto: "Ler as manchetes dos jornais pendurados na porta", palavras: ["jornal", "manchete", "banca", "ler"],
+          resultado: { texto: "“Prefeitura pede calma.” “Clássico de domingo adiado.” “Preço do tomate dispara.” A cidade, por escrito, ainda parece a mesma." },
+        },
+      ],
+      loja: { nome: "Mercadinho do Seu Antônio", itens: [{ pertence: "comida" }, { pertence: "cafe" }, { pertence: "bebida" }, { pertence: "bateria" }, { equip: "luz" }] },
+    },
+
+    farmacia: {
+      nome: "Farmácia Bem-Estar",
+      icone: "℞",
+      mapa: { x: 82, y: 47 },
+      descricao: "Aberta 24 horas, com a porta de vidro meio baixada. O farmacêutico atende por baixo dela.",
+      acoes: [
+        {
+          id: "farmaceutico", comum: true, texto: "Pedir conselho ao farmacêutico", palavras: ["conselho", "farmaceutic", "pressao", "convers"],
+          resultado: { texto: "Ele mede sua pressão sem você pedir. “Tá todo mundo com a pressão lá em cima hoje”, diz, e recomenda dormir cedo. Você ri pela primeira vez no dia.", efeitos: { condicao: "-abalado" } },
+        },
+        {
+          id: "curativo-farmacia", comum: true, repetivel: true, texto: "Pedir para fazer um curativo", palavras: ["curativo", "ferid", "machuc"], req: { condicao: "ferido", dinheiro: 20 },
+          resultado: { texto: "Ele limpa, põe gaze e esparadrapo, cobra o material.", efeitos: { dinheiro: -20, condicao: "-ferido" } },
+        },
+      ],
+      loja: { nome: "Farmácia Bem-Estar", itens: [{ pertence: "remedio" }, { pertence: "calmante" }, { pertence: "cafe" }, { equip: "kit_medico" }] },
     },
   },
 };

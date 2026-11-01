@@ -201,7 +201,11 @@ const Cenas = (() => {
         <div class="narracao">${paragrafos(texto(lugar.descricao, ctx))}<p class="ambiente">${esc(m.ambiente(camp.relogio))}</p></div>
         <p class="pergunta-vez">O que ${esc(ctx.p.nome)} faz?</p>
         ${opcoesHtml(disponiveis, true)}
-        <button class="btn-secundario" data-painel="mapa">Ir para outro lugar</button>`;
+        <div class="acoes-lugar">
+          ${lugar.loja ? `<button class="btn-secundario" data-painel="loja">Comprar aqui</button>` : ""}
+          <button class="btn-secundario" data-painel="mapa">Ir para outro lugar</button>
+          ${camp.pistas.length >= m.pistasParaMarco ? `<button class="btn-primario" data-acao="chamado">Seguir a multidão até a ${esc(m.centroMapa ? m.centroMapa.nome : "Praça Central")}</button>` : ""}
+        </div>`;
     }
 
     const livre = !resultado && !(cena && (cena.final || camp.flags.pedirSom));
@@ -225,6 +229,7 @@ const Cenas = (() => {
         <aside class="cena-lado">
           <button class="btn-secundario" data-painel="mapa" ${cena ? "disabled" : ""}>Mapa</button>
           <button class="btn-secundario" data-painel="diario">Diário · ${camp.pistas.length}</button>
+          <button class="btn-secundario" data-painel="bolsa">Bolsa · ${esc(Vida.dinheiroTexto(m.eixo, Vida.garantir(ativo()).dinheiro[m.eixo]))}</button>
           <button class="btn-secundario" data-acao="ficha">Ficha</button>
           <button class="btn-secundario" data-acao="tradutor">Tradutor</button>
           <button class="btn-texto" data-acao="mesa">‹ Mesa</button>
@@ -266,6 +271,9 @@ const Cenas = (() => {
     if (r.hab && !p.habs.includes(r.hab)) return `requer ${Regras.hab(r.hab).nomes[missao().eixo]}`;
     if (r.res && p.ressonancia < r.res) return `requer Ressonância ${r.res}`;
     if (r.dis && p.dissonancia < r.dis) return `requer Dissonância ${r.dis}`;
+    if (r.dinheiro && Vida.garantir(p).dinheiro[missao().eixo] < r.dinheiro) return `custa ${Vida.dinheiroTexto(missao().eixo, r.dinheiro)}`;
+    if (r.pertence && !Vida.tem(p, r.pertence)) return `requer ${Vida.nome(r.pertence, missao().eixo)}`;
+    if (r.condicao && !Vida.garantir(p).condicoes.includes(r.condicao)) return `só se estiver ${CONDICOES[r.condicao].nome.toLowerCase()}`;
     if (op.situacao) {
       const s = SITUACOES.find((x) => x.id === op.situacao);
       if (s.tags.includes("social") && Regras.bloqueado(p, "conversa")) return "bloqueada pela Paranoia";
@@ -281,7 +289,8 @@ const Cenas = (() => {
       return `<span class="op-info">${attr} · ${esc(c.situacao.nome.toLowerCase())}</span>
         <span class="chance chance-${c.rotulo.toLowerCase().replace(/\s+/g, "-")}">${c.rotulo} ${Math.round(c.chance * 100)}%</span>`;
     }
-    return `<span class="op-info">sem teste</span>`;
+    if (op.req && op.req.dinheiro) return `<span class="op-info">custa ${esc(Vida.dinheiroTexto(missao().eixo, op.req.dinheiro))}</span>`;
+    return `<span class="op-info">${op.comum ? "ação comum" : "sem teste"}</span>`;
   }
 
   function opcoesHtml(lista, doLugar) {
@@ -321,6 +330,7 @@ const Cenas = (() => {
       <div class="membro ${i === camp.vez % g.length ? "da-vez" : ""}">
         <strong>${esc(p.nome)}${i === camp.vez % g.length && g.length > 1 ? " · vez" : ""}</strong>
         <span>${EIXOS[m.eixo].exposicao.nome} ${p.exposicao[m.eixo]} · Res ${p.ressonancia} · Dis ${p.dissonancia}</span>
+        ${(p.condicoes || []).length ? `<span class="condicoes-mini">${p.condicoes.map((c) => esc(CONDICOES[c].nome)).join(" · ")}</span>` : ""}
       </div>`).join("")}</footer>`;
   }
 
@@ -345,9 +355,11 @@ const Cenas = (() => {
       return `<div class="cena-painel">
         <h3>Diário <button class="btn-texto" data-painel="">Fechar</button></h3>
         ${camp.pistas.length ? `<ul class="pistas">${camp.pistas.map((x) => `<li>${esc(x.texto)}</li>`).join("")}</ul>` : `<p class="sub">Nenhuma pista ainda.</p>`}
-        <p class="dica">Com ${m.pistasParaMarco} pistas, ou com o relógio cheio, a história avança sozinha.</p>
+        <p class="dica">Com ${m.pistasParaMarco} pistas você pode seguir a multidão quando quiser. Com o relógio cheio, não há mais escolha.</p>
       </div>`;
     }
+    if (painel === "bolsa") return bolsaHtml();
+    if (painel === "loja") return lojaHtml();
     const custo = custoViagem();
     // mapa ilustrado (desenhado pelo jogo) quando o eixo e os lugares têm posição; senão, a lista
     const ilustrado = m.centroMapa && Object.values(m.lugares).every((l) => l.mapa) && Mapas.html({
@@ -376,6 +388,38 @@ const Cenas = (() => {
         </button>`).join("")}
         <button class="lugar trancado" disabled><b>◉</b><strong>Praça Central</strong><span>todos parecem ir para lá</span></button>
       </div>
+    </div>`;
+  }
+
+  // Bolsa de quem está na vez: dinheiro deste eixo, pertences e condições
+  function bolsaHtml() {
+    const p = Vida.garantir(ativo());
+    const e = missao().eixo;
+    const itens = Object.entries(p.pertences);
+    return `<div class="cena-painel">
+      <h3>Bolsa de ${esc(p.nome)} <button class="btn-texto" data-painel="">Fechar</button></h3>
+      <p class="carteira"><strong>${esc(Vida.dinheiroTexto(e, p.dinheiro[e]))}</strong> <span class="sub">· bolsa ${Vida.naBolsa(p)}/${BOLSA_MAX}</span></p>
+      ${itens.length ? `<ul class="pertences">${itens.map(([k, n]) => `
+        <li><span>${esc(Vida.nome(k, e))}${n > 1 ? ` <b>×${n}</b>` : ""}</span><small>${esc(Vida.pertence(k).efeito)}</small>
+          <button class="btn-secundario" data-usar-pertence="${k}">Usar</button></li>`).join("")}</ul>` : `<p class="sub">Nada na bolsa. Compre em lojas ou procure pelos lugares.</p>`}
+      ${p.condicoes.length ? `<p class="condicoes">${p.condicoes.map((c) => `<span class="condicao">${esc(CONDICOES[c].nome)} · resolve com ${esc(CONDICOES[c].resolve)}</span>`).join("")}</p>` : `<p class="sub">Sem fome, sem cansaço, sem ferimentos.</p>`}
+    </div>`;
+  }
+
+  function lojaHtml() {
+    const p = Vida.garantir(ativo());
+    const e = missao().eixo;
+    const lugar = missao().lugares[camp.lugar];
+    return `<div class="cena-painel">
+      <h3>${esc(lugar.loja.nome || "Comprar")} <button class="btn-texto" data-painel="">Fechar</button></h3>
+      <p class="carteira">${esc(p.nome)} tem <strong>${esc(Vida.dinheiroTexto(e, p.dinheiro[e]))}</strong> <span class="sub">· bolsa ${Vida.naBolsa(p)}/${BOLSA_MAX}</span></p>
+      <ul class="pertences loja">${lugar.loja.itens.map((o, i) => {
+        const motivo = Vida.podeComprar(p, o, e);
+        const desc = o.pertence ? Vida.pertence(o.pertence).efeito : Regras.equip(o.equip).efeito;
+        return `<li><span>${esc(Vida.nomeOferta(o, e))}</span><small>${esc(desc)}</small>
+          <button class="btn-secundario" data-comprar="${i}" ${motivo ? "disabled" : ""}>${motivo ? esc(motivo) : esc(Vida.dinheiroTexto(e, Vida.preco(o, e)))}</button></li>`;
+      }).join("")}</ul>
+      <p class="dica">Comprar não gasta tempo.</p>
     </div>`;
   }
 
@@ -415,9 +459,35 @@ const Cenas = (() => {
     const exp = EIXOS[m.eixo].exposicao.nome;
 
     if (doLugar) {
-      camp.feitas.push(op.grupo || op.id);
+      if (!op.repetivel) camp.feitas.push(op.grupo || op.id);
+      const antes = camp.relogio;
       camp.relogio = Math.min(m.relogioMax, camp.relogio + (op.tempo ?? 1));
+      // o tempo passa para todo mundo: a fome e o cansaço chegam
+      for (const [marca, cond] of [[3, "fome"], [6, "cansaco"]]) {
+        if (antes < marca && camp.relogio >= marca) {
+          for (const membro of grupo()) {
+            if (membro.id === p.id) Vida.condicao(p, cond);
+            else if (Vida.condicao(membro, cond)) Armazem.salvar(membro);
+          }
+          linhas.push(`O tempo passa: todos ${cond === "fome" ? "estão com fome" : "estão cansados"} (−1 dado até resolver)`);
+        }
+      }
     }
+    Vida.garantir(p);
+    if (efeitos.dinheiro) {
+      Vida.mudarDinheiro(p, m.eixo, efeitos.dinheiro);
+      linhas.push(`${efeitos.dinheiro > 0 ? "+" : "−"}${Vida.dinheiroTexto(m.eixo, Math.abs(efeitos.dinheiro))}`);
+    }
+    for (const [chave, qtd] of Object.entries(efeitos.pertence || {})) {
+      const ganhou = Vida.ganhar(p, chave, qtd);
+      linhas.push(ganhou ? `Ganhou: ${Vida.nome(chave, m.eixo)}${ganhou > 1 ? " ×" + ganhou : ""}` : `Bolsa cheia: ${Vida.nome(chave, m.eixo)} ficou para trás`);
+    }
+    if (efeitos.consumir) Vida.tirar(p, efeitos.consumir);
+    for (const c of [].concat(efeitos.condicao || [])) {
+      const l = Vida.condicao(p, c);
+      if (l) linhas.push(l);
+    }
+    if (efeitos.renovarItens) for (const k of Object.keys(p.usos)) if (EQUIPAMENTOS.some((e) => e.chave === k)) delete p.usos[k];
     if (efeitos.exposicao) {
       p.exposicao[m.eixo] = Math.max(0, Math.min(REGRAS.exposicaoMax, p.exposicao[m.eixo] + efeitos.exposicao));
       linhas.push(`${efeitos.exposicao > 0 ? "+" : ""}${efeitos.exposicao} ${exp}`);
@@ -457,7 +527,8 @@ const Cenas = (() => {
       if (camp.ameaca <= 0 || camp.rodada >= 2) ir = "cena:salto";
     }
     camp.vez = (camp.vez + 1) % grupo().length;
-    if (doLugar && !ir && (camp.pistas.length >= m.pistasParaMarco || camp.relogio >= m.relogioMax)) ir = "cena:chamado";
+    // com pistas suficientes o jogador PODE seguir para o centro quando quiser; com o relógio cheio, não há escolha
+    if (doLugar && !ir && camp.relogio >= m.relogioMax) ir = "cena:chamado";
     salvar();
 
     const quem = p.id; // o teste de Convergência é de quem agiu, não do próximo da vez
@@ -622,7 +693,19 @@ const Cenas = (() => {
       salvar();
       return render();
     }
+    if (t.dataset.usarPertence) {
+      const p = ativo();
+      fichaMudou(p, Vida.usar(p, t.dataset.usarPertence, m.eixo));
+      return render();
+    }
+    if (t.dataset.comprar !== undefined) {
+      const p = ativo();
+      const r = Vida.comprar(p, m.lugares[camp.lugar].loja.itens[+t.dataset.comprar], m.eixo);
+      fichaMudou(p, [r.erro || r.linha]);
+      return render();
+    }
     const acao = t.dataset.acao;
+    if (acao === "chamado") return entrarCena("chamado");
     if (acao === "seguir" && resultado) return resultado.depois();
     if (acao === "confirmar" && pendente) {
       const p = pendente;
