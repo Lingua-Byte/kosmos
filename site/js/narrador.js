@@ -40,6 +40,8 @@ const Narrador = (() => {
     }
   }
 
+  const volumeNarrador = () => (typeof Opcoes !== "undefined" ? Opcoes.get("narrador").volume / 100 : 1);
+
   function ligado() {
     return preferencias().ligado;
   }
@@ -84,7 +86,7 @@ const Narrador = (() => {
       audio = new Audio(URL.createObjectURL(blob));
       audio.preservesPitch = false;
       audio.playbackRate = (NEURAL.eixo[eixo] || 1) * tom.rate;
-      audio.volume = tom.volume;
+      audio.volume = tom.volume * volumeNarrador();
       audio.onended = audio.onerror = () => {
         URL.revokeObjectURL(audio.src);
         pronto();
@@ -190,7 +192,7 @@ const Narrador = (() => {
       if (v) u.voice = v;
       u.rate = perfil.rate * tom.rate;
       u.pitch = Math.min(2, perfil.pitch * tom.pitch);
-      u.volume = tom.volume;
+      u.volume = tom.volume * volumeNarrador();
       u.onend = () => {
         if (minha !== geracao) return;
         espera = setTimeout(() => proxima(i + 1), tom.pausa + extra);
@@ -245,6 +247,13 @@ const Narrador = (() => {
   if (fala) fala.onvoiceschanged = () => {};
 
   return {
+    // o menu de opções lê e muda as escolhas do narrador
+    config: () => ({ ligado: ligado(), voz: preferencias().voz }),
+    configurar(mudancas) {
+      guardar(mudancas);
+      if (!ligado()) parar();
+      atualizarBotoes();
+    },
     disponivel: Boolean(fala),
     cena,
     parar,

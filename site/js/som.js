@@ -3,23 +3,24 @@
 // Cada eixo soa diferente: Urbano = terminal de fósforo; Medieval = madeira e papel; Espacial = painel de bordo.
 
 const Som = (() => {
-  const CHAVE = "kosmos.sons";
   let ctx = null;
 
-  function ligado() {
-    try {
-      return localStorage.getItem(CHAVE) !== "0";
-    } catch {
-      return true;
-    }
-  }
+  const ligado = () => Opcoes.get("sons").ligados;
 
   function alternar() {
-    const sim = !ligado();
-    try {
-      localStorage.setItem(CHAVE, sim ? "1" : "0");
-    } catch {}
-    return sim;
+    Opcoes.mudar("sons", { ligados: !ligado() });
+    return ligado();
+  }
+
+  // todo som passa por aqui: o volume do menu de opções, com reforço (os sons base são baixos)
+  let mestre = null;
+  function saida(a) {
+    if (!mestre) {
+      mestre = a.createGain();
+      mestre.connect(a.destination);
+    }
+    mestre.gain.value = (Opcoes.get("sons").volume / 100) * 3.2;
+    return mestre;
   }
 
   function audio() {
@@ -45,7 +46,7 @@ const Som = (() => {
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(vol, t + 0.004);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g).connect(a.destination);
+    o.connect(g).connect(saida(a));
     o.start(t);
     o.stop(t + dur + 0.02);
   }
@@ -65,7 +66,7 @@ const Som = (() => {
     f.Q.value = q;
     const g = a.createGain();
     g.gain.value = vol;
-    s.connect(f).connect(g).connect(a.destination);
+    s.connect(f).connect(g).connect(saida(a));
     s.start(t);
   }
 

@@ -1403,3 +1403,35 @@ body:has(#tela-cena.ativa) .controle-musica { top: 12px; bottom: auto; right: 14
 }
 /* com um painel aberto por cima, o controle de música não cobre o botão Fechar */
 body:has(.painel-sobre) .controle-musica { display: none; }
+
+/* ---------- Menu de opções ---------- */
+.btn-opcoes { font-size: 1.1rem; }
+.dialogo-opcoes {
+  width: min(560px, 100vw); max-width: 100vw; max-height: 100dvh; margin: auto; padding: 0;
+  border: 1px solid var(--painel-borda); border-radius: 14px; background: #070a14; color: var(--texto);
+}
+.dialogo-opcoes::backdrop { background: rgba(0, 0, 0, 0.85); }
+body.tema-x .dialogo-opcoes { background: #030a06; }
+body.tema-y .dialogo-opcoes { background: #120c06; }
+body.tema-z .dialogo-opcoes { background: #030914; }
+.op-topo { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: inherit; border-bottom: 1px solid var(--painel-borda); }
+.op-topo h2 { margin: 0; font-size: 1.3rem; }
+.op-fechar, .op-testar, .op-acao { font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--acento); background: none; color: var(--acento); padding: 6px 14px; }
+.op-acao { width: 100%; padding: 10px; margin: 6px 0; }
+.op-secao { padding: 10px 16px 6px; }
+.op-secao h3 { margin: 6px 0 8px; }
+.op-linha { padding: 10px 0; border-bottom: 1px solid var(--painel-borda); }
+.op-cabeca { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.op-desc { margin: 4px 0 6px; font-size: 0.85rem; color: var(--texto-suave); }
+.op-desc.pequeno { font-size: 0.78rem; }
+.op-volume { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.op-volume span { font-size: 0.8rem; color: var(--texto-suave); min-width: 52px; }
+.op-volume input[type="range"] { flex: 1; accent-color: var(--acento); }
+.op-volume b { min-width: 42px; text-align: right; font-weight: 400; font-size: 0.85rem; }
+.op-volume select { flex: 1; padding: 6px; border-radius: 8px; background: #000; color: var(--texto); border: 1px solid var(--painel-borda); }
+.op-chave { font: inherit; font-size: 0.8rem; cursor: pointer; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--painel-borda); background: none; color: var(--texto-suave); }
+.op-chave.on { border-color: var(--acento); color: #000; background: var(--acento); }
+.op-servicos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 6px 0; }
+.op-servico { display: grid; padding: 10px; border-radius: 8px; border: 1px solid var(--painel-borda); color: var(--texto); text-decoration: none; text-align: center; }
+.op-servico small { color: var(--texto-suave); font-size: 0.72rem; }
+@media (max-width: 600px) { .dialogo-opcoes { width: 100vw; height: 100dvh; border-radius: 0; } }
