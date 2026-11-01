@@ -40,10 +40,9 @@ jobs:
         run: |
           res=android/app/src/main/res
           rm -rf $res/mipmap-anydpi-v26
-          for par in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
-            pasta=${par%%:*}; tam=${par##*:}
-            convert icone.png -resize ${tam}x${tam} $res/mipmap-$pasta/ic_launcher.png
-            convert icone.png -resize ${tam}x${tam} $res/mipmap-$pasta/ic_launcher_round.png
+          # ícones já redimensionados em app-android/icones/ (um por densidade de tela)
+          for pasta in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            cp icones/mipmap-$pasta/ic_launcher.png icones/mipmap-$pasta/ic_launcher_round.png $res/mipmap-$pasta/
             rm -f $res/mipmap-$pasta/ic_launcher_foreground.png
           done
       - name: Compilar o APK
