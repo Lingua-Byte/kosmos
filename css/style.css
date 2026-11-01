@@ -1095,9 +1095,7 @@ body.tema-z::before {
   background:
     repeating-linear-gradient(90deg, rgba(127, 228, 255, 0.03) 0 1px, transparent 1px 40px),
     repeating-linear-gradient(0deg, rgba(127, 228, 255, 0.03) 0 1px, transparent 1px 40px),
-    radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(2, 6, 16, 0.6)),
-    linear-gradient(rgba(2, 6, 16, 0.25), rgba(2, 6, 16, 0.6)),
-    url("../imagens/domus.webp") 70% center / cover no-repeat;
+    radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(2, 6, 16, 0.6));
 }
 body.tema-z h2, body.tema-z h3 { font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; }
 body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 40px rgba(127, 228, 255, 0.08), inset 0 0 30px rgba(127, 228, 255, 0.04); }
