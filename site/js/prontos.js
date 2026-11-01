@@ -66,17 +66,17 @@ const Prontos = (() => {
         ${Object.keys(PAPEIS).map((papel) => `
           <section class="prontos-classe"><h3>${PAPEIS[papel]}</h3>
             ${PRONTOS.filter((x) => x.papel === papel).map((x) => `
-              <button class="pronto-card ${x.id === escolhido ? "escolhida" : ""}" data-pronto="${x.id}">
+              <button class="pronto-card ${x.id === escolhido ? "escolhida" : ""}" data-pronto="${x.id}" title="${esc(x.nome)}">
                 ${retrato(x)}
                 <b>${esc(x.nome.split(" ")[0])}</b>
-                <small>${esc(profissaoDe(x, "x").nome)}</small>
               </button>`).join("")}
           </section>`).join("")}
       </div>
       <div class="pronto-detalhe">
         ${pr ? `
+          <div class="pronto-cabeca">${retrato(pr)}<div>
           <p class="pronto-nome"><b>${esc(pr.nome)}</b>, ${pr.idade} · ${esc(profissaoDe(pr, "x").nome)} · ${PAPEIS[pr.papel]}</p>
-          <p class="pronto-resumo">${esc(pr.resumo)}</p>
+          <p class="pronto-resumo">${esc(pr.resumo)}</p></div></div>
           <p class="pronto-ficha">${pr.tracos.map(esc).join(" · ")} — ${Object.entries(pr.atributos).map(([k, v]) => `${EIXOS.x.atributos[k].nome} ${v}`).join(", ")}</p>
           <p class="pronto-ficha">${[...pr.habs, ...pr.itens].map((k) => esc(Regras.item(k).nomes.x)).join(" · ")}</p>
           <button class="btn-primario" data-pronto-usar>${ja(pr) ? "Abrir a ficha" : `Jogar com ${esc(pr.nome.split(" ")[0])}`}</button>`
@@ -85,7 +85,7 @@ const Prontos = (() => {
   }
 
   function abrir() {
-    escolhido = null;
+    escolhido = escolhido || PRONTOS[0].id; // como no Neverwinter Nights: sempre alguém em destaque
     definirTema(null);
     render();
     mostrarTela("tela-prontos");
