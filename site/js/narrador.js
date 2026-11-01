@@ -4,6 +4,8 @@
 // e muda de tom conforme o que está sendo lido: título, narração, falas entre aspas, perguntas
 // e o ambiente (as frases em itálico, lidas mais baixo e devagar).
 // Cada eixo tem o seu jeito de falar. A música não é tocada aqui: ela segue no volume dela.
+// Há também a "voz neural" (Piper, pt-BR, roda no próprio navegador, gratuita): soa bem mais
+// humana, mas na primeira vez baixa o modelo (~60 MB), que fica guardado no aparelho.
 
 const Narrador = (() => {
   const CHAVE = "kosmos.narrador";
@@ -28,19 +30,94 @@ const Narrador = (() => {
   let geracao = 0; // cada nova leitura invalida a anterior
   let falando = false;
   let espera = null;
+  let estado = ""; // aviso ao lado dos botões ("baixando a voz… 40%")
 
-  function ligado() {
+  function preferencias() {
     try {
-      return Boolean(JSON.parse(localStorage.getItem(CHAVE))?.ligado);
+      return { ligado: false, voz: "aparelho", ...JSON.parse(localStorage.getItem(CHAVE)) };
     } catch {
-      return false;
+      return { ligado: false, voz: "aparelho" };
     }
   }
 
-  function guardar(sim) {
+  function ligado() {
+    return preferencias().ligado;
+  }
+
+  function guardar(mudancas) {
     try {
-      localStorage.setItem(CHAVE, JSON.stringify({ ligado: sim }));
+      localStorage.setItem(CHAVE, JSON.stringify({ ...preferencias(), ...mudancas }));
     } catch {}
+  }
+
+  // ---------- Voz neural (Piper no navegador) ----------
+  const NEURAL = {
+    biblioteca: "https://cdn.jsdelivr.net/npm/@diffusionstudio/vits-web@1.0.3/+esm",
+    voz: "pt_BR-faber-medium",
+    // velocidade do áudio por eixo; sem preservar o tom, mais lento também fica mais grave
+    eixo: { x: 1, y: 0.9, z: 1.06 },
+    tipo: {
+      titulo: { rate: 0.95, volume: 1, pausa: 700 },
+      texto: { rate: 1, volume: 1, pausa: 450 },
+      ambiente: { rate: 0.94, volume: 0.65, pausa: 600 },
+    },
+  };
+  let tts = null;
+  let audio = null;
+
+  function aviso(texto) {
+    estado = texto;
+    atualizarBotoes();
+  }
+
+  async function prepararNeural() {
+    if (!tts) tts = await import(NEURAL.biblioteca);
+    if (!(await tts.stored()).includes(NEURAL.voz)) {
+      aviso("baixando a voz… 0%");
+      await tts.download(NEURAL.voz, (p) => p.total && aviso(`baixando a voz… ${Math.round((p.loaded * 100) / p.total)}%`));
+    }
+  }
+
+  function tocarAudio(blob, tom, eixo, minha) {
+    return new Promise((pronto) => {
+      if (minha !== geracao) return pronto();
+      audio = new Audio(URL.createObjectURL(blob));
+      audio.preservesPitch = false;
+      audio.playbackRate = (NEURAL.eixo[eixo] || 1) * tom.rate;
+      audio.volume = tom.volume;
+      audio.onended = audio.onerror = () => {
+        URL.revokeObjectURL(audio.src);
+        pronto();
+      };
+      audio.play().catch(pronto);
+      Musica.garantir();
+    });
+  }
+
+  async function falarNeural(paragrafos, eixo, minha) {
+    try {
+      await prepararNeural();
+    } catch {
+      // sem internet, navegador antigo...: volta para a voz do aparelho
+      guardar({ voz: "aparelho" });
+      aviso("a voz neural não carregou aqui; usando a do aparelho");
+      return falarAparelho(paragrafos, eixo, minha);
+    }
+    if (minha !== geracao) return;
+    aviso("");
+    // cada parágrafo vira um áudio; o próximo já vai sendo gerado enquanto o atual toca
+    const gerar = (p) => tts.predict({ text: p.texto, voiceId: NEURAL.voz });
+    let proximo = gerar(paragrafos[0]);
+    for (let i = 0; i < paragrafos.length; i++) {
+      const blob = await proximo.catch(() => null);
+      if (minha !== geracao) return;
+      if (i + 1 < paragrafos.length) proximo = gerar(paragrafos[i + 1]);
+      const tom = NEURAL.tipo[paragrafos[i].tipo] || NEURAL.tipo.texto;
+      if (blob) await tocarAudio(blob, tom, eixo, minha);
+      if (minha !== geracao) return;
+      await new Promise((r) => (espera = setTimeout(r, tom.pausa)));
+    }
+    if (minha === geracao) aoParar();
   }
 
   // Melhor voz em português do aparelho: pt-BR antes de pt-PT, vozes "naturais"/online antes das locais
@@ -80,14 +157,29 @@ const Narrador = (() => {
   function falar(paragrafos, eixo) {
     if (!fala) return;
     const minha = ++geracao;
+    calar();
+    if (!paragrafos.length) return aoParar();
+    falando = true;
+    atualizarBotoes();
+    if (preferencias().voz === "neural") falarNeural(paragrafos, eixo, minha);
+    else falarAparelho(paragrafos, eixo, minha);
+  }
+
+  function calar() {
     clearTimeout(espera);
     fala.cancel();
+    if (audio) {
+      audio.pause();
+      audio.onended = audio.onerror = null;
+      audio = null;
+    }
+  }
+
+  function falarAparelho(paragrafos, eixo, minha) {
     const falas = roteiro(paragrafos);
     if (!falas.length) return aoParar();
     const v = voz();
     const perfil = EIXO[eixo] || EIXO.x;
-    falando = true;
-    atualizarBotoes();
 
     const proxima = (i) => {
       if (minha !== geracao) return;
@@ -113,8 +205,8 @@ const Narrador = (() => {
   function parar() {
     if (!fala) return;
     geracao++;
-    clearTimeout(espera);
-    fala.cancel();
+    calar();
+    if (estado.startsWith("baixando")) estado = "";
     if (falando) aoParar();
   }
 
@@ -133,7 +225,12 @@ const Narrador = (() => {
   }
 
   function atualizarBotoes() {
-    const sim = ligado();
+    const { ligado: sim, voz: tipoVoz } = preferencias();
+    document.querySelectorAll("[data-acao='narrador-voz']").forEach((b) => {
+      b.hidden = !sim;
+      b.textContent = tipoVoz === "neural" ? "Voz: neural" : "Voz: do aparelho";
+    });
+    document.querySelectorAll(".narrador-estado").forEach((el) => (el.textContent = sim ? estado : ""));
     document.querySelectorAll("[data-acao='narrador']").forEach((b) => {
       b.textContent = sim ? "🔊 Narrador ligado" : "🔇 Narrador desligado";
       b.setAttribute("aria-pressed", String(sim));
@@ -154,10 +251,16 @@ const Narrador = (() => {
     // liga/desliga o narrador (fica guardado no aparelho); ao ligar, já lê a cena
     alternarLigado(paragrafos, eixo) {
       const sim = !ligado();
-      guardar(sim);
+      guardar({ ligado: sim });
       if (sim) falar(paragrafos, eixo);
       else parar();
       atualizarBotoes();
+    },
+    // troca entre a voz do aparelho e a neural, e já lê a cena com a nova voz
+    alternarVoz(paragrafos, eixo) {
+      guardar({ voz: preferencias().voz === "neural" ? "aparelho" : "neural" });
+      estado = "";
+      falar(paragrafos, eixo);
     },
     // ↻ / ■: lê de novo o que está na tela, ou para
     alternar(paragrafos, eixo) {
