@@ -392,23 +392,23 @@ function fraseAleatoria() {
 // de um atributo até ser resolvida com uma ação comum (comer, dormir, um curativo, um banho).
 
 const MOEDAS = {
-  x: { nome: "reais", formato: (v) => `R$ ${v}` },
+  x: { nome: "dólares", formato: (v) => `$ ${v}` },
   y: { nome: "pratas", formato: (v) => `${v} ${v === 1 ? "prata" : "pratas"}` },
   z: { nome: "créditos", formato: (v) => `${v} ${v === 1 ? "crédito" : "créditos"}` },
 };
 
-const DINHEIRO_INICIAL = { x: 200, y: 15, z: 120 };
+const DINHEIRO_INICIAL = { x: 120, y: 15, z: 120 };
 
 const BOLSA_MAX = 10; // unidades de pertences que cabem na bolsa
 
 // efeito: tira: [condições que resolve] · poe: [condições que causa] · dissonancia: ± · renovarItens: usos de equipamento voltam
 const PERTENCES = [
-  { chave: "comida", nomes: { x: "Lanche", y: "Pão e queijo", z: "Ração de bordo" }, preco: { x: 25, y: 2, z: 12 }, tira: ["fome"], efeito: "Mata a fome." },
-  { chave: "cafe", nomes: { x: "Café", y: "Chá de ervas", z: "Estimulante" }, preco: { x: 8, y: 1, z: 4 }, tira: ["cansaco"], efeito: "Espanta o cansaço por um tempo." },
-  { chave: "remedio", nomes: { x: "Analgésico e curativos", y: "Unguento e ataduras", z: "Kit de sutura" }, preco: { x: 30, y: 3, z: 20 }, tira: ["ferido"], efeito: "Cuida de um ferimento." },
-  { chave: "calmante", nomes: { x: "Calmante", y: "Infusão de valeriana", z: "Sedativo leve" }, preco: { x: 45, y: 4, z: 30 }, tira: ["abalado"], dissonancia: -1, efeito: "Acalma: −1 Dissonância." },
-  { chave: "bebida", nomes: { x: "Cerveja", y: "Hidromel", z: "Destilado da hidroponia" }, preco: { x: 12, y: 1, z: 10 }, tira: ["abalado"], poe: ["cansaco"], efeito: "Relaxa, mas cansa." },
-  { chave: "bateria", nomes: { x: "Bateria portátil", y: "Óleo de lamparina", z: "Célula de energia" }, preco: { x: 60, y: 2, z: 25 }, renovarItens: true, efeito: "Recarrega os equipamentos: usos voltam." },
+  { chave: "comida", nomes: { x: "Sanduíche", y: "Pão e queijo", z: "Ração de bordo" }, preco: { x: 8, y: 2, z: 12 }, tira: ["fome"], efeito: "Mata a fome." },
+  { chave: "cafe", nomes: { x: "Café", y: "Chá de ervas", z: "Estimulante" }, preco: { x: 3, y: 1, z: 4 }, tira: ["cansaco"], efeito: "Espanta o cansaço por um tempo." },
+  { chave: "remedio", nomes: { x: "Analgésico e curativos", y: "Unguento e ataduras", z: "Kit de sutura" }, preco: { x: 12, y: 3, z: 20 }, tira: ["ferido"], efeito: "Cuida de um ferimento." },
+  { chave: "calmante", nomes: { x: "Calmante", y: "Infusão de valeriana", z: "Sedativo leve" }, preco: { x: 18, y: 4, z: 30 }, tira: ["abalado"], dissonancia: -1, efeito: "Acalma: −1 Dissonância." },
+  { chave: "bebida", nomes: { x: "Cerveja", y: "Hidromel", z: "Destilado da hidroponia" }, preco: { x: 5, y: 1, z: 10 }, tira: ["abalado"], poe: ["cansaco"], efeito: "Relaxa, mas cansa." },
+  { chave: "bateria", nomes: { x: "Bateria portátil", y: "Óleo de lamparina", z: "Célula de energia" }, preco: { x: 25, y: 2, z: 25 }, renovarItens: true, efeito: "Recarrega os equipamentos: usos voltam." },
 ];
 
 const CONDICOES = {
@@ -420,9 +420,791 @@ const CONDICOES = {
 
 // Preço de equipamentos vendidos em lojas (por eixo)
 const PRECO_EQUIPAMENTO = {
-  luz: { x: 50, y: 2, z: 30 },
-  kit_medico: { x: 120, y: 8, z: 70 },
-  ferramentas: { x: 90, y: 6, z: 60 },
-  comunicador: { x: 900, y: 20, z: 300 },
-  protecao: { x: 600, y: 40, z: 350 },
+  luz: { x: 20, y: 2, z: 30 },
+  kit_medico: { x: 45, y: 8, z: 70 },
+  ferramentas: { x: 35, y: 6, z: 60 },
+  comunicador: { x: 400, y: 20, z: 300 },
+  protecao: { x: 250, y: 40, z: 350 },
 };
+
+// ---------- Profissões e pontos de entrada ----------
+// A mesma pessoa nos três eixos: o que ela faz em cada mundo e onde a história dela começa ali.
+// Escrito na Oficina do Autor (aba Profissões); cada ponto de entrada tem a sua abertura nas missões.
+// Na criação, o jogador escolhe na lista ou escreve a sua ("Outra") e escolhe o ponto de entrada.
+
+const PONTOS_ENTRADA = {
+  "x": [
+    {
+      "id": "hospital",
+      "nome": "Hospital",
+      "descricao": "St. Luke's Memorial e as clínicas do centro: corredores cheios, pacientes que saem andando."
+    },
+    {
+      "id": "defesa",
+      "nome": "Distrito policial e Defesa Civil",
+      "descricao": "Rádios chiando, viaturas sem sirene, ordens que ninguém explica."
+    },
+    {
+      "id": "universidade",
+      "nome": "Universidade e laboratório",
+      "descricao": "Equações no quadro que não são de nenhuma disciplina; sensores marcando picos."
+    },
+    {
+      "id": "comercio",
+      "nome": "Comércio",
+      "descricao": "Lojas de conveniência, lanchonetes e bares de esquina, que fecham cedo demais."
+    },
+    {
+      "id": "escritorio",
+      "nome": "Escritório",
+      "descricao": "Torres de vidro, bancos e firmas; o expediente acabou, mas ninguém foi para casa."
+    },
+    {
+      "id": "rua",
+      "nome": "Rua e obras",
+      "descricao": "Quem trabalha nas ruas vê primeiro: as pessoas andando todas para o mesmo lado."
+    },
+    {
+      "id": "arte",
+      "nome": "Arte e mídia",
+      "descricao": "Estúdios, rádios, teatros: onde o som e as imagens começam a se repetir."
+    },
+    {
+      "id": "casa",
+      "nome": "Casa",
+      "descricao": "Quem trabalha ou vive em casa: a TV ligada, os vizinhos estranhos, o prédio quieto demais."
+    }
+  ],
+  "y": [
+    {
+      "id": "mosteiro",
+      "nome": "Mosteiro de Yudur",
+      "descricao": "Onde se guarda a Tábula. Monges, copistas, noviços e o Abade Theodric."
+    },
+    {
+      "id": "castelo",
+      "nome": "Castelo do senhor",
+      "descricao": "A corte de um nobre de Yudur: guardas, escudeiros, criados, escrivães."
+    },
+    {
+      "id": "vila",
+      "nome": "Vila e mercado",
+      "descricao": "Forno, taverna, feira: onde os boatos correm primeiro."
+    },
+    {
+      "id": "oficinas",
+      "nome": "Oficinas das guildas",
+      "descricao": "Ferreiros, pedreiros, carpinteiros e ourives, sob as regras das guildas."
+    },
+    {
+      "id": "campo",
+      "nome": "Campo",
+      "descricao": "Plantações, rebanhos e aldeias pequenas, longe de tudo."
+    },
+    {
+      "id": "floresta",
+      "nome": "Floresta",
+      "descricao": "Caçadores, lenhadores e carvoeiros; trilhas onde as runas aparecem nas cascas."
+    },
+    {
+      "id": "estrada",
+      "nome": "Estrada",
+      "descricao": "Mensageiros, mascates, peregrinos e bardos, sempre de passagem."
+    },
+    {
+      "id": "mina",
+      "nome": "Mina e pedreira",
+      "descricao": "Onde se corta a pedra, e às vezes se encontra o que não devia."
+    }
+  ],
+  "z": [
+    {
+      "id": "ponte",
+      "nome": "Ponte de comando",
+      "descricao": "Comandante Arasaki, navegação, comunicações: de onde se vê o Lime chegando."
+    },
+    {
+      "id": "motores",
+      "nome": "Engenharia e motores",
+      "descricao": "Reator, propulsores, corredores quentes e barulhentos."
+    },
+    {
+      "id": "enfermaria",
+      "nome": "Enfermaria",
+      "descricao": "Exames, sono monitorado, a tripulação que começa a não dormir."
+    },
+    {
+      "id": "hidroponia",
+      "nome": "Hidroponia",
+      "descricao": "O jardim da nave: comida, oxigênio e as luzes azuis do turno da noite."
+    },
+    {
+      "id": "laboratorio",
+      "nome": "Laboratório científico",
+      "descricao": "Sensores de campo estelar, dados que não fecham, a IA DOMUS calculando."
+    },
+    {
+      "id": "seguranca",
+      "nome": "Segurança",
+      "descricao": "Arsenal, patrulhas, celas; quem guarda as regras da nave."
+    },
+    {
+      "id": "servicos",
+      "nome": "Serviços e refeitório",
+      "descricao": "Cozinha, estoque, manutenção, limpeza: quem mantém a vida a bordo funcionando."
+    },
+    {
+      "id": "alojamentos",
+      "nome": "Alojamentos e escola",
+      "descricao": "Famílias, colonos, crianças, aposentados: a vida comum dentro da Domus."
+    }
+  ]
+};
+
+const PROFISSOES = [
+ {
+  "id": "medico",
+  "x": {
+   "nome": "Médico(a)",
+   "ponto": "hospital"
+  },
+  "y": {
+   "nome": "Curandeiro(a) do mosteiro",
+   "ponto": "mosteiro"
+  },
+  "z": {
+   "nome": "Médico(a) de bordo",
+   "ponto": "enfermaria"
+  }
+ },
+ {
+  "id": "enfermeiro",
+  "x": {
+   "nome": "Enfermeiro(a)",
+   "ponto": "hospital"
+  },
+  "y": {
+   "nome": "Irmão(ã) enfermeiro(a)",
+   "ponto": "mosteiro"
+  },
+  "z": {
+   "nome": "Enfermeiro(a) de bordo",
+   "ponto": "enfermaria"
+  }
+ },
+ {
+  "id": "psicologo",
+  "x": {
+   "nome": "Psicólogo(a) ou psiquiatra",
+   "ponto": "hospital"
+  },
+  "y": {
+   "nome": "Confessor(a)",
+   "ponto": "mosteiro"
+  },
+  "z": {
+   "nome": "Psicólogo(a) de bordo",
+   "ponto": "enfermaria"
+  }
+ },
+ {
+  "id": "farmaceutico",
+  "x": {
+   "nome": "Farmacêutico(a)",
+   "ponto": "hospital"
+  },
+  "y": {
+   "nome": "Boticário(a)",
+   "ponto": "vila"
+  },
+  "z": {
+   "nome": "Técnico(a) de suprimentos médicos",
+   "ponto": "enfermaria"
+  }
+ },
+ {
+  "id": "veterinario",
+  "x": {
+   "nome": "Veterinário(a)",
+   "ponto": "hospital"
+  },
+  "y": {
+   "nome": "Pastor(a)",
+   "ponto": "campo"
+  },
+  "z": {
+   "nome": "Técnico(a) do biotério",
+   "ponto": "laboratorio"
+  }
+ },
+ {
+  "id": "policial",
+  "x": {
+   "nome": "Policial",
+   "ponto": "defesa"
+  },
+  "y": {
+   "nome": "Guarda da vila",
+   "ponto": "vila"
+  },
+  "z": {
+   "nome": "Oficial de segurança",
+   "ponto": "seguranca"
+  }
+ },
+ {
+  "id": "bombeiro",
+  "x": {
+   "nome": "Bombeiro(a)",
+   "ponto": "defesa"
+  },
+  "y": {
+   "nome": "Vigia do fogo",
+   "ponto": "vila"
+  },
+  "z": {
+   "nome": "Técnico(a) de contenção de incêndio",
+   "ponto": "motores"
+  }
+ },
+ {
+  "id": "agente-da-defesa-civil",
+  "x": {
+   "nome": "Agente da Defesa Civil",
+   "ponto": "defesa"
+  },
+  "y": {
+   "nome": "Arauto do senhor",
+   "ponto": "castelo"
+  },
+  "z": {
+   "nome": "Oficial de protocolo",
+   "ponto": "ponte"
+  }
+ },
+ {
+  "id": "militar",
+  "x": {
+   "nome": "Militar",
+   "ponto": "defesa"
+  },
+  "y": {
+   "nome": "Soldado(a)",
+   "ponto": "castelo"
+  },
+  "z": {
+   "nome": "Guarda do arsenal",
+   "ponto": "seguranca"
+  }
+ },
+ {
+  "id": "seguranca-particular",
+  "x": {
+   "nome": "Segurança particular",
+   "ponto": "defesa"
+  },
+  "y": {
+   "nome": "Cavaleiro(a)",
+   "ponto": "castelo"
+  },
+  "z": {
+   "nome": "Escolta da Comandante",
+   "ponto": "seguranca"
+  }
+ },
+ {
+  "id": "professor",
+  "x": {
+   "nome": "Professor(a)",
+   "ponto": "universidade"
+  },
+  "y": {
+   "nome": "Mestre-escola do mosteiro",
+   "ponto": "mosteiro"
+  },
+  "z": {
+   "nome": "Instrutor(a) da escola de bordo",
+   "ponto": "alojamentos"
+  }
+ },
+ {
+  "id": "pesquisador",
+  "x": {
+   "nome": "Pesquisador(a) ou cientista",
+   "ponto": "universidade"
+  },
+  "y": {
+   "nome": "Alquimista",
+   "ponto": "oficinas"
+  },
+  "z": {
+   "nome": "Cientista do laboratório",
+   "ponto": "laboratorio"
+  }
+ },
+ {
+  "id": "estudante",
+  "x": {
+   "nome": "Estudante",
+   "ponto": "universidade"
+  },
+  "y": {
+   "nome": "Noviço(a)",
+   "ponto": "mosteiro"
+  },
+  "z": {
+   "nome": "Cadete",
+   "ponto": "ponte"
+  }
+ },
+ {
+  "id": "tecnico",
+  "x": {
+   "nome": "Técnico(a) de radiação",
+   "ponto": "universidade"
+  },
+  "y": {
+   "nome": "Astrólogo(a)",
+   "ponto": "castelo"
+  },
+  "z": {
+   "nome": "Técnico(a) de sensores",
+   "ponto": "laboratorio"
+  }
+ },
+ {
+  "id": "geografo",
+  "x": {
+   "nome": "Geógrafo(a)",
+   "ponto": "universidade"
+  },
+  "y": {
+   "nome": "Cartógrafo(a)",
+   "ponto": "castelo"
+  },
+  "z": {
+   "nome": "Navegador(a)",
+   "ponto": "ponte"
+  }
+ },
+ {
+  "id": "padre-pastor",
+  "x": {
+   "nome": "Padre, pastor(a) ou religioso(a)",
+   "ponto": "casa"
+  },
+  "y": {
+   "nome": "Monge ou monja",
+   "ponto": "mosteiro"
+  },
+  "z": {
+   "nome": "Capelão de bordo",
+   "ponto": "alojamentos"
+  }
+ },
+ {
+  "id": "padeiro",
+  "x": {
+   "nome": "Padeiro(a)",
+   "ponto": "comercio"
+  },
+  "y": {
+   "nome": "Forneiro(a)",
+   "ponto": "vila"
+  },
+  "z": {
+   "nome": "Cozinheiro(a) de bordo",
+   "ponto": "servicos"
+  }
+ },
+ {
+  "id": "comerciante",
+  "x": {
+   "nome": "Comerciante",
+   "ponto": "comercio"
+  },
+  "y": {
+   "nome": "Mercador(a)",
+   "ponto": "vila"
+  },
+  "z": {
+   "nome": "Intendente",
+   "ponto": "servicos"
+  }
+ },
+ {
+  "id": "garcom-garconete",
+  "x": {
+   "nome": "Garçom, garçonete ou bartender",
+   "ponto": "comercio"
+  },
+  "y": {
+   "nome": "Taberneiro(a)",
+   "ponto": "vila"
+  },
+  "z": {
+   "nome": "Atendente do refeitório",
+   "ponto": "servicos"
+  }
+ },
+ {
+  "id": "vendedor",
+  "x": {
+   "nome": "Vendedor(a) de carros",
+   "ponto": "comercio"
+  },
+  "y": {
+   "nome": "Negociante de cavalos",
+   "ponto": "estrada"
+  },
+  "z": {
+   "nome": "Operador(a) do hangar",
+   "ponto": "motores"
+  }
+ },
+ {
+  "id": "advogado",
+  "x": {
+   "nome": "Advogado(a)",
+   "ponto": "escritorio"
+  },
+  "y": {
+   "nome": "Escrivão(ã) da corte",
+   "ponto": "castelo"
+  },
+  "z": {
+   "nome": "Oficial de registro",
+   "ponto": "ponte"
+  }
+ },
+ {
+  "id": "bancario",
+  "x": {
+   "nome": "Bancário(a) ou contador(a)",
+   "ponto": "escritorio"
+  },
+  "y": {
+   "nome": "Coletor(a) de impostos",
+   "ponto": "castelo"
+  },
+  "z": {
+   "nome": "Contador(a) de recursos",
+   "ponto": "servicos"
+  }
+ },
+ {
+  "id": "programador",
+  "x": {
+   "nome": "Programador(a)",
+   "ponto": "escritorio"
+  },
+  "y": {
+   "nome": "Copista",
+   "ponto": "mosteiro"
+  },
+  "z": {
+   "nome": "Programador(a) da DOMUS",
+   "ponto": "laboratorio"
+  }
+ },
+ {
+  "id": "secretario",
+  "x": {
+   "nome": "Secretário(a)",
+   "ponto": "escritorio"
+  },
+  "y": {
+   "nome": "Criado(a) do castelo",
+   "ponto": "castelo"
+  },
+  "z": {
+   "nome": "Assistente da ponte",
+   "ponto": "ponte"
+  }
+ },
+ {
+  "id": "motorista-de-aplicativo",
+  "x": {
+   "nome": "Taxista ou motorista de aplicativo",
+   "ponto": "rua"
+  },
+  "y": {
+   "nome": "Carroceiro(a)",
+   "ponto": "estrada"
+  },
+  "z": {
+   "nome": "Piloto(a) de transporte interno",
+   "ponto": "motores"
+  }
+ },
+ {
+  "id": "entregador",
+  "x": {
+   "nome": "Entregador(a) ou motoboy",
+   "ponto": "rua"
+  },
+  "y": {
+   "nome": "Mensageiro(a)",
+   "ponto": "estrada"
+  },
+  "z": {
+   "nome": "Técnico(a) de logística",
+   "ponto": "servicos"
+  }
+ },
+ {
+  "id": "camelo",
+  "x": {
+   "nome": "Vendedor(a) ambulante",
+   "ponto": "rua"
+  },
+  "y": {
+   "nome": "Mascate",
+   "ponto": "estrada"
+  },
+  "z": {
+   "nome": "Trocador(a) do mercado de bordo",
+   "ponto": "servicos"
+  }
+ },
+ {
+  "id": "pedreiro",
+  "x": {
+   "nome": "Operário(a) da construção",
+   "ponto": "rua"
+  },
+  "y": {
+   "nome": "Pedreiro(a) da guilda",
+   "ponto": "mina"
+  },
+  "z": {
+   "nome": "Técnico(a) de manutenção estrutural",
+   "ponto": "motores"
+  }
+ },
+ {
+  "id": "mecanico",
+  "x": {
+   "nome": "Mecânico(a)",
+   "ponto": "rua"
+  },
+  "y": {
+   "nome": "Ferreiro(a)",
+   "ponto": "oficinas"
+  },
+  "z": {
+   "nome": "Engenheiro(a) de motores",
+   "ponto": "motores"
+  }
+ },
+ {
+  "id": "eletricista",
+  "x": {
+   "nome": "Eletricista",
+   "ponto": "rua"
+  },
+  "y": {
+   "nome": "Cerieiro(a) (faz velas)",
+   "ponto": "oficinas"
+  },
+  "z": {
+   "nome": "Técnico(a) do reator",
+   "ponto": "motores"
+  }
+ },
+ {
+  "id": "jardineiro",
+  "x": {
+   "nome": "Jardineiro(a)",
+   "ponto": "rua"
+  },
+  "y": {
+   "nome": "Herbalista",
+   "ponto": "campo"
+  },
+  "z": {
+   "nome": "Técnico(a) de hidroponia",
+   "ponto": "hidroponia"
+  }
+ },
+ {
+  "id": "piloto",
+  "x": {
+   "nome": "Piloto(a) de avião",
+   "ponto": "rua"
+  },
+  "y": {
+   "nome": "Falcoeiro(a)",
+   "ponto": "castelo"
+  },
+  "z": {
+   "nome": "Piloto(a) da Domus",
+   "ponto": "ponte"
+  }
+ },
+ {
+  "id": "mineiro",
+  "x": {
+   "nome": "Mineiro(a) ou operário(a)",
+   "ponto": "rua"
+  },
+  "y": {
+   "nome": "Mineiro(a)",
+   "ponto": "mina"
+  },
+  "z": {
+   "nome": "Técnico(a) de coleta de minério",
+   "ponto": "motores"
+  }
+ },
+ {
+  "id": "musico",
+  "x": {
+   "nome": "Músico(a) ou DJ",
+   "ponto": "arte"
+  },
+  "y": {
+   "nome": "Bardo",
+   "ponto": "estrada"
+  },
+  "z": {
+   "nome": "Músico(a) da sala de lazer",
+   "ponto": "alojamentos"
+  }
+ },
+ {
+  "id": "jornalista",
+  "x": {
+   "nome": "Jornalista ou radialista",
+   "ponto": "arte"
+  },
+  "y": {
+   "nome": "Cronista",
+   "ponto": "castelo"
+  },
+  "z": {
+   "nome": "Operador(a) de comunicações",
+   "ponto": "ponte"
+  }
+ },
+ {
+  "id": "ator",
+  "x": {
+   "nome": "Ator ou atriz",
+   "ponto": "arte"
+  },
+  "y": {
+   "nome": "Saltimbanco",
+   "ponto": "estrada"
+  },
+  "z": {
+   "nome": "Animador(a) de lazer",
+   "ponto": "alojamentos"
+  }
+ },
+ {
+  "id": "artista-plastico",
+  "x": {
+   "nome": "Artista plástico ou pintor(a)",
+   "ponto": "arte"
+  },
+  "y": {
+   "nome": "Iluminador(a) de manuscritos",
+   "ponto": "mosteiro"
+  },
+  "z": {
+   "nome": "Designer de hologramas",
+   "ponto": "laboratorio"
+  }
+ },
+ {
+  "id": "desempregado",
+  "x": {
+   "nome": "Desempregado(a)",
+   "ponto": "casa"
+  },
+  "y": {
+   "nome": "Andarilho(a)",
+   "ponto": "estrada"
+  },
+  "z": {
+   "nome": "Tripulante em licença",
+   "ponto": "alojamentos"
+  }
+ },
+ {
+  "id": "aposentado",
+  "x": {
+   "nome": "Aposentado(a)",
+   "ponto": "casa"
+  },
+  "y": {
+   "nome": "Ancião(ã) da vila",
+   "ponto": "vila"
+  },
+  "z": {
+   "nome": "Veterano(a) aposentado(a)",
+   "ponto": "alojamentos"
+  }
+ },
+ {
+  "id": "dono",
+  "x": {
+   "nome": "Dono(a) de casa",
+   "ponto": "casa"
+  },
+  "y": {
+   "nome": "Camponês(a)",
+   "ponto": "campo"
+  },
+  "z": {
+   "nome": "Colono(a)",
+   "ponto": "alojamentos"
+  }
+ },
+ {
+  "id": "trabalhador",
+  "x": {
+   "nome": "Trabalhador(a) remoto(a)",
+   "ponto": "casa"
+  },
+  "y": {
+   "nome": "Tecelão(ã)",
+   "ponto": "vila"
+  },
+  "z": {
+   "nome": "Técnico(a) do turno da noite",
+   "ponto": "servicos"
+  }
+ },
+ {
+  "id": "guarda-florestal",
+  "x": {
+   "nome": "Guarda-florestal",
+   "ponto": "rua"
+  },
+  "y": {
+   "nome": "Caçador(a)",
+   "ponto": "floresta"
+  },
+  "z": {
+   "nome": "Técnico(a) de reciclagem de ar",
+   "ponto": "hidroponia"
+  }
+ },
+ {
+  "id": "marceneiro",
+  "x": {
+   "nome": "Marceneiro(a)",
+   "ponto": "comercio"
+  },
+  "y": {
+   "nome": "Lenhador(a) ou carpinteiro(a)",
+   "ponto": "floresta"
+  },
+  "z": {
+   "nome": "Técnico(a) de fabricação",
+   "ponto": "servicos"
+  }
+ }
+];
