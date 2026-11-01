@@ -177,7 +177,7 @@ São heróis comuns: gente de verdade, cansada, determinada. Rosto bem visível,
 Nome embaixo de cada um, exatamente assim:
 
 frank-brennan  — Frank Brennan, 52: bombeiro veterano, bigode grisalho, casaco de bombeiro aberto, fuligem no rosto, capacete debaixo do braço
-naomi-price    — Naomi Price, 41: médica de pronto-socorro, negra, cabelo preso às pressas, jaleco sobre o uniforme verde, estetoscópio
+denise-carter    — Denise Carter, 41: médica de pronto-socorro, negra, cabelo preso às pressas, jaleco sobre o uniforme verde, estetoscópio
 eli-navarro    — Eli Navarro, 29: técnico de radiação, latino, óculos, jaqueta de laboratório, contador Geiger na mão
 rosa-delgado   — Rosa Delgado, 34: policial de patrulha, latina, uniforme azul-escuro, rádio no ombro, olhar duro
 michael-doyle  — Michael Doyle, 63: padre irlandês-americano, colarinho clerical, casaco preto gasto, terço enrolado na mão

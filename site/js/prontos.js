@@ -18,7 +18,7 @@ const PRONTOS = [
     habs: ["conducao", "vigor", "conversa"], itens: ["veiculo", "comunicador"] },
 
   // ---------- Healer ----------
-  { id: "naomi-price", nome: "Naomi Price", idade: "41", sexo: "mulher", profissao: "medico", papel: "healer",
+  { id: "denise-carter", nome: "Denise Carter", idade: "41", sexo: "mulher", profissao: "medico", papel: "healer",
     resumo: "Médica do pronto-socorro do St. Luke's. Mãos firmes, voz calma, e um plantão que já devia ter acabado há seis horas.",
     tracos: ["Empatia", "Frieza"], atributos: { corpo: 1, mente: 2, essencia: 1 },
     habs: ["cuidado", "investigacao"], itens: ["kit_medico", "luz", "comunicador"] },
