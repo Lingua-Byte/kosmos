@@ -110,6 +110,7 @@ function mostrarTela(id) {
   window.scrollTo(0, 0);
   if (id !== "tela-cena" && typeof Narrador !== "undefined") Narrador.parar();
   if (id !== "tela-cena" && typeof Palco !== "undefined") Palco.pausar();
+  if (id !== "tela-cena" && typeof Vozes !== "undefined") Vozes.parar();
   atualizarTrilha();
 }
 
