@@ -95,6 +95,7 @@ function mostrarTela(id) {
   document.querySelectorAll(".tela").forEach((t) => t.classList.toggle("ativa", t.id === id));
   $("#btn-tradutor").hidden = ["tela-inicio", "tela-transicao", "tela-tradutor", "tela-cena", "tela-mesa"].includes(id);
   window.scrollTo(0, 0);
+  if (id !== "tela-cena" && typeof Narrador !== "undefined") Narrador.parar();
   atualizarTrilha();
 }
 

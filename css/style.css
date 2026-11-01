@@ -906,6 +906,10 @@ body.tema-x .dialogo-dados, body.tema-y .dialogo-dados, body.tema-z .dialogo-dad
 
 .cena { max-width: 980px; margin: 0 auto; }
 .cena-topo { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--painel-borda); background: var(--painel); backdrop-filter: blur(10px); }
+.narrador { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.narrador .btn-secundario { padding: 6px 12px; font-size: 0.9rem; }
+.narrador .btn-secundario[aria-pressed="true"] { border-color: var(--acento); color: var(--acento); }
+.narrador-auto { font-size: 0.8rem; padding: 4px; }
 .cena-onde { font-size: 0.9rem; color: var(--texto-suave); }
 .cena-onde b { color: var(--acento); font-weight: 400; margin-right: 4px; }
 .relogio { display: inline-flex; gap: 3px; margin-left: auto; }

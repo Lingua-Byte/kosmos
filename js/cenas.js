@@ -206,6 +206,10 @@ const Cenas = (() => {
         <span class="cena-onde"><b>${EIXOS[m.eixo].glifo}</b> ${esc(m.subtitulo)} · ${esc(nomeLugar)}</span>
         <span class="relogio" title="Relógio de Convergência">${Array.from({ length: m.relogioMax }, (_, i) => `<i class="${i < camp.relogio ? "cheio" : ""}"></i>`).join("")}</span>
         <span class="tag">Fase 1 · ${esc(m.fase)}</span>
+        ${Narrador.disponivel ? `<span class="narrador">
+          <button class="btn-secundario" data-acao="narrar" aria-pressed="false">🔊 Narrar</button>
+          <button class="btn-texto narrador-auto" data-acao="narrar-auto"></button>
+        </span>` : ""}
       </header>
       <div class="cena-grade">
         <main class="cena-corpo">
@@ -222,6 +226,16 @@ const Cenas = (() => {
       </div>
       ${painel ? painelHtml() : ""}
       ${grupoHtml()}`;
+    Narrador.cena(textoNarrado(), m.eixo);
+  }
+
+  // O que o narrador lê: título e narração da cena (sem os botões nem os números)
+  function textoNarrado() {
+    return [...document.querySelectorAll("#cena .cena-titulo, #cena .narracao p")]
+      .map((el) => el.textContent.trim())
+      .filter(Boolean)
+      .map((s) => (/[.!?…"”]$/.test(s) ? s : s + "."))
+      .join(" ");
   }
 
   function feita(a) {
@@ -611,6 +625,8 @@ const Cenas = (() => {
       salvar();
       return render();
     }
+    if (acao === "narrar") return Narrador.alternar(textoNarrado(), m.eixo);
+    if (acao === "narrar-auto") return Narrador.alternarAuto(textoNarrado(), m.eixo);
     if (acao === "ficha") return abrirFicha(ativo());
     if (acao === "ficha-final") {
       const p = grupo()[0];
