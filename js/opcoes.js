@@ -93,7 +93,7 @@ const Opcoes = (() => {
     return `
       <div class="op-topo"><h2>Opções</h2><button class="op-fechar" data-op-fechar>Fechar</button></div>
       <section class="op-secao"><h3>Som</h3>
-        ${linha("musica", "ligada", "Música do jogo", "A trilha de cada eixo (YouTube).")}
+        ${linha("musica", "ligada", "Música do jogo", typeof MusicaPropria !== "undefined" && MusicaPropria.conexao() ? "A trilha de cada eixo (as suas músicas, guardadas no aparelho)." : "A trilha de cada eixo (YouTube).")}
         ${linha("sons", "ligados", "Sons dos menus", "Os cliques e “clunks” de abrir mapa, diário, bolsa, ficha.", true)}
         ${linha("vozes", "ligadas", "Vozes dos personagens", "Cada personagem com a sua voz quando fala.", true)}
         ${linha("digitacao", "ligada", "Som de digitação", "O tique leve enquanto o texto da missão aparece.", true)}
@@ -109,6 +109,7 @@ const Opcoes = (() => {
             <b data-op-valor="narrador">${get("narrador").volume}%</b></div>
         </div>` : ""}
       </section>
+      ${trilhaPropriaHtml()}
       <section class="op-secao"><h3>Sua música</h3>
         <p class="op-desc">Prefere ouvir a sua própria música enquanto joga? Desligue a música do jogo e abra o seu app. Os sons, as vozes e o narrador continuam por cima.</p>
         <button class="op-acao" data-op-minha-musica>Usar a minha música (desliga a trilha do jogo)</button>
@@ -124,6 +125,48 @@ const Opcoes = (() => {
              <button class="op-acao" data-op-instalar>Instalar pelo navegador</button>
 `}
       </section>`}`;
+  }
+
+  // Conectar este aparelho às músicas do autor (repositório privado). O token é digitado pelo
+  // próprio autor e fica só neste aparelho (é a mesma conexão da Oficina).
+  function trilhaPropriaHtml() {
+    if (typeof MusicaPropria === "undefined") return "";
+    const c = MusicaPropria.conexao();
+    return `<section class="op-secao"><h3>Trilha do autor</h3>
+      ${c
+        ? `<p class="op-desc">Conectado a <b>${c.repo}</b>. As músicas tocam no lugar do YouTube e ficam guardadas neste aparelho depois da primeira vez.</p>
+           <button class="op-acao" data-op-trilha="desconectar">Desconectar (volta ao YouTube)</button>`
+        : `<p class="op-desc">Toca as suas músicas (pasta <i>musicas/</i> do repositório privado) no lugar do YouTube. Use o mesmo token da Oficina.</p>
+           <div class="op-trilha-form">
+             <input id="op-trilha-repo" value="Lingua-Byte/kosmos-autor" autocomplete="off" aria-label="Repositório">
+             <input id="op-trilha-token" type="password" placeholder="Token do GitHub" autocomplete="off" aria-label="Token">
+             <button class="op-acao" data-op-trilha="conectar">Conectar</button>
+           </div>
+           <p class="op-desc pequeno" id="op-trilha-erro"></p>`}
+    </section>`;
+  }
+
+  async function trilhaPropria(acao) {
+    if (acao === "desconectar") {
+      MusicaPropria.conectar(null);
+      return location.reload();
+    }
+    const c = { repo: dialogo.querySelector("#op-trilha-repo").value.trim(), token: dialogo.querySelector("#op-trilha-token").value.trim() };
+    const erro = dialogo.querySelector("#op-trilha-erro");
+    if (!/^[\w.-]+\/[\w.-]+$/.test(c.repo) || !c.token) {
+      erro.textContent = "Preencha o repositório (dono/nome) e o token.";
+      return;
+    }
+    erro.textContent = "Conectando…";
+    try {
+      const n = await MusicaPropria.testar(c);
+      erro.textContent = `Achei ${n} músicas. Recarregando…`;
+    } catch (e) {
+      erro.textContent = `Não conectou: ${e.message}.`;
+      return;
+    }
+    MusicaPropria.conectar(c);
+    setTimeout(() => location.reload(), 600);
   }
 
   let dialogo = null;
@@ -172,6 +215,7 @@ const Opcoes = (() => {
       mudar("musica", { ligada: false });
       dialogo.innerHTML = html();
     }
+    if (t.dataset.opTrilha) trilhaPropria(t.dataset.opTrilha);
     if (t.hasAttribute("data-op-instalar")) {
       if (!instalar()) location.href = "instalar.html";
     }

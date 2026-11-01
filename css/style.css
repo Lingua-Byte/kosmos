@@ -1634,3 +1634,5 @@ body:has(#tela-mesa.ativa) .controle-musica, body:has(#tela-personagens.ativa) .
 .ficha-corpo .historico li { padding: 4px 0; font-size: 0.85rem; }
 .ficha-subabas { margin: 6px 0 2px; }
 .ficha-corpo .exposicao > .sub { display: none; }
+.op-trilha-form { display: grid; grid-template-columns: 1fr; gap: 6px; }
+.op-trilha-form input { font: inherit; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--painel-borda); background: rgba(0, 0, 0, 0.3); color: var(--texto); }
