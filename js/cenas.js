@@ -209,6 +209,8 @@ const Cenas = (() => {
         ${Narrador.disponivel ? `<span class="narrador">
           <button class="btn-texto narrador-ligar" data-acao="narrador" aria-pressed="false"></button>
           <button class="btn-secundario" data-acao="narrar" hidden></button>
+          <button class="btn-texto narrador-ligar" data-acao="narrador-voz" hidden></button>
+          <span class="narrador-estado sub"></span>
         </span>` : ""}
       </header>
       <div class="cena-grade">
@@ -628,6 +630,7 @@ const Cenas = (() => {
       return render();
     }
     if (acao === "narrar") return Narrador.alternar(textoNarrado(), m.eixo);
+    if (acao === "narrador-voz") return Narrador.alternarVoz(textoNarrado(), m.eixo);
     if (acao === "narrador") return Narrador.alternarLigado(textoNarrado(), m.eixo);
     if (acao === "ficha") return abrirFicha(ativo());
     if (acao === "ficha-final") {
