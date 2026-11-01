@@ -194,7 +194,7 @@ const Cenas = (() => {
         ${camp.ameaca !== null && cena.ameaca ? ameacaHtml(cena.ameaca) : ""}
         ${cena.final ? finalHtml() : opcoesHtml(cena.opcoes, false)}`;
     } else {
-      const disponiveis = lugar.acoes.filter((a) => !feita(a));
+      const disponiveis = acoesDoLugar();
       corpo = `
         ${imagemHtml(lugar.imagem)}
         <h2 class="cena-titulo">${esc(texto(lugar.nome, ctx))}</h2>
@@ -258,6 +258,47 @@ const Cenas = (() => {
     return `<figure class="cena-imagem"><img src="${esc(src)}" alt="" loading="lazy"></figure>`;
   }
 
+  // Uma ação, ou um lugar, pode aparecer só depois de certas marcas (se: { flag, semFlag, algum, relogioMin })
+  function visivel(x) {
+    const s = x.se || {};
+    const f = camp.flags || {};
+    if ([].concat(s.flag || []).some((k) => !f[k])) return false;
+    if ([].concat(s.semFlag || []).some((k) => f[k])) return false;
+    if (s.algum && ![].concat(s.algum).some((k) => f[k])) return false;
+    if (s.relogioMin != null && camp.relogio < s.relogioMin) return false;
+    return true;
+  }
+
+  // O que dá para fazer neste lugar agora: as ações dele e as que acontecem em toda parte (eventos)
+  function acoesDoLugar(id = camp.lugar) {
+    const m = missao();
+    return [...m.lugares[id].acoes, ...(m.emTodaParte || [])].filter((a) => visivel(a) && !feita(a));
+  }
+
+  const lugaresVisiveis = () => Object.entries(missao().lugares).filter(([, l]) => visivel(l));
+
+  // O relógio anda: fome e cansaço chegam, e os eventos da missão acontecem. Devolve as linhas do que mudou.
+  function avancarRelogio(n) {
+    const m = missao();
+    const antes = camp.relogio;
+    camp.relogio = Math.min(m.relogioMax, camp.relogio + n);
+    const linhas = [];
+    // a fome chega com uns 30% da noite; o cansaço, com 60%
+    for (const [marca, cond] of [[Math.ceil(m.relogioMax * 0.3), "fome"], [Math.ceil(m.relogioMax * 0.6), "cansaco"]]) {
+      if (antes < marca && camp.relogio >= marca) {
+        for (const membro of grupo()) if (Vida.condicao(membro, cond)) Armazem.salvar(membro);
+        linhas.push(`O tempo passa: todos ${cond === "fome" ? "estão com fome" : "estão cansados"} (−1 dado até resolver)`);
+      }
+    }
+    for (const ev of m.eventosRelogio || []) {
+      if (antes < ev.em && camp.relogio >= ev.em) {
+        camp.flags[ev.flag] = true;
+        linhas.push(ev.texto);
+      }
+    }
+    return linhas;
+  }
+
   function feita(a) {
     return camp.feitas.includes(a.grupo || a.id);
   }
@@ -301,7 +342,7 @@ const Cenas = (() => {
     return `<div class="opcoes">${visiveis.map((op) => {
       const motivo = bloqueio(op, p);
       const indice = lista.indexOf(op);
-      const tempo = doLugar ? (op.tempo ?? 1) : 0;
+      const tempo = doLugar ? (op.tempo ?? (op.comum ? 0 : 1)) : 0;
       return `<button class="opcao ${motivo ? "travada" : ""}" data-opcao="${indice}" data-lugar="${doLugar ? 1 : 0}" ${motivo ? "disabled" : ""}>
         <span class="op-texto">${motivo ? "🔒 " : ""}${esc(op.texto)}</span>
         ${motivo ? `<span class="op-info">${esc(motivo)}</span>` : rotuloTeste(op, p)}
@@ -354,6 +395,8 @@ const Cenas = (() => {
     if (painel === "diario") {
       return `<div class="cena-painel">
         <h3>Diário <button class="btn-texto" data-painel="">Fechar</button></h3>
+        ${questsHtml()}
+        <h4 class="diario-sub">Pistas</h4>
         ${camp.pistas.length ? `<ul class="pistas">${camp.pistas.map((x) => `<li>${esc(x.texto)}</li>`).join("")}</ul>` : `<p class="sub">Nenhuma pista ainda.</p>`}
         <p class="dica">Com ${m.pistasParaMarco} pistas você pode seguir a multidão quando quiser. Com o relógio cheio, não há mais escolha.</p>
       </div>`;
@@ -366,9 +409,9 @@ const Cenas = (() => {
       eixo: m.eixo,
       centro: { ...m.centroMapa, nome: esc(m.centroMapa.nome) },
       tensao: camp.relogio / m.relogioMax,
-      lugares: Object.entries(m.lugares).map(([id, l]) => ({
+      lugares: lugaresVisiveis().map(([id, l]) => ({
         id, icone: esc(l.icone), nome: esc(texto(l.nome, ctx)), ...l.mapa,
-        atual: id === camp.lugar, pendentes: l.acoes.filter((a) => !feita(a)).length,
+        atual: id === camp.lugar, pendentes: acoesDoLugar(id).filter((a) => !a.comum).length,
       })),
     });
     if (ilustrado) {
@@ -381,14 +424,26 @@ const Cenas = (() => {
     return `<div class="cena-painel">
       <h3>Mapa <button class="btn-texto" data-painel="">Fechar</button></h3>
       <p class="sub">${custo ? "Ir a outro lugar avança o relógio em 1." : "Com o carro, ir a outro lugar não gasta tempo."}</p>
-      <div class="mapa">${Object.entries(m.lugares).map(([id, l]) => `
+      <div class="mapa">${lugaresVisiveis().map(([id, l]) => `
         <button class="lugar ${id === camp.lugar ? "atual" : ""}" data-ir="${id}" ${id === camp.lugar ? "disabled" : ""}>
           <b>${esc(l.icone)}</b><strong>${esc(texto(l.nome, ctx))}</strong>
-          <span>${l.acoes.filter((a) => !feita(a)).length} coisas a fazer</span>
+          <span>${acoesDoLugar(id).filter((a) => !a.comum).length} coisas a fazer</span>
         </button>`).join("")}
         <button class="lugar trancado" disabled><b>◉</b><strong>Praça Central</strong><span>todos parecem ir para lá</span></button>
       </div>
     </div>`;
+  }
+
+  // Linhas de missão (side quests) abertas e fechadas, com o prazo: curta, média, longa
+  function questsHtml() {
+    const qs = Object.values(camp.quests || {});
+    if (!qs.length) return "";
+    const prazo = { curta: "termina no prólogo", media: "continua no Ato 1", longa: "vai longe" };
+    const estado = { aberta: "em aberto", concluida: "concluída", perdida: "perdida" };
+    return `<h4 class="diario-sub">Linhas</h4><ul class="quests">${qs.map((q) => `
+      <li class="quest-${q.estado || "aberta"}"><strong>${esc(q.nome)}</strong>
+        <span class="tag">${esc(estado[q.estado || "aberta"])}</span> <span class="sub">${esc(prazo[q.prazo] || "")}</span>
+        ${q.nota ? `<small>${esc(q.nota)}</small>` : ""}</li>`).join("")}</ul>`;
   }
 
   // Bolsa de quem está na vez: dinheiro deste eixo, pertences e condições
@@ -424,7 +479,8 @@ const Cenas = (() => {
   }
 
   function custoViagem() {
-    return grupo().some((p) => p.itens.includes("veiculo")) ? 0 : 1;
+    const base = grupo().some((p) => p.itens.includes("veiculo")) ? 0 : 1;
+    return base + (camp.flags.multidoes ? 1 : 0); // ruas cheias: tudo demora mais
   }
 
   // ======================= Ações =======================
@@ -460,18 +516,11 @@ const Cenas = (() => {
 
     if (doLugar) {
       if (!op.repetivel) camp.feitas.push(op.grupo || op.id);
-      const antes = camp.relogio;
-      camp.relogio = Math.min(m.relogioMax, camp.relogio + (op.tempo ?? 1));
-      // o tempo passa para todo mundo: a fome e o cansaço chegam
-      for (const [marca, cond] of [[3, "fome"], [6, "cansaco"]]) {
-        if (antes < marca && camp.relogio >= marca) {
-          for (const membro of grupo()) {
-            if (membro.id === p.id) Vida.condicao(p, cond);
-            else if (Vida.condicao(membro, cond)) Armazem.salvar(membro);
-          }
-          linhas.push(`O tempo passa: todos ${cond === "fome" ? "estão com fome" : "estão cansados"} (−1 dado até resolver)`);
-        }
-      }
+      const tinha = [...(p.condicoes || [])];
+      linhas.push(...avancarRelogio(op.tempo ?? (op.comum ? 0 : 1)));
+      // quem agiu também sente o tempo (a cópia salva por avancarRelogio é recarregada aqui)
+      const salvo = todos().find((x) => x.id === p.id);
+      if (salvo) for (const c of salvo.condicoes || []) if (!tinha.includes(c)) Vida.condicao(p, c);
     }
     Vida.garantir(p);
     if (efeitos.dinheiro) {
@@ -510,8 +559,28 @@ const Cenas = (() => {
       }
     }
     if (efeitos.memoria) {
-      p.memorias = (p.memorias ? p.memorias + "\n" : "") + efeitos.memoria;
-      linhas.push("Nova Memória Cruzada");
+      // Memórias Cruzadas só chegam com Ressonância suficiente
+      if (p.ressonancia >= (efeitos.memoriaMin || 0)) {
+        p.memorias = (p.memorias ? p.memorias + "\n" : "") + efeitos.memoria;
+        linhas.push("Nova Memória Cruzada");
+      } else linhas.push("Uma sensação de já ter vivido isso, mas a lembrança não vem (precisa de mais Ressonância)");
+    }
+    for (const f of [].concat(efeitos.flag || [])) camp.flags[f] = true;
+    for (const f of [].concat(efeitos.tirarFlag || [])) delete camp.flags[f];
+    // marca no personagem: fica para as próximas missões (quem ele salvou, o que ele levou)
+    for (const mc of [].concat(efeitos.marca || [])) {
+      p.marcas = [...new Set([...(p.marcas || []), mc])];
+    }
+    if (efeitos.quest) {
+      camp.quests = camp.quests || {};
+      const q = efeitos.quest;
+      const antes = camp.quests[q.id];
+      camp.quests[q.id] = { ...(antes || {}), ...q };
+      const st = camp.quests[q.id];
+      if (!antes && !q.estado) linhas.push(`Nova linha no Diário: ${st.nome}`);
+      else if (q.estado === "concluida") linhas.push(`Concluída: ${st.nome}`);
+      else if (q.estado === "perdida") linhas.push(`Perdida: ${st.nome}`);
+      else if (q.nota) linhas.push(`Diário: ${st.nome}`);
     }
     if (efeitos.ameaca) camp.ameaca = Math.max(0, (camp.ameaca ?? 0) + efeitos.ameaca);
     if (res.pista && !camp.pistas.some((x) => x.texto === res.pista)) {
@@ -608,7 +677,7 @@ const Cenas = (() => {
     const m = missao();
     const ctx = contexto();
     const cena = camp.cena ? m.cenas[camp.cena] : null;
-    const lista = cena ? cena.opcoes : m.lugares[camp.lugar].acoes.filter((a) => !feita(a));
+    const lista = cena ? cena.opcoes : acoesDoLugar();
     const p = ativo();
     let melhor = null;
     let pontos = 0;
@@ -628,7 +697,7 @@ const Cenas = (() => {
     });
     // "ir ao hospital", "voltar para casa"
     if (!cena) {
-      for (const [id, l] of Object.entries(m.lugares)) {
+      for (const [id, l] of lugaresVisiveis()) {
         if (id === camp.lugar) continue;
         const nome = norm(texto(l.nome, ctx));
         const chaves = nome.split(/\s+/).filter((w) => w.length > 3).concat([id]);
@@ -678,7 +747,7 @@ const Cenas = (() => {
     const m = missao();
     if (t.dataset.opcao !== undefined) {
       const doLugar = t.dataset.lugar === "1";
-      const lista = doLugar ? m.lugares[camp.lugar].acoes.filter((a) => !feita(a)) : m.cenas[camp.cena].opcoes;
+      const lista = doLugar ? acoesDoLugar() : m.cenas[camp.cena].opcoes;
       return executar(lista[+t.dataset.opcao], doLugar);
     }
     if (t.dataset.painel !== undefined) {
@@ -686,7 +755,7 @@ const Cenas = (() => {
       return render();
     }
     if (t.dataset.ir) {
-      camp.relogio = Math.min(m.relogioMax, camp.relogio + custoViagem());
+      avisar(avancarRelogio(custoViagem()));
       camp.lugar = t.dataset.ir;
       painel = null;
       if (camp.relogio >= m.relogioMax) return entrarCena("chamado");
@@ -711,13 +780,13 @@ const Cenas = (() => {
       const p = pendente;
       pendente = null;
       if (p.tipo === "ir") {
-        camp.relogio = Math.min(m.relogioMax, camp.relogio + custoViagem());
+        avisar(avancarRelogio(custoViagem()));
         camp.lugar = p.lugar;
         if (camp.relogio >= m.relogioMax) return entrarCena("chamado");
         salvar();
         return render();
       }
-      const lista = p.doLugar ? m.lugares[camp.lugar].acoes.filter((a) => !feita(a)) : m.cenas[camp.cena].opcoes;
+      const lista = p.doLugar ? acoesDoLugar() : m.cenas[camp.cena].opcoes;
       return executar(lista[p.indice], p.doLugar);
     }
     if (acao === "cancelar") {
