@@ -41,6 +41,7 @@ const Cinematica = (() => {
       <video class="cinematica-fundo" src="${c.video}" muted playsinline preload="auto" aria-hidden="true"></video>
       <video class="cinematica-video" src="${c.video}" muted playsinline preload="auto"></video>
       <div class="cinematica-texto"><p>${c.legenda}</p><h2>${c.titulo}</h2></div>
+      <button class="cinematica-tocar" hidden>▶</button>
       <button class="btn-texto cinematica-pular">Pular ›</button>`;
     document.body.appendChild(el);
     const video = el.querySelector(".cinematica-video");
@@ -62,8 +63,16 @@ const Cinematica = (() => {
     video.addEventListener("error", terminar); // sem o vídeo (offline): segue o jogo
     el.querySelector(".cinematica-pular").addEventListener("click", terminar);
     requestAnimationFrame(() => el.classList.add("visivel"));
-    video.play().catch(terminar);
-    fundo.play().catch(() => {});
+    // Alguns celulares (economia de bateria/dados) não deixam o vídeo começar sozinho: aparece um ▶
+    const comecar = () => {
+      video.play().then(() => {
+        botaoTocar.hidden = true;
+        fundo.play().catch(() => {});
+      }).catch(() => (botaoTocar.hidden = false));
+    };
+    const botaoTocar = el.querySelector(".cinematica-tocar");
+    botaoTocar.addEventListener("click", comecar);
+    comecar();
   }
 
   // Toca se algum desses personagens ainda não viu a cinemática do eixo; senão, segue direto
@@ -90,7 +99,7 @@ const Cinematica = (() => {
 
   // revisão durante o desenvolvimento
   const pedida = new URLSearchParams(location.search).get("cinematica");
-  if (pedida) addEventListener("load", () => tocar(pedida));
+  if (pedida) setTimeout(() => tocar(pedida), 300);
 
   return { tocar, primeiraVez, carregamento };
 })();
