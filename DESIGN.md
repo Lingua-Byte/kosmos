@@ -23,8 +23,21 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
 | Estética | mundo na **atualidade**; interface no tema verde original (concreto, fluorescente, radiação) | fantasia, tipo em aberto (low, high ou mistura) | interface **azul holográfica**; **cassette futurism só nos gadgets e nas telas deles** |
 | O fenômeno aparece como | radiação anômala, surtos | runas, magia, heresia | estrela que observa |
 | Afetados | Ecoados / Despertos | Runáticos | Interfaces |
+| Perdidos sem volta (mobs) | **Riscadores** | **Runáticos** | a definir |
+| Lúcidos (veem os outros eixos) | a definir | **Despertos** | a definir |
 | Língua | Código Urbano (matemático) | Yudur (runas) | Interface (relacional) |
 | Classes | escolhidas na criação | escolhidas na criação | **pré-definidas: tripulação da nave** |
+
+### Os que se perdem e os que despertam
+- **Ressonância e Dissonância são nomes de regra**, não palavras do mundo: os nomes dentro da lore
+  são os que as pessoas de cada eixo usariam.
+- **Runáticos (Y) e Riscadores (X) são a mesma coisa: mobs.** Ecos de personagens com Dissonância tão
+  alta que enlouqueceram sem volta. Os Riscadores riscam os códigos sem parar (paredes, chão, vidro);
+  é o nome da rua. Não são uma facção.
+- **Despertos (Y)** são o oposto: Ressonância alta a ponto de entender que existem os outros eixos.
+  Isolam-se, têm ar de oráculo, cuidam das próprias coisas e são inofensivos.
+- Os ecos só sabem dos outros mundos a partir de certo nível de Ressonância; a Dissonância também
+  daria esse conhecimento, mas quem segue por ela enlouquece.
 
 ### Eixo Z — a nave Domus
 - Os jogadores começam **dentro da nave Domus**, com classes pré-definidas (função na tripulação).
