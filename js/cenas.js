@@ -269,6 +269,7 @@ const Cenas = (() => {
           <button class="btn-texto narrador-ligar" data-acao="narrador-voz" hidden></button>
           <span class="narrador-estado sub"></span>
         </span>` : ""}
+        <button class="btn-texto narrador-ligar" data-acao="vozes" aria-pressed="${Vozes.ligadas()}">${Vozes.ligadas() ? "🗣 Vozes ligadas" : "🗣 Vozes desligadas"}</button>
       </header>
       <div class="cena-grade">
         <main class="cena-corpo">
@@ -288,11 +289,14 @@ const Cenas = (() => {
       ${grupoHtml()}`;
     // quem fala aparece no palco (o retrato); depois o palco volta para o lugar
     if (!viagem) Palco.mostrar(resultado && resultado.npc ? palcoNpc(resultado.npc) : palcoAtual());
+    if (resultado && resultado.fala) Vozes.falar(resultado.fala);
+    else Vozes.encerrar();
     Narrador.cena(textoNarrado(), m.eixo);
   }
 
   // O que o narrador lê: título e narração da cena (sem os botões nem os números), parágrafo a parágrafo
   function textoNarrado() {
+    if (resultado && resultado.fala && Vozes.ligadas()) return []; // quem fala é o personagem
     return [...document.querySelectorAll("#cena .cena-titulo, #cena .narracao p")]
       .map((el) => ({
         tipo: el.classList.contains("cena-titulo") ? "titulo" : el.classList.contains("ambiente") ? "ambiente" : "texto",
@@ -663,7 +667,9 @@ const Cenas = (() => {
     };
     const t = texto(res.texto, contexto());
     if (t || linhas.length) {
-      resultado = { texto: t || "…", linhas, depois, npc: res.npc || op.npc };
+      const npc = res.npc || op.npc;
+      const campo = res === op.sucesso ? "sucesso" : res === op.falha ? "falha" : "resultado";
+      resultado = { texto: t || "…", linhas, depois, npc, fala: npc && op.id ? `${op.id}-${campo}` : null };
       render();
     } else depois();
   }
@@ -822,6 +828,10 @@ const Cenas = (() => {
     }
     const acao = t.dataset.acao;
     if (acao === "chamado") return entrarCena("chamado");
+    if (acao === "vozes") {
+      Vozes.alternar();
+      return render();
+    }
     if (acao === "seguir" && resultado) return resultado.depois();
     if (acao === "confirmar" && pendente) {
       const p = pendente;

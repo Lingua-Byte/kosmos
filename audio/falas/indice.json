@@ -1,0 +1,142 @@
+{
+ "homem-sucesso": {
+  "npc": "homem-terno",
+  "assinatura": "88e7d0a3a7d9"
+ },
+ "porteiro-resultado": {
+  "npc": "sal",
+  "assinatura": "5977938180c2"
+ },
+ "vizinho-302-sucesso": {
+  "npc": "hollis",
+  "assinatura": "90f32f5a142a"
+ },
+ "vizinho-302-falha": {
+  "npc": "hollis",
+  "assinatura": "2cdf3588a1b9"
+ },
+ "vizinha-resultado": {
+  "npc": "petrakis",
+  "assinatura": "60ebbfae9231"
+ },
+ "helena-resultado": {
+  "npc": "helen",
+  "assinatura": "25278bdc570e"
+ },
+ "helena-caderno-sucesso": {
+  "npc": "helen",
+  "assinatura": "f43e286d79b8"
+ },
+ "helena-caderno-falha": {
+  "npc": "helen",
+  "assinatura": "e64a5380ee89"
+ },
+ "moura-resultado": {
+  "npc": "moore",
+  "assinatura": "d45f52d0dafc"
+ },
+ "moura-pasta-sucesso": {
+  "npc": "moore",
+  "assinatura": "9dc12be568ae"
+ },
+ "moura-pasta-falha": {
+  "npc": "moore",
+  "assinatura": "28394d6e1568"
+ },
+ "antonio-resultado": {
+  "npc": "abe",
+  "assinatura": "7976f4c5c765"
+ },
+ "repor-resultado": {
+  "npc": "abe",
+  "assinatura": "4edfe96a5dec"
+ },
+ "professora-sucesso": {
+  "npc": "hilde",
+  "assinatura": "63195d365cee"
+ },
+ "professora-falha": {
+  "npc": "hilde",
+  "assinatura": "dcbb9b7bc2ca"
+ },
+ "ouvinte-falar-sucesso": {
+  "npc": "ouvinte-x",
+  "assinatura": "df78d9e39734"
+ },
+ "ouvinte-falar-falha": {
+  "npc": "ouvinte-x",
+  "assinatura": "e3f52ef1564b"
+ },
+ "ouvinte-ouvir-sucesso": {
+  "npc": "ouvinte-x",
+  "assinatura": "eff08fb741fa"
+ },
+ "ouvinte-ouvir-falha": {
+  "npc": "ouvinte-x",
+  "assinatura": "510611ff2176"
+ },
+ "ouvinte-avisar-resultado": {
+  "npc": "ouvinte-x",
+  "assinatura": "9b6cc5f3b191"
+ },
+ "osvaldo-sucesso": {
+  "npc": "oswald",
+  "assinatura": "dd12a08301c1"
+ },
+ "osvaldo-falha": {
+  "npc": "oswald",
+  "assinatura": "aebc08f3150b"
+ },
+ "osvaldo-livro-sucesso": {
+  "npc": "oswald",
+  "assinatura": "b6a3cbbc86cf"
+ },
+ "osvaldo-livro-falha": {
+  "npc": "oswald",
+  "assinatura": "a29e6f27224b"
+ },
+ "riscador-acalmar-sucesso": {
+  "npc": "riscador",
+  "assinatura": "2979bdfa3adf"
+ },
+ "riscador-acalmar-falha": {
+  "npc": "riscador",
+  "assinatura": "a02d22e686d8"
+ },
+ "riscador-afastar-sucesso": {
+  "npc": "riscador",
+  "assinatura": "2ded175e5af4"
+ },
+ "riscador-afastar-falha": {
+  "npc": "riscador",
+  "assinatura": "42cce6563e21"
+ },
+ "farmaceutico-resultado": {
+  "npc": "martha",
+  "assinatura": "3e4c481dfb7c"
+ },
+ "marta-fundos-sucesso": {
+  "npc": "martha",
+  "assinatura": "e8e58cae85c5"
+ },
+ "marta-fundos-falha": {
+  "npc": "martha",
+  "assinatura": "2f033bd0eb84"
+ },
+ "tiao-acalmar-sucesso": {
+  "npc": "teddy",
+  "assinatura": "f59511e2cbcf"
+ },
+ "tiao-acalmar-falha": {
+  "npc": "teddy",
+  "assinatura": "0fc4a0237ae7"
+ },
+ "curativo-farmacia-resultado": {
+  "npc": "martha",
+  "assinatura": "d3008ab22da6"
+ },
+ "socorrer-sucesso": {
+  "npc": "danny",
+  "assinatura": "13b4658e40e2"
+ }
+}
