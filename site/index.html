@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&family=Exo+2:wght@300;400;600&family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=74">
+  <link rel="stylesheet" href="css/style.css?v=77">
 </head>
 <body>
   <canvas id="galaxia" aria-hidden="true"></canvas>
@@ -46,6 +46,7 @@
         <span>Entrar no Kosmos</span>
       </button>
       <p class="dica">♪ com som</p>
+      <button id="btn-carregar-inicio" class="btn-texto link-carregar" hidden>Carregar jogo</button>
       <a href="instalar.html" class="link-instalar" id="link-instalar">⬇ Baixar o app · Android e PC</a>
     </div>
   </section>
@@ -68,8 +69,8 @@
       <ul id="lista-personagens" class="lista-personagens"></ul>
       <div class="acoes-personagens">
         <button id="btn-jogar" class="btn-primario">▶ Jogar</button>
-        <button id="btn-prontos" class="btn-secundario">Escolher um personagem pronto</button>
-        <button id="btn-novo" class="btn-secundario">Criar novo personagem</button>
+        <button id="btn-prontos" class="btn-secundario">Escolher personagem</button>
+        <button id="btn-novo" class="btn-secundario" hidden>Criar novo personagem</button>
         <a href="oficina.html" class="btn-texto link-oficina">✎ Oficina do Autor</a>
       </div>
     </div>
@@ -176,30 +177,30 @@
 
   <div id="avisos" class="avisos" aria-live="polite"></div>
 
-  <script src="js/data.js?v=74"></script>
-  <script src="js/opcoes.js?v=74"></script>
-  <script src="js/yudur.js?v=74"></script>
-  <script src="js/lingua.js?v=74"></script>
-  <script src="js/regras.js?v=74"></script>
-  <script src="js/vida.js?v=74"></script>
-  <script src="js/galaxia.js?v=74"></script>
-  <script src="js/musica-propria.js?v=74"></script>
-  <script src="js/musica.js?v=74"></script>
-  <script src="js/app.js?v=74"></script>
-  <script src="js/prontos.js?v=74"></script>
-  <script src="js/tradutor.js?v=74"></script>
-  <script src="js/dados.js?v=74"></script>
-  <script src="js/narrador.js?v=74"></script>
-  <script src="js/mapas.js?v=74"></script>
-  <script src="js/cinematica.js?v=74"></script>
-  <script src="js/palco.js?v=74"></script>
-  <script src="js/vozes.js?v=74"></script>
-  <script src="js/som.js?v=74"></script>
-  <script src="js/missoes/prologo-x.js?v=74"></script>
-  <script src="js/missoes/x1-manha.js?v=74"></script>
-  <script src="js/cenas.js?v=74"></script>
-  <script src="js/saves.js?v=74"></script>
-  <script src="js/recarregar.js?v=74"></script>
+  <script src="js/data.js?v=77"></script>
+  <script src="js/opcoes.js?v=77"></script>
+  <script src="js/yudur.js?v=77"></script>
+  <script src="js/lingua.js?v=77"></script>
+  <script src="js/regras.js?v=77"></script>
+  <script src="js/vida.js?v=77"></script>
+  <script src="js/galaxia.js?v=77"></script>
+  <script src="js/musica-propria.js?v=77"></script>
+  <script src="js/musica.js?v=77"></script>
+  <script src="js/app.js?v=77"></script>
+  <script src="js/prontos.js?v=77"></script>
+  <script src="js/tradutor.js?v=77"></script>
+  <script src="js/dados.js?v=77"></script>
+  <script src="js/narrador.js?v=77"></script>
+  <script src="js/mapas.js?v=77"></script>
+  <script src="js/cinematica.js?v=77"></script>
+  <script src="js/palco.js?v=77"></script>
+  <script src="js/vozes.js?v=77"></script>
+  <script src="js/som.js?v=77"></script>
+  <script src="js/missoes/prologo-x.js?v=77"></script>
+  <script src="js/missoes/x1-manha.js?v=77"></script>
+  <script src="js/cenas.js?v=77"></script>
+  <script src="js/saves.js?v=77"></script>
+  <script src="js/recarregar.js?v=77"></script>
   <script>
     // app instalável (Android e PC): funciona sem internet e se atualiza sozinho (sw.js)
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
