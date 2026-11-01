@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oficina do Autor · KOSMOS</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="icones/icone-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Exo+2:wght@400;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/oficina.css?v=1">
+</head>
+<body>
+  <header class="topo">
+    <div>
+      <h1>Oficina do Autor</h1>
+      <p class="sub">Tudo o que você escreve aqui vira NPCs, missões e storylets do KOSMOS.</p>
+    </div>
+    <div class="topo-acoes">
+      <span id="estado-salvo" class="estado-salvo"></span>
+      <button id="btn-exportar" class="btn">Exportar</button>
+      <label class="btn">Importar<input id="btn-importar" type="file" accept="application/json" hidden></label>
+    </div>
+  </header>
+
+  <nav class="abas" role="tablist">
+    <button role="tab" data-aba="perguntas">Perguntas</button>
+    <button role="tab" data-aba="npcs">NPCs</button>
+    <button role="tab" data-aba="missoes">Missões</button>
+    <button role="tab" data-aba="geradores">Geradores</button>
+    <button role="tab" data-aba="testar">Testar</button>
+  </nav>
+
+  <main id="conteudo" class="conteudo"></main>
+
+  <script src="js/data.js?v=26"></script>
+  <script src="js/motor.js?v=1"></script>
+  <script src="js/oficina.js?v=1"></script>
+</body>
+</html>
