@@ -1719,3 +1719,32 @@ body:has(#tela-prontos.ativa) .controle-musica { top: 8px; bottom: auto; right: 
 #tr-voltar { white-space: nowrap; }
 .op-jogo { display: flex; flex-wrap: wrap; gap: 8px; }
 .link-carregar { display: block; margin: 6px auto 0; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.85rem; }
+
+/* ===================== Mapa da cidade: bairros, lugares conhecidos e desconhecidos ===================== */
+.mapa-bairro {
+  position: absolute; transform: translate(-50%, -50%); pointer-events: none; z-index: 1;
+  font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acento); opacity: 0.55;
+  text-shadow: 0 0 6px #000; white-space: nowrap;
+}
+.mapa-bairro.nevoa { opacity: 0.25; letter-spacing: 0.4em; }
+.mapa-ponto { position: absolute; transform: translate(-50%, -50%); z-index: 1; display: grid; justify-items: center; gap: 1px; pointer-events: none; max-width: 30%; }
+.mapa-ponto i { width: 7px; height: 7px; border-radius: 50%; background: var(--acento); opacity: 0.55; box-shadow: 0 0 6px var(--acento); }
+.mapa-ponto small { font-size: 0.58rem; line-height: 1.1; text-align: center; color: var(--texto-suave); opacity: 0.8; text-shadow: 0 0 4px #000; }
+.mapa-no.desconhecido { border-style: dashed; opacity: 0.85; }
+.mapa-no.desconhecido b { opacity: 0.8; }
+.ficha-corpo [data-sub="mapa"] .mapa-ilustrado { aspect-ratio: 2 / 3; max-height: 62dvh; margin: 6px auto 0; }
+@media (min-width: 700px) { .ficha-corpo [data-sub="mapa"] .mapa-ilustrado { aspect-ratio: 4 / 3; } }
+@media (max-width: 699px) { .ficha-subabas { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+#tela-ficha .ficha-navegacao h2 { white-space: normal; font-size: 1.05rem; line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.ficha-corpo [data-sub="mapa"] .mapa-ilustrado { max-height: 54dvh; }
+/* nós do mapa compactos: ícone ao lado do nome, no máximo duas linhas */
+.mapa-no { flex-direction: row; align-items: center; gap: 5px; text-align: left; padding: 4px 7px; }
+.mapa-no-texto { display: grid; gap: 0; min-width: 0; }
+.mapa-no-texto > span { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.mapa-no b { font-size: 1rem; flex: none; }
+@container (max-width: 640px) {
+  .cena-painel .mapa-ilustrado { aspect-ratio: 9 / 16; }
+  .mapa-no { max-width: 33%; padding: 3px 5px; font-size: 0.62rem; line-height: 1.12; }
+  .mapa-no small { font-size: 0.55rem; }
+  .mapa-no b { font-size: 0.85rem; }
+}
