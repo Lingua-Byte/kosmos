@@ -17,7 +17,6 @@ const Musica = (() => {
   let contextoTocando = null; // qual lista está carregada no player
   let trecho = null; // { videoIds, indice, inicio, fim, restantes, aoTerminar }
   let trocaAgendada = null;
-  let volume = 60;
   const botao = document.getElementById("btn-musica");
   const titulo = document.getElementById("musica-titulo");
 
@@ -56,7 +55,7 @@ const Musica = (() => {
       events: {
         onReady: () => {
           pronto = true;
-          player.setVolume(volume);
+          player.setVolume(60);
           if (querTocar) tocarContexto(contextoAtual);
         },
         onStateChange: (e) => {
@@ -194,10 +193,10 @@ const Musica = (() => {
 
   return {
     tocar, tocarTrecho, pararTrecho, retomar, contexto,
-    // o narrador está falando: a música fica baixinha por baixo da voz
-    abaixar(sim) {
-      volume = sim ? 15 : 60;
-      if (pronto) player.setVolume(volume);
+    // a música devia estar tocando mas algo (a voz do narrador, no celular) pausou: volta a tocar
+    garantir() {
+      if (!pronto || !ligada || !querTocar) return;
+      if (player.getPlayerState() === YT.PlayerState.PAUSED) player.playVideo();
     },
     // o som está realmente tocando? (cenas que dependem de música pedem para ligar)
     ativa: () => pronto && ligada && querTocar,

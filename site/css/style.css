@@ -909,7 +909,8 @@ body.tema-x .dialogo-dados, body.tema-y .dialogo-dados, body.tema-z .dialogo-dad
 .narrador { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .narrador .btn-secundario { padding: 6px 12px; font-size: 0.9rem; }
 .narrador .btn-secundario[aria-pressed="true"] { border-color: var(--acento); color: var(--acento); }
-.narrador-auto { font-size: 0.8rem; padding: 4px; }
+.narrador-ligar { font-size: 0.85rem; padding: 4px; }
+.narrador-ligar[aria-pressed="true"] { color: var(--acento); }
 .cena-onde { font-size: 0.9rem; color: var(--texto-suave); }
 .cena-onde b { color: var(--acento); font-weight: 400; margin-right: 4px; }
 .relogio { display: inline-flex; gap: 3px; margin-left: auto; }
