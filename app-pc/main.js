@@ -7,6 +7,9 @@ const path = require("path");
 
 const JOGO = "https://lingua-byte.github.io/kosmos/";
 
+// o jogo reconhece que está dentro do app (e não mostra "baixar o app")
+app.userAgentFallback = `${app.userAgentFallback} KOSMOS-App`;
+
 // música e vozes podem começar sem esperar um clique (é um jogo, não um site)
 app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
 

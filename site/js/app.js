@@ -29,13 +29,27 @@ const Armazem = {
   },
 };
 
+// "Enfermeiro(a)" → Enfermeiro ou Enfermeira; "Escrivão(ã)" → Escrivão ou Escrivã; "Ator ou atriz" → um dos dois
+function noGenero(nome, sexo) {
+  if (!sexo) return nome;
+  const mulher = sexo === "mulher";
+  let n = nome
+    .replace(/(\p{L}*?)o\(a\)/gu, (_, base) => base + (mulher ? "a" : "o"))
+    .replace(/(\p{L}*?)ão\(ã\)/gu, (_, base) => base + (mulher ? "ã" : "ão"))
+    .replace(/(\p{L}+)\(a\)/gu, (_, base) => base + (mulher ? "a" : ""))
+    .replace(/\(ões\)|\(ãs\)/g, "");
+  const par = n.match(/^(\p{L}+) ou (\p{L}+)$/u);
+  if (par && ["Ator ou atriz", "Monge ou monja"].includes(n)) n = mulher ? par[2][0].toUpperCase() + par[2].slice(1) : par[1];
+  return n;
+}
+
 // Profissão do personagem num eixo: { nome, ponto } (ponto = id em PONTOS_ENTRADA[eixo]) ou null.
 // A profissão escrita pelo jogador ("Outra") só existe no eixo de origem.
 function profissaoDe(p, eixo) {
   if (!p.profissao) return null;
   if (p.profissao === "outra") return eixo === p.origem && p.profissaoLivre ? { ...p.profissaoLivre } : null;
   const pr = PROFISSOES.find((x) => x.id === p.profissao);
-  return pr ? { ...pr[eixo] } : null;
+  return pr ? { ...pr[eixo], nome: noGenero(pr[eixo].nome, p.sexo) } : null;
 }
 
 function novoPersonagem() {
@@ -47,6 +61,7 @@ function novoPersonagem() {
     descricao: "",
     tracos: [],
     papel: null,
+    sexo: null, // "homem" ou "mulher"
     profissao: null, // id em PROFISSOES, ou "outra" (profissaoLivre: { nome, ponto })
     atributos: { corpo: 0, mente: 0, essencia: 0 },
     habs: [],
@@ -106,7 +121,7 @@ function criarArquivista() {
 
 function mostrarTela(id) {
   document.querySelectorAll(".tela").forEach((t) => t.classList.toggle("ativa", t.id === id));
-  $("#btn-tradutor").hidden = ["tela-inicio", "tela-transicao", "tela-tradutor", "tela-cena", "tela-mesa"].includes(id);
+  $("#btn-tradutor").hidden = ["tela-inicio", "tela-transicao", "tela-tradutor", "tela-cena", "tela-mesa", "tela-criacao"].includes(id);
   window.scrollTo(0, 0);
   if (id !== "tela-cena" && typeof Narrador !== "undefined") Narrador.parar();
   if (id !== "tela-cena" && typeof Palco !== "undefined") Palco.pausar();
@@ -199,7 +214,7 @@ function abrirPersonagens() {
       const e = EIXOS[p.origem];
       return `<li><button class="personagem-item" data-id="${p.id}">
         <b>${esc(p.nome)}</b>
-        <span>${e.glifo} ${esc(e.papeis[p.papel].nome)} · ${e.nome} ${e.mundo}</span>
+        <span>${e.glifo} ${esc((profissaoDe(p, p.origem) || { nome: e.papeis[p.papel].nome }).nome)} · ${e.nome} ${e.mundo}</span>
       </button></li>`;
     })
     .join("");
@@ -223,7 +238,6 @@ const PASSOS = [
   { id: "identidade", titulo: "Identidade" },
   { id: "oficio", titulo: "Profissão" },
   { id: "tracos", titulo: "Traço central" },
-  { id: "papel", titulo: "Papel" },
   { id: "atributos", titulo: "Atributos" },
   { id: "habilidades", titulo: "Habilidades" },
   { id: "equipamento", titulo: "Equipamento" },
@@ -251,12 +265,13 @@ function validarPasso() {
   if (p === "origem" && !rascunho.origem) return "Escolha o mundo onde você desperta.";
   if (p === "identidade" && !rascunho.nome.trim()) return "Seu personagem precisa de um nome.";
   if (p === "identidade" && !rascunho.idade) return "Escolha a idade.";
+  if (p === "identidade" && !rascunho.sexo) return "Escolha: homem ou mulher.";
   if (p === "oficio" && !rascunho.profissao) return "Escolha o que você faz da vida.";
   if (p === "oficio" && rascunho.profissao === "outra" && !(rascunho.profissaoLivre.nome || "").trim()) return "Escreva a sua profissão.";
   if (p === "oficio" && rascunho.profissao === "outra" && !rascunho.profissaoLivre.ponto) return "Escolha onde a sua história começa.";
+  if (p === "oficio" && !rascunho.papel) return "Escolha a classe da sua profissão.";
   if (p === "tracos" && (rascunho.tracos.length < REGRAS.tracosMin || rascunho.tracos.length > REGRAS.tracosMax))
     return `Escolha de ${REGRAS.tracosMin} a ${REGRAS.tracosMax} traços.`;
-  if (p === "papel" && !rascunho.papel) return "Escolha um papel.";
   if (p === "atributos" && pontosUsados() !== REGRAS.pontosIniciais)
     return `Distribua exatamente ${REGRAS.pontosIniciais} pontos.`;
   return "";
@@ -308,21 +323,20 @@ const RENDER_PASSO = {
         ${Array.from({ length: IDADE.max - IDADE.min + 1 }, (_, i) => IDADE.min + i)
           .map((n) => `<option value="${n}" ${+rascunho.idade === n ? "selected" : ""}>${n} anos</option>`).join("")}
       </select></label>
-    <label class="campo"><span>Descrição breve: quem você é, o que faz da vida</span>
-      <textarea id="f-descricao" rows="3" maxlength="300" placeholder="Ex.: Enfermeira do turno da noite, cansada, que fala pouco.">${esc(rascunho.descricao)}</textarea></label>
-    <p class="sugestao" id="sugestao-descricao">${sugestaoHtml(e.id)}</p>`,
+    <div class="campo"><span>Sexo</span>
+      <div class="chips">${Object.entries(SEXOS).map(([k, n]) => `<button class="chip ${rascunho.sexo === k ? "escolhida" : ""}" data-sexo="${k}">${n}</button>`).join("")}</div></div>`,
 
   oficio: (e) => {
     const pontos = PONTOS_ENTRADA[e.id];
     const livre = rascunho.profissaoLivre || {};
     return `
-    <h2>O que você faz da vida?</h2>
-    <p class="sub">A profissão decide onde a sua história começa. Nos outros mundos, você faz algo parecido, com outro nome.</p>
+    <h2>Profissão</h2>
+    <p class="sub">A profissão decide onde a sua história começa e a sua classe. Nos outros mundos, você faz algo parecido, com outro nome.</p>
     ${pontos.map((pt) => {
       const lista = PROFISSOES.filter((pr) => pr[e.id].ponto === pt.id);
       if (!lista.length) return "";
       return `<section class="grupo-oficio"><h3>${esc(pt.nome)}</h3>
-        <div class="chips">${lista.map((pr) => `<button class="chip ${rascunho.profissao === pr.id ? "escolhida" : ""}" data-profissao="${pr.id}">${esc(pr[e.id].nome)}</button>`).join("")}</div>
+        <div class="chips">${lista.map((pr) => `<button class="chip chip-oficio ${rascunho.profissao === pr.id ? "escolhida" : ""}" data-profissao="${pr.id}">${esc(noGenero(pr[e.id].nome, rascunho.sexo))}<small>${PAPEIS[pr.papel]}</small></button>`).join("")}</div>
       </section>`;
     }).join("")}
     <section class="grupo-oficio"><h3>Outra</h3>
@@ -330,7 +344,8 @@ const RENDER_PASSO = {
       ${rascunho.profissao === "outra" ? `
         <label class="campo"><span>Sua profissão</span><input id="f-oficio-nome" maxlength="60" value="${esc(livre.nome || "")}" autocomplete="off"></label>
         <label class="campo"><span>Onde a sua história começa</span>
-          <select id="f-oficio-ponto"><option value="">—</option>${pontos.map((pt) => `<option value="${pt.id}" ${livre.ponto === pt.id ? "selected" : ""}>${esc(pt.nome)}</option>`).join("")}</select></label>` : ""}
+          <select id="f-oficio-ponto"><option value="">—</option>${pontos.map((pt) => `<option value="${pt.id}" ${livre.ponto === pt.id ? "selected" : ""}>${esc(pt.nome)}</option>`).join("")}</select></label>
+        <div class="campo"><span>Classe</span><div class="chips">${Object.entries(PAPEIS).map(([k, n]) => `<button class="chip ${rascunho.papel === k ? "escolhida" : ""}" data-classe="${k}" title="${esc(e.papeis[k].desc)}">${n}</button>`).join("")}</div></div>` : ""}
     </section>`;
   },
 
@@ -383,7 +398,7 @@ const RENDER_PASSO = {
     <div class="resumo">
       <p class="resumo-nome">${esc(rascunho.nome)}${rascunho.idade ? `, ${esc(rascunho.idade)}` : ""}</p>
       <p class="runas-preview">${esc(paraRunas(rascunho.nome))}</p>
-      <p><b>${e.papeis[rascunho.papel].nome}</b> · ${PAPEIS[rascunho.papel]} · ${e.nome} ${e.mundo}</p>
+      <p><b>${esc((profissaoDe(rascunho, rascunho.origem) || { nome: e.papeis[rascunho.papel].nome }).nome)}</b> · ${e.nome} ${e.mundo}</p>
       <p>${Object.entries(e.atributos).map(([k, a]) => `${a.nome} <b>${rascunho.atributos[k]}</b>`).join(" · ")}</p>
       <p>${[...rascunho.habs.map((c) => Regras.hab(c).nomes[e.id]), ...rascunho.itens.map((c) => Regras.equip(c).nomes[e.id])].map(esc).join(" · ") || "Sem habilidades nem equipamento"}</p>
       <p class="resumo-tracos">${rascunho.tracos.map(esc).join(" · ")}</p>
@@ -399,14 +414,16 @@ function gruposRunas() {
 }
 
 function sugestaoHtml(eixo) {
-  const sug = Regras.sugestoes(rascunho.descricao);
+  const of = profissaoDe(rascunho, eixo);
+  const sug = Regras.sugestoes([rascunho.descricao, of && of.nome].filter(Boolean).join(" "));
   if (!sug.length) return "";
-  return `Sua descrição sugere: <b>${sug.map((c) => esc(Regras.hab(c).nomes[eixo])).join(", ")}</b>`;
+  return `Sua profissão sugere: <b>${sug.map((c) => esc(Regras.hab(c).nomes[eixo])).join(", ")}</b>`;
 }
 
 // Catálogo de habilidades ("hab") ou equipamentos ("item"), com orçamento visível
 function catalogoHtml(p, tipo, eixo) {
-  const sugeridas = tipo === "hab" ? Regras.sugestoes(p.descricao) : [];
+  const of = typeof profissaoDe === "function" ? profissaoDe(p, eixo) : null;
+  const sugeridas = tipo === "hab" ? Regras.sugestoes([p.descricao, of && of.nome].filter(Boolean).join(" ")) : [];
   const ehHab = tipo === "hab";
   const lista = ehHab ? HABILIDADES : EQUIPAMENTOS;
   const escolhidos = ehHab ? p.habs : p.itens;
@@ -466,9 +483,18 @@ $("#passo").addEventListener("click", (ev) => {
     else if (rascunho.tracos.length < REGRAS.tracosMax) rascunho.tracos.push(nome);
     else $("#aviso").textContent = `No máximo ${REGRAS.tracosMax} traços.`;
     t.classList.toggle("escolhida", rascunho.tracos.includes(nome));
+  } else if (t.dataset.sexo) {
+    rascunho.sexo = t.dataset.sexo;
+    document.querySelectorAll("[data-sexo]").forEach((b) => b.classList.toggle("escolhida", b === t));
+  } else if (t.dataset.classe) {
+    rascunho.papel = t.dataset.classe;
+    renderPasso();
   } else if (t.dataset.profissao) {
     rascunho.profissao = t.dataset.profissao;
-    if (rascunho.profissao === "outra") rascunho.profissaoLivre = rascunho.profissaoLivre || { nome: "", ponto: "" };
+    if (rascunho.profissao === "outra") {
+      rascunho.profissaoLivre = rascunho.profissaoLivre || { nome: "", ponto: "" };
+      rascunho.papel = null;
+    } else rascunho.papel = PROFISSOES.find((x) => x.id === rascunho.profissao).papel;
     renderPasso();
   } else if (t.dataset.papel) {
     rascunho.papel = t.dataset.papel;
@@ -500,10 +526,7 @@ $("#passo").addEventListener("input", (ev) => {
   } else if (t.id === "f-idade") rascunho.idade = t.value;
   else if (t.id === "f-oficio-nome") rascunho.profissaoLivre.nome = t.value;
   else if (t.id === "f-oficio-ponto") rascunho.profissaoLivre.ponto = t.value;
-  else if (t.id === "f-descricao") {
-    rascunho.descricao = t.value;
-    $("#sugestao-descricao").innerHTML = sugestaoHtml(rascunho.origem);
-  }
+
 });
 
 $("#btn-avancar").addEventListener("click", () => {
@@ -643,13 +666,12 @@ function renderEixo(p, id) {
     <div class="eixo-ficha">
       <p class="glifo-linha" title="Assinatura no ${e.nome}">${esc(glifoEstado(p, id))}</p>
       <div class="bloco papel-bloco">
-        <span class="rotulo">${e.papelRotulo}</span>
-        <strong>${e.papeis[p.papel].nome}</strong>
-        <span class="tag">${PAPEIS[p.papel]}</span>
         ${(() => {
           const of = profissaoDe(p, id);
           const pt = of && PONTOS_ENTRADA[id].find((x) => x.id === of.ponto);
-          return of ? `<p class="oficio"><span class="rotulo">Profissão</span> ${esc(of.nome)}${pt ? ` <span class="sub">· começa em ${esc(pt.nome)}</span>` : ""}</p>` : "";
+          return `<span class="rotulo">Profissão</span>
+            <strong>${esc(of ? of.nome : e.papeis[p.papel].nome)}</strong>
+            ${pt ? `<span class="sub">começa em ${esc(pt.nome)}</span>` : ""}`;
         })()}
       </div>
       <div class="bloco"><h3>Atributos</h3>

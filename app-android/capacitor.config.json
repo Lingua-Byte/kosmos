@@ -8,5 +8,6 @@
   },
   "android": {
     "backgroundColor": "#03050e"
-  }
+  },
+  "appendUserAgent": "KOSMOS-App"
 }

@@ -17,6 +17,7 @@ const Musica = (() => {
   let contextoTocando = null; // qual lista está carregada no player
   let trecho = null; // { videoIds, indice, inicio, fim, restantes, aoTerminar }
   let trocaAgendada = null;
+  let preparado = null; // contexto já carregado no player, esperando só o play
   const botao = document.getElementById("btn-musica");
   const titulo = document.getElementById("musica-titulo");
 
@@ -55,6 +56,12 @@ const Musica = (() => {
       events: {
         onReady: () => {
           pronto = true;
+          // deixa a trilha da tela inicial carregada: no clique de "Entrar", ela começa na hora
+          if (!querTocar) {
+            listaCarregada = lista(contextoAtual);
+            player.cuePlaylist(listaCarregada, 0);
+            preparado = contextoAtual;
+          }
           player.setVolume(volumeAtual());
           if (!Opcoes.get("musica").ligada) definirLigada(false);
           if (querTocar) tocarContexto(contextoAtual);
@@ -96,6 +103,14 @@ const Musica = (() => {
 
   function tocarContexto(contexto) {
     if (!pronto || !ligada || !querTocar || trecho) return;
+    if (preparado === contexto) {
+      preparado = null;
+      contextoTocando = contexto;
+      player.setLoop(true);
+      player.playVideo();
+      return;
+    }
+    preparado = null;
     contextoTocando = contexto;
     listaCarregada = lista(contexto);
     player.loadPlaylist(listaCarregada, 0);

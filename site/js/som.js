@@ -106,5 +106,26 @@ const Som = (() => {
     } catch {}
   }
 
-  return { tocar, ligado, alternar };
+  // o tique da digitação do texto: bem leve e agudo, com volume próprio no menu de opções
+  function tecla() {
+    const o = Opcoes.get("digitacao");
+    if (!o.ligada) return;
+    const a = audio();
+    if (!a) return;
+    try {
+      const t = a.currentTime;
+      const osc = a.createOscillator();
+      const g = a.createGain();
+      osc.type = "sine";
+      osc.frequency.value = 2600 + Math.random() * 500;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.05 * (o.volume / 100), t + 0.003);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.025);
+      osc.connect(g).connect(a.destination);
+      osc.start(t);
+      osc.stop(t + 0.04);
+    } catch {}
+  }
+
+  return { tocar, ligado, alternar, tecla };
 })();

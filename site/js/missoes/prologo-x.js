@@ -49,8 +49,8 @@ MISSOES["prologo-x"] = {
   eixo: "x",
   titulo: "O Pulso",
   subtitulo: "Prólogo · Eixo X — Urbano",
-  resumo: "Pessoas começam a caminhar todas na mesma direção. Algo no centro da cidade está chamando.",
-  fase: "Estranheza",
+  resumo: "Uma noite em que a cidade enlouquece. Pessoas caminham todas na mesma direção, Riscadores tomam as ruas. Sobreviva: comida, abrigo, quem você consegue salvar.",
+  fase: "Sobrevivência",
   relogioMax: 16, // a noite é longa: dá tempo de viver a cidade antes do chamado
   pistasParaMarco: 5,
   inicio: "abertura",
@@ -166,7 +166,9 @@ ${ctx.p.nome} ainda está ${ctx.trabalho.onde}. ${ctx.trabalho.desc}
 
 Lá fora, um homem de terno está parado ao lado de uma picape. Escreveu alguma coisa no vidro embaçado com o dedo, e não se mexe há vinte minutos.
 
-${gancho} ${traco}`;
+${gancho} ${traco}
+
+Uma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela.`;
       },
       opcoes: [
         { texto: "Começar a investigar", palavras: ["investig", "comec", "sair", "ir", "olhar"], resultado: { ir: "lugar:trabalho" } },
