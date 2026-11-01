@@ -1,0 +1,16 @@
+Léxicos do KOSMOS (lexico-*.json)
+=================================
+
+Gerados por ferramentas/gerar_lexico.py a partir de:
+
+- Princeton WordNet 3.0 — WordNet 3.0 Copyright 2006 by Princeton University. All rights reserved.
+  Licença: https://wordnet.princeton.edu/license-and-commercial-use
+- Open Multilingual Wordnet (OMW 2.0) — https://omwn.org
+  · Português: OpenWN-PT (CC BY-SA 3.0)
+  · Espanhol: Multilingual Central Repository (CC BY 3.0)
+  · Francês: WOLF (CeCILL-C)
+  · Italiano: MultiWordNet (CC BY 3.0)
+
+Os arquivos contêm só a ligação palavra → conceitos do KOSMOS, derivada dessas bases.
+Antes de publicar ou vender o jogo, confira as condições de cada licença
+(a parte em português, CC BY-SA, pede crédito e o mesmo tipo de licença para obras derivadas).

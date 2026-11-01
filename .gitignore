@@ -1,0 +1,18 @@
+# Documentos originais do autor (lore, fichas, artes): ficam só no computador
+*.docx
+*.pdf
+*.ico
+*.lnk
+/Design sem nome*.png
+/Artes/
+/Alphabetos/
+
+# Base do WordNet (63 MB): só serve para gerar os léxicos de novo
+/ferramentas/nltk_data/
+__pycache__/
+
+# Configurações locais
+/.claude/
+
+# Arquivo de sistema do Windows
+desktop.ini

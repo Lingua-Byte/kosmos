@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Revisão do Yudur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=17">
+  <style>
+    body { padding: 0; }
+    .revisao { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 24px 16px 80px; }
+    .revisao .painel { max-width: none; margin-bottom: 18px; }
+    .regras { display: grid; gap: 6px; margin: 0; padding-left: 18px; }
+    .runas-tabela { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; margin-top: 12px; }
+    .runas-tabela div { display: grid; grid-template-columns: 38px 1fr; gap: 0 10px; align-items: center; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--painel-borda); background: rgba(0, 0, 0, 0.25); }
+    .runas-tabela b { grid-row: 1 / 3; font-size: 1.8rem; font-weight: 400; color: var(--acento); text-align: center; }
+    .runas-tabela strong { font-family: var(--fonte-titulo); font-size: 0.9rem; }
+    .runas-tabela span { font-size: 0.82rem; color: var(--texto-suave); line-height: 1.25; }
+    .controles { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+    .controles input { flex: 1; min-width: 220px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--painel-borda); background: rgba(0, 0, 0, 0.35); color: var(--texto); font: inherit; }
+    .contagem { color: var(--texto-suave); font-size: 0.95rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-family: var(--fonte-titulo); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--texto-suave); padding: 8px; border-bottom: 1px solid var(--painel-borda); position: sticky; top: 0; background: rgba(28, 20, 12, 0.97); z-index: 1; }
+    td { padding: 8px; border-bottom: 1px solid rgba(232, 180, 106, 0.12); vertical-align: top; }
+    td.runa { font-size: 1.7rem; color: var(--acento); white-space: nowrap; text-shadow: 0 0 10px rgba(232, 180, 106, 0.35); }
+    td.palavra { font-family: var(--fonte-titulo); font-weight: 600; }
+    td.leitura { font-style: italic; }
+    td.pt { font-size: 0.85rem; color: var(--texto-suave); max-width: 260px; }
+    td.cat { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--texto-suave); }
+    .marcar { display: flex; gap: 4px; }
+    .marcar button { width: 34px; height: 30px; border-radius: 6px; border: 1px solid var(--painel-borda); background: transparent; color: var(--texto-suave); }
+    .marcar button.on[data-marca="ok"] { background: #4f7a3a; color: #fff; border-color: #6fa552; }
+    .marcar button.on[data-marca="mudar"] { background: #8a4a2a; color: #fff; border-color: #c06a3a; }
+    tr.mudar td { background: rgba(192, 106, 58, 0.08); }
+    tr.ok td.palavra::after { content: " ✓"; color: #8bd06a; }
+    .nota { width: 100%; margin-top: 6px; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--painel-borda); background: rgba(0, 0, 0, 0.35); color: var(--texto); font: inherit; font-size: 0.9rem; }
+    .colisoes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .colisoes span { padding: 4px 10px; border-radius: 999px; border: 1px solid var(--painel-borda); font-size: 0.9rem; }
+    .colisoes b { color: var(--acento); font-weight: 400; font-size: 1.1rem; margin-right: 4px; }
+    .barra-final { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; display: flex; gap: 12px; justify-content: center; align-items: center; padding: 12px 16px; background: rgba(20, 13, 7, 0.96); border-top: 1px solid var(--painel-borda); }
+    .barra-final .sub { margin: 0; }
+    @media (max-width: 700px) {
+      td.pt, th.pt, td.cat, th.cat { display: none; }
+      td.runa { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body class="tema-y">
+  <main class="revisao">
+    <section class="painel">
+      <h2>Revisão do Yudur</h2>
+      <p class="sub">Todas as palavras-runa feitas à mão. Marque ✓ no que está bom e ✎ no que quer mudar (com uma nota). No fim, copie as anotações e cole na conversa.</p>
+      <ul class="regras">
+        <li>Cada runa é uma <b>imagem</b>. A primeira runa diz <b>o que a coisa é</b>; as outras, <b>como ela é</b> ou <b>de quê</b>.</li>
+        <li>Palavras têm de 1 a 3 runas. Runa repetida amplifica (ᛟᛟ cidade = muitas casas). ᚾ antes nega (ᚾᛞ = sem dia = escuridão). ᛫ depois diminui (ᛏ᛫ = pequena lança = faca).</li>
+        <li>Só vale o que faz sentido num mundo medieval de fantasia. O resto é escrito letra a letra.</li>
+      </ul>
+      <div id="tabela-runas" class="runas-tabela"></div>
+    </section>
+
+    <section class="painel">
+      <h3>Mesmas runas, sentidos ligados (de propósito)</h3>
+      <p class="sub">Verbo e substantivo da mesma ideia, ou a runa sozinha com seus sentidos antigos. Se algum par incomodar, marque a palavra na lista abaixo.</p>
+      <div id="colisoes" class="colisoes"></div>
+    </section>
+
+    <section class="painel">
+      <div class="controles">
+        <input id="busca" placeholder="Buscar palavra, runa ou leitura…" autocomplete="off">
+        <span id="contagem" class="contagem"></span>
+      </div>
+      <div id="categorias" class="chips"></div>
+      <table>
+        <thead><tr><th>Runas</th><th>Palavra</th><th>Leitura</th><th class="cat">Categoria</th><th class="pt">Em português também</th><th>Revisão</th></tr></thead>
+        <tbody id="linhas"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <div class="barra-final">
+    <p class="sub" id="resumo"></p>
+    <button id="copiar" class="btn-primario">Copiar anotações</button>
+  </div>
+
+  <script src="js/data.js?v=17"></script>
+  <script src="js/yudur.js?v=17"></script>
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const CHAVE = "kosmos.revisao-yudur";
+    let marcas = {};
+    try { marcas = JSON.parse(localStorage.getItem(CHAVE)) || {}; } catch {}
+    const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(marcas)); } catch {} };
+
+    const palavras = YUDUR.palavras.map(([palavra, runas, leitura, cat, pt]) => ({
+      palavra, runas, leitura, cat,
+      pt: pt.split(/\s+/).filter(Boolean).map((s) => s.replace("$", "")).join(", "),
+    }));
+    let categoria = "Todas";
+    let busca = "";
+
+    // Tabela das runas
+    $("#tabela-runas").innerHTML = Object.entries(YUDUR.runas)
+      .map(([r, [img, sentidos]]) => `<div><b>${r}</b><strong>${esc(img)}</strong><span>${esc(sentidos)}</span></div>`).join("");
+
+    // Pares com as mesmas runas
+    const grupos = {};
+    palavras.forEach((w) => (grupos[w.runas] ||= []).push(w.palavra));
+    $("#colisoes").innerHTML = Object.entries(grupos).filter(([, v]) => v.length > 1)
+      .map(([r, v]) => `<span><b>${r}</b>${esc(v.join(" · "))}</span>`).join("");
+
+    const categorias = ["Todas", ...new Set(palavras.map((w) => w.cat))];
+    function render() {
+      $("#categorias").innerHTML = categorias.map((c) => `<button class="chip ${c === categoria ? "escolhida" : ""}" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
+      const b = busca.toLowerCase();
+      const lista = palavras.filter((w) =>
+        (categoria === "Todas" || w.cat === categoria) &&
+        (!b || w.palavra.toLowerCase().includes(b) || w.leitura.toLowerCase().includes(b) || w.runas.includes(busca) || w.pt.includes(b)));
+      $("#linhas").innerHTML = lista.map((w) => {
+        const m = marcas[w.palavra] || {};
+        return `<tr class="${m.marca || ""}" data-palavra="${esc(w.palavra)}">
+          <td class="runa">${w.runas}</td>
+          <td class="palavra">${esc(w.palavra)}</td>
+          <td class="leitura">${esc(w.leitura)}</td>
+          <td class="cat">${esc(w.cat)}</td>
+          <td class="pt">${esc(w.pt)}</td>
+          <td><div class="marcar">
+              <button data-marca="ok" class="${m.marca === "ok" ? "on" : ""}" title="Está bom">✓</button>
+              <button data-marca="mudar" class="${m.marca === "mudar" ? "on" : ""}" title="Quero mudar">✎</button>
+            </div>
+            ${m.marca === "mudar" ? `<input class="nota" data-nota placeholder="O que mudar?" value="${esc(m.nota || "")}">` : ""}
+          </td>
+        </tr>`;
+      }).join("");
+      const total = Object.values(marcas);
+      $("#contagem").textContent = `${lista.length} de ${palavras.length} palavras`;
+      $("#resumo").textContent = `${total.filter((m) => m.marca === "ok").length} aprovadas · ${total.filter((m) => m.marca === "mudar").length} para mudar · ${palavras.length - total.filter((m) => m.marca).length} sem revisão`;
+    }
+
+    document.addEventListener("click", (ev) => {
+      const t = ev.target.closest("button");
+      if (!t) return;
+      if (t.dataset.cat) { categoria = t.dataset.cat; return render(); }
+      if (t.dataset.marca) {
+        const palavra = t.closest("tr").dataset.palavra;
+        const atual = marcas[palavra] || {};
+        marcas[palavra] = atual.marca === t.dataset.marca ? {} : { ...atual, marca: t.dataset.marca };
+        salvar();
+        render();
+        if (t.dataset.marca === "mudar") document.querySelector(`tr[data-palavra="${CSS.escape(palavra)}"] [data-nota]`)?.focus();
+        return;
+      }
+      if (t.id === "copiar") {
+        const mudar = palavras.filter((w) => marcas[w.palavra]?.marca === "mudar")
+          .map((w) => `- ${w.palavra} ${w.runas} (${w.leitura}): ${marcas[w.palavra].nota || "mudar"}`);
+        const ok = palavras.filter((w) => marcas[w.palavra]?.marca === "ok").length;
+        const texto = `Revisão do Yudur — ${ok} aprovadas, ${mudar.length} para mudar:\n${mudar.join("\n") || "(nenhuma)"}`;
+        navigator.clipboard?.writeText(texto).then(() => { t.textContent = "Copiado!"; setTimeout(() => (t.textContent = "Copiar anotações"), 1500); });
+      }
+    });
+    document.addEventListener("input", (ev) => {
+      if (ev.target.id === "busca") { busca = ev.target.value.trim(); return render(); }
+      if (ev.target.dataset.nota !== undefined) {
+        const palavra = ev.target.closest("tr").dataset.palavra;
+        marcas[palavra] = { ...marcas[palavra], nota: ev.target.value };
+        salvar();
+      }
+    });
+    render();
+  </script>
+</body>
+</html>

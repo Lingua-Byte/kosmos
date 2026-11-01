@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>KOSMOS — Convergência Cósmica</title>
+  <meta name="description" content="RPG de horror cósmico em três eixos: Urbano, Medieval e Espacial.">
+  <meta name="theme-color" content="#03050e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icones/icone-192.png">
+  <link rel="apple-touch-icon" href="icones/icone-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&family=Exo+2:wght@300;400;600&family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=21">
+</head>
+<body>
+  <canvas id="galaxia" aria-hidden="true"></canvas>
+
+  <!-- Player do YouTube fica fora da tela; só o áudio importa -->
+  <div class="yt-oculto" aria-hidden="true"><div id="yt-player"></div></div>
+
+  <div class="controle-musica">
+    <span id="musica-titulo" class="musica-titulo"></span>
+    <button id="btn-musica" class="btn-redondo" hidden aria-pressed="true" title="Pausar / tocar música">
+      <span class="eq"><i></i><i></i><i></i></span>
+    </button>
+    <button id="btn-proxima" class="btn-redondo" title="Próxima música">⏭</button>
+  </div>
+
+  <button id="btn-tradutor" class="btn-tradutor" hidden title="Tradutor dos alfabetos">
+    <span class="glifos">∃ ᛉ ◉</span> Tradutor
+  </button>
+
+  <!-- 1. Tela inicial -->
+  <section id="tela-inicio" class="tela ativa">
+    <div class="inicio-conteudo">
+      <p class="sobretitulo">Convergência Cósmica</p>
+      <h1 class="logo">KOSMOS</h1>
+      <p class="pergunta">“O que acontece quando a realidade começa a perceber a si mesma através de nós?”</p>
+      <button id="btn-entrar" class="btn-entrar">
+        <span>Entrar no Kosmos</span>
+      </button>
+      <p class="dica">♪ com som</p>
+    </div>
+  </section>
+
+  <!-- 2. Transição -->
+  <section id="tela-transicao" class="tela" aria-live="polite">
+    <p id="frase-transicao" class="frase-transicao"></p>
+    <div id="eixos-transicao" class="eixos-transicao">
+      <div class="eixo-glifo" data-eixo="x"><b>∃</b><span>Eixo X · Urbano</span></div>
+      <div class="eixo-glifo" data-eixo="y"><b>ᛉ</b><span>Eixo Y · Medieval</span></div>
+      <div class="eixo-glifo" data-eixo="z"><b>◉</b><span>Eixo Z · Espacial</span></div>
+    </div>
+    <button id="btn-pular" class="btn-texto pular">Pular ›</button>
+  </section>
+
+  <!-- 3. Personagens salvos -->
+  <section id="tela-personagens" class="tela">
+    <div class="painel painel-cosmos">
+      <h2>Quem atravessa?</h2>
+      <ul id="lista-personagens" class="lista-personagens"></ul>
+      <div class="acoes-personagens">
+        <button id="btn-jogar" class="btn-primario">▶ Jogar</button>
+        <button id="btn-novo" class="btn-secundario">Criar novo personagem</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3b. A Mesa: quem joga, qual missão -->
+  <section id="tela-mesa" class="tela">
+    <div id="mesa" class="painel mesa"></div>
+  </section>
+
+  <!-- 3c. Jogo: cena -->
+  <section id="tela-cena" class="tela">
+    <div id="cena" class="cena"></div>
+  </section>
+
+  <!-- 4. Criação de ficha -->
+  <section id="tela-criacao" class="tela">
+    <div class="criacao">
+      <header class="criacao-topo">
+        <button id="btn-voltar" class="btn-texto">‹ Voltar</button>
+        <ol id="passos" class="passos"></ol>
+      </header>
+      <div id="passo" class="passo"></div>
+      <footer class="criacao-rodape">
+        <p id="aviso" class="aviso"></p>
+        <button id="btn-avancar" class="btn-primario">Continuar</button>
+      </footer>
+    </div>
+  </section>
+
+  <!-- 5. Ficha -->
+  <section id="tela-ficha" class="tela">
+    <div id="ficha" class="ficha"></div>
+  </section>
+
+  <!-- 6. Tradutor dos alfabetos -->
+  <section id="tela-tradutor" class="tela">
+    <div class="painel tradutor">
+      <header class="tradutor-topo">
+        <button id="tr-voltar" class="btn-texto">‹ Voltar</button>
+        <h2>Línguas da Convergência</h2>
+        <label class="campo leitor"><span>Lendo como</span><select id="tr-leitor"></select></label>
+        <p id="tr-titulo-eixo" class="sub"></p>
+      </header>
+      <div class="modos vistas">
+        <button class="chip" data-tr-vista="traduzir">Traduzir</button>
+        <button class="chip" data-tr-vista="dicionario">Dicionário</button>
+        <button class="chip" data-tr-vista="raizes">Raízes</button>
+      </div>
+      <nav class="abas" role="tablist">
+        <button role="tab" class="aba aba-x" data-tr-eixo="x"><b>∃</b> Urbano</button>
+        <button role="tab" class="aba aba-y" data-tr-eixo="y"><b>ᛉ</b> Medieval</button>
+        <button role="tab" class="aba aba-z" data-tr-eixo="z"><b>◉</b> Espacial</button>
+      </nav>
+      <div class="aba-conteudo">
+        <div id="vista-traduzir">
+          <div class="modos">
+            <button class="chip" data-tr-modo="codificar">Português → símbolos</button>
+            <button class="chip" data-tr-modo="decodificar">Símbolos → português</button>
+          </div>
+          <div class="linha-idioma" id="linha-idioma">
+            <label class="campo"><span>Idioma do texto</span><select id="tr-idioma"></select></label>
+            <span id="tr-idioma-status" class="sub"></span>
+          </div>
+          <label class="campo">
+            <span class="sr">Texto para traduzir</span>
+            <textarea id="tr-entrada" rows="3" maxlength="600"></textarea>
+          </label>
+          <div class="tr-acoes">
+            <button id="tr-frase" class="btn-secundario">Frase universal</button>
+            <button id="tr-limpar" class="btn-texto">Limpar</button>
+          </div>
+          <div id="tr-formas" class="chips formas"></div>
+          <div id="tr-teclado" class="teclado" hidden></div>
+          <div class="tr-saida-caixa">
+            <div id="tr-saida" class="tr-saida" aria-live="polite"></div>
+            <button id="tr-copiar" class="btn-texto copiar">Copiar</button>
+          </div>
+          <div id="tr-leitura" class="tr-leitura"></div>
+        </div>
+        <div id="vista-dicionario" hidden>
+          <div class="dic-busca">
+            <input id="dic-busca" placeholder="Buscar palavra…" autocomplete="off">
+            <span id="dic-contagem" class="sub"></span>
+          </div>
+          <div id="dic-categorias" class="chips"></div>
+          <div id="dic-lista" class="dic-lista"></div>
+          <p class="creditos">Além dos conceitos acima, cerca de 200 mil palavras em português, inglês, espanhol, francês e italiano são traduzidas pelo léxico gerado a partir do Princeton WordNet 3.0 e do Open Multilingual Wordnet. Busque qualquer palavra.</p>
+        </div>
+        <div id="vista-raizes" hidden></div>
+      </div>
+    </div>
+  </section>
+
+  <dialog id="dialogo-dados" class="dialogo-dados">
+    <div id="dados-corpo"></div>
+  </dialog>
+
+  <div id="avisos" class="avisos" aria-live="polite"></div>
+
+  <script src="js/data.js?v=21"></script>
+  <script src="js/yudur.js?v=21"></script>
+  <script src="js/lingua.js?v=21"></script>
+  <script src="js/regras.js?v=21"></script>
+  <script src="js/galaxia.js?v=21"></script>
+  <script src="js/musica.js?v=21"></script>
+  <script src="js/app.js?v=21"></script>
+  <script src="js/tradutor.js?v=21"></script>
+  <script src="js/dados.js?v=21"></script>
+  <script src="js/missoes/prologo-x.js?v=21"></script>
+  <script src="js/cenas.js?v=21"></script>
+  <script src="js/recarregar.js?v=21"></script>
+</body>
+</html>
