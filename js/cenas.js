@@ -274,8 +274,7 @@ const Cenas = (() => {
           <button class="btn-texto narrador-ligar" data-acao="narrador-voz" hidden></button>
           <span class="narrador-estado sub"></span>
         </span>` : ""}
-        <button class="btn-texto narrador-ligar" data-acao="vozes" aria-pressed="${Vozes.ligadas()}">${Vozes.ligadas() ? "🗣 Vozes" : "🗣 Sem vozes"}</button>
-        <button class="btn-texto narrador-ligar" data-acao="sons" aria-pressed="${Som.ligado()}">${Som.ligado() ? "🔔 Sons" : "🔕 Sem sons"}</button>
+        <button class="btn-texto narrador-ligar" data-acao="opcoes">⚙ Opções</button>
       </header>
       <main class="cena-corpo" id="cena-corpo">
         ${corpo}
@@ -842,14 +841,7 @@ const Cenas = (() => {
     }
     const acao = t.dataset.acao;
     if (acao === "chamado") return entrarCena("chamado");
-    if (acao === "sons") {
-      Som.alternar();
-      return render();
-    }
-    if (acao === "vozes") {
-      Vozes.alternar();
-      return render();
-    }
+    if (acao === "opcoes") return Opcoes.abrir();
     if (acao === "seguir" && resultado) return resultado.depois();
     if (acao === "confirmar" && pendente) {
       const p = pendente;

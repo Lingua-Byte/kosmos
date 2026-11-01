@@ -1,0 +1,201 @@
+// Opções do jogo: volumes e liga/desliga de música, sons dos menus, vozes dos personagens e narrador,
+// seu próprio serviço de música e instalar o app. Fica guardado no aparelho.
+// O menu abre pelo botão ⚙ (sempre no canto, junto do controle de música).
+
+const Opcoes = (() => {
+  const CHAVE = "kosmos.opcoes";
+  const PADRAO = {
+    musica: { ligada: true, volume: 60 },
+    sons: { ligados: true, volume: 80 },
+    vozes: { ligadas: true, volume: 100 },
+    narrador: { volume: 100 },
+  };
+  let atual = null;
+
+  function ler() {
+    if (atual) return atual;
+    let salvo = {};
+    try {
+      salvo = JSON.parse(localStorage.getItem(CHAVE)) || {};
+    } catch {}
+    atual = {};
+    for (const k of Object.keys(PADRAO)) atual[k] = { ...PADRAO[k], ...(salvo[k] || {}) };
+    // escolhas antigas (antes deste menu)
+    try {
+      if (!salvo.sons && localStorage.getItem("kosmos.sons") === "0") atual.sons.ligados = false;
+      if (!salvo.vozes && localStorage.getItem("kosmos.vozes") === "0") atual.vozes.ligadas = false;
+    } catch {}
+    return atual;
+  }
+
+  function mudar(grupo, mudancas) {
+    ler();
+    Object.assign(atual[grupo], mudancas);
+    try {
+      localStorage.setItem(CHAVE, JSON.stringify(atual));
+    } catch {}
+    aplicar(grupo);
+  }
+
+  // avisa cada parte do jogo do que mudou
+  function aplicar(grupo) {
+    const o = ler();
+    if (grupo === "musica" && typeof Musica !== "undefined") {
+      Musica.volume(o.musica.volume);
+      Musica.definirLigada(o.musica.ligada);
+    }
+    if (grupo === "vozes" && typeof Vozes !== "undefined" && !o.vozes.ligadas) Vozes.parar();
+  }
+
+  const get = (grupo) => ler()[grupo];
+
+  // ---------- Instalar o app ----------
+  let pedidoInstalar = null;
+  addEventListener("beforeinstallprompt", (ev) => {
+    ev.preventDefault();
+    pedidoInstalar = ev;
+  });
+  const instalado = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+
+  // ---------- O menu ----------
+  const SERVICOS = [
+    ["YouTube Music", "https://music.youtube.com/playlist?list=PL4qiQiekZJhaGHSaOrmfxzpOyo64ap_ok", "a playlist do KOSMOS"],
+    ["Spotify", "https://open.spotify.com/", ""],
+    ["Deezer", "https://www.deezer.com/", ""],
+    ["Apple Music", "https://music.apple.com/", ""],
+  ];
+
+  function linha(grupo, chaveLigado, rotulo, desc, teste) {
+    const o = get(grupo);
+    const ligado = chaveLigado ? o[chaveLigado] : true;
+    return `
+      <div class="op-linha">
+        <div class="op-cabeca">
+          <strong>${rotulo}</strong>
+          ${chaveLigado ? `<button class="op-chave ${ligado ? "on" : ""}" data-op-ligar="${grupo}:${chaveLigado}" aria-pressed="${ligado}">${ligado ? "Ligado" : "Desligado"}</button>` : ""}
+        </div>
+        ${desc ? `<p class="op-desc">${desc}</p>` : ""}
+        <div class="op-volume">
+          <span>Volume</span>
+          <input type="range" min="0" max="100" step="5" value="${o.volume}" data-op-volume="${grupo}" aria-label="Volume: ${rotulo}">
+          <b data-op-valor="${grupo}">${o.volume}%</b>
+          ${teste ? `<button class="op-testar" data-op-testar="${grupo}">Testar</button>` : ""}
+        </div>
+      </div>`;
+  }
+
+  function html() {
+    const narr = typeof Narrador !== "undefined" && Narrador.config ? Narrador.config() : null;
+    return `
+      <div class="op-topo"><h2>Opções</h2><button class="op-fechar" data-op-fechar>Fechar</button></div>
+      <section class="op-secao"><h3>Som</h3>
+        ${linha("musica", "ligada", "Música do jogo", "A trilha de cada eixo (YouTube).")}
+        ${linha("sons", "ligados", "Sons dos menus", "Os cliques e “clunks” de abrir mapa, diário, bolsa, ficha.", true)}
+        ${linha("vozes", "ligadas", "Vozes dos personagens", "Cada personagem com a sua voz quando fala.", true)}
+        ${narr ? `
+        <div class="op-linha">
+          <div class="op-cabeca"><strong>Narrador</strong>
+            <button class="op-chave ${narr.ligado ? "on" : ""}" data-op-narrador="ligado" aria-pressed="${narr.ligado}">${narr.ligado ? "Ligado" : "Desligado"}</button></div>
+          <p class="op-desc">Lê em voz alta o texto das cenas.</p>
+          <div class="op-volume"><span>Voz</span>
+            <select data-op-narrador="voz"><option value="aparelho" ${narr.voz !== "neural" ? "selected" : ""}>Do aparelho</option><option value="neural" ${narr.voz === "neural" ? "selected" : ""}>Neural (baixa ~60 MB uma vez)</option></select></div>
+          <div class="op-volume"><span>Volume</span>
+            <input type="range" min="0" max="100" step="5" value="${get("narrador").volume}" data-op-volume="narrador" aria-label="Volume do narrador">
+            <b data-op-valor="narrador">${get("narrador").volume}%</b></div>
+        </div>` : ""}
+      </section>
+      <section class="op-secao"><h3>Sua música</h3>
+        <p class="op-desc">Prefere ouvir a sua própria música enquanto joga? Desligue a música do jogo e abra o seu app. Os sons, as vozes e o narrador continuam por cima.</p>
+        <button class="op-acao" data-op-minha-musica>Usar a minha música (desliga a trilha do jogo)</button>
+        <div class="op-servicos">${SERVICOS.map(([nome, url, extra]) => `<a href="${url}" target="_blank" rel="noopener" class="op-servico">${nome}${extra ? `<small>${extra}</small>` : ""}</a>`).join("")}</div>
+        <p class="op-desc pequeno">Tocar o Spotify, o Deezer ou o Apple Music <i>dentro</i> do jogo exige uma conta de desenvolvedor em cada serviço (e Premium, no caso do Spotify). Dá para fazer depois, se você quiser.</p>
+      </section>
+      <section class="op-secao"><h3>App</h3>
+        ${instalado()
+          ? `<p class="op-desc">Você está jogando pelo app instalado. Ele se atualiza sozinho sempre que o jogo muda.</p>`
+          : `<p class="op-desc">Instale o KOSMOS como app (Android ou PC): abre em tela cheia, com ícone próprio, e se atualiza sozinho.</p>
+             <button class="op-acao" data-op-instalar>Instalar o app</button>
+             <p class="op-desc pequeno" data-op-instalar-ajuda hidden>No Android: menu ⋮ do Chrome → <b>Instalar app</b> (ou Adicionar à tela inicial). No PC: ícone de instalar na barra de endereço do Chrome ou do Edge.</p>`}
+      </section>`;
+  }
+
+  let dialogo = null;
+
+  function abrir() {
+    if (!dialogo) {
+      dialogo = document.createElement("dialog");
+      dialogo.className = "dialogo-opcoes";
+      document.body.append(dialogo);
+      dialogo.addEventListener("click", clique);
+      dialogo.addEventListener("input", entrada);
+      dialogo.addEventListener("change", troca);
+    }
+    dialogo.innerHTML = html();
+    if (typeof Som !== "undefined") Som.tocar("abrir");
+    dialogo.showModal();
+  }
+
+  function fechar() {
+    if (typeof Som !== "undefined") Som.tocar("fechar");
+    dialogo.close();
+  }
+
+  function clique(ev) {
+    const t = ev.target.closest("button, a");
+    if (!t) {
+      if (ev.target === dialogo) fechar(); // tocou fora
+      return;
+    }
+    if (t.hasAttribute("data-op-fechar")) return fechar();
+    if (t.dataset.opLigar) {
+      const [grupo, chave] = t.dataset.opLigar.split(":");
+      mudar(grupo, { [chave]: !get(grupo)[chave] });
+      if (typeof Som !== "undefined") Som.tocar("clique");
+      dialogo.innerHTML = html();
+    }
+    if (t.dataset.opNarrador === "ligado") {
+      Narrador.configurar({ ligado: !Narrador.config().ligado });
+      if (typeof Som !== "undefined") Som.tocar("clique");
+      dialogo.innerHTML = html();
+    }
+    if (t.dataset.opTestar === "sons") Som.tocar("abrir");
+    if (t.dataset.opTestar === "vozes") Vozes.testar();
+    if (t.hasAttribute("data-op-minha-musica")) {
+      mudar("musica", { ligada: false });
+      dialogo.innerHTML = html();
+    }
+    if (t.hasAttribute("data-op-instalar")) {
+      if (pedidoInstalar) {
+        pedidoInstalar.prompt();
+        pedidoInstalar = null;
+      } else dialogo.querySelector("[data-op-instalar-ajuda]").hidden = false;
+    }
+  }
+
+  function entrada(ev) {
+    const t = ev.target;
+    if (!t.dataset.opVolume) return;
+    const grupo = t.dataset.opVolume;
+    mudar(grupo, { volume: +t.value });
+    dialogo.querySelector(`[data-op-valor="${grupo}"]`).textContent = `${t.value}%`;
+  }
+
+  function troca(ev) {
+    const t = ev.target;
+    if (t.dataset.opVolume === "sons") Som.tocar("clique"); // ouvir o volume novo
+    if (t.dataset.opNarrador === "voz") Narrador.configurar({ voz: t.value });
+  }
+
+  // o botão ⚙ fica no canto, junto do controle de música
+  addEventListener("DOMContentLoaded", () => {
+    const b = document.createElement("button");
+    b.className = "btn-redondo btn-opcoes";
+    b.title = "Opções (volumes, música, app)";
+    b.setAttribute("aria-label", "Opções");
+    b.textContent = "⚙";
+    b.addEventListener("click", abrir);
+    document.querySelector(".controle-musica")?.append(b);
+  });
+
+  return { get, mudar, abrir };
+})();

@@ -55,7 +55,8 @@ const Musica = (() => {
       events: {
         onReady: () => {
           pronto = true;
-          player.setVolume(60);
+          player.setVolume(volumeAtual());
+          if (!Opcoes.get("musica").ligada) definirLigada(false);
           if (querTocar) tocarContexto(contextoAtual);
         },
         onStateChange: (e) => {
@@ -172,15 +173,25 @@ const Musica = (() => {
     if (!trecho) tocarContexto(contextoAtual);
   }
 
-  botao.addEventListener("click", () => {
-    if (!pronto) return;
-    ligada = !ligada;
-    if (ligada) {
-      if (contextoTocando === null && !trecho) tocarContexto(contextoAtual);
-      else player.playVideo();
-    } else player.pauseVideo();
+  const volumeAtual = () => (typeof Opcoes !== "undefined" ? Opcoes.get("musica").volume : 60);
+
+  // liga ou desliga a trilha (o botão do canto e o menu de opções usam isto)
+  function definirLigada(sim) {
+    ligada = sim;
+    if (pronto) {
+      if (ligada && querTocar) {
+        if (contextoTocando === null && !trecho) tocarContexto(contextoAtual);
+        else player.playVideo();
+      } else if (!ligada) player.pauseVideo();
+    }
     botao.classList.toggle("tocando", ligada);
     botao.setAttribute("aria-pressed", String(ligada));
+  }
+
+  botao.addEventListener("click", () => {
+    if (!pronto) return;
+    if (typeof Opcoes !== "undefined") Opcoes.mudar("musica", { ligada: !ligada });
+    else definirLigada(!ligada);
   });
 
   document.getElementById("btn-proxima").addEventListener("click", () => {
@@ -192,7 +203,10 @@ const Musica = (() => {
   });
 
   return {
-    tocar, tocarTrecho, pararTrecho, retomar, contexto,
+    tocar, tocarTrecho, pararTrecho, retomar, contexto, definirLigada,
+    volume(v) {
+      if (pronto) player.setVolume(v);
+    },
     // a música devia estar tocando mas algo (a voz do narrador, no celular) pausou: volta a tocar
     garantir() {
       if (!pronto || !ligada || !querTocar) return;

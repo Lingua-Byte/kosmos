@@ -45,5 +45,9 @@
   <script src="js/motor.js?v=1"></script>
   <script src="js/nuvem.js?v=2"></script>
   <script src="js/oficina.js?v=4"></script>
+  <script>
+    // app instalável (Android e PC): funciona sem internet e se atualiza sozinho (sw.js)
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+  </script>
 </body>
 </html>
