@@ -1,16 +1,22 @@
 // Trilha sonora via player oficial do YouTube (escondido).
-// Toca Solar Wind primeiro e depois segue para a playlist do Kosmos.
+// Cada contexto (tela inicial, prólogo, Eixo X/Y/Z) tem a sua lista em MUSICA.contextos;
+// quando o jogador muda de tela ou de eixo, a trilha troca junto.
+// As listas são carregadas inteiras no player (loadPlaylist com ids), então a passagem de uma
+// faixa para a outra é feita pelo próprio YouTube — funciona também no celular.
 // Navegadores só liberam o som depois de um clique, por isso Musica.tocar()
 // é chamado pelo botão "Entrar no Kosmos".
-// Cenas podem tocar um trecho de uma música em loop (Musica.tocarTrecho) e depois a playlist volta.
+// Cenas podem tocar um trecho de uma música em loop (Musica.tocarTrecho) e depois a trilha volta.
 
 const Musica = (() => {
+  const DESBLOQUEADAS = "kosmos.musicas-desbloqueadas";
   let player = null;
   let pronto = false;
   let querTocar = false;
-  let naPlaylist = false;
   let ligada = true;
-  let trecho = null; // { videoId, inicio, fim, restantes, aoTerminar }
+  let contextoAtual = "inicio";
+  let contextoTocando = null; // qual lista está carregada no player
+  let trecho = null; // { videoIds, indice, inicio, fim, restantes, aoTerminar }
+  let trocaAgendada = null;
   const botao = document.getElementById("btn-musica");
   const titulo = document.getElementById("musica-titulo");
 
@@ -18,53 +24,104 @@ const Musica = (() => {
   tag.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
 
+  function desbloqueadas() {
+    try {
+      return JSON.parse(localStorage.getItem(DESBLOQUEADAS)) || [];
+    } catch {
+      return [];
+    }
+  }
+
+  // Faixas que a gravadora não deixa tocar fora do YouTube (erro do player): ficam de fora nesta visita
+  const bloqueadas = new Set();
+
+  function lista(contexto) {
+    let base = MUSICA.contextos[contexto] || MUSICA.contextos.inicio;
+    if (contexto === "inicio") {
+      // faixas que já tocaram numa missão entram na tela inicial, depois da primeira
+      const extras = desbloqueadas().filter((id) => !base.includes(id));
+      base = [base[0], ...extras, ...base.slice(1)];
+    }
+    const livres = base.filter((id) => !bloqueadas.has(id));
+    return livres.length ? livres : MUSICA.contextos.inicio.slice(0, 1);
+  }
+
   window.onYouTubeIframeAPIReady = () => {
     player = new YT.Player("yt-player", {
       width: 200,
       height: 200,
-      videoId: MUSICA.principal,
+      videoId: lista("inicio")[0],
       playerVars: { autoplay: 0, controls: 0, disablekb: 1, playsinline: 1 },
       events: {
         onReady: () => {
           pronto = true;
           player.setVolume(60);
-          if (querTocar) player.playVideo();
+          if (querTocar) tocarContexto(contextoAtual);
         },
         onStateChange: (e) => {
           if (e.data === YT.PlayerState.PLAYING) {
             const dados = player.getVideoData();
             titulo.textContent = dados && dados.title ? dados.title : "";
             botao.classList.add("tocando");
+            registrarDesbloqueio(dados && dados.video_id);
           }
-          if (e.data !== YT.PlayerState.ENDED) return;
-          if (trecho) return repetirTrecho();
-          if (!naPlaylist) irParaPlaylist();
+          if (e.data === YT.PlayerState.ENDED && trecho) repetirTrecho();
         },
         onError: () => {
-          if (trecho) return encerrarTrecho(false);
-          // O dono da faixa pode bloquear a reprodução fora do YouTube: pula para a próxima
-          if (!naPlaylist) irParaPlaylist();
-          else player.nextVideo();
+          if (trecho) return tentarOutraVersao();
+          // faixa bloqueada fora do YouTube: tira da lista e recomeça o contexto sem ela
+          const indice = Math.max(0, player.getPlaylistIndex ? player.getPlaylistIndex() : 0);
+          const id = listaCarregada[indice] || listaCarregada[0];
+          if (id) bloqueadas.add(id);
+          contextoTocando = null;
+          tocarContexto(contextoAtual);
         },
       },
     });
   };
 
-  function irParaPlaylist() {
-    naPlaylist = true;
-    player.loadPlaylist({ list: MUSICA.playlist, listType: "playlist" });
+  // Uma faixa que desbloqueia a tela inicial só conta se tocou durante uma missão
+  function registrarDesbloqueio(id) {
+    if (!id || !MUSICA.desbloqueiaInicio.includes(id)) return;
+    if (!document.getElementById("tela-cena")?.classList.contains("ativa")) return;
+    const ja = desbloqueadas();
+    if (ja.includes(id)) return;
+    try {
+      localStorage.setItem(DESBLOQUEADAS, JSON.stringify([...ja, id]));
+    } catch {}
+  }
+
+  let listaCarregada = [];
+
+  function tocarContexto(contexto) {
+    if (!pronto || !ligada || !querTocar || trecho) return;
+    contextoTocando = contexto;
+    listaCarregada = lista(contexto);
+    player.loadPlaylist(listaCarregada, 0);
+    player.setLoop(true);
+  }
+
+  // Chamado pelo jogo a cada troca de tela/eixo. Espera um instante para não trocar duas vezes seguidas.
+  function contexto(nome) {
+    contextoAtual = nome;
+    clearTimeout(trocaAgendada);
+    trocaAgendada = setTimeout(() => {
+      if (contextoAtual !== contextoTocando) tocarContexto(contextoAtual);
+    }, 350);
   }
 
   function tocar() {
     querTocar = true;
     botao.hidden = false;
-    if (pronto && ligada) player.playVideo();
+    if (!pronto || !ligada) return;
+    if (contextoTocando === null) tocarContexto(contextoAtual);
+    else player.playVideo();
   }
 
   // ---------- Trecho em loop (para cenas) ----------
 
   function carregarTrecho() {
-    player.loadVideoById({ videoId: trecho.videoId, startSeconds: trecho.inicio, endSeconds: trecho.fim });
+    player.loadVideoById({ videoId: trecho.videoIds[trecho.indice], startSeconds: trecho.inicio, endSeconds: trecho.fim });
   }
 
   function repetirTrecho() {
@@ -73,23 +130,31 @@ const Musica = (() => {
     else encerrarTrecho(true);
   }
 
-  // retomar = false: a cena quer silêncio depois (a playlist só volta com Musica.retomar())
+  // A versão da música não toca aqui (bloqueio da gravadora): tenta a próxima versão da lista
+  function tentarOutraVersao() {
+    trecho.indice++;
+    if (trecho.indice < trecho.videoIds.length) carregarTrecho();
+    else encerrarTrecho(false);
+  }
+
+  // retomar = false: a cena quer silêncio depois (a trilha só volta com Musica.retomar())
   function encerrarTrecho(tocou, retomar = true) {
     const fim = trecho.aoTerminar;
     trecho = null;
-    if (retomar && pronto && ligada) irParaPlaylist();
-    else if (!retomar && player) player.stopVideo();
+    contextoTocando = null;
+    if (retomar) tocarContexto(contextoAtual);
+    else if (player) player.stopVideo();
     if (fim) fim(tocou);
   }
 
   // Toca de "inicio" a "fim" (segundos), "vezes" seguidas (Infinity = até a cena mandar parar).
-  // Se não der para tocar, avisa na hora.
+  // videoId pode ser uma lista de versões da mesma música: se uma estiver bloqueada, tenta a próxima.
   function tocarTrecho({ videoId, inicio, fim, vezes = 1, aoTerminar }) {
     if (!pronto || !ligada || !querTocar) {
       if (aoTerminar) aoTerminar(false);
       return false;
     }
-    trecho = { videoId, inicio, fim, restantes: vezes, aoTerminar };
+    trecho = { videoIds: [].concat(videoId), indice: 0, inicio, fim, restantes: vezes, aoTerminar };
     carregarTrecho();
     return true;
   }
@@ -102,16 +167,18 @@ const Musica = (() => {
     }
   }
 
-  // Volta a playlist depois de um silêncio pedido por uma cena
+  // Volta a trilha depois de um silêncio pedido por uma cena
   function retomar() {
-    if (pronto && ligada && querTocar && !trecho) irParaPlaylist();
+    if (!trecho) tocarContexto(contextoAtual);
   }
 
   botao.addEventListener("click", () => {
     if (!pronto) return;
     ligada = !ligada;
-    if (ligada) player.playVideo();
-    else player.pauseVideo();
+    if (ligada) {
+      if (contextoTocando === null && !trecho) tocarContexto(contextoAtual);
+      else player.playVideo();
+    } else player.pauseVideo();
     botao.classList.toggle("tocando", ligada);
     botao.setAttribute("aria-pressed", String(ligada));
   });
@@ -120,12 +187,12 @@ const Musica = (() => {
     if (!pronto) return;
     ligada = true;
     if (trecho) return pararTrecho();
-    if (naPlaylist) player.nextVideo();
-    else irParaPlaylist();
+    if (contextoTocando === null) tocarContexto(contextoAtual);
+    else player.nextVideo();
   });
 
   return {
-    tocar, tocarTrecho, pararTrecho, retomar,
+    tocar, tocarTrecho, pararTrecho, retomar, contexto,
     // o som está realmente tocando? (cenas que dependem de música pedem para ligar)
     ativa: () => pronto && ligada && querTocar,
     ligar: () => {

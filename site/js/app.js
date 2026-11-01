@@ -95,11 +95,27 @@ function mostrarTela(id) {
   document.querySelectorAll(".tela").forEach((t) => t.classList.toggle("ativa", t.id === id));
   $("#btn-tradutor").hidden = ["tela-inicio", "tela-transicao", "tela-tradutor", "tela-cena", "tela-mesa"].includes(id);
   window.scrollTo(0, 0);
+  atualizarTrilha();
 }
 
 function definirTema(eixo) {
   document.body.classList.remove("tema-x", "tema-y", "tema-z");
   if (eixo) document.body.classList.add("tema-" + eixo);
+  atualizarTrilha();
+}
+
+// A trilha acompanha onde o jogador está: prólogo, o eixo em destaque (ficha, tradutor, criação) ou a tela inicial
+function atualizarTrilha() {
+  const tela = document.querySelector(".tela.ativa")?.id;
+  const eixo = ["x", "y", "z"].find((e) => document.body.classList.contains("tema-" + e));
+  let contexto = "inicio";
+  if (tela === "tela-cena" && typeof Cenas !== "undefined") {
+    const m = Cenas.missaoAtual();
+    contexto = m && m.id.startsWith("prologo") ? "prologo" : (m && m.eixo) || eixo || "inicio";
+  } else if (["tela-ficha", "tela-tradutor", "tela-criacao"].includes(tela) && eixo) {
+    contexto = eixo;
+  }
+  if (typeof Musica !== "undefined") Musica.contexto(contexto);
 }
 
 // Mensagens rápidas no topo da tela (efeitos que ligaram, usos, etc.)

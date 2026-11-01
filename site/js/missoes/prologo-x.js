@@ -32,7 +32,8 @@ MISSOES["prologo-x"] = {
   // O rádio da praça. ⚠️ Música comercial: serve para jogar entre amigos; para publicar, precisa de licença.
   // inicio/fim em segundos do vídeo oficial: o refrão repetido do final da música.
   // Toca em loop enquanto o jogador estiver no centro da praça; para quando a multidão ataca.
-  radio: { videoId: "OMOGaugKpzs", inicio: 162, fim: 195, vezes: Infinity },
+  // Primeiro a versão da playlist (The Police - Topic); se estiver bloqueada no aparelho, o clipe oficial.
+  radio: { videoId: ["-SaUrDhp034", "OMOGaugKpzs"], inicio: 162, fim: 195, vezes: Infinity },
 
   // Onde o personagem trabalha, lido da descrição (ou da classe)
   trabalho(p) {
