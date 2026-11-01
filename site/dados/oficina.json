@@ -1,0 +1,942 @@
+{
+  "versao": 1,
+  "perguntas": [
+    {
+      "id": "g-tom",
+      "tema": "Geral",
+      "pergunta": "Quanto horror explícito o KOSMOS mostra? (sangue, corpos, transformação física) Ou o horror fica no que não se vê?",
+      "ajuda": "Define o tom de todas as storylets geradas.",
+      "ja": "Horror cósmico e filosófico.",
+      "resposta": ""
+    },
+    {
+      "id": "g-entidade",
+      "tema": "Geral",
+      "pergunta": "O que a Entidade Estelar quer? Ela tem um objetivo, ou só observa? O que acontece com quem ela 'aprende'?",
+      "ajuda": "As revelações das side quests precisam apontar sempre para a mesma verdade, mesmo que de longe.",
+      "ja": "Ela aprende observando; pergunta central: a realidade percebendo a si mesma através de nós.",
+      "resposta": ""
+    },
+    {
+      "id": "g-ecos",
+      "tema": "Geral",
+      "pergunta": "Os ecos (a mesma pessoa nos três eixos) valem para todo mundo ou só para alguns? Os ecos sabem uns dos outros?",
+      "ajuda": "O gerador de NPCs cria ecos automaticamente; preciso saber a regra.",
+      "ja": "Os personagens dos jogadores existem nos 3 mundos sem saber.",
+      "resposta": ""
+    },
+    {
+      "id": "g-recompensa",
+      "tema": "Side quests",
+      "pergunta": "O que o jogador deve ganhar explorando? (itens, runas, palavras das línguas, Memórias Cruzadas, aliados, verdade sobre a Entidade...)",
+      "ajuda": "Uma boa recompensa faz o jogador querer explorar mais.",
+      "ja": "",
+      "resposta": ""
+    },
+    {
+      "id": "g-duracao",
+      "tema": "Side quests",
+      "pergunta": "Quanto uma side quest deve durar? Uma cena só, 2–3 partes, ou longas (que atravessam a campanha)?",
+      "ajuda": "",
+      "ja": "",
+      "resposta": ""
+    },
+    {
+      "id": "g-morte",
+      "tema": "Side quests",
+      "pergunta": "NPCs podem morrer ou enlouquecer por escolha do jogador? Isso fica para sempre?",
+      "ajuda": "O motor lembra (flags). Preciso saber até onde vai a consequência.",
+      "ja": "",
+      "resposta": ""
+    },
+    {
+      "id": "x-cidade",
+      "tema": "Eixo X · Urbano",
+      "pergunta": "A cidade tem nome? É uma cidade real, inspirada numa real, ou inventada? Quais são os bairros e lugares que você imagina?",
+      "ajuda": "Cada lugar vira um ponto do mapa com storylets próprias.",
+      "ja": "Hospital São Lucas, Delegacia Central, Estação Rua 9, Praça Central (olho do furacão).",
+      "resposta": ""
+    },
+    {
+      "id": "x-instituicoes",
+      "tema": "Eixo X · Urbano",
+      "pergunta": "Quem manda na cidade quando o fenômeno começa? (prefeitura, Defesa Civil, igreja, crime, mídia) O que cada um faz?",
+      "ajuda": "",
+      "ja": "Defesa Civil fala em radiação 'dentro do normal'; Agente Moura; a Contenção (Diretor da Defesa Civil).",
+      "resposta": ""
+    },
+    {
+      "id": "x-prologo",
+      "tema": "Eixo X · Urbano",
+      "pergunta": "No prólogo, o que o jogador deveria poder fazer além do que já existe? Que pessoas ele encontra? Quem ele pode salvar?",
+      "ajuda": "Vou usar para reconstruir o prólogo com mais caminhos.",
+      "ja": "Caos urbano, multidão rumo ao olho do furacão, rádio com Every Breath You Take, ataque, salto para Y.",
+      "resposta": ""
+    },
+    {
+      "id": "y-mundo",
+      "tema": "Eixo Y · Medieval",
+      "pergunta": "Como se chama o reino ou a região? Quais lugares existem? (aldeias, mosteiros, castelos, estradas, florestas)",
+      "ajuda": "",
+      "ja": "Tipo de fantasia ainda em aberto.",
+      "resposta": ""
+    },
+    {
+      "id": "y-poder",
+      "tema": "Eixo Y · Medieval",
+      "pergunta": "Quem tem poder? Igreja, nobres, guildas, ordens? Como cada um vê as runas e quem as lê?",
+      "ajuda": "",
+      "ja": "Inquisidor Caedmon (a Contenção); monges hereges (o Coro do Pulso).",
+      "resposta": ""
+    },
+    {
+      "id": "y-runaticos",
+      "tema": "Eixo Y · Medieval",
+      "pergunta": "O que é um Runático? E um Desperto? Como as pessoas comuns reagem a eles?",
+      "ajuda": "",
+      "ja": "Abade Theodric está virando Runático; Irmã Ysolde é uma Desperta.",
+      "resposta": ""
+    },
+    {
+      "id": "y-prologo",
+      "tema": "Eixo Y · Medieval",
+      "pergunta": "Escreva aqui o seu prólogo do Eixo Y (pode ser em tópicos).",
+      "ajuda": "",
+      "ja": "Você disse que já tem.",
+      "resposta": ""
+    },
+    {
+      "id": "z-domus",
+      "tema": "Eixo Z · Espacial",
+      "pergunta": "Como é a Domus? Tamanho, quantas pessoas, setores (ponte, hidroponia, motores...), há quanto tempo viaja?",
+      "ajuda": "A Domus funciona como um hub fechado: cada setor é um lugar com storylets.",
+      "ja": "Classes pré-definidas; aproxima-se do Lime; Comandante Arasaki; IA DOMUS que fala em Interface.",
+      "resposta": ""
+    },
+    {
+      "id": "z-classes",
+      "tema": "Eixo Z · Espacial",
+      "pergunta": "As classes da Domus: a nave designa a função do personagem, ou existe uma lista própria do Eixo Z?",
+      "ajuda": "",
+      "ja": "",
+      "resposta": ""
+    },
+    {
+      "id": "z-rotina",
+      "tema": "Eixo Z · Espacial",
+      "pergunta": "Como é a rotina a bordo? Turnos, regras, punições, o que é proibido?",
+      "ajuda": "Uma nave fechada fica interessante quando a rotina começa a falhar.",
+      "ja": "",
+      "resposta": ""
+    },
+    {
+      "id": "lime",
+      "tema": "Lime e endgame",
+      "pergunta": "Como é o Lime por dentro? Ele tem regras físicas próprias? Quem já está lá quando os jogadores chegam?",
+      "ajuda": "É onde as side quests mais abertas acontecem.",
+      "ja": "Lugar físico com pessoas dos 3 mundos misturadas; O Costurado; facções Contenção, Coro, Interface.",
+      "resposta": ""
+    },
+    {
+      "id": "visual",
+      "tema": "Visual",
+      "pergunta": "Que tipo de imagem você imagina no jogo? (ilustração por cena, retratos dos NPCs, mapa desenhado, ícones, animações) Tem referências?",
+      "ajuda": "Para a próxima etapa.",
+      "ja": "Z: interface azul holográfica; cassette futurism só nos gadgets. X: tema verde. Y: em aberto.",
+      "resposta": ""
+    }
+  ],
+  "npcs": [
+    {
+      "id": "ouvinte",
+      "nome": "A Ouvinte",
+      "eixo": "todos",
+      "papel": "Voz que atravessa os três mundos",
+      "aparencia": "Mulher de uns quarenta anos, cabelo raspado de um lado, voz rouca e calma. Sempre usa um fone ou capuz cobrindo um ouvido só.",
+      "voz": "Fala devagar, como quem está ouvindo outra coisa ao mesmo tempo. Termina frases cantarolando.",
+      "desejo": "Gravar a 'música inteira' que a Entidade está tocando antes que ela termine.",
+      "medo": "Esquecer a melodia. Quando para de cantarolar, as mãos tremem.",
+      "segredo": "Ela não sabe se é uma pessoa em três mundos ou três pessoas ouvindo a mesma coisa.",
+      "entidade": "Ouve a Entidade como música. É a única que não sente medo dela.",
+      "ecos": {
+        "x": "Locutora da Rádio Pirata 21:47, transmitindo de um telhado no centro.",
+        "y": "Bardo itinerante que canta nas tavernas uma canção que ninguém ensinou (Shape of My Heart, em versão medieval).",
+        "z": "Operadora de comunicações da Domus, no turno da noite, que capta 'canções' no ruído do espaço."
+      },
+      "onde": [
+        "casa",
+        "radio-pirata",
+        "taverna",
+        "comunicacoes"
+      ],
+      "atitude": 1,
+      "falas": [
+        "Você também ouviu, não ouviu? Tá no fundo de tudo.",
+        "Não é barulho. Barulho não se repete assim.",
+        "Três rápidas, uma longa. Igual um coração que aprendeu a contar."
+      ],
+      "notas": "NPC-fio: liga os eixos pelo som. Toda storylet com ela pode dar uma Memória Cruzada."
+    },
+    {
+      "id": "helena",
+      "nome": "Dra. Helena Viana",
+      "eixo": "x",
+      "papel": "Psiquiatra do Hospital São Lucas",
+      "aparencia": "Jaleco amassado, óculos presos no cabelo, olheiras fundas. Carrega um caderno cheio de desenhos de pacientes.",
+      "voz": "Direta, cansada, faz perguntas clínicas mesmo quando está com medo.",
+      "desejo": "Provar que os surtos têm causa física, para poder tratar.",
+      "medo": "Que a causa não seja física. E que ela também esteja ouvindo.",
+      "segredo": "Há duas noites ela acordou escrevendo ∃ ψ(t) no espelho do banheiro.",
+      "entidade": "Resiste. Quer explicar, não aceitar.",
+      "ecos": {
+        "y": "Curandeira do mosteiro, que anota os delírios dos doentes em pergaminho.",
+        "z": "Oficial médica da Domus, responsável pelos exames de sono da tripulação."
+      },
+      "onde": [
+        "hospital"
+      ],
+      "atitude": 0,
+      "falas": [
+        "Sintomas: desorientação, marcha sincronizada, grafia compulsiva. Nenhum exame alterado.",
+        "Não me fala de milagre. Me fala de padrão.",
+        "Você dorme bem? Responde rápido, sem pensar."
+      ],
+      "notas": "Aliada natural de quem é Desconfiança ou Busca conhecimento. Se a atitude chegar a 3, entrega o caderno de desenhos (pistas)."
+    },
+    {
+      "id": "theodric",
+      "nome": "Abade Theodric",
+      "eixo": "y",
+      "papel": "Guardião da Tábula, virando Runático",
+      "aparencia": "Velho alto e magro, hábito cinzento, dedos manchados de tinta que não sai. Os olhos às vezes seguem algo que não está na sala.",
+      "voz": "Fala em parábolas; às vezes troca palavras por nomes de runas sem perceber.",
+      "desejo": "Proteger a Tábula até o fim, mesmo que ela o consuma.",
+      "medo": "Que a Tábula esteja certa sobre ele.",
+      "segredo": "Ele já leu o próprio nome escrito na Tábula, ao lado de uma data.",
+      "entidade": "Teme e venera. Está no meio do caminho entre Dissonância e Ressonância.",
+      "ecos": {
+        "x": "Arquivista de um museu municipal que se recusa a sair do prédio.",
+        "z": "Responsável pelo banco de dados histórico da Domus, que fala com a IA como quem reza."
+      },
+      "onde": [
+        "mosteiro"
+      ],
+      "atitude": 0,
+      "falas": [
+        "A Tábula não muda, filho. Somos nós que finalmente estamos sabendo ler.",
+        "ᛉ é proteção. Ou era. Agora parece uma árvore de cabeça para baixo.",
+        "Reza comigo. Não a Deus. Só reza."
+      ],
+      "notas": "Arco: a cada visita ele está mais Runático. Missão principal do Ato 1 Y: A Tábula que se reescreve."
+    },
+    {
+      "id": "mabel",
+      "nome": "Irmã Mabel",
+      "eixo": "y",
+      "papel": "Herbalista da aldeia de Vaurin",
+      "aparencia": "Mulher baixa e forte, mãos verdes de ervas, avental cheio de bolsos. Cobre todos os espelhos da casa com pano.",
+      "voz": "Prática, rápida, irritada quando com medo. Usa ditados do campo.",
+      "desejo": "Trazer o irmão Aldric de volta 'inteiro'.",
+      "medo": "O próprio reflexo. Diz que ele pisca atrasado.",
+      "segredo": "Ela também conta em números quando dorme. Não contou a ninguém.",
+      "entidade": "Não sabe que ela existe. Acha que é doença.",
+      "ecos": {
+        "x": "Farmacêutica de bairro que fecha a porta com corrente desde que o fenômeno começou.",
+        "z": "Técnica de hidroponia da Domus, que conversa com as plantas no turno da noite."
+      },
+      "onde": [
+        "aldeia",
+        "pedreira"
+      ],
+      "atitude": 0,
+      "falas": [
+        "Erva boa não cura cabeça que foi embora.",
+        "Ele fala em números. Números! Meu irmão não sabe contar até vinte.",
+        "Não olha pro espelho comigo na sala."
+      ],
+      "notas": "Exemplo de NPC gerado pelo gerador (desejo + medo + segredo sorteados) e depois lapidado."
+    },
+    {
+      "id": "vasko",
+      "nome": "Técnico Oren Vasko",
+      "eixo": "z",
+      "papel": "O tripulante que não dorme",
+      "aparencia": "Uniforme de manutenção impecável demais para quem trabalha com motores. Pele acinzentada, pupilas sempre dilatadas.",
+      "voz": "Educado, preciso, sem pressa. Responde perguntas que ainda não foram feitas.",
+      "desejo": "Terminar 'a contagem' antes da chegada ao Lime.",
+      "medo": "Dormir. Diz que, se dormir, 'a nave vai acordar no lugar dele'.",
+      "segredo": "Os registros da DOMUS mostram que ele não dorme há 412 dias. Alguém apagou o alarme médico.",
+      "entidade": "Ressoa profundamente. Talvez seja o primeiro Interface a bordo.",
+      "ecos": {
+        "x": "Vigia noturno de um prédio comercial que nunca saiu do posto.",
+        "y": "Sentinela da torre do mosteiro que não desce há uma estação inteira."
+      },
+      "onde": [
+        "hidroponia",
+        "motores",
+        "corredor-c"
+      ],
+      "atitude": 0,
+      "falas": [
+        "Turno três. Não, quatro. Não importa: o Lime está mais perto.",
+        "A DOMUS não mente. Ela só omite com muita educação.",
+        "Você sonhou com uma praça? Todo mundo sonha com a praça."
+      ],
+      "notas": "Ligado à facção O Primeiro Interface. Quem apagou o alarme médico? (Comandante Arasaki? a própria DOMUS?)"
+    }
+  ],
+  "storylets": [
+    {
+      "id": "x-frequencia-1",
+      "titulo": "Frequência 21:47",
+      "eixo": "x",
+      "tipo": "side",
+      "npc": "ouvinte",
+      "onde": [
+        "casa",
+        "trabalho"
+      ],
+      "quando": {
+        "relogioMin": 2,
+        "flags": [],
+        "semFlags": [
+          "ouviu-ouvinte"
+        ]
+      },
+      "peso": 3,
+      "texto": "Um rádio esquecido liga sozinho, entre duas estações. No meio da estática, uma voz de mulher, rouca e calma:\n\n“...para quem ainda está acordado: não é barulho. Barulho não se repete assim. Se você está ouvindo, {p.nome}, sobe. Telhado do Edifício Aurora. Traz alguma coisa que grave.”\n\nEla disse o seu nome. Depois volta a cantarolar, baixinho, uma melodia que você quase conhece.",
+      "opcoes": [
+        {
+          "texto": "Ajustar a sintonia para ouvir melhor",
+          "palavras": [
+            "sinton",
+            "ajust",
+            "ouvir",
+            "radio"
+          ],
+          "situacao": "perceber",
+          "sucesso": {
+            "texto": "Por baixo da voz, um padrão: três pulsos rápidos, um longo. A melodia que ela cantarola segue o mesmo ritmo.",
+            "pista": "A Rádio Pirata 21:47 transmite do telhado do Edifício Aurora. A melodia segue o pulso.",
+            "efeitos": {
+              "flag": "ouviu-ouvinte",
+              "atitude": {
+                "ouvinte": 1
+              }
+            },
+            "ir": "storylet:x-frequencia-2"
+          },
+          "falha": {
+            "texto": "A estática engole a voz. Por um segundo, você jura ouvir a própria respiração saindo do alto-falante.",
+            "efeitos": {
+              "flag": "ouviu-ouvinte",
+              "exposicao": 1
+            }
+          }
+        },
+        {
+          "texto": "Gravar a transmissão no celular",
+          "palavras": [
+            "grav",
+            "celular",
+            "registr"
+          ],
+          "req": {
+            "item": "comunicador"
+          },
+          "resultado": {
+            "texto": "A gravação sai limpa. Ao ouvir de novo, a voz diz uma frase que não estava lá antes: “Obrigada por guardar.”",
+            "pista": "Gravação da Rádio Pirata 21:47: a voz agradece por guardar.",
+            "efeitos": {
+              "flag": [
+                "ouviu-ouvinte",
+                "gravou-ouvinte"
+              ],
+              "atitude": {
+                "ouvinte": 2
+              }
+            },
+            "ir": "storylet:x-frequencia-2"
+          }
+        },
+        {
+          "texto": "Desligar o rádio e arrancar o fio da tomada",
+          "palavras": [
+            "deslig",
+            "arranc",
+            "tomada"
+          ],
+          "resultado": {
+            "texto": "Silêncio. Um silêncio que dura exatamente três segundos. Então, do apartamento de cima, o rádio do vizinho começa a cantarolar a mesma melodia.",
+            "efeitos": {
+              "flag": "ouviu-ouvinte",
+              "dissonancia": 1
+            }
+          }
+        }
+      ],
+      "notas": "Abre a linha da Ouvinte no Eixo X. Quem grava a transmissão ganha atitude +2 (ela gosta de quem 'guarda')."
+    },
+    {
+      "id": "x-frequencia-2",
+      "titulo": "O telhado do Edifício Aurora",
+      "eixo": "x",
+      "tipo": "side",
+      "npc": "ouvinte",
+      "onde": [
+        "radio-pirata"
+      ],
+      "quando": {
+        "flags": [
+          "ouviu-ouvinte"
+        ]
+      },
+      "peso": 0,
+      "texto": "Vinte andares de escada. Lá em cima, entre antenas improvisadas e cabos presos com fita, {npc.nome} transmite sentada num balde virado. Não se assusta com você.\n\n“{npc.fala}”\n\nNa mesa, dezenas de fitas cassete etiquetadas com datas que ainda não chegaram.",
+      "opcoes": [
+        {
+          "texto": "Perguntar o que ela está gravando",
+          "palavras": [
+            "pergunt",
+            "grav",
+            "o que"
+          ],
+          "situacao": "convencer",
+          "sucesso": {
+            "texto": "“A música inteira. Ela toca em todo lugar ao mesmo tempo, mas cada lugar só ouve um pedaço. Uma cidade com castelos. Uma nave. Eu junto os pedaços.” Ela te dá uma fita: 'TERÇA, 21:47 — PARTE 2'.",
+            "pista": "A Ouvinte junta 'pedaços da música' que tocam em outros lugares: uma cidade com castelos, uma nave.",
+            "efeitos": {
+              "memoria": "Uma taverna enfumaçada. Um bardo de capuz canta a mesma melodia, e você conhece a letra.",
+              "atitude": {
+                "ouvinte": 1
+              },
+              "flag": "fita-ouvinte"
+            }
+          },
+          "falha": {
+            "texto": "Ela só sorri e aumenta o volume. A melodia entra pelos dentes. Você sai de lá sem lembrar da escada.",
+            "efeitos": {
+              "exposicao": 1,
+              "convergencia": 1
+            }
+          }
+        },
+        {
+          "texto": "Ficar e ouvir com ela, em silêncio",
+          "palavras": [
+            "ouvir",
+            "ficar",
+            "silenc",
+            "sentar"
+          ],
+          "situacao": "sentir",
+          "sucesso": {
+            "texto": "Por um minuto, você ouve o que ela ouve: a cidade inteira respirando junto. Não é ameaça. É atenção.",
+            "efeitos": {
+              "ressonancia": 1,
+              "aprenderX": [
+                "observar",
+                "mente"
+              ],
+              "atitude": {
+                "ouvinte": 1
+              }
+            }
+          },
+          "falha": {
+            "texto": "O silêncio fica pesado demais. Você levanta para ir embora e percebe que estava cantarolando também.",
+            "efeitos": {
+              "dissonancia": 1
+            }
+          }
+        },
+        {
+          "texto": "Avisar que a Defesa Civil vai fechar o prédio",
+          "palavras": [
+            "avis",
+            "defesa",
+            "policia",
+            "fechar"
+          ],
+          "req": {
+            "hab": "conversa"
+          },
+          "resultado": {
+            "texto": "“Então eu mudo de telhado. A música não precisa de prédio.” Ela te passa uma frequência anotada num papel de bala: 94.7.",
+            "pista": "A Ouvinte vai mudar de telhado. Nova frequência: 94.7.",
+            "efeitos": {
+              "flag": "ouvinte-avisada",
+              "atitude": {
+                "ouvinte": 1
+              }
+            }
+          }
+        }
+      ],
+      "notas": "A fita 'PARTE 2' pode ser trocada no Eixo Y com o bardo (eco da Ouvinte)."
+    },
+    {
+      "id": "y-irmao-numeros-1",
+      "titulo": "O irmão que fala em números",
+      "eixo": "y",
+      "tipo": "side",
+      "npc": "mabel",
+      "onde": [
+        "aldeia"
+      ],
+      "quando": {
+        "semFlags": [
+          "aldric-resolvido"
+        ]
+      },
+      "peso": 2,
+      "texto": "A porta da herbalista está entreaberta, e todos os espelhos da casa estão cobertos com pano. {npc.nome} esmaga folhas no pilão com força demais.\n\n“{npc.fala} Meu irmão, Aldric, foi buscar pedra na pedreira velha. Voltou ontem. Inteiro, sem um arranhão. Mas não diz o próprio nome. Só fala em números. Vinte e um. Quarenta e sete. Sem parar.”",
+      "opcoes": [
+        {
+          "texto": "Examinar Aldric",
+          "palavras": [
+            "examin",
+            "aldric",
+            "irmao",
+            "ver"
+          ],
+          "situacao": "investigar",
+          "sucesso": {
+            "texto": "Aldric está sentado de frente para a parede. Os números não são aleatórios: ele repete sempre a mesma sequência, e o ritmo é de três rápidos e um longo. Nas unhas, pó cinza da pedreira, que brilha fraco no escuro.",
+            "pista": "Aldric repete 21, 47 no ritmo do pulso. Pó brilhante da pedreira velha nas unhas.",
+            "efeitos": {
+              "flag": "examinou-aldric"
+            },
+            "ir": "storylet:y-irmao-numeros-2"
+          },
+          "falha": {
+            "texto": "Quando você chega perto, Aldric para de contar e olha direto para você. “Você também tem um número.” Depois volta a contar.",
+            "efeitos": {
+              "exposicao": 1,
+              "flag": "examinou-aldric"
+            },
+            "ir": "storylet:y-irmao-numeros-2"
+          }
+        },
+        {
+          "texto": "Acalmar a Irmã Mabel antes de tudo",
+          "palavras": [
+            "acalm",
+            "mabel",
+            "consol",
+            "calma"
+          ],
+          "situacao": "acalmar",
+          "sucesso": {
+            "texto": "Ela larga o pilão. Respira. E confessa, quase sem voz: “Eu também conto, quando durmo. Meu marido me ouviu.”",
+            "pista": "Mabel também conta números dormindo.",
+            "efeitos": {
+              "atitude": {
+                "mabel": 2
+              }
+            }
+          },
+          "falha": {
+            "texto": "“Calma? Calma é pra quem não tem irmão!” Ela te empurra para a porta, mas não fecha.",
+            "efeitos": {
+              "atitude": {
+                "mabel": -1
+              }
+            }
+          }
+        },
+        {
+          "texto": "Ler as runas com o pêndulo",
+          "palavras": [
+            "pendul",
+            "runa",
+            "ler"
+          ],
+          "req": {
+            "item": "detector"
+          },
+          "resultado": {
+            "texto": "O pêndulo gira sobre a cabeça de Aldric e para apontando para o leste — para a pedreira — e depois para cima. Para o céu.",
+            "pista": "O pêndulo aponta para a pedreira velha, e depois para o céu.",
+            "efeitos": {
+              "flag": "examinou-aldric"
+            },
+            "ir": "storylet:y-irmao-numeros-2"
+          }
+        }
+      ],
+      "notas": "Exemplo de side quest em 2 partes montada a partir do gerador (Gancho: parente que voltou diferente; Complicação: fala em números; Revelação: está ouvindo o Eixo X)."
+    },
+    {
+      "id": "y-irmao-numeros-2",
+      "titulo": "A pedreira velha",
+      "eixo": "y",
+      "tipo": "side",
+      "npc": "mabel",
+      "onde": [
+        "pedreira"
+      ],
+      "quando": {
+        "flags": [
+          "examinou-aldric"
+        ],
+        "semFlags": [
+          "aldric-resolvido"
+        ]
+      },
+      "peso": 0,
+      "texto": "A pedreira velha é uma ferida branca na colina. No fundo, onde a pedra foi cortada mais fundo, há uma parede lisa demais — como vidro escuro. Nela, refletidos, você vê uma rua iluminada por postes, carros parados, gente andando no mesmo passo.\n\nUma voz vem da parede, abafada, contando: “...vinte e um... quarenta e sete...”",
+      "opcoes": [
+        {
+          "texto": "Tocar a parede",
+          "palavras": [
+            "toc",
+            "parede",
+            "mao"
+          ],
+          "convergencia": 2,
+          "sucesso": {
+            "texto": "Por um instante você está nos dois lugares: na pedreira e numa calçada molhada, sob um relógio parado às 21h47. Quando volta, sabe o que Aldric ouve: outro mundo, chamando as horas.",
+            "efeitos": {
+              "memoria": "Uma calçada molhada, um relógio de rua parado às 21h47, e alguém ao seu lado que se parece com Aldric.",
+              "flag": [
+                "aldric-resolvido",
+                "aldric-entende"
+              ],
+              "ressonancia": 1
+            }
+          },
+          "falha": {
+            "texto": "A parede está gelada e a voz para. Quando você tira a mão, a marca dos seus dedos fica no vidro — de dentro para fora.",
+            "efeitos": {
+              "flag": "aldric-resolvido",
+              "dissonancia": 1
+            }
+          }
+        },
+        {
+          "texto": "Quebrar a parede com a picareta dos pedreiros",
+          "palavras": [
+            "quebr",
+            "picaret",
+            "destru"
+          ],
+          "situacao": "forcar",
+          "sucesso": {
+            "texto": "O vidro escuro racha em três linhas retas e uma longa. A contagem para. Na aldeia, dizem depois, Aldric chorou e disse o próprio nome.",
+            "efeitos": {
+              "flag": [
+                "aldric-resolvido",
+                "aldric-curado"
+              ],
+              "atitude": {
+                "mabel": 2
+              }
+            }
+          },
+          "falha": {
+            "texto": "A picareta ricocheteia. O som ecoa como um sino, e a contagem fica mais alta. Agora você também sabe os números de cor.",
+            "efeitos": {
+              "exposicao": 2,
+              "flag": "aldric-resolvido"
+            }
+          }
+        },
+        {
+          "texto": "Ir embora e dizer a Mabel que não há nada a fazer",
+          "palavras": [
+            "embora",
+            "voltar",
+            "desist"
+          ],
+          "resultado": {
+            "texto": "Mabel não discute. Só cobre mais um espelho. Na semana seguinte, a casa dela está vazia, e o pilão ainda tem ervas frescas.",
+            "efeitos": {
+              "flag": [
+                "aldric-resolvido",
+                "mabel-sumiu"
+              ],
+              "atitude": {
+                "mabel": -2
+              }
+            }
+          }
+        }
+      ],
+      "notas": "Três finais que o mundo lembra: aldric-entende (Memória Cruzada), aldric-curado (Mabel vira aliada), mabel-sumiu (ela pode reaparecer no Lime)."
+    },
+    {
+      "id": "z-nao-dorme-1",
+      "titulo": "Turno quatro",
+      "eixo": "z",
+      "tipo": "side",
+      "npc": "vasko",
+      "onde": [
+        "hidroponia",
+        "corredor-c"
+      ],
+      "quando": {
+        "relogioMin": 1,
+        "semFlags": [
+          "vasko-conhecido"
+        ]
+      },
+      "peso": 2,
+      "texto": "03h10, tempo de bordo. As luzes da hidroponia estão no modo noturno, um azul quase preto. Entre as fileiras de plantas, {npc.nome} confere sensores que já estão certos.\n\n“{npc.fala}”\n\nO crachá dele mostra o turno de ontem. E o de anteontem. Todos os turnos da semana estão marcados como trabalhados.",
+      "opcoes": [
+        {
+          "texto": "Consultar a DOMUS sobre o histórico médico dele",
+          "palavras": [
+            "domus",
+            "consult",
+            "medic",
+            "registro",
+            "histor"
+          ],
+          "situacao": "investigar",
+          "sucesso": {
+            "texto": "A DOMUS responde em Interface antes de traduzir: 412 dias sem ciclo de sono registrado. Alarme médico: desativado manualmente. Autorização: [omitido com educação].",
+            "pista": "Vasko não dorme há 412 dias. Alguém com autorização desligou o alarme médico.",
+            "efeitos": {
+              "flag": [
+                "vasko-conhecido",
+                "alarme-apagado"
+              ]
+            }
+          },
+          "falha": {
+            "texto": "“Informação indisponível para o seu nível de acesso”, diz a DOMUS. E depois, sem que você pergunte: “Durma bem.”",
+            "efeitos": {
+              "flag": "vasko-conhecido",
+              "exposicao": 1
+            }
+          }
+        },
+        {
+          "texto": "Perguntar o que ele está contando",
+          "palavras": [
+            "pergunt",
+            "cont",
+            "contagem"
+          ],
+          "situacao": "convencer",
+          "sucesso": {
+            "texto": "“Os passos da multidão. Numa praça que não existe aqui. Quando chegarem a zero, a gente chega no Lime.” Ele sorri. “Faltam poucos.”",
+            "pista": "Vasko conta 'os passos da multidão numa praça'. Quando chegar a zero, a Domus chega ao Lime.",
+            "efeitos": {
+              "flag": "vasko-conhecido",
+              "memoria": "Uma praça à noite, milhares de pessoas paradas, e um rádio tocando no centro.",
+              "atitude": {
+                "vasko": 1
+              }
+            }
+          },
+          "falha": {
+            "texto": "Ele responde a uma pergunta que você só ia fazer amanhã. Você não lembra qual era.",
+            "efeitos": {
+              "flag": "vasko-conhecido",
+              "convergencia": 1
+            }
+          }
+        },
+        {
+          "texto": "Aplicar um sedativo enquanto ele está distraído",
+          "palavras": [
+            "sedat",
+            "injet",
+            "dormir",
+            "aplic"
+          ],
+          "req": {
+            "item": "kit_medico"
+          },
+          "resultado": {
+            "texto": "Ele cai nos seus braços, mais leve do que devia. Por três segundos, a nave inteira escurece. Depois tudo volta, e Vasko acorda gritando um número.",
+            "pista": "Quando Vasko dormiu, a Domus apagou por três segundos.",
+            "efeitos": {
+              "flag": [
+                "vasko-conhecido",
+                "vasko-sedado"
+              ],
+              "dissonancia": 1,
+              "atitude": {
+                "vasko": -2
+              }
+            }
+          }
+        }
+      ],
+      "notas": "Eixo Z: side quests nascem de incidentes a bordo e da rotina que falha. Liga-se ao Primeiro Interface e à Contenção (quem apagou o alarme?)."
+    }
+  ],
+  "tabelas": {
+    "x": {
+      "nomes": [
+        "Renata",
+        "Caio",
+        "Dona Lúcia",
+        "Wesley",
+        "Marta",
+        "Igor",
+        "Bianca",
+        "Seu Jorge"
+      ],
+      "oficios": [
+        "motorista de aplicativo",
+        "farmacêutica",
+        "porteiro",
+        "estudante de física",
+        "enfermeira",
+        "camelô",
+        "professora",
+        "técnico de antena"
+      ],
+      "lugares": [
+        "trabalho",
+        "casa",
+        "hospital",
+        "delegacia",
+        "metro",
+        "radio-pirata"
+      ]
+    },
+    "y": {
+      "nomes": [
+        "Aldric",
+        "Mabel",
+        "Godwin",
+        "Elsbeth",
+        "Oswin",
+        "Hild",
+        "Bertram",
+        "Wenna"
+      ],
+      "oficios": [
+        "ferreiro",
+        "herbalista",
+        "pastor de cabras",
+        "copista",
+        "taberneira",
+        "pedreiro",
+        "caçador",
+        "parteira"
+      ],
+      "lugares": [
+        "aldeia",
+        "mosteiro",
+        "taverna",
+        "pedreira",
+        "estrada",
+        "floresta"
+      ]
+    },
+    "z": {
+      "nomes": [
+        "Arasaki",
+        "Vasko",
+        "Tamsin",
+        "Ibrahim",
+        "Nkechi",
+        "Lund",
+        "Pereira",
+        "Ito"
+      ],
+      "oficios": [
+        "técnico de hidroponia",
+        "navegadora",
+        "médica de bordo",
+        "engenheiro de motores",
+        "operadora de comunicações",
+        "cozinheiro",
+        "segurança",
+        "cartógrafo estelar"
+      ],
+      "lugares": [
+        "hidroponia",
+        "motores",
+        "corredor-c",
+        "comunicacoes",
+        "ponte",
+        "refeitorio"
+      ]
+    },
+    "desejos": [
+      "proteger alguém da família",
+      "descobrir a verdade a qualquer custo",
+      "fugir antes que piore",
+      "ser ouvido(a) pela Entidade",
+      "voltar a ser normal",
+      "provar que não está louco(a)",
+      "terminar uma obra antes do fim",
+      "vingar alguém"
+    ],
+    "medos": [
+      "o próprio reflexo",
+      "dormir",
+      "silêncio",
+      "multidões",
+      "esquecer o próprio nome",
+      "números",
+      "a própria família",
+      "olhar para o céu"
+    ],
+    "segredos": [
+      "também ouve o pulso",
+      "já viu o próprio nome escrito nos símbolos",
+      "causou o primeiro surto sem querer",
+      "trabalha para a Contenção",
+      "faz parte do Coro do Pulso",
+      "lembra de uma vida em outro eixo",
+      "esconde alguém afetado em casa",
+      "sabe a data em que tudo termina"
+    ],
+    "entidade": [
+      "teme e foge",
+      "venera em segredo",
+      "não sabe que existe",
+      "quer usar",
+      "resiste com raiva",
+      "já ressoa sem perceber"
+    ],
+    "ganchos": [
+      "um parente voltou diferente",
+      "alguém desapareceu seguindo a multidão",
+      "um objeto antigo começou a mudar sozinho",
+      "uma mensagem chegou de quem não existe",
+      "um lugar ficou proibido da noite pro dia",
+      "um animal está se comportando como gente"
+    ],
+    "objetivos": [
+      "encontrar",
+      "proteger",
+      "entregar",
+      "investigar",
+      "convencer",
+      "escapar com"
+    ],
+    "complicacoes": [
+      "fala apenas em números",
+      "não reflete em espelhos",
+      "a Contenção também está procurando",
+      "o Coro do Pulso quer que aconteça",
+      "tem que ser feito antes do relógio encher",
+      "a pessoa não quer ser salva"
+    ],
+    "revelacoes": [
+      "está ouvindo outro eixo",
+      "é o eco de alguém que você conhece",
+      "a Entidade aprendeu algo com isso",
+      "foi a Contenção que causou",
+      "o símbolo é uma palavra da língua de outro eixo",
+      "aconteceu ao mesmo tempo nos três mundos"
+    ],
+    "recompensas": [
+      "uma Memória Cruzada",
+      "uma palavra nova da língua do eixo",
+      "um item do eixo",
+      "um aliado (atitude +2)",
+      "uma pista sobre a Entidade",
+      "Ressonância +1"
+    ]
+  }
+}

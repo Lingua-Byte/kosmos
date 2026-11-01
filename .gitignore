@@ -16,3 +16,4 @@ __pycache__/
 
 # Arquivo de sistema do Windows
 desktop.ini
+/ferramentas/oficina-anterior.json

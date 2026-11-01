@@ -52,6 +52,39 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         super().do_GET()
 
+    # A Oficina do Autor salva aqui o que foi escrito: site/dados/oficina.json
+    # (a versão anterior fica em ferramentas/oficina-anterior.json, fora do site)
+    def do_POST(self):
+        if self.path != "/__oficina":
+            self.send_error(404)
+            return
+        try:
+            tamanho = int(self.headers.get("Content-Length", 0))
+            if tamanho > 20_000_000:
+                raise ValueError("grande demais")
+            dados = json.loads(self.rfile.read(tamanho).decode("utf-8"))
+            if not isinstance(dados, dict) or "storylets" not in dados or "npcs" not in dados:
+                raise ValueError("formato inesperado")
+        except (ValueError, UnicodeDecodeError) as erro:
+            self.send_error(400, str(erro))
+            return
+        destino = os.path.join(SITE, "dados", "oficina.json")
+        novo = json.dumps(dados, ensure_ascii=False, indent=2) + "\n"
+        if os.path.exists(destino):
+            with open(destino, encoding="utf-8") as f:
+                antigo = f.read()
+            if antigo != novo:
+                with open(os.path.join(os.path.dirname(SITE), "ferramentas", "oficina-anterior.json"), "w", encoding="utf-8") as f:
+                    f.write(antigo)
+        with open(destino, "w", encoding="utf-8") as f:
+            f.write(novo)
+        corpo = b'{"ok": true}'
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(corpo)))
+        self.end_headers()
+        self.wfile.write(corpo)
+
     def log_message(self, formato, *args):
         if "/__versao" not in (args[0] if args else ""):
             super().log_message(formato, *args)
