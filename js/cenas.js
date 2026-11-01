@@ -139,6 +139,7 @@ const Cenas = (() => {
       Regras.renovar(p, "sessao");
       Armazem.salvar(p);
     }
+    if (temCidade()) conhecerLugares(Cidade.idDe(m, m.lugarInicial, grupo()[0]));
     salvar();
     Saves.auto(); // salvamento automático: começo da missão
     resultado = null;
@@ -195,9 +196,10 @@ const Cenas = (() => {
   // Ir a outro lugar: o relógio anda, o palco toca a transição e o jogador chega
   function irPara(destino) {
     const m = missao();
-    const linhas = avancarRelogio(custoViagem());
+    const linhas = avancarRelogio(custoViagem(destino));
     const daqui = camp.lugar;
     camp.lugar = destino;
+    if (temCidade()) linhas.push(...conhecerLugares(Cidade.idDe(m, destino, grupo()[0])));
     painel = null;
     salvar();
     const chegada = palcoAtual();
@@ -544,15 +546,33 @@ const Cenas = (() => {
     if (painel === "bolsa") return bolsaHtml();
     if (painel === "loja") return lojaHtml();
     const custo = custoViagem();
+    // a cidade: posição fixa de cada lugar, o que o grupo conhece e o que ainda é "?"
+    const cidade = temCidade();
+    const conhecidos = cidade ? conhecidosDoGrupo() : [];
+    const naMissao = new Set();
+    const nosDaMissao = lugaresVisiveis().map(([id, l]) => {
+      const cid = cidade ? Cidade.idDe(m, id, grupo()[0]) : null;
+      const pos = cid ? Cidade.lugar(cid) : l.mapa;
+      if (cid) naMissao.add(cid);
+      const novo = !!cid && !conhecidos.includes(cid) && id !== camp.lugar;
+      return {
+        id, icone: esc(l.icone), nome: esc(texto(l.nome, ctx)), x: pos.x, y: pos.y,
+        atual: id === camp.lugar, pendentes: acoesDoLugar(id).filter((a) => !a.comum).length,
+        desconhecido: novo, bairro: novo ? esc(Cidade.dados.bairros[Cidade.lugar(cid).bairro].nome) : "",
+        dica: novo ? "Você ainda não conhece este lugar: achar o caminho custa +1 no relógio." : "",
+      };
+    });
+    const nosFora = conhecidos.filter((cid) => !naMissao.has(cid)).map((cid) => {
+      const l = Cidade.lugar(cid);
+      return { id: cid, nome: esc(l.nome), icone: esc(l.icone), x: l.x, y: l.y, fora: true };
+    });
     // mapa ilustrado (desenhado pelo jogo) quando o eixo e os lugares têm posição; senão, a lista
     const ilustrado = m.centroMapa && Object.values(m.lugares).every((l) => l.mapa) && Mapas.html({
       eixo: m.eixo,
       centro: { ...m.centroMapa, nome: esc(m.centroMapa.nome) },
       tensao: camp.relogio / m.relogioMax,
-      lugares: lugaresVisiveis().map(([id, l]) => ({
-        id, icone: esc(l.icone), nome: esc(texto(l.nome, ctx)), ...l.mapa,
-        atual: id === camp.lugar, pendentes: acoesDoLugar(id).filter((a) => !a.comum).length,
-      })),
+      lugares: [...nosFora, ...nosDaMissao],
+      bairros: cidade ? Cidade.bairros(conhecidos).map((b) => ({ ...b, nome: esc(b.nome) })) : [],
     });
     if (ilustrado) {
       return `<div class="cena-painel">
@@ -618,9 +638,29 @@ const Cenas = (() => {
     </div>`;
   }
 
-  function custoViagem() {
+  function custoViagem(destino) {
     const base = grupo().some((p) => p.itens.includes("veiculo")) ? 0 : 1;
-    return base + (camp.flags.multidoes ? 1 : 0); // ruas cheias: tudo demora mais
+    // lugar que ninguém do grupo conhece: +1 para achar o caminho
+    return base + (camp.flags.multidoes ? 1 : 0) + (destino && desconhecido(destino) ? 1 : 0); // ruas cheias: tudo demora mais
+  }
+
+  // ---------- O mapa da cidade (cidade-x.js): o que o grupo conhece ----------
+  const temCidade = () => typeof Cidade !== "undefined" && missao().eixo === "x";
+  const conhecidosDoGrupo = () => [...new Set(grupo().flatMap((p) => Cidade.garantir(p)))];
+  function desconhecido(lugarId) {
+    if (!temCidade()) return false;
+    const cid = Cidade.idDe(missao(), lugarId, grupo()[0]);
+    return !!cid && !conhecidosDoGrupo().includes(cid);
+  }
+  // todos do grupo passam a conhecer estes lugares da cidade; devolve as linhas para mostrar
+  function conhecerLugares(cids) {
+    if (!temCidade()) return [];
+    const nomes = new Set();
+    for (const p of grupo()) {
+      Cidade.conhecer(p, cids).forEach((n) => nomes.add(n));
+      Armazem.salvar(p);
+    }
+    return [...nomes].map((n) => `Novo lugar no mapa: ${n}`);
   }
 
   // ======================= Ações =======================
@@ -704,6 +744,10 @@ const Cenas = (() => {
         p.memorias = (p.memorias ? p.memorias + "\n" : "") + efeitos.memoria;
         linhas.push("Nova Memória Cruzada");
       } else linhas.push("Uma sensação de já ter vivido isso, mas a lembrança não vem (precisa de mais Ressonância)");
+    }
+    if (efeitos.revela && temCidade()) {
+      linhas.push(...conhecerLugares(efeitos.revela));
+      Object.assign(p, { mapa: todos().find((x) => x.id === p.id).mapa }); // p é uma cópia: traz o mapa novo
     }
     for (const f of [].concat(efeitos.flag || [])) camp.flags[f] = true;
     for (const f of [].concat(efeitos.tirarFlag || [])) delete camp.flags[f];

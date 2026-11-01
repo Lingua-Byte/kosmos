@@ -66,21 +66,35 @@ const Mapas = (() => {
 
   const ESTILOS = { x: cidade };
 
-  function html({ eixo, lugares, centro, tensao = 0 }) {
+  // lugares: nós do mapa. Além dos da missão:
+  //   fora: true → lugar que o personagem conhece, mas que não está nesta missão (ponto apagado, sem clique)
+  //   desconhecido: true → lugar da missão que ele ainda não conhece ("?", dá para ir, procurando)
+  // bairros: [{ nome, x, y, conhecido }] → nomes dos bairros; os desconhecidos aparecem como "???"
+  function html({ eixo, lugares, centro, tensao = 0, bairros = [] }) {
     const desenho = ESTILOS[eixo];
     if (!desenho) return null; // eixo sem mapa ilustrado ainda: a missão usa a lista
     const t = Math.max(0, Math.min(1, tensao));
+    // as colunas das bordas ficam presas à borda (senão o nome passa para fora do mapa)
+    const pos = (l) => (l.x > 66
+      ? `right:${Math.max(1, 100 - l.x - 14)}%;top:${l.y}%;transform:translate(0,-50%)`
+      : l.x < 34 ? `left:${Math.max(1, l.x - 14)}%;top:${l.y}%;transform:translate(0,-50%)` : `left:${l.x}%;top:${l.y}%`);
+    const no = (l) => {
+      if (l.fora) return `<span class="mapa-ponto" style="left:${l.x}%;top:${l.y}%" title="${l.nome}"><i></i><small>${l.nome}</small></span>`;
+      return `
+          <button class="mapa-no ${l.atual ? "atual" : ""} ${l.trancado ? "trancado" : ""} ${l.desconhecido ? "desconhecido" : ""}" style="${pos(l)}"
+            ${l.trancado || l.atual ? "disabled" : `data-ir="${l.id}"`} title="${l.dica || ""}">
+            <b>${l.desconhecido ? "?" : l.icone}</b>
+            <span class="mapa-no-texto"><span>${l.desconhecido ? l.bairro || "Desconhecido" : l.nome}</span>
+            ${l.desconhecido ? `<small>não conhece · +1</small>` : l.atual ? `<small>você está aqui</small>` : l.pendentes != null ? `<small>${l.pendentes ? l.pendentes + " a fazer" : "nada novo"}</small>` : ""}</span>
+          </button>`;
+    };
     return `
       <div class="mapa-ilustrado mapa-${eixo}" style="--tensao:${t.toFixed(2)}">
         ${desenho({ centro, tensao: t })}
+        ${bairros.map((b) => `<span class="mapa-bairro ${b.conhecido ? "" : "nevoa"}" style="left:${b.x}%;top:${b.y}%">${b.conhecido ? b.nome : "???"}</span>`).join("")}
         <span class="mapa-centro" style="left:${centro.x}%;top:${centro.y}%">${centro.nome}</span>
-        ${lugares.map((l) => `
-          <button class="mapa-no ${l.atual ? "atual" : ""} ${l.trancado ? "trancado" : ""}" style="left:${l.x}%;top:${l.y}%"
-            ${l.trancado || l.atual ? "disabled" : `data-ir="${l.id}"`} title="${l.dica || ""}">
-            <b>${l.icone}</b>
-            <span>${l.nome}${l.atual ? " · você está aqui" : ""}</span>
-            ${l.pendentes != null && !l.atual ? `<small>${l.pendentes ? l.pendentes + " a fazer" : "nada novo"}</small>` : ""}
-          </button>`).join("")}
+        ${lugares.filter((l) => l.fora).map(no).join("")}
+        ${lugares.filter((l) => !l.fora).map(no).join("")}
       </div>`;
   }
 

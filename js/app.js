@@ -807,6 +807,7 @@ function renderFicha(recemCriada = false) {
         <button class="btn-secundario" data-acao="dicionario">Abrir dicionário</button>
       </div>
     </section>
+    <section data-sub="mapa">${mapaFichaHtml(p)}</section>
     <section data-sub="rolagens">
       <div class="mesa-barra">
         <button class="btn-texto" data-acao="nova-cena" title="Renova usos por cena">↻ Nova cena</button>
@@ -821,10 +822,19 @@ function renderFicha(recemCriada = false) {
   mostrarSubAba();
 }
 
+// O mapa de Port Halden que o personagem conhece (cidade-x.js)
+function mapaFichaHtml(p) {
+  if (typeof Cidade === "undefined") return "";
+  const m = Cidade.mapaDaFicha(p);
+  return `<div class="bloco"><h3>${esc(Cidade.dados.nome)} <small>${m.conhecidos} de ${m.total} lugares</small></h3>
+    ${m.html}
+    <p class="dica">O resto da cidade se descobre jogando: chegando lá, ou quando alguém conta.</p></div>`;
+}
+
 // A ficha em abas: cada uma cabe na tela (sem rolar a página)
 const FICHA_ABAS = [
   ["personagem", "Ficha"], ["recursos", "Habilid."], ["bolsa", "Bolsa"],
-  ["convergencia", "Converg."], ["linguas", "Memórias"], ["rolagens", "Dados"],
+  ["convergencia", "Converg."], ["linguas", "Memórias"], ["rolagens", "Dados"], ["mapa", "Mapa"],
 ];
 let subAtual = "personagem";
 
@@ -832,6 +842,9 @@ function mostrarSubAba() {
   const corpo = document.getElementById("ficha-corpo");
   if (!corpo) return;
   corpo.querySelectorAll("[data-sub]").forEach((el) => (el.hidden = el.dataset.sub !== subAtual));
+  // a moldura do eixo some quando a aba não tem nada dele (mapa, dados, memórias)
+  const moldura = corpo.querySelector(".aba-conteudo");
+  if (moldura) moldura.hidden = ![...moldura.querySelectorAll("[data-sub]")].some((el) => !el.hidden);
   document.querySelectorAll("[data-sub-aba]").forEach((b) => {
     b.classList.toggle("atual", b.dataset.subAba === subAtual);
     b.setAttribute("aria-selected", String(b.dataset.subAba === subAtual));
