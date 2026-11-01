@@ -180,7 +180,10 @@ const Cenas = (() => {
     }
     const lugar = m.lugares[camp.lugar];
     const titulo = texto(lugar.nome, contexto());
-    if (camp.lugar === "trabalho" && m.trabalho) return { eixo: m.eixo, chave: `abertura-${m.trabalho(ativo()).ponto}`, titulo, icone: lugar.icone };
+    if (camp.lugar === "trabalho" && m.trabalho) {
+      const t = m.trabalho(grupo()[0]);
+      return { eixo: m.eixo, chave: `abertura-${t.arte || t.ponto}`, titulo, icone: lugar.icone };
+    }
     return { eixo: m.eixo, chave: `lugar-${camp.lugar}`, titulo, icone: lugar.icone };
   }
 
@@ -398,6 +401,9 @@ const Cenas = (() => {
     if ([].concat(s.marca || []).some((k) => !temMarca(k))) return false;
     if ([].concat(s.semMarca || []).some((k) => temMarca(k))) return false;
     if (s.algumaMarca && ![].concat(s.algumaMarca).some(temMarca)) return false;
+    // só para um personagem pronto (a origem dele): vale quem abriu a partida, dono do lugar inicial
+    if (s.pronto && grupo()[0].pronto !== s.pronto) return false;
+    if (s.semPronto && grupo()[0].pronto) return false; // coisas de escritório que não cabem nas origens
     // só no ponto de entrada da profissão de quem está jogando (as 8 aberturas)
     if (s.ponto && (!missao().trabalho || missao().trabalho(ativo()).ponto !== s.ponto)) return false;
     return true;
@@ -636,7 +642,7 @@ const Cenas = (() => {
         situacao: op.situacao, podeAjudar: g.length > 1,
         aoTerminar: (r) => resolver(op, r.passou ? op.sucesso : op.falha, doLugar),
       });
-    } else resolver(op, op.resultado, doLugar);
+    } else resolver(op, typeof op.resultado === "function" ? op.resultado(contexto()) : op.resultado, doLugar);
   }
 
   function resolver(op, res, doLugar) {
