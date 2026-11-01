@@ -28,7 +28,13 @@ async function carregar() {
   try {
     rascunho = JSON.parse(localStorage.getItem(RASCUNHO));
   } catch {}
-  if (rascunho && (!doArquivo || confirm("Há mudanças guardadas só neste navegador que ainda não foram salvas no projeto. Usar essas mudanças?"))) {
+  // Sem o servidor do PC (GitHub Pages, app do celular), o que fica neste aparelho é o trabalho atual.
+  // Com o servidor, mudanças antigas presas no navegador só voltam se o autor quiser.
+  let comServidor = false;
+  try {
+    comServidor = (await fetch("__versao", { cache: "no-store" })).ok;
+  } catch {}
+  if (rascunho && (!doArquivo || !comServidor || confirm("Há mudanças guardadas só neste navegador que ainda não foram salvas no projeto. Usar essas mudanças?"))) {
     mundo = rascunho;
     mudou();
   } else mundo = doArquivo || { versao: 1, perguntas: [], npcs: [], storylets: [], tabelas: {} };
@@ -695,13 +701,13 @@ document.addEventListener("click", (ev) => {
   if (!t) return;
   const d = t.dataset;
 
-  if (d.npc) {
-    npcAtual = d.npc;
-    return render();
-  }
-  if (d.missao) {
-    missaoAtual = d.missao;
-    return render();
+  if (d.npc || d.missao) {
+    if (d.npc) npcAtual = d.npc;
+    else missaoAtual = d.missao;
+    render();
+    // no celular a lista fica em cima: desce até o formulário
+    if (innerWidth <= 900) $(".editor")?.scrollIntoView({ behavior: "smooth" });
+    return;
   }
   if (d.verMissao) {
     missaoAtual = d.verMissao;

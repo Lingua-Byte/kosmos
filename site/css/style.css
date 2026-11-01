@@ -885,6 +885,7 @@ body.tema-x .dialogo-dados, body.tema-y .dialogo-dados, body.tema-z .dialogo-dad
 /* ===================== Mesa e cenas ===================== */
 
 .acoes-personagens { display: grid; gap: 10px; }
+.link-oficina { justify-self: center; text-decoration: none; font-size: 0.9rem; }
 .ficha-navegacao { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .ficha-navegacao .btn-primario { padding: 8px 18px; font-size: 0.8rem; }
 

@@ -65,6 +65,7 @@ small { font-size: 0.8rem; }
 .btn.primario { background: var(--acento); color: #1a1406; border-color: var(--acento); font-weight: 600; }
 .btn.perigo, .btn-texto.perigo { color: var(--vermelho); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.voltar-jogo { display: inline-block; text-decoration: none; margin: 0 0 4px -6px; font-size: 0.9rem; }
 .btn-texto { background: none; border: 0; color: var(--azul); cursor: pointer; font: inherit; padding: 4px 6px; }
 
 .cartao {
@@ -111,6 +112,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--acento); ou
 }
 .item:hover { background: var(--painel); }
 .item.ativo { background: var(--painel-2); border-color: var(--acento); }
+.editor { scroll-margin-top: 56px; }
 .rodape-editor { display: flex; gap: 8px; flex-wrap: wrap; }
 .usos { margin: 0 0 10px; padding-left: 18px; }
 
