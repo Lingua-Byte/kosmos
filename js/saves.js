@@ -288,3 +288,6 @@ const Saves = (() => {
 
   return { abrir, fechar, salvar, auto, carregar, todos, renomear, apagar };
 })();
+
+// a tela inicial mostra "Carregar jogo" quando já há saves
+if (typeof mostrarCarregarInicio === "function") mostrarCarregarInicio();

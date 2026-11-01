@@ -211,8 +211,28 @@ function concluirTransicao() {
   Galaxia.repouso(1.4);
   $("#eixos-transicao").classList.remove("visivel", "convergir");
   if (Armazem.todos().length) abrirPersonagens();
-  else iniciarCriacao();
+  else Prontos.abrir(); // por enquanto, só personagens prontos (a criação própria está desligada)
 }
+
+// Volta à tela inicial (menu ⚙). A partida em andamento fica gravada: é só continuar pela Mesa.
+function voltarAoMenu() {
+  transicaoTimers.forEach(clearTimeout);
+  transicaoTimers = [];
+  definirTema(null);
+  Galaxia.repouso(1.4);
+  mostrarTela("tela-inicio");
+  mostrarCarregarInicio();
+}
+
+// "Carregar jogo" na tela inicial, quando há saves
+function mostrarCarregarInicio() {
+  const b = $("#btn-carregar-inicio");
+  if (b) b.hidden = !(typeof Saves !== "undefined" && Saves.todos().length);
+}
+$("#btn-carregar-inicio").addEventListener("click", () => {
+  Musica.tocar();
+  Saves.abrir();
+});
 
 // ---------- Lista de personagens ----------
 

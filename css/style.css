@@ -1711,3 +1711,11 @@ body:has(#tela-prontos.ativa) .controle-musica { top: 8px; bottom: auto; right: 
 .sv-acoes .btn-secundario { padding: 4px 12px; font-size: 0.82rem; }
 .sv-acoes .btn-texto { font-size: 0.8rem; padding: 4px 2px; }
 .mesa-topo .mesa-carregar { margin-left: auto; padding: 5px 12px; font-size: 0.8rem; }
+/* o canto de cima à direita é dos controles (música, próxima, ⚙): os cabeçalhos deixam esse espaço livre */
+@media (max-width: 700px) { body:not(:has(#tela-inicio.ativa)) .musica-titulo { display: none; } }
+#tela-ficha .ficha-navegacao, #tela-tradutor .tradutor-topo, .prontos-topo, .mesa-topo { padding-right: 130px !important; }
+@media (max-width: 700px) { body:not(:has(#tela-inicio.ativa)) .controle-musica .btn-redondo { width: 36px; height: 36px; } body:not(:has(#tela-inicio.ativa)) .controle-musica { gap: 6px; } }
+#tela-ficha .ficha-navegacao h2 { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#tr-voltar { white-space: nowrap; }
+.op-jogo { display: flex; flex-wrap: wrap; gap: 8px; }
+.link-carregar { display: block; margin: 6px auto 0; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.85rem; }

@@ -89,13 +89,14 @@ const Opcoes = (() => {
   }
 
   function html() {
-    const narr = typeof Narrador !== "undefined" && Narrador.config ? Narrador.config() : null;
+    const narr = null; // o narrador (voz que lê o texto) saiu: agora as vozes são à moda antiga
     return `
       <div class="op-topo"><h2>Opções</h2><button class="op-fechar" data-op-fechar>Fechar</button></div>
+      ${jogoHtml()}
       <section class="op-secao"><h3>Som</h3>
         ${linha("musica", "ligada", "Música do jogo", typeof MusicaPropria !== "undefined" && MusicaPropria.conexao() ? "A trilha de cada eixo (as suas músicas, guardadas no aparelho)." : "A trilha de cada eixo (YouTube).")}
         ${linha("sons", "ligados", "Sons dos menus", "Os cliques e “clunks” de abrir mapa, diário, bolsa, ficha.", true)}
-        ${linha("vozes", "ligadas", "Vozes dos personagens", "Cada personagem com a sua voz quando fala.", true)}
+        ${linha("vozes", "ligadas", "Vozes dos personagens", "Como nos RPGs antigos: uma palavra curta e um som de voz próprio de cada um quando fala.", true)}
         ${linha("digitacao", "ligada", "Som de digitação", "O tique leve enquanto o texto da missão aparece.", true)}
         ${narr ? `
         <div class="op-linha">
@@ -169,6 +170,21 @@ const Opcoes = (() => {
     setTimeout(() => location.reload(), 600);
   }
 
+  // Jogo: salvar/carregar e voltar ao menu inicial
+  function jogoHtml() {
+    const naInicial = document.querySelector("#tela-inicio.ativa");
+    const temSaves = typeof Saves !== "undefined";
+    const emJogo = typeof Cenas !== "undefined" && Cenas.emJogo() && document.querySelector("#tela-cena.ativa");
+    if (naInicial && !(temSaves && Saves.todos().length)) return "";
+    return `<section class="op-secao"><h3>Jogo</h3>
+      <div class="op-jogo">
+        ${temSaves && (emJogo || Saves.todos().length) ? `<button class="op-acao" data-op-jogo="saves">${emJogo ? "Salvar e carregar" : "Carregar jogo"}</button>` : ""}
+        ${naInicial ? "" : `<button class="op-acao" data-op-jogo="menu">Voltar ao menu inicial</button>`}
+      </div>
+      ${emJogo ? `<p class="op-desc pequeno">A partida fica gravada ao sair: dá para continuar pela Mesa.</p>` : ""}
+    </section>`;
+  }
+
   let dialogo = null;
 
   function abrir() {
@@ -216,6 +232,14 @@ const Opcoes = (() => {
       dialogo.innerHTML = html();
     }
     if (t.dataset.opTrilha) trilhaPropria(t.dataset.opTrilha);
+    if (t.dataset.opJogo === "saves") {
+      dialogo.close();
+      return Saves.abrir();
+    }
+    if (t.dataset.opJogo === "menu") {
+      dialogo.close();
+      return voltarAoMenu();
+    }
     if (t.hasAttribute("data-op-instalar")) {
       if (!instalar()) location.href = "instalar.html";
     }

@@ -112,8 +112,8 @@ const Cenas = (() => {
             <button class="btn-primario" data-comecar="${m.id}">Começar</button>
           </div>`).join("")}
         </div>
-        <p class="dica">Os prólogos do Medieval e do Espacial ainda não foram escritos: por enquanto, qualquer personagem joga o prólogo do Urbano.</p>`
-      : `<p class="sub">Ainda não há personagens.</p><button class="btn-primario" data-acao="criar">Criar personagem</button>`}`;
+        <p class="dica">Os prólogos do Medieval e do Espacial ainda não foram escritos: por enquanto, todos começam no Urbano.</p>`
+      : `<p class="sub">Ainda não há personagens.</p><button class="btn-primario" data-acao="criar">Escolher personagem</button>`}`;
     mostrarTela("tela-mesa");
   }
 
@@ -275,12 +275,6 @@ const Cenas = (() => {
         <span class="cena-onde"><b>${EIXOS[m.eixo].glifo}</b> ${esc(m.subtitulo)} · ${esc(nomeLugar)}</span>
         <span class="relogio" title="Relógio de Convergência">${Array.from({ length: m.relogioMax }, (_, i) => `<i class="${i < camp.relogio ? "cheio" : ""}"></i>`).join("")}</span>
         <span class="tag">${esc(m.faseTag || `Fase 1 · ${m.fase}`)}</span>
-        ${Narrador.disponivel ? `<span class="narrador">
-          <button class="btn-texto narrador-ligar" data-acao="narrador" aria-pressed="false"></button>
-          <button class="btn-secundario" data-acao="narrar" hidden></button>
-          <button class="btn-texto narrador-ligar" data-acao="narrador-voz" hidden></button>
-          <span class="narrador-estado sub"></span>
-        </span>` : ""}
         <button class="btn-texto narrador-ligar" data-acao="saves">⛃ Salvar</button>
         <button class="btn-texto narrador-ligar" data-acao="opcoes">⚙ Opções</button>
       </header>
@@ -305,9 +299,7 @@ const Cenas = (() => {
     rolarTopo = false;
     // quem fala aparece no palco (o retrato); depois o palco volta para o lugar
     if (!viagem) Palco.mostrar(resultado && resultado.npc ? palcoNpc(resultado.npc) : palcoAtual());
-    if (resultado && resultado.fala) Vozes.falar(resultado.fala);
-    else Vozes.encerrar();
-    Narrador.cena(textoNarrado(), m.eixo);
+    if (!resultado) Vozes.encerrar();
   }
 
   // O que o narrador lê: título e narração da cena (sem os botões nem os números), parágrafo a parágrafo
@@ -360,15 +352,27 @@ const Cenas = (() => {
   }
 
   // escreve o parágrafo letra a letra, com o tique leve a cada poucas letras
+  // Fala de personagem (entre aspas): em vez do tique, a voz dele, como nos RPGs antigos
   function digitar(el, fim) {
     const texto = el.textContent;
     el.textContent = "";
     el.classList.add("digitando");
+    const npc = resultado && resultado.npc;
+    const idFala = resultado && (resultado.fala || resultado.texto.slice(0, 40));
+    let dentro = false;
     let i = 0;
     const passo = () => {
+      const antes = i;
       i = Math.min(texto.length, i + 2);
       el.textContent = texto.slice(0, i);
-      if (i % 6 === 0) Som.tecla();
+      for (const c of texto.slice(antes, i)) {
+        if (c === "“") {
+          dentro = true;
+          if (npc) Vozes.comecar(npc, idFala);
+        } else if (c === "”") dentro = false;
+      }
+      if (dentro && npc) Vozes.silaba(npc);
+      else if (i % 6 === 0) Som.tecla();
       if (i >= texto.length) terminar();
     };
     const relogio = setInterval(passo, 28);
@@ -874,7 +878,7 @@ const Cenas = (() => {
       }
       if (t.dataset.comecar) return comecar(t.dataset.comecar);
       if (t.dataset.continuar) return abrir(t.dataset.continuar);
-      if (t.dataset.acao === "criar") return iniciarCriacao();
+      if (t.dataset.acao === "criar") return Prontos.abrir();
       if (t.dataset.acao === "personagens") return abrirPersonagens();
       if (t.dataset.acao === "carregar-jogo") return Saves.abrir();
       return;
