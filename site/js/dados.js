@@ -342,7 +342,7 @@ const Dados = (() => {
   // ---------- Histórico (usado pela ficha) ----------
 
   function historicoHtml(p) {
-    const lista = (p.rolagens || []).slice(0, 8);
+    const lista = (p.rolagens || []).slice(0, 6);
     if (!lista.length) return `<p class="sub">Nenhuma rolagem ainda.</p>`;
     const nomes = { convergencia: "Convergência", estudo: "Estudo de runa" };
     const vereditos = { convergencia: ["Ressoa", "Dissoa"], estudo: ["Aprendeu", "Falhou"], teste: ["Sucesso", "Falha"] };

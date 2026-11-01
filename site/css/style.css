@@ -73,7 +73,7 @@ h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.14em; color: 
 }
 .tela.ativa { display: block; animation: surgir 0.8s ease both; }
 
-@keyframes surgir { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes surgir { from { opacity: 0; } to { opacity: 1; } }
 
 /* ===================== Tela inicial ===================== */
 
@@ -1488,3 +1488,149 @@ body.tema-z .dialogo-opcoes { background: #030914; }
 /* na criação, os controles flutuantes sobem para não cobrir o Continuar */
 body:has(#tela-criacao.ativa) .controle-musica { top: 8px; bottom: auto; right: 10px; }
 #tela-criacao .criacao-topo { padding-right: 132px; }
+
+/* ===================== Ficha numa tela só, em abas ===================== */
+#tela-ficha.ativa { display: flex; flex-direction: column; height: 100vh; height: 100dvh; padding: 8px 10px 0; overflow: hidden; }
+#tela-ficha .ficha { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; padding: 10px 12px 0; }
+#tela-ficha .ficha-topo { flex: none; margin-bottom: 6px; gap: 2px; }
+#tela-ficha .ficha-topo h2 { font-size: 1.3rem; margin: 0; }
+#tela-ficha .resumo-tracos { margin: 0; font-size: 0.8rem; }
+#tela-ficha .ficha > .abas { flex: none; }
+#tela-ficha .fim-de-jogo, #tela-ficha .selada { flex: none; margin: 4px 0; font-size: 0.85rem; }
+.ficha-subabas { flex: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin: 8px 0 4px; }
+.ficha-subabas button {
+  font: inherit; font-size: 0.75rem; letter-spacing: 0.04em; padding: 6px 2px; cursor: pointer;
+  border-radius: 8px; border: 1px solid var(--painel-borda); background: none; color: var(--texto-suave);
+}
+.ficha-subabas button.atual { border-color: var(--acento); color: var(--acento); background: color-mix(in srgb, var(--acento) 10%, transparent); }
+.ficha-corpo { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 4px 0 calc(12px + env(safe-area-inset-bottom)); }
+.ficha-corpo .bloco { margin-top: 10px; }
+.ficha-corpo .bloco h3 { margin-top: 4px; }
+@media (min-width: 700px) { .ficha-subabas { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+/* na ficha, o controle de música e o tradutor sobem para não cobrir nada */
+body:has(#tela-ficha.ativa) .controle-musica { top: 8px; bottom: auto; right: 10px; }
+
+/* ===================== Escolhas compactas (criação) ===================== */
+.grade-lugares, .grade-compacta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.tile-lugar, .tile-compacto {
+  display: grid; gap: 2px; text-align: left; padding: 10px; cursor: pointer; font: inherit; color: var(--texto);
+  border-radius: 10px; border: 1px solid var(--painel-borda); background: rgba(255, 255, 255, 0.03);
+}
+.tile-lugar strong { font-size: 0.95rem; }
+.tile-lugar small { color: var(--texto-suave); font-size: 0.75rem; }
+.tile-compacto { font-size: 0.9rem; padding: 9px 10px; }
+.tile-lugar:hover, .tile-compacto:hover { border-color: var(--acento); }
+.tile-compacto.escolhida { border-color: var(--acento); background: color-mix(in srgb, var(--acento) 14%, transparent); }
+.detalhe-escolha {
+  margin: 10px 0 0; padding: 10px 12px; min-height: 3.4em; font-size: 0.88rem; line-height: 1.45;
+  border-left: 3px solid var(--acento); background: color-mix(in srgb, var(--acento) 7%, transparent); border-radius: 0 8px 8px 0;
+}
+.oficio-escolhido { margin: 0 0 8px; font-size: 0.9rem; color: var(--texto-suave); }
+.oficio-escolhido b { color: var(--acento); }
+.voltar-lugares { padding: 4px 0; }
+.titulo-grupo { margin: 4px 0 8px; }
+#tela-criacao .catalogo, #tela-ficha .catalogo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.item-catalogo { display: flex !important; flex-direction: row !important; align-items: center; gap: 8px; padding: 8px !important; text-align: left; }
+.item-catalogo .arte-item { width: 40px; height: 40px; }
+.item-texto { display: grid; gap: 1px; min-width: 0; }
+.item-catalogo strong { font-size: 0.88rem !important; line-height: 1.2; }
+.item-catalogo .item-preco { position: static !important; font-size: 0.72rem; color: var(--texto-suave); }
+#tela-criacao .orcamento { margin-bottom: 8px; }
+
+/* ficha: cabeçalho numa linha só, abas numa linha só */
+#tela-ficha .ficha-navegacao { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; }
+#tela-ficha .ficha-navegacao h2 { font-size: 1.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#tela-ficha .ficha-navegacao .btn-texto { font-size: 1.4rem; padding: 0 6px; }
+#tela-ficha .ficha-navegacao .btn-primario { padding: 6px 14px; font-size: 0.75rem; }
+#tela-ficha .ficha > .abas .aba { padding: 6px 8px; font-size: 0.82rem; }
+#tela-ficha .glifo-linha { margin: 4px 0; font-size: 1rem; }
+.ficha-subabas { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; margin: 6px 0 2px; }
+.ficha-subabas button { font-size: 0.66rem; padding: 6px 1px; letter-spacing: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#tela-ficha .trilha-longa .caixa { width: 9px; height: 12px; }
+#tela-ficha textarea[data-campo="memorias"] { min-height: 0; }
+
+/* ===================== Mesa, Personagens e Tradutor numa tela só ===================== */
+#tela-mesa.ativa, #tela-personagens.ativa, #tela-tradutor.ativa {
+  display: flex; flex-direction: column; height: 100vh; height: 100dvh; padding: 10px 10px 0; overflow: hidden;
+}
+#tela-mesa .painel, #tela-personagens .painel, #tela-tradutor .painel {
+  flex: 1; min-height: 0; width: 100%; overflow-y: auto; overscroll-behavior: contain;
+  padding: 12px 14px calc(14px + env(safe-area-inset-bottom));
+}
+.mesa-topo { display: flex; align-items: center; gap: 6px; }
+.mesa-topo h2 { margin: 0; }
+.mesa-topo .btn-texto { font-size: 1.4rem; padding: 0 6px; }
+#tela-mesa h3 { margin: 10px 0 6px; font-size: 0.9rem; }
+#tela-mesa h3 small { font-size: 0.75rem; letter-spacing: 0; text-transform: none; }
+.mesa-jogadores { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+#tela-mesa .mesa-jogador { padding: 8px 10px; }
+#tela-mesa .mesa-missao { padding: 10px 12px; gap: 4px; }
+#tela-mesa .mesa-missao strong { font-size: 1.15rem; }
+#tela-mesa .mesa-missao .sub { font-size: 0.85rem; margin: 0; }
+#tela-mesa .mesa-continuar { padding: 8px 10px; }
+#tela-mesa .dica { font-size: 0.75rem; margin: 6px 0 0; }
+/* personagens: os botões de Jogar e Criar ficam sempre à vista */
+#tela-personagens .painel { display: flex; flex-direction: column; }
+#tela-personagens .painel h2 { margin: 0 0 8px; }
+#tela-personagens .lista-personagens { flex: 1; min-height: 0; overflow-y: auto; margin: 0; }
+#tela-personagens .acoes-personagens { flex: none; padding-top: 10px; }
+body:has(#tela-mesa.ativa) .controle-musica, body:has(#tela-personagens.ativa) .controle-musica, body:has(#tela-tradutor.ativa) .controle-musica { top: 8px; bottom: auto; right: 10px; }
+
+/* ===================== Tradutor numa tela só ===================== */
+#tela-tradutor .painel.tradutor { display: flex; flex-direction: column; overflow: hidden; padding: 10px 12px 0; }
+#tela-tradutor .tradutor-topo { flex: none; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4px 10px; margin: 0 0 6px; }
+#tela-tradutor .tradutor-topo h2 { margin: 0; font-size: 1.05rem; line-height: 1.2; }
+#tela-tradutor .tradutor-topo .leitor { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; margin: 0; }
+#tela-tradutor .tradutor-topo .leitor span { flex: none; font-size: 0.72rem; }
+#tela-tradutor .tradutor-topo .leitor select { flex: 1; min-width: 0; padding: 5px 8px; }
+#tela-tradutor #tr-titulo-eixo { display: none; }
+#tela-tradutor .vistas, #tela-tradutor .tradutor > .abas { flex: none; margin: 0 0 6px; flex-wrap: nowrap; gap: 4px; }
+#tela-tradutor .vistas .chip { flex: 1; padding: 5px 4px; font-size: 0.8rem; }
+#tela-tradutor .tradutor > .abas .aba { padding: 6px 4px; font-size: 0.8rem; }
+#tela-tradutor .aba-conteudo { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 8px 10px; overflow: hidden; }
+#tela-tradutor .aba-conteudo > div:not([hidden]) { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 6px; }
+#vista-traduzir > * { flex: none; margin: 0 !important; }
+#vista-traduzir .modos { flex-wrap: nowrap; gap: 4px; }
+#vista-traduzir .modos .chip { flex: 1; padding: 5px 4px; font-size: 0.78rem; }
+#vista-traduzir .linha-idioma { display: flex; align-items: center; gap: 8px; }
+#vista-traduzir .linha-idioma .campo { display: flex; align-items: center; gap: 6px; margin: 0; }
+#vista-traduzir .linha-idioma .campo span { font-size: 0.7rem; }
+#vista-traduzir .linha-idioma select { padding: 4px 6px; }
+#vista-traduzir #tr-idioma-status { font-size: 0.75rem; }
+#vista-traduzir textarea { min-height: 0; height: 4.2em; resize: none; }
+#vista-traduzir .tr-acoes { display: flex; gap: 8px; }
+#vista-traduzir .tr-acoes button { padding: 5px 10px; font-size: 0.82rem; }
+#vista-traduzir .tr-saida-caixa { max-height: 26%; overflow-y: auto; }
+#vista-traduzir #tr-leitura { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+#vista-dicionario > * { flex: none; margin: 0 !important; }
+#vista-dicionario #dic-categorias { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
+#vista-dicionario #dic-categorias .chip { flex: none; }
+#vista-dicionario .dic-lista { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+#vista-dicionario .creditos { display: none; }
+#vista-raizes:not([hidden]) { overflow-y: auto; overscroll-behavior: contain; }
+#tela-tradutor .tradutor-topo { padding-right: 44px; }
+#vista-traduzir .formas { flex-wrap: nowrap; overflow-x: auto; gap: 4px; padding-bottom: 2px; }
+#vista-traduzir .formas .chip { flex: none; padding: 4px 10px; font-size: 0.78rem; }
+/* ficha: runas e convergência mais compactas */
+.ficha-corpo .cartas-runas { grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap: 5px; margin-bottom: 8px; }
+.ficha-corpo .carta-runa { aspect-ratio: 3 / 4; }
+.ficha-corpo .carta-runa b { font-size: 1.15rem; }
+.ficha-corpo .carta-runa small { font-size: 0.55rem; }
+.ficha-corpo .marcas { gap: 4px; margin-top: 4px; }
+.ficha-corpo .marca { font-size: 0.68rem; padding: 2px 7px; }
+.ficha-corpo .convergencia .atributo { margin: 6px 0; }
+.ficha-corpo .convergencia .sub { margin: 2px 0 6px; }
+.ficha-corpo .btn-convergencia { padding: 7px 12px; }
+#tela-ficha .ficha-navegacao { padding-right: 44px; }
+.ficha-corpo [data-sub="convergencia"] h3 { margin: 0 0 2px; font-size: 0.95rem; }
+.ficha-corpo [data-sub="convergencia"] .sub, .ficha-corpo .exposicao .efeitos { font-size: 0.78rem; line-height: 1.35; margin: 2px 0 4px; }
+.ficha-corpo .exposicao { padding: 8px 10px; }
+.ficha-corpo .convergencia { padding-top: 8px; margin-top: 8px; }
+.ficha-corpo .convergencia .atributo-nome { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.ficha-corpo .convergencia .atributo-nome span { font-size: 0.7rem; }
+.ficha-corpo .btn-convergencia { font-size: 0.82rem; width: 100%; padding: 6px 10px; }
+.ficha-corpo .trilha-longa { margin: 2px 0; }
+.ficha-corpo .bloco { margin: 6px 0 0; }
+.ficha-corpo .historico li { padding: 4px 0; font-size: 0.85rem; }
+.ficha-subabas { margin: 6px 0 2px; }
+.ficha-corpo .exposicao > .sub { display: none; }

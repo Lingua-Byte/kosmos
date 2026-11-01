@@ -90,19 +90,18 @@ const Cenas = (() => {
     const nomeDe = (id) => esc(lista.find((p) => p.id === id)?.nome || "?");
     const andamento = partidas();
     $("#mesa").innerHTML = `
-      <h2>A Mesa</h2>
-      <p class="sub">Escolha quem joga. Sozinho ou em grupo, na mesma tela: cada um age na sua vez.</p>
+      <div class="mesa-topo"><button class="btn-texto" data-acao="personagens" aria-label="Personagens">‹</button><h2>A Mesa</h2></div>
       ${andamento.length ? `<h3>Partidas em andamento</h3>${andamento.map((c) => `
         <div class="mesa-continuar">
           <div><strong>${esc(MISSOES[c.missao].titulo)}</strong><span>${esc(MISSOES[c.missao].subtitulo)} · ${c.personagens.map(nomeDe).join(", ")}</span></div>
           <button class="btn-primario" data-continuar="${c.id}">Continuar</button>
         </div>`).join("")}` : ""}
       ${lista.length ? `
-        <h3>Quem joga</h3>
+        <h3>Quem joga <small class="sub">· sozinho ou em grupo, cada um na sua vez</small></h3>
         <div class="mesa-jogadores">${lista.map((p) => `
           <button class="mesa-jogador ${selecionados.has(p.id) ? "escolhida" : ""}" data-jogador="${p.id}">
             <b>${EIXOS[p.origem].glifo}</b><strong>${esc(p.nome)}</strong>
-            <span>${esc(EIXOS[p.origem].papeis[p.papel].nome)}</span>
+            <span>${esc((profissaoDe(p, p.origem) || { nome: EIXOS[p.origem].papeis[p.papel].nome }).nome)}</span>
           </button>`).join("")}</div>
         <h3>Missão</h3>
         <div class="mesa-missoes">${Object.values(MISSOES).map((m) => `
@@ -114,8 +113,7 @@ const Cenas = (() => {
           </div>`).join("")}
         </div>
         <p class="dica">Os prólogos do Medieval e do Espacial ainda não foram escritos: por enquanto, qualquer personagem joga o prólogo do Urbano.</p>`
-      : `<p class="sub">Ainda não há personagens.</p><button class="btn-primario" data-acao="criar">Criar personagem</button>`}
-      <button class="btn-texto" data-acao="personagens">‹ Personagens</button>`;
+      : `<p class="sub">Ainda não há personagens.</p><button class="btn-primario" data-acao="criar">Criar personagem</button>`}`;
     mostrarTela("tela-mesa");
   }
 
