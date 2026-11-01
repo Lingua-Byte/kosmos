@@ -1435,3 +1435,7 @@ body.tema-z .dialogo-opcoes { background: #030914; }
 .op-servico { display: grid; padding: 10px; border-radius: 8px; border: 1px solid var(--painel-borda); color: var(--texto); text-decoration: none; text-align: center; }
 .op-servico small { color: var(--texto-suave); font-size: 0.72rem; }
 @media (max-width: 600px) { .dialogo-opcoes { width: 100vw; height: 100dvh; border-radius: 0; } }
+
+/* convite para instalar o app, discreto, embaixo do botão de entrar */
+.link-instalar { display: inline-block; margin-top: 18px; color: var(--texto-suave); font-size: 0.85rem; letter-spacing: 0.1em; text-decoration: none; border-bottom: 1px solid currentColor; }
+.link-instalar:hover { color: var(--acento); }

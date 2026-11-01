@@ -115,7 +115,7 @@ const Opcoes = (() => {
           ? `<p class="op-desc">Você está jogando pelo app instalado. Ele se atualiza sozinho sempre que o jogo muda.</p>`
           : `<p class="op-desc">Instale o KOSMOS como app (Android ou PC): abre em tela cheia, com ícone próprio, e se atualiza sozinho.</p>
              <button class="op-acao" data-op-instalar>Instalar o app</button>
-             <p class="op-desc pequeno" data-op-instalar-ajuda hidden>No Android: menu ⋮ do Chrome → <b>Instalar app</b> (ou Adicionar à tela inicial). No PC: ícone de instalar na barra de endereço do Chrome ou do Edge.</p>`}
+`}
       </section>`;
   }
 
@@ -165,10 +165,7 @@ const Opcoes = (() => {
       dialogo.innerHTML = html();
     }
     if (t.hasAttribute("data-op-instalar")) {
-      if (pedidoInstalar) {
-        pedidoInstalar.prompt();
-        pedidoInstalar = null;
-      } else dialogo.querySelector("[data-op-instalar-ajuda]").hidden = false;
+      if (!instalar()) location.href = "instalar.html";
     }
   }
 
@@ -186,8 +183,25 @@ const Opcoes = (() => {
     if (t.dataset.opNarrador === "voz") Narrador.configurar({ voz: t.value });
   }
 
+  // instala direto se o navegador já ofereceu; senão, a página com os passos de cada aparelho
+  function instalar() {
+    if (pedidoInstalar) {
+      pedidoInstalar.prompt();
+      pedidoInstalar = null;
+      return true;
+    }
+    return false;
+  }
+
   // o botão ⚙ fica no canto, junto do controle de música
   addEventListener("DOMContentLoaded", () => {
+    const link = document.getElementById("link-instalar");
+    if (link) {
+      if (instalado()) link.hidden = true;
+      link.addEventListener("click", (ev) => {
+        if (instalar()) ev.preventDefault();
+      });
+    }
     const b = document.createElement("button");
     b.className = "btn-redondo btn-opcoes";
     b.title = "Opções (volumes, música, app)";
@@ -197,5 +211,5 @@ const Opcoes = (() => {
     document.querySelector(".controle-musica")?.append(b);
   });
 
-  return { get, mudar, abrir };
+  return { get, mudar, abrir, instalar };
 })();
