@@ -1219,24 +1219,20 @@ body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 
 .cinematica.visivel { opacity: 1; }
 .cinematica.saindo { opacity: 0; }
 /* O vídeo aparece inteiro, sem corte. Onde a tela sobra, o mesmo vídeo, desfocado e escuro,
-   preenche o fundo, e as bordas do vídeo se dissolvem nele: nada de faixas pretas */
+   preenche o fundo: nada de faixas pretas */
 .cinematica video { position: absolute; inset: 0; width: 100%; height: 100%; }
 .cinematica .cinematica-fundo { object-fit: cover; filter: blur(28px) brightness(0.6) saturate(1.2); transform: scale(1.15); }
 .cinematica .cinematica-video { object-fit: contain; }
-/* tela mais alta que o vídeo: sobra em cima e embaixo; o vídeo se dissolve nessas bordas */
+/* tela mais alta que o vídeo: sobra em cima e embaixo */
 @media (max-aspect-ratio: 16/9) {
   .cinematica .cinematica-video {
     height: calc(100vw * 9 / 16); top: 50%; bottom: auto; transform: translateY(-50%);
-    -webkit-mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
-    mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
   }
 }
 /* tela mais larga que o vídeo: sobra dos lados */
 @media (min-aspect-ratio: 16/9) {
   .cinematica .cinematica-video {
     width: calc(100vh * 16 / 9); left: 50%; right: auto; transform: translateX(-50%);
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
   }
 }
 .cinematica-texto {
