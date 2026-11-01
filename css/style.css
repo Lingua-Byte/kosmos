@@ -1696,3 +1696,18 @@ body:has(#tela-prontos.ativa) .controle-musica { top: 8px; bottom: auto; right: 
   .pronto-cabeca > .pronto-retrato { width: min(220px, 34dvh); }
   .pronto-resumo { font-size: 0.95rem; }
 }
+
+/* ===================== Saves ===================== */
+.dialogo-saves .sv-novo { display: flex; gap: 8px; margin: 4px 0 12px; }
+.dialogo-saves .sv-novo input, .dialogo-saves .sv-renomear input { flex: 1; min-width: 0; font: inherit; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--painel-borda); background: rgba(0, 0, 0, 0.3); color: var(--texto); }
+.dialogo-saves .sv-renomear { display: flex; gap: 6px; }
+.sv-lista { display: grid; gap: 8px; max-height: min(52dvh, 460px); overflow-y: auto; overscroll-behavior: contain; padding-right: 2px; }
+.sv-item { display: grid; gap: 4px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--painel-borda); background: rgba(255, 255, 255, 0.03); }
+.sv-item strong { font-size: 0.95rem; }
+.sv-info { font-size: 0.75rem; color: var(--texto-suave); }
+.sv-tipo { font-weight: 400; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 1px 6px; border-radius: 999px; border: 1px solid var(--painel-borda); margin-right: 4px; }
+.sv-manual .sv-tipo { color: var(--acento); border-color: var(--acento); }
+.sv-acoes { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+.sv-acoes .btn-secundario { padding: 4px 12px; font-size: 0.82rem; }
+.sv-acoes .btn-texto { font-size: 0.8rem; padding: 4px 2px; }
+.mesa-topo .mesa-carregar { margin-left: auto; padding: 5px 12px; font-size: 0.8rem; }
