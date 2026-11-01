@@ -1335,3 +1335,10 @@ li.com-arte { display: flex; align-items: center; gap: 10px; }
 @keyframes palco-carregar { to { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { .palco-midia { animation: none; } }
 @media (max-width: 600px) { .palco { border-radius: 0; border-left: 0; border-right: 0; max-height: 34vh; } }
+
+/* Retrato de quem fala (talking head) */
+.palco-npcs .palco-midia { object-position: center 30%; }
+.palco-nome {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.55); color: #fff; font-size: 0.95rem; letter-spacing: 0.06em;
+}

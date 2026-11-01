@@ -179,6 +179,11 @@ const Cenas = (() => {
     return { eixo: m.eixo, chave: `lugar-${camp.lugar}`, titulo, icone: lugar.icone };
   }
 
+  function palcoNpc(id) {
+    const nome = (missao().npcs || {})[id] || id;
+    return { eixo: "npcs", chave: `npc-${id}`, titulo: nome, icone: nome.replace(/^(Dra?\.|Sr\.|Sra\.|Agente|Professora|O|A|Um)\s+/, "").charAt(0), rotulo: nome };
+  }
+
   // Ir a outro lugar: o relógio anda, o palco toca a transição e o jogador chega
   function irPara(destino) {
     const m = missao();
@@ -281,7 +286,8 @@ const Cenas = (() => {
       </div>
       ${painel ? painelHtml() : ""}
       ${grupoHtml()}`;
-    if (!viagem) Palco.mostrar(palcoAtual());
+    // quem fala aparece no palco (o retrato); depois o palco volta para o lugar
+    if (!viagem) Palco.mostrar(resultado && resultado.npc ? palcoNpc(resultado.npc) : palcoAtual());
     Narrador.cena(textoNarrado(), m.eixo);
   }
 
@@ -657,7 +663,7 @@ const Cenas = (() => {
     };
     const t = texto(res.texto, contexto());
     if (t || linhas.length) {
-      resultado = { texto: t || "…", linhas, depois };
+      resultado = { texto: t || "…", linhas, depois, npc: res.npc || op.npc };
       render();
     } else depois();
   }
