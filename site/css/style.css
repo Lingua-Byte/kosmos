@@ -1254,3 +1254,12 @@ body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 
   background: rgba(0, 0, 0, 0.55); color: #fff; border: 1px solid rgba(255, 255, 255, 0.5);
   font-size: 2rem; cursor: pointer;
 }
+
+/* Celular em pé: corte 9:16 do vídeo (a parte da largura indicada pelo foco), tela cheia, sem fundo desfocado */
+@media (orientation: portrait) and (max-aspect-ratio: 3/4) {
+  .cinematica .cinematica-video {
+    inset: 0; width: 100%; height: 100%; transform: none;
+    object-fit: cover; object-position: var(--foco, 50%) 50%;
+  }
+  .cinematica .cinematica-fundo { display: none; }
+}
