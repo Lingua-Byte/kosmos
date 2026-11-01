@@ -36,11 +36,13 @@ const Cinematica = (() => {
     const el = document.createElement("div");
     el.className = `cinematica cinematica-${eixo}`;
     el.innerHTML = `
-      <video src="${c.video}" muted playsinline preload="auto"></video>
+      <video class="cinematica-fundo" src="${c.video}" muted playsinline preload="auto" aria-hidden="true"></video>
+      <video class="cinematica-video" src="${c.video}" muted playsinline preload="auto"></video>
       <div class="cinematica-texto"><p>${c.legenda}</p><h2>${c.titulo}</h2></div>
       <button class="btn-texto cinematica-pular">Pular ›</button>`;
     document.body.appendChild(el);
-    const video = el.querySelector("video");
+    const video = el.querySelector(".cinematica-video");
+    const fundo = el.querySelector(".cinematica-fundo");
     let fim = false;
     const terminar = () => {
       if (fim) return;
@@ -59,6 +61,7 @@ const Cinematica = (() => {
     el.querySelector(".cinematica-pular").addEventListener("click", terminar);
     requestAnimationFrame(() => el.classList.add("visivel"));
     video.play().catch(terminar);
+    fundo.play().catch(() => {});
   }
 
   // Toca se algum desses personagens ainda não viu a cinemática do eixo; senão, segue direto
