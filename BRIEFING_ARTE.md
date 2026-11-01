@@ -259,3 +259,37 @@ Os pontos de entrada já definidos para cada eixo também vão precisar de cená
 | 11 | Cenas do clímax | 6 |
 | **Total agora** | | **95** |
 | Depois | Lugares de Yudur e da Domus | 16 |
+
+---
+
+## VÍDEOS do palco (a parte de cima da tela da missão)
+
+A tela da missão agora funciona como as telas dos Fallout clássicos: **a imagem viva do lugar em cima, o texto e as escolhas embaixo**.
+Para cada lugar, cena e abertura acima, o jogo procura, nesta ordem:
+
+1. um **vídeo em loop**: `site/imagens/x/<nome>.mp4` (ex.: `lugar-mercado.mp4`)
+2. a **imagem**: `site/imagens/x/<nome>.webp` (ex.: `lugar-mercado.webp`)
+3. sem nenhum dos dois, um cartão com o ícone e o nome do lugar.
+
+Ou seja: os nomes das pranchas 06 a 11 servem para os dois. Primeiro as imagens; depois, se quiser, anime cada imagem num vídeo com o mesmo nome.
+
+**Como fazer os vídeos:** gere a imagem do lugar (ChatGPT) e anime essa imagem numa IA de vídeo (Sora, ou a ferramenta que você usou para a Domus e a vila).
+Pedido sugerido para cada um:
+```
+Anime esta imagem como um loop de 6 segundos, câmera parada, movimento sutil
+(luz de néon piscando, fumaça, chuva fina, gente passando ao fundo). Sem cortes.
+O último quadro deve emendar com o primeiro. 16:9, 720p.
+```
+Formato: **mp4 (H.264), 16:9, 720p, 5 a 8 segundos, até 3 MB.**
+
+### Vídeos de caminho (a transição quando o jogador viaja)
+Tocam uma vez, entre um lugar e outro. Sem eles, o jogo mostra uma tela de carregamento com a arte do destino.
+
+| Arquivo | Quando toca | O que mostrar |
+|---|---|---|
+| `caminho-calcada.mp4` | indo a pé para a maioria dos lugares | calçada de Port Halden à noite, primeira pessoa, gente andando calada para o mesmo lado |
+| `caminho-metro.mp4` | indo ou saindo da Estação da Rua 9 | descendo a escada do metrô, luz fluorescente piscando |
+| `caminho-carro.mp4` | quando alguém do grupo tem carro | pelo para-brisa, avenida à noite, semáforos piscando no ritmo |
+| `caminho-escada.mp4` | indo para casa, para o Edifício Aurora ou para a Atlantic Tower | subindo escada de prédio, porta corta-fogo, eco |
+
+Os quatro também em `site/imagens/x/`, mp4, 3 a 6 segundos.

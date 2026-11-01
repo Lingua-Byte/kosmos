@@ -86,7 +86,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.wfile.write(corpo)
 
     def log_message(self, formato, *args):
-        if "/__versao" not in (args[0] if args else ""):
+        if "/__versao" not in (str(args[0]) if args else ""):
             super().log_message(formato, *args)
 
 

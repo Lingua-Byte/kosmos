@@ -64,6 +64,14 @@ MISSOES["prologo-x"] = {
   // Primeiro a versão da playlist (The Police - Topic); se estiver bloqueada no aparelho, o clipe oficial.
   radio: { videoId: ["-SaUrDhp034", "OMOGaugKpzs"], inicio: 162, fim: 195, vezes: Infinity },
 
+  // Vídeo de caminho ao viajar (imagens/x/<nome>.mp4); sem o vídeo, tela de carregamento com a arte do destino
+  caminho(daqui, destino, temVeiculo) {
+    if (temVeiculo) return "caminho-carro";
+    if (destino === "metro" || daqui === "metro") return "caminho-metro";
+    if (["casa", "aurora", "atlantico"].includes(destino)) return "caminho-escada";
+    return "caminho-calcada";
+  },
+
   // As 8 aberturas: o ponto de entrada da profissão decide onde a noite começa.
   // nome = como aparece no mapa · onde = "ainda está ___" · desc = o que se vê ao começar.
   aberturas: {
