@@ -166,6 +166,27 @@ npc-domus-ia     — DOMUS, a IA da nave: não é uma pessoa; um painel/olho de 
 
 > O Runático já existe (`Artes/runatico.webp`).
 
+### Prancha 04c — Personagens prontos (os 9 jogáveis)
+Arquivo: `prancha-04c-prontos.png` · cada retrato vira `site/imagens/prontos/<nome>.webp` (quadrado, 512×512)
+
+```
+Prancha 04c: retratos (busto, enquadramento QUADRADO) dos personagens jogáveis de Port Halden, EIXO X.
+Grade 3 x 3. Cada coluna é uma classe: TANK (esquerda), HEALER (meio), SUPPORT (direita).
+Estilo: o mesmo da Prancha 04 — pintura digital realista, noite, néon e poste, verde e âmbar.
+São heróis comuns: gente de verdade, cansada, determinada. Rosto bem visível, olhando para a câmera.
+Nome embaixo de cada um, exatamente assim:
+
+frank-brennan  — Frank Brennan, 52: bombeiro veterano, bigode grisalho, casaco de bombeiro aberto, fuligem no rosto, capacete debaixo do braço
+naomi-price    — Naomi Price, 41: médica de pronto-socorro, negra, cabelo preso às pressas, jaleco sobre o uniforme verde, estetoscópio
+eli-navarro    — Eli Navarro, 29: técnico de radiação, latino, óculos, jaqueta de laboratório, contador Geiger na mão
+rosa-delgado   — Rosa Delgado, 34: policial de patrulha, latina, uniforme azul-escuro, rádio no ombro, olhar duro
+michael-doyle  — Michael Doyle, 63: padre irlandês-americano, colarinho clerical, casaco preto gasto, terço enrolado na mão
+tess-monroe    — Tess Monroe, 38: radialista da madrugada, cabelo curto ruivo, fones no pescoço, microfone de estúdio atrás
+marcus-bell    — Marcus Bell, 27: entregador de moto, negro, jaqueta corta-vento, capacete na mão, mochila térmica
+june-albright  — June Albright, 71: enfermeira aposentada, cabelo branco preso, cardigã, maleta de primeiros socorros antiga
+ray-okafor     — Ray Okafor, 45: taxista nigeriano-americano, boné, camisa de botão, chaves do carro na mão, luzes da rua no vidro
+```
+
 ---
 
 ## LUGARES e CENAS do Eixo X (16:9, 1600×900)
