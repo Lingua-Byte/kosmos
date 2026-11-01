@@ -64,6 +64,14 @@ MISSOES["prologo-x"] = {
   // Primeiro a versão da playlist (The Police - Topic); se estiver bloqueada no aparelho, o clipe oficial.
   radio: { videoId: ["-SaUrDhp034", "OMOGaugKpzs"], inicio: 162, fim: 195, vezes: Infinity },
 
+  // Nome de quem aparece no palco quando fala (retrato em imagens/npcs/npc-<id>.webp ou .mp4)
+  npcs: {
+    helen: "Dra. Helen Vance", moore: "Agente Moore", martha: "Martha Kowalski", teddy: "Teddy",
+    abe: "Abe", sal: "Sal, o porteiro", danny: "Danny", hilde: "Professora Hilde Brandt",
+    "homem-terno": "O Homem de Terno", riscador: "Um Riscador", "ouvinte-x": "A Ouvinte",
+    hollis: "Sr. Hollis, do 302", petrakis: "Sra. Petrakis", oswald: "Oswald, o vigia",
+  },
+
   // Vídeo de caminho ao viajar (imagens/x/<nome>.mp4); sem o vídeo, tela de carregamento com a arte do destino
   caminho(daqui, destino, temVeiculo) {
     if (temVeiculo) return "caminho-carro";
@@ -119,7 +127,7 @@ MISSOES["prologo-x"] = {
 
   emTodaParte: [
     {
-      id: "socorrer", texto: "Socorrer quem está cercado por Riscadores", palavras: ["socorr", "ajudar", "cercad", "riscador", "salvar"],
+      id: "socorrer", npc: "danny", texto: "Socorrer quem está cercado por Riscadores", palavras: ["socorr", "ajudar", "cercad", "riscador", "salvar"],
       situacao: "proteger", se: { flag: "riscadores" },
       sucesso: {
         texto: "Você puxa um rapaz de moletom do meio do círculo. Os Riscadores não correm atrás: voltam para o muro e continuam riscando. Ele se chama Danny, treme inteiro e não larga o seu braço até a esquina.",
@@ -324,7 +332,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           resultado: { texto: "Na gaveta da recepção, uma lanterna pesada e pilhas novas.", efeitos: { item: "luz" } },
         },
         {
-          id: "homem", texto: "Seguir o homem de terno", palavras: ["seguir", "homem", "terno"], situacao: "perceber",
+          id: "homem", npc: "homem-terno", texto: "Seguir o homem de terno", palavras: ["seguir", "homem", "terno"], situacao: "perceber",
           sucesso: { texto: "Ele não olha para trás. Vira na avenida e se junta a outros, todos no mesmo passo. Você anota o caminho: a Praça Central. A picape dele ficou destrancada lá na frente.", pista: "Os afetados caminham em sincronia para a Praça Central.", efeitos: { flag: "homem-saiu" } },
           falha: { texto: "Você o perde na esquina. Mas o poste à sua frente pisca três vezes rápido e uma longa, como se apontasse.", efeitos: { exposicao: 1 } },
         },
@@ -373,11 +381,11 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           falha: { texto: "A agulha do painel gira devagar, uma volta inteira, e para apontando para você.", efeitos: { exposicao: 1 } },
         },
         {
-          id: "porteiro", comum: true, texto: "Conversar com o porteiro, o velho Sal", palavras: ["porteiro", "sal", "conversar", "portaria"], se: { ponto: "casa" },
+          id: "porteiro", npc: "sal", comum: true, texto: "Conversar com o porteiro, o velho Sal", palavras: ["porteiro", "sal", "conversar", "portaria"], se: { ponto: "casa" },
           resultado: { texto: "Sal não sai da guarita há trinta anos e não vai sair hoje. “Já vi greve, apagão, enchente e um prefeito honesto. Isso aí é só mais uma terça.” Ele te dá um café do garrafão.", efeitos: { condicao: ["-abalado", "-cansaco"] } },
         },
         {
-          id: "picape", texto: "Revistar a picape do homem de terno", palavras: ["picape", "carro", "revist", "porta-luvas"], situacao: "investigar", se: { flag: "homem-saiu" },
+          id: "picape", npc: "homem-terno", texto: "Revistar a picape do homem de terno", palavras: ["picape", "carro", "revist", "porta-luvas"], situacao: "investigar", se: { flag: "homem-saiu" },
           sucesso: {
             texto: "No porta-luvas, um crachá preso a um cordão azul: “Defesa Civil — Diretoria de Contenção”. A foto é dele, mas o nome foi raspado com unha. Embaixo do banco, uma pasta vazia com a etiqueta 21:47.",
             pista: "O homem de terno trabalhava na Diretoria de Contenção da Defesa Civil.",
@@ -493,7 +501,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           resultado: { texto: "Silêncio. Dura exatamente três segundos. Então, do apartamento de cima, o rádio do vizinho começa a cantarolar a mesma melodia.", efeitos: { dissonancia: 1 } },
         },
         {
-          id: "vizinho-302", grupo: "vizinho-302", texto: "Alguém bate na porta: é o vizinho do 302. Deixar entrar e acalmá-lo", palavras: ["vizinho", "302", "porta", "entrar", "acalm"], situacao: "acalmar", se: { relogioMin: 1 },
+          id: "vizinho-302", npc: "hollis", grupo: "vizinho-302", texto: "Alguém bate na porta: é o vizinho do 302. Deixar entrar e acalmá-lo", palavras: ["vizinho", "302", "porta", "entrar", "acalm"], situacao: "acalmar", se: { relogioMin: 1 },
           sucesso: {
             texto: "O Sr. Hollis entra de pijama, sem saber por que bateu. Diz que estava vendo o jogo e, de repente, estava na escada, descalço, descendo. Você faz um chá, liga para a filha dele. Quando ela chega para buscá-lo, ele já sabe o próprio nome de novo.",
             efeitos: { marca: "salvou:Sr. Hollis", flag: "salvou-raimundo", quest: { id: "raimundo", nome: "O vizinho do 302", prazo: "curta", estado: "concluida", nota: "O Sr. Hollis ficou em casa, com a filha." } },
@@ -508,7 +516,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           resultado: { texto: "As batidas continuam. Três rápidas, uma longa. Depois, passos descendo a escada, devagar. Você não olha pelo olho mágico." },
         },
         {
-          id: "vizinha", comum: true, tempo: 1, texto: "Bater na porta da vizinha", palavras: ["vizinh", "bater", "dona"],
+          id: "vizinha", npc: "petrakis", comum: true, tempo: 1, texto: "Bater na porta da vizinha", palavras: ["vizinh", "bater", "dona"],
           resultado: { texto: "A Sra. Petrakis abre com a corrente passada. Pergunta se você também está ouvindo “aquela musiquinha”, diz que não vai sair de casa nem morta e insiste que você leve um pedaço de torta de maçã.", efeitos: { pertence: { comida: 1 }, condicao: "-abalado" } },
         },
       ],
@@ -535,14 +543,14 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           resultado: { texto: "O ponteiro sobe sozinho quando você aponta para o leste. Para a Praça Central.", pista: "A radiação aumenta na direção da Praça Central." },
         },
         {
-          id: "helena", texto: "Procurar a Dra. Helen Vance, a psiquiatra de plantão", palavras: ["helena", "psiquiatr", "medica", "doutora"],
+          id: "helena", npc: "helen", texto: "Procurar a Dra. Helen Vance, a psiquiatra de plantão", palavras: ["helena", "psiquiatr", "medica", "doutora"],
           resultado: {
             texto: "Ela está no fim do corredor, jaleco amassado, óculos presos no cabelo, um caderno cheio de desenhos de pacientes debaixo do braço. “Desorientação, marcha sincronizada, grafia compulsiva. Nenhum exame alterado. Você viu alguma coisa? Me fala de padrão, não de milagre.”",
             efeitos: { flag: "helena", quest: { id: "helena", nome: "O caderno da Dra. Helen", prazo: "media", nota: "Ela quer padrões. Talvez confie em você se tiver o que mostrar." } },
           },
         },
         {
-          id: "helena-caderno", texto: "Contar à Dra. Helen o que você viu na ala de isolamento", palavras: ["contar", "mostrar", "helena", "caderno", "ala"], situacao: "convencer", se: { flag: ["helena", "ala-vista"] },
+          id: "helena-caderno", npc: "helen", texto: "Contar à Dra. Helen o que você viu na ala de isolamento", palavras: ["contar", "mostrar", "helena", "caderno", "ala"], situacao: "convencer", se: { flag: ["helena", "ala-vista"] },
           sucesso: {
             texto: "Ela escuta sem interromper, depois abre o caderno na sua frente: desenhos de doze pacientes, de bairros diferentes, que nunca se viram. Os mesmos símbolos, na mesma ordem. “Fica com uma cópia. Se eu… se eu parar de responder, alguém precisa ter isso.”",
             pista: "Pacientes que nunca se viram desenham os mesmos símbolos, na mesma ordem.",
@@ -579,14 +587,14 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           falha: { texto: "Só estática. Mas a estática tem ritmo.", efeitos: { exposicao: 1 } },
         },
         {
-          id: "moura", texto: "Pedir para falar com o Agente Moore, da Defesa Civil", palavras: ["moura", "agente", "defesa civil", "falar"],
+          id: "moura", npc: "moore", texto: "Pedir para falar com o Agente Moore, da Defesa Civil", palavras: ["moura", "agente", "defesa civil", "falar"],
           resultado: {
             texto: "Moore aparece de colete, rádio no ombro, cara de quem não dorme há dois dias. Escuta você com metade da atenção e responde com frases de nota oficial. Na mesa atrás dele, uma pasta parda com a etiqueta 21:47.",
             efeitos: { flag: "moura" },
           },
         },
         {
-          id: "moura-pasta", texto: "Ler a pasta esquecida na mesa do Moore", palavras: ["pasta", "ler", "arquivo", "mesa"], situacao: "perceber", se: { flag: "moura" },
+          id: "moura-pasta", npc: "moore", texto: "Ler a pasta esquecida na mesa do Moore", palavras: ["pasta", "ler", "arquivo", "mesa"], situacao: "perceber", se: { flag: "moura" },
           sucesso: {
             texto: "Você lê de cabeça para baixo enquanto ele atende o rádio: relatórios de surtos parecidos em 1987. Mesma cidade, mesmo horário, 21h47. Todos com o carimbo “ARQUIVADO — CONTENÇÃO”.",
             pista: "Houve surtos parecidos em 1987, às 21h47, arquivados pela Contenção.",
@@ -662,11 +670,11 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
       descricao: "Luz amarela, rádio baixinho atrás do balcão. Na porta, a placa: “ABERTO 24 HORAS. FECHADO SÓ EM CASO DE FIM DO MUNDO.” As prateleiras de água e de enlatados estão quase vazias; o resto está igual a sempre.",
       acoes: [
         {
-          id: "antonio", comum: true, texto: "Conversar com o Abe, atrás do balcão", palavras: ["antonio", "convers", "dono", "balcao"],
+          id: "antonio", npc: "abe", comum: true, texto: "Conversar com o Abe, atrás do balcão", palavras: ["antonio", "convers", "dono", "balcao"],
           resultado: { texto: "Ele reclama do movimento: todo mundo levou água e pilha, ninguém levou o pão. Diz que já viu de tudo nesse bairro e que amanhã abre no horário. Você sai mais calmo do que entrou.", efeitos: { condicao: "-abalado" } },
         },
         {
-          id: "repor", comum: true, tempo: 1, texto: "Ajudar a repor as prateleiras", palavras: ["ajudar", "repor", "prateleira", "trabalh"],
+          id: "repor", npc: "abe", comum: true, tempo: 1, texto: "Ajudar a repor as prateleiras", palavras: ["ajudar", "repor", "prateleira", "trabalh"],
           resultado: { texto: "Meia hora carregando caixas do estoque. Abe paga em dinheiro vivo e ainda põe um pacote de biscoito na sua mão.", efeitos: { dinheiro: 40, pertence: { comida: 1 } } },
         },
         {
@@ -693,7 +701,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           falha: { texto: "Os símbolos ficam nítidos e borram, nítidos e borram, no ritmo da lâmpada. Dor atrás dos olhos.", efeitos: { dissonancia: 1, quest: { id: "quadro", nome: "A equação no quadro", prazo: "curta", estado: "perdida" } } },
         },
         {
-          id: "professora", texto: "Falar com a professora que ficou trancada no laboratório", palavras: ["professor", "laboratorio", "falar", "trancada"], situacao: "convencer",
+          id: "professora", npc: "hilde", texto: "Falar com a professora que ficou trancada no laboratório", palavras: ["professor", "laboratorio", "falar", "trancada"], situacao: "convencer",
           sucesso: {
             texto: "A professora Hilde Brandt abre a porta só depois de você dizer o seu nome duas vezes. Os alunos saíram no meio da aula, escrevendo. Ela não. Ela tapou os ouvidos. Quando você vai embora, ela empresta o contador Geiger do laboratório: “Devolve. Se der.”",
             efeitos: { item: "detector", flag: "ilda", marca: "aliada:Hilde" },
@@ -719,7 +727,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
       descricao: "Vinte andares de escada. Lá em cima, entre antenas improvisadas e cabos presos com fita, uma mulher transmite sentada num balde virado. Não se assusta com você.",
       acoes: [
         {
-          id: "ouvinte-falar", texto: "Perguntar à locutora o que ela está gravando", palavras: ["pergunt", "grav", "locutora", "ouvinte", "falar"], situacao: "convencer",
+          id: "ouvinte-falar", npc: "ouvinte-x", texto: "Perguntar à locutora o que ela está gravando", palavras: ["pergunt", "grav", "locutora", "ouvinte", "falar"], situacao: "convencer",
           sucesso: {
             texto: "“A música inteira. Ela toca em todo lugar ao mesmo tempo, mas cada lugar só ouve um pedaço. Eu junto os pedaços.” Ela se apresenta como a Ouvinte e te dá uma fita cassete: “TERÇA, 21:47 — PARTE 2”. Na mesa, dezenas de fitas com datas que ainda não chegaram.",
             efeitos: { marca: "fita-parte-2", flag: "fita", memoria: "Uma taverna enfumaçada. Um bardo de capuz canta a mesma melodia, e você conhece a letra.", memoriaMin: 5, quest: { id: "fitas", nome: "As fitas da Ouvinte", prazo: "longa", nota: "Você tem a PARTE 2. Ela guarda fitas com datas que ainda não chegaram." } },
@@ -727,12 +735,12 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           falha: { texto: "Ela só sorri e aumenta o volume. A melodia entra pelos dentes. Você sai de lá sem lembrar da escada.", efeitos: { exposicao: 1, convergencia: 1 } },
         },
         {
-          id: "ouvinte-ouvir", texto: "Ficar e ouvir com ela, em silêncio", palavras: ["ouvir", "ficar", "silenc", "sentar"], situacao: "sentir",
+          id: "ouvinte-ouvir", npc: "ouvinte-x", texto: "Ficar e ouvir com ela, em silêncio", palavras: ["ouvir", "ficar", "silenc", "sentar"], situacao: "sentir",
           sucesso: { texto: "Por um minuto, você ouve o que ela ouve: a cidade inteira respirando junto. Não parece ameaça. Parece atenção.", efeitos: { ressonancia: 1, condicao: "-abalado", quest: { id: "ouvinte", nome: "Frequência 21:47", prazo: "media", estado: "concluida" } } },
           falha: { texto: "O silêncio fica pesado demais. Você levanta para ir embora e percebe que estava cantarolando também.", efeitos: { dissonancia: 1 } },
         },
         {
-          id: "ouvinte-avisar", texto: "Avisar que a Defesa Civil vai fechar os prédios do centro", palavras: ["avis", "defesa", "fechar", "policia"], req: { hab: "conversa" },
+          id: "ouvinte-avisar", npc: "ouvinte-x", texto: "Avisar que a Defesa Civil vai fechar os prédios do centro", palavras: ["avis", "defesa", "fechar", "policia"], req: { hab: "conversa" },
           resultado: { texto: "“Então eu mudo de telhado. A música não precisa de prédio.” Ela te passa uma frequência anotada num papel de chiclete: 94.7. “Liga de vez em quando. Pra eu saber que você ainda está aí.”", efeitos: { marca: "frequencia-94.7", quest: { id: "ouvinte", nome: "Frequência 21:47", prazo: "media", estado: "concluida", nota: "Ela vai transmitir em 94.7." } } },
         },
         {
@@ -749,7 +757,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
       descricao: "Saguão de mármore, catracas de crachá, um aquário sem peixes. Atrás do balcão, o vigia noturno escreve num caderno sem parar.",
       acoes: [
         {
-          id: "osvaldo", texto: "Puxar conversa com o vigia, Oswald", palavras: ["vigia", "osvaldo", "convers", "falar"], situacao: "convencer",
+          id: "osvaldo", npc: "oswald", texto: "Puxar conversa com o vigia, Oswald", palavras: ["vigia", "osvaldo", "convers", "falar"], situacao: "convencer",
           sucesso: {
             texto: "Oswald é educado, preciso, sem pressa. Responde a uma pergunta que você ainda não fez. Diz que não pode sair do posto até “terminar a contagem”, e que, quando terminar, “a gente chega”. Não diz chegar aonde.",
             efeitos: { flag: "osvaldo", quest: { id: "vigia", nome: "O vigia que não sai do posto", prazo: "longa", nota: "Oswald conta alguma coisa. Quando terminar, “a gente chega”." } },
@@ -757,7 +765,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           falha: { texto: "Ele não levanta os olhos do caderno. “O prédio está fechado.” A caneta não para.", efeitos: {} },
         },
         {
-          id: "osvaldo-livro", texto: "Ler o livro de ponto do vigia", palavras: ["livro", "ponto", "ler", "caderno", "registro"], situacao: "investigar", se: { flag: "osvaldo" },
+          id: "osvaldo-livro", npc: "oswald", texto: "Ler o livro de ponto do vigia", palavras: ["livro", "ponto", "ler", "caderno", "registro"], situacao: "investigar", se: { flag: "osvaldo" },
           sucesso: {
             texto: "Cada linha do livro é um turno assinado por ele. Sem folga. Sem troca. Faz 412 dias. A última linha de hoje não é uma assinatura: é um número, 0412, e ao lado, desenhado com cuidado, o casco de uma nave.",
             pista: "O vigia do Atlântico não sai do posto há 412 dias.",
@@ -789,7 +797,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           falha: { texto: "Os traços se mexem quando você pisca. Você percebe que está imitando o movimento com o dedo, no ar.", efeitos: { dissonancia: 1 } },
         },
         {
-          id: "riscador-acalmar", grupo: "riscador", texto: "Aproximar-se do Riscador e tentar acalmá-lo", palavras: ["acalm", "riscador", "aproxim", "falar"], situacao: "acalmar",
+          id: "riscador-acalmar", npc: "riscador", grupo: "riscador", texto: "Aproximar-se do Riscador e tentar acalmá-lo", palavras: ["acalm", "riscador", "aproxim", "falar"], situacao: "acalmar",
           sucesso: {
             texto: "Você fala baixo, sem tocar nele. A mão dele diminui o ritmo. Para. Ele olha para você com olhos de quem está muito longe e diz, claramente: “Não deixa eles te contarem.” Depois volta a riscar, mas devagar.",
             efeitos: { flag: "riscador-falou", quest: { id: "riscador", nome: "O homem do viaduto", prazo: "curta", estado: "concluida", nota: "Ele parou por um instante. “Não deixa eles te contarem.”" } },
@@ -800,7 +808,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           },
         },
         {
-          id: "riscador-afastar", grupo: "riscador", texto: "Afastar o Riscador do muro à força", palavras: ["forca", "afastar", "empurr", "segurar", "lutar"], situacao: "lutar",
+          id: "riscador-afastar", npc: "riscador", grupo: "riscador", texto: "Afastar o Riscador do muro à força", palavras: ["forca", "afastar", "empurr", "segurar", "lutar"], situacao: "lutar",
           sucesso: { texto: "Você o tira do muro. Ele não luta: fica parado, olhando as próprias mãos, e começa a riscar o chão. Não adianta tirá-lo de lugar nenhum.", efeitos: { dissonancia: 1, quest: { id: "riscador", nome: "O homem do viaduto", prazo: "curta", estado: "concluida", nota: "Não adianta tirá-lo do muro." } } },
           falha: { texto: "É como empurrar uma parede. Ele nem olha para você. Sua mão fica suja de giz por horas.", efeitos: { condicao: "ferido", exposicao: 1 } },
         },
@@ -814,11 +822,11 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
       descricao: "Aberta 24 horas, com a porta de vidro meio baixada e uma corrente passada por dentro. Martha Kowalski, a farmacêutica, atende por baixo dela.",
       acoes: [
         {
-          id: "farmaceutico", comum: true, texto: "Pedir conselho a Martha", palavras: ["conselho", "farmaceutic", "marta", "pressao", "convers"],
+          id: "farmaceutico", npc: "martha", comum: true, texto: "Pedir conselho a Martha", palavras: ["conselho", "farmaceutic", "marta", "pressao", "convers"],
           resultado: { texto: "Ela mede sua pressão sem você pedir. “Tá todo mundo com a pressão lá em cima hoje”, diz, e recomenda dormir cedo. Você ri pela primeira vez no dia. Lá dos fundos, alguém conta números em voz baixa.", efeitos: { condicao: "-abalado", flag: "marta-fundos" } },
         },
         {
-          id: "marta-fundos", texto: "Perguntar a Martha quem está contando lá nos fundos", palavras: ["fundos", "contando", "quem", "irmao", "pergunt"], situacao: "convencer", se: { flag: "marta-fundos" },
+          id: "marta-fundos", npc: "martha", texto: "Perguntar a Martha quem está contando lá nos fundos", palavras: ["fundos", "contando", "quem", "irmao", "pergunt"], situacao: "convencer", se: { flag: "marta-fundos" },
           sucesso: {
             texto: "Ela hesita, depois tira a corrente. Nos fundos, entre caixas de remédio, o irmão dela, Teddy, está sentado de frente para a parede, contando: vinte e um, quarenta e sete, vinte e um, quarenta e sete. “Ele voltou assim do centro. Não me reconhece. Não posso deixar ele sair de novo.”",
             efeitos: { flag: "tiao", quest: { id: "tiao", nome: "A porta com corrente", prazo: "media", nota: "Martha esconde o irmão, Teddy, que só conta números." } },
@@ -826,7 +834,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           falha: { texto: "“Rádio”, ela diz, rápido demais, e baixa mais a porta.", efeitos: {} },
         },
         {
-          id: "tiao-acalmar", texto: "Sentar ao lado do Teddy e tentar trazê-lo de volta", palavras: ["tiao", "acalm", "sentar", "trazer"], situacao: "acalmar", se: { flag: "tiao" },
+          id: "tiao-acalmar", npc: "teddy", texto: "Sentar ao lado do Teddy e tentar trazê-lo de volta", palavras: ["tiao", "acalm", "sentar", "trazer"], situacao: "acalmar", se: { flag: "tiao" },
           sucesso: {
             texto: "Você conta junto com ele, e depois conta diferente: um, dois, três. Ele erra o ritmo. Pisca. Olha para a irmã e diz o nome dela. Martha chora sem barulho e enfia um calmante e um analgésico no seu bolso.",
             efeitos: { marca: "salvou:Teddy", flag: "salvou-tiao", pertence: { calmante: 1, remedio: 1 }, quest: { id: "tiao", nome: "A porta com corrente", prazo: "media", estado: "concluida", nota: "Teddy voltou a falar. Martha te deve uma." } },
@@ -837,7 +845,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           },
         },
         {
-          id: "curativo-farmacia", comum: true, repetivel: true, texto: "Pedir para fazer um curativo", palavras: ["curativo", "ferid", "machuc"], req: { condicao: "ferido", dinheiro: 15 },
+          id: "curativo-farmacia", npc: "martha", comum: true, repetivel: true, texto: "Pedir para fazer um curativo", palavras: ["curativo", "ferid", "machuc"], req: { condicao: "ferido", dinheiro: 15 },
           resultado: { texto: "Ele limpa, põe gaze e esparadrapo, cobra o material.", efeitos: { dinheiro: -15, condicao: "-ferido" } },
         },
       ],

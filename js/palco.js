@@ -79,6 +79,13 @@ const Palco = (() => {
     const caixa = document.createElement("div");
     caixa.className = "palco-caixa";
     p.replaceChildren(caixa);
+    // o nome de quem fala, por cima do retrato
+    if (o.rotulo) {
+      const nome = document.createElement("div");
+      nome.className = "palco-nome";
+      nome.textContent = o.rotulo;
+      p.append(nome);
+    }
     midia(caixa, o);
   }
 
