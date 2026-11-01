@@ -1636,3 +1636,38 @@ body:has(#tela-mesa.ativa) .controle-musica, body:has(#tela-personagens.ativa) .
 .ficha-corpo .exposicao > .sub { display: none; }
 .op-trilha-form { display: grid; grid-template-columns: 1fr; gap: 6px; }
 .op-trilha-form input { font: inherit; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--painel-borda); background: rgba(0, 0, 0, 0.3); color: var(--texto); }
+
+/* ===================== Personagens prontos (uma tela só) ===================== */
+#tela-prontos.ativa { display: flex; flex-direction: column; height: 100vh; height: 100dvh; padding: 10px 10px 0; overflow: hidden; }
+#tela-prontos .prontos { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; gap: 8px; padding: 12px 12px calc(12px + env(safe-area-inset-bottom)); }
+.prontos-topo { flex: none; display: flex; align-items: center; gap: 8px; padding-right: 44px; }
+.prontos-topo h2 { margin: 0; font-size: 1.2rem; }
+.prontos-grade { flex: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.prontos-classe { display: grid; gap: 6px; align-content: start; }
+.prontos-classe h3 { margin: 0; text-align: center; font-size: 0.8rem; letter-spacing: 0.12em; color: var(--acento); }
+.pronto-card {
+  display: grid; justify-items: center; gap: 2px; padding: 6px 4px; cursor: pointer; font: inherit; color: var(--texto);
+  border-radius: 10px; border: 1px solid var(--painel-borda); background: rgba(255, 255, 255, 0.03); min-width: 0;
+}
+.pronto-card:hover, .pronto-card.escolhida { border-color: var(--acento); }
+.pronto-card.escolhida { background: color-mix(in srgb, var(--acento) 14%, transparent); }
+.pronto-card b { font-size: 0.85rem; }
+.pronto-card small { font-size: 0.66rem; color: var(--texto-suave); line-height: 1.15; text-align: center; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.pronto-retrato {
+  position: relative; width: 100%; max-width: 92px; aspect-ratio: 1; border-radius: 8px; overflow: hidden;
+  background: radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--acento) 30%, transparent), rgba(0, 0, 0, 0.4));
+}
+.pronto-retrato::before { content: attr(data-iniciais); position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--fonte-titulo); font-size: 1.4rem; color: var(--acento); opacity: 0.8; }
+.pronto-retrato img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pronto-detalhe { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; border-left: 3px solid var(--acento); background: color-mix(in srgb, var(--acento) 6%, transparent); border-radius: 0 8px 8px 0; }
+.pronto-detalhe p { margin: 0; }
+.pronto-nome { font-size: 0.95rem; }
+.pronto-resumo { font-size: 0.88rem; line-height: 1.4; }
+.pronto-ficha { font-size: 0.75rem; color: var(--texto-suave); }
+.pronto-detalhe .btn-primario { margin-top: auto; align-self: stretch; }
+@media (min-width: 700px) { #tela-prontos .prontos { max-width: 720px; margin: 0 auto; } }
+.pronto-retrato { max-width: 66px; }
+.pronto-card { padding: 5px 3px; }
+.pronto-detalhe { text-align: left; }
+body:has(#tela-prontos.ativa) .controle-musica { top: 8px; bottom: auto; right: 10px; }
+@media (min-height: 900px) { .pronto-retrato { max-width: 92px; } }

@@ -131,7 +131,7 @@ function criarArquivista() {
 
 function mostrarTela(id) {
   document.querySelectorAll(".tela").forEach((t) => t.classList.toggle("ativa", t.id === id));
-  $("#btn-tradutor").hidden = ["tela-inicio", "tela-transicao", "tela-tradutor", "tela-cena", "tela-mesa", "tela-criacao", "tela-ficha", "tela-personagens"].includes(id);
+  $("#btn-tradutor").hidden = ["tela-inicio", "tela-transicao", "tela-tradutor", "tela-cena", "tela-mesa", "tela-criacao", "tela-ficha", "tela-personagens", "tela-prontos"].includes(id);
   window.scrollTo(0, 0);
   if (id !== "tela-cena" && typeof Narrador !== "undefined") Narrador.parar();
   if (id !== "tela-cena" && typeof Palco !== "undefined") Palco.pausar();
@@ -151,7 +151,7 @@ function definirTema(eixo) {
 function atualizarTrilha() {
   if (typeof Cenas === "undefined" || typeof Musica === "undefined") return;
   const tela = document.querySelector(".tela.ativa")?.id;
-  if (["tela-inicio", "tela-transicao", "tela-personagens", "tela-mesa", "tela-criacao"].includes(tela)) Cenas.sair();
+  if (["tela-inicio", "tela-transicao", "tela-personagens", "tela-prontos", "tela-mesa", "tela-criacao"].includes(tela)) Cenas.sair();
   const m = Cenas.emJogo() ? Cenas.missaoAtual() : null;
   Musica.contexto(m ? m.eixo : "inicio");
 }
