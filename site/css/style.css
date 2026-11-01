@@ -1227,8 +1227,8 @@ body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 
 @media (max-aspect-ratio: 16/9) {
   .cinematica .cinematica-video {
     height: calc(100vw * 9 / 16); top: 50%; bottom: auto; transform: translateY(-50%);
-    -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
-    mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
+    mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
   }
 }
 /* tela mais larga que o vídeo: sobra dos lados */
@@ -1247,3 +1247,8 @@ body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 
 .cinematica-texto h2 { margin: 4px 0 0; font-family: "Exo 2", sans-serif; font-weight: 300; letter-spacing: 0.5em; font-size: clamp(2rem, 7vw, 4rem); color: #e2f4ff; }
 @keyframes cinematica-titulo { 0%, 25% { opacity: 0; } 45%, 85% { opacity: 1; } 100% { opacity: 0; } }
 .cinematica-pular { position: absolute; right: 16px; bottom: 16px; color: #e2f4ff; }
+
+/* Yudur: título em pedra e ouro */
+.cinematica-y .cinematica-texto p { font-family: var(--fonte-titulo, Cinzel), serif; color: #e8c77a; letter-spacing: 0.25em; }
+.cinematica-y .cinematica-texto h2 { font-family: Cinzel, serif; font-weight: 600; letter-spacing: 0.3em; color: #f3e6c4; text-shadow: 0 2px 20px #000, 0 0 30px rgba(232, 199, 122, 0.35); }
+.cinematica-y .cinematica-pular { color: #f3e6c4; }

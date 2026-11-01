@@ -1,9 +1,11 @@
-// Cinemáticas: vídeos curtos em tela cheia nos grandes momentos (por enquanto, a entrada no Eixo Z).
-// Cada personagem vê cada cinemática uma vez: quando entra numa missão daquele eixo pela primeira vez
-// ou quando o eixo é revelado na ficha. O vídeo toca sem som (a trilha continua) e pode ser pulado.
+// Cinemáticas: vídeos curtos em tela cheia, sem som (a trilha continua), que podem ser pulados.
+//   · Tela de carregamento: ao entrar numa missão do eixo, uma vez por partida a cada vez que o jogo é aberto
+//     (voltar da ficha ou do tradutor não repete).
+//   · Revelação: quando um eixo é revelado na ficha, uma vez por personagem.
 // Para rever durante o desenvolvimento: ?cinematica=z no endereço.
 
 const CINEMATICAS = {
+  y: { video: "imagens/yudur-vila.mp4", titulo: "Yudur", legenda: "Eixo Y · Medieval" },
   z: { video: "imagens/domus-viagem.mp4", titulo: "DOMUS", legenda: "Eixo Z · Espacial" },
 };
 
@@ -74,9 +76,21 @@ const Cinematica = (() => {
     tocar(eixo, aoTerminar);
   }
 
+  // Tela de carregamento da missão: uma vez por partida nesta sessão do jogo
+  function carregamento(eixo, partidaId, aoTerminar) {
+    const chave = `kosmos.carregou.${partidaId}`;
+    let ja = false;
+    try {
+      ja = sessionStorage.getItem(chave) === "1";
+      sessionStorage.setItem(chave, "1");
+    } catch {}
+    if (ja || !CINEMATICAS[eixo]) return aoTerminar && aoTerminar();
+    tocar(eixo, aoTerminar);
+  }
+
   // revisão durante o desenvolvimento
   const pedida = new URLSearchParams(location.search).get("cinematica");
   if (pedida) addEventListener("load", () => tocar(pedida));
 
-  return { tocar, primeiraVez };
+  return { tocar, primeiraVez, carregamento };
 })();
