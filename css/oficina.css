@@ -166,3 +166,21 @@ summary { cursor: pointer; color: var(--suave); font-size: 0.85rem; margin-botto
 .passos-nuvem li { margin-bottom: 6px; }
 .linha-botoes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 .erro { color: var(--sepia); min-height: 1.2em; margin: 0; }
+
+/* Profissões */
+.ponto { border-color: var(--acento); }
+.titulo-ponto input { font-weight: 600; font-size: 1.05rem; }
+.prof {
+  display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 10px; align-items: start;
+  border: 1px solid var(--borda); border-radius: 10px; padding: 10px; margin-bottom: 8px; background: #0d1124;
+}
+.prof-eixo { display: flex; gap: 6px; align-items: flex-start; opacity: 0.8; }
+.prof-eixo.atual { opacity: 1; }
+.prof-eixo .campo { margin-bottom: 0; }
+.prof-glifo { font-size: 1.2rem; color: var(--acento); padding-top: 24px; width: 18px; }
+.prof-eixo { flex-wrap: wrap; }
+.prof-eixo .campo.largo { min-width: 140px; }
+.prof .btn-texto { align-self: center; }
+@media (max-width: 900px) {
+  .prof { grid-template-columns: 1fr; }
+}

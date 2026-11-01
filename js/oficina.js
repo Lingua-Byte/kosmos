@@ -26,13 +26,14 @@ let enviando = false;
 let comServidor = false;
 let redesenharDepois = false;
 
-const vazio = () => ({ versao: 1, perguntas: [], npcs: [], storylets: [], tabelas: {} });
+const vazio = () => ({ versao: 1, perguntas: [], npcs: [], storylets: [], profissoes: [], tabelas: {}, pontos: {} });
 const copia = (o) => JSON.parse(JSON.stringify(o));
 
 function normalizar(m) {
   m = m || vazio();
-  for (const k of ["perguntas", "npcs", "storylets"]) m[k] = m[k] || [];
+  for (const k of ["perguntas", "npcs", "storylets", "profissoes"]) m[k] = m[k] || [];
   m.tabelas = m.tabelas || {};
+  m.pontos = m.pontos || {};
   return m;
 }
 
@@ -423,7 +424,7 @@ document.querySelectorAll("[data-aba]").forEach((b) =>
 
 function render() {
   document.querySelectorAll("[data-aba]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.aba === aba)));
-  const r = { perguntas: renderPerguntas, npcs: renderNPCs, missoes: renderMissoes, geradores: renderGeradores, testar: renderTestar }[aba];
+  const r = { perguntas: renderPerguntas, profissoes: renderProfissoes, npcs: renderNPCs, missoes: renderMissoes, geradores: renderGeradores, testar: renderTestar }[aba];
   r();
   document.querySelectorAll("#conteudo textarea").forEach(ajustarAltura);
 }
@@ -462,6 +463,51 @@ function renderPerguntas() {
           </article>`).join("")}
       </section>`).join("")}
     <button class="btn primario" data-acao="nova-pergunta">+ Nova pergunta ou nota</button>`;
+}
+
+// ======================= Profissões =======================
+// Cada linha é a mesma pessoa nos três eixos (o personagem existe nos três mundos):
+// a profissão em cada eixo e o ponto de entrada onde a história dele começa ali.
+
+let eixoProfissoes = "x";
+
+function renderProfissoes() {
+  const e = eixoProfissoes;
+  const pontos = mundo.pontos[e] || [];
+  const opPontos = (eixo) => (mundo.pontos[eixo] || []).map((p) => [p.id, p.nome]);
+  const linha = (p, i) => `
+    <article class="prof">
+      ${["x", "y", "z"].map((ex) => `
+        <div class="prof-eixo ${ex === e ? "atual" : ""}">
+          <span class="prof-glifo">${EIXOS_NOMES[ex].split(" ")[0]}</span>
+          ${campo("Profissão", `profissoes.${i}.${ex}.nome`, { classe: "largo" })}
+          ${campo("Começa em", `profissoes.${i}.${ex}.ponto`, { opcoes: [["", "—"], ...opPontos(ex)] })}
+        </div>`).join("")}
+      <button class="btn-texto perigo" data-apagar-prof="${i}" title="Apagar">Apagar</button>
+    </article>`;
+  const comPonto = (id) => mundo.profissoes.map((p, i) => ({ p, i })).filter(({ p }) => (p[e] && p[e].ponto) === id);
+  const semPonto = comPonto("");
+  $("#conteudo").innerHTML = `
+    <section class="intro">
+      <p>Na criação do personagem, o jogador escolhe a profissão numa lista (ou escreve a sua e escolhe onde ela começa). Cada linha é a mesma pessoa nos três eixos: o que ela faz em cada mundo e o <b>ponto de entrada</b> onde a história dela começa ali. Cada ponto de entrada terá a sua abertura e as suas side quests.</p>
+      <p class="sub">${mundo.profissoes.length} profissões</p>
+    </section>
+    <div class="linha">
+      <label class="campo"><span>Ver pelos pontos de entrada do</span>
+        <select data-eixo-profissoes>${["x", "y", "z"].map((x) => `<option value="${x}" ${x === e ? "selected" : ""}>${EIXOS_NOMES[x]}</option>`).join("")}</select>
+      </label>
+    </div>
+    ${pontos.map((pt, pi) => `
+      <section class="grupo">
+        <div class="cartao ponto">
+          ${campo("Ponto de entrada", `pontos.${e}.${pi}.nome`, { classe: "titulo-ponto" })}
+          ${campo("Como é", `pontos.${e}.${pi}.descricao`, { area: true, linhas: 2 })}
+        </div>
+        ${comPonto(pt.id).map(({ p, i }) => linha(p, i)).join("") || `<p class="sub">Nenhuma profissão começa aqui ainda.</p>`}
+        <button class="btn" data-nova-prof="${esc(pt.id)}">+ Profissão que começa em ${esc(pt.nome)}</button>
+      </section>`).join("")}
+    ${semPonto.length ? `<section class="grupo"><h2>Sem ponto de entrada neste eixo</h2>${semPonto.map(({ p, i }) => linha(p, i)).join("")}</section>` : ""}
+    <button class="btn" data-acao="novo-ponto">+ Novo ponto de entrada em ${esc(EIXOS_NOMES[e])}</button>`;
 }
 
 // ======================= NPCs =======================
@@ -949,11 +995,28 @@ document.addEventListener("click", (ev) => {
     mudou();
     return render();
   }
+  if (d.novaProf) {
+    const p = { id: novoId("prof"), x: { nome: "", ponto: "" }, y: { nome: "", ponto: "" }, z: { nome: "", ponto: "" } };
+    p[eixoProfissoes].ponto = d.novaProf;
+    mundo.profissoes.push(p);
+    mudou();
+    return render();
+  }
+  if (d.apagarProf) {
+    const p = mundo.profissoes[+d.apagarProf];
+    if (!confirm(`Apagar “${p[eixoProfissoes].nome || "esta profissão"}” dos três eixos?`)) return;
+    mundo.profissoes.splice(+d.apagarProf, 1);
+    mudou();
+    return render();
+  }
   if (d.jogar) return jogar(d.jogar);
   if (d.escolha) return escolher(+d.escolha);
   if (d.resultado) return resolver(jogo.storylet.opcoes[jogo.opcao][d.resultado]);
 
   const acoes = {
+    "novo-ponto"() {
+      (mundo.pontos[eixoProfissoes] = mundo.pontos[eixoProfissoes] || []).push({ id: novoId("ponto"), nome: "Novo ponto de entrada", descricao: "" });
+    },
     "nova-pergunta"() {
       mundo.perguntas.push({ id: novoId("nota"), tema: "Minhas notas", pergunta: "", resposta: "", minha: true });
     },
@@ -1070,6 +1133,10 @@ document.addEventListener("click", (ev) => {
 // tipo da opção (sem teste / teste / convergência): reorganiza os resultados sem perder o texto
 document.addEventListener("change", (ev) => {
   const el = ev.target;
+  if (el.dataset.eixoProfissoes !== undefined) {
+    eixoProfissoes = el.value;
+    return render();
+  }
   if (el.dataset.eixoGerador !== undefined) {
     eixoGerador = el.value;
     return render();

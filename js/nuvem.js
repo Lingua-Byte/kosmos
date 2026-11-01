@@ -125,7 +125,9 @@ const Nuvem = (() => {
       perguntas: juntarLista(base.perguntas, local.perguntas, remoto.perguntas),
       npcs: juntarLista(base.npcs, local.npcs, remoto.npcs),
       storylets: juntarLista(base.storylets, local.storylets, remoto.storylets),
+      profissoes: juntarLista(base.profissoes, local.profissoes, remoto.profissoes),
       tabelas: juntarObjeto(base.tabelas, local.tabelas, remoto.tabelas),
+      pontos: juntarObjeto(base.pontos, local.pontos, remoto.pontos),
     };
   }
 
