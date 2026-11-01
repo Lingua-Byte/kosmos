@@ -70,6 +70,7 @@ MISSOES["prologo-x"] = {
     abe: "Abe", sal: "Sal, o porteiro", danny: "Danny", hilde: "Professora Hilde Brandt",
     "homem-terno": "O Homem de Terno", riscador: "Um Riscador", "ouvinte-x": "A Ouvinte",
     hollis: "Sr. Hollis, do 302", petrakis: "Sra. Petrakis", oswald: "Oswald, o vigia",
+    leo: "Leo, do leito 9",
   },
 
   // Vídeo de caminho ao viajar (imagens/x/<nome>.mp4); sem o vídeo, tela de carregamento com a arte do destino
@@ -95,6 +96,9 @@ MISSOES["prologo-x"] = {
 
   // Onde o personagem trabalha: pela profissão (ponto de entrada); fichas antigas, pela descrição ou pela classe
   trabalho(p) {
+    // personagem pronto: a origem dele (origens-x.js) decide onde e como a noite começa
+    const origem = typeof ORIGENS_X !== "undefined" && p && p.pronto && ORIGENS_X[p.pronto];
+    if (origem) return { ...(this.aberturas[origem.ponto] || {}), ...origem, origem: true };
     const of = typeof profissaoDe === "function" ? profissaoDe(p, "x") : null;
     if (of && this.aberturas[of.ponto]) return { ...this.aberturas[of.ponto], ponto: of.ponto, profissao: of.nome };
     const d = (p.descricao || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
@@ -160,6 +164,11 @@ MISSOES["prologo-x"] = {
           Frieza: "Você observa tudo com calma. É o único que parece notar o padrão.",
         };
         const traco = ctx.p.tracos.map((t) => tracos[t]).find(Boolean) || "";
+        if (ctx.trabalho.origem) return `Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.
+
+${ctx.trabalho.abertura}
+
+Uma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela.`;
         return `Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.
 
 ${ctx.p.nome} ainda está ${ctx.trabalho.onde}. ${ctx.trabalho.desc}
@@ -171,7 +180,13 @@ ${gancho} ${traco}
 Uma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela.`;
       },
       opcoes: [
-        { texto: "Começar a investigar", palavras: ["investig", "comec", "sair", "ir", "olhar"], resultado: { ir: "lugar:trabalho" } },
+        {
+          texto: "Levantar e encarar a noite", palavras: ["levant", "comec", "sair", "ir", "olhar", "encarar"],
+          // personagem pronto: o fio pessoal dele entra no Diário logo de saída
+          resultado: (ctx) => (ctx.trabalho.fio
+            ? { texto: "Você levanta. Isso vai ter que esperar até amanhã. Se houver amanhã.", ir: "lugar:trabalho", efeitos: { quest: ctx.trabalho.fio } }
+            : { ir: "lugar:trabalho" }),
+        },
       ],
     },
 

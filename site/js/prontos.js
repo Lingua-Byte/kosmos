@@ -37,7 +37,7 @@ const PRONTOS = [
     tracos: ["Busca conhecimento", "Mãos habilidosas"], atributos: { corpo: 1, mente: 2, essencia: 1 },
     habs: ["simbolos", "investigacao"], itens: ["detector", "ferramentas", "comunicador", "luz"] },
   { id: "tess-monroe", nome: "Tess Monroe", idade: "38", sexo: "mulher", profissao: "jornalista", papel: "support",
-    resumo: "Apresenta o programa da madrugada na rádio WPHN. As ligações dos ouvintes começaram a repetir as mesmas palavras.",
+    resumo: "Apresenta o programa da madrugada na rádio KPHN. As ligações dos ouvintes começaram a repetir as mesmas palavras.",
     tracos: ["Desconfiança", "Busca conhecimento"], atributos: { corpo: 1, mente: 2, essencia: 1 },
     habs: ["investigacao", "conversa", "conducao"], itens: ["comunicador", "luz", "objeto_pessoal"] },
   { id: "ray-okafor", nome: "Ray Okafor", idade: "45", sexo: "homem", profissao: "motorista-de-aplicativo", papel: "support",

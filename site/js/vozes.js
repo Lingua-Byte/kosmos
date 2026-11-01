@@ -35,6 +35,7 @@ const Vozes = (() => {
     guarda: { f: 120, onda: "square", ms: 70, varia: 0.06 },
     saqueador: { f: 135, onda: "sawtooth", ms: 55, varia: 0.2 },
     walt: { f: 100, onda: "triangle", ms: 95, varia: 0.08 },
+    leo: { f: 310, onda: "sine", ms: 120, varia: 0.04 },
   };
   // quem não está na lista ganha um perfil fixo tirado do nome
   function perfil(npc) {

@@ -62,6 +62,17 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
 - O eixo seguinte começa **no meio da ação** (não é um segundo prólogo): é o Ato 1, já na fase de Padrões.
 - Escritos/por escrever pelo autor: Urbano (ideia pronta), Medieval (pronto), Espacial (a escrever).
 
+### Personagens e prólogos (modelo "Dragon Age: Origins")
+- **9 personagens prontos**, 3 por classe (Tank, Healer, Support). A criação própria está desligada por enquanto.
+- **3 prólogos, um por mundo**, cada um com **9 origens curtas** (a abertura de cada personagem
+  naquele mundo, no ponto de entrada da profissão dele). São 3 corpos de prólogo + 27 origens.
+- A história principal é uma só. O que faz cada personagem ser o protagonista:
+  a origem, o **fio pessoal** (uma linha no Diário que rende nos atos seguintes, como as missões
+  de companheiro), as reações dos NPCs e o final próprio no epílogo.
+- Urbano pronto: `site/js/missoes/origens-x.js` (os 9 fios de Port Halden: o fogo da Delancey St.,
+  o parceiro que foi embora, a entrega para si mesmo, o menino do leito 9, a confissão do amanhã,
+  a carta do Harold, os números que ninguém quis ouvir, a ligação da linha 3, o passageiro da Linha 9).
+
 ## 3. O Lime e o fim do jogo
 
 - O **Lime é um lugar físico** onde os três mundos se encontram.

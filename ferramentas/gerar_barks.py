@@ -25,6 +25,7 @@ VOZES = {
     "guarda": ("pt-BR-AntonioNeural", "+8%", "+6Hz"),               # guarda da Contenção, seco
     "saqueador": ("es-MX-JorgeNeural", "+14%", "+0Hz"),             # nervoso, rápido
     "walt": ("en-US-GuyNeural", "-12%", "-6Hz"),                    # velho desconfiado, poucas palavras
+    "leo": ("en-US-AnaNeural", "-10%", "+0Hz"),                     # o menino do leito 9 (origem da Denise)
 }
 
 # Duas a três falas breves por personagem: o jeito de cada um abrir a boca
@@ -47,6 +48,7 @@ BARKS = {
     "guarda": ["Alto!", "Documento.", "Circulando."],
     "saqueador": ["Ei, ei!", "Para trás!", "Hah."],
     "walt": ["Hm.", "É…", "Olha…"],
+    "leo": ["Doutora…", "Shh.", "Hm?"],
 }
 
 
