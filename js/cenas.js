@@ -154,12 +154,51 @@ const Cenas = (() => {
     resultado = null;
     pendente = null;
     painel = null;
-    emJogo = true;
     definirTema(missao().eixo);
     mostrarTela("tela-cena");
+    // só depois de a tela da cena estar ativa: trocar de tela antes disso dava o jogador como fora da missão
+    emJogo = true;
+    atualizarTrilha();
     render();
     // tela de carregamento do eixo (a vila de Yudur, a Domus)
     Cinematica.carregamento(missao().eixo, camp.id);
+  }
+
+  let viagem = null; // { titulo, linhas } enquanto o jogador está a caminho
+
+  // Chave da arte do palco: a cena da história, a abertura da profissão ou o lugar
+  function palcoAtual() {
+    const m = missao();
+    if (camp.cena) {
+      const cena = m.cenas[camp.cena];
+      return { eixo: m.eixo, chave: `cena-${camp.cena}`, titulo: cena.titulo, icone: EIXOS[m.eixo].glifo };
+    }
+    const lugar = m.lugares[camp.lugar];
+    const titulo = texto(lugar.nome, contexto());
+    if (camp.lugar === "trabalho" && m.trabalho) return { eixo: m.eixo, chave: `abertura-${m.trabalho(ativo()).ponto}`, titulo, icone: lugar.icone };
+    return { eixo: m.eixo, chave: `lugar-${camp.lugar}`, titulo, icone: lugar.icone };
+  }
+
+  // Ir a outro lugar: o relógio anda, o palco toca a transição e o jogador chega
+  function irPara(destino) {
+    const m = missao();
+    const linhas = avancarRelogio(custoViagem());
+    const daqui = camp.lugar;
+    camp.lugar = destino;
+    painel = null;
+    salvar();
+    const chegada = palcoAtual();
+    const temVeiculo = grupo().some((p) => p.itens.includes("veiculo"));
+    const caminho = m.caminho ? m.caminho(daqui, destino, temVeiculo) : null;
+    viagem = { titulo: chegada.titulo, linhas };
+    render();
+    Palco.viajar({ eixo: m.eixo, caminho, destino: chegada }).then(() => {
+      viagem = null;
+      if (!document.querySelector("#tela-cena.ativa")) return; // saiu da missão no meio do caminho
+      if (camp.relogio >= m.relogioMax) return entrarCena("chamado");
+      render();
+      if (linhas.length) avisar(linhas);
+    });
   }
 
   function render() {
@@ -173,7 +212,12 @@ const Cenas = (() => {
     if (cena && cena.musica && !camp.flags.radioFoiTocado && !camp.flags.pedirSom && !resultado) camp.flags.pedirSom = true;
 
     let corpo;
-    if (resultado) {
+    if (viagem) {
+      corpo = `
+        <h2 class="cena-titulo">Indo para ${esc(viagem.titulo)}</h2>
+        <div class="narracao">${paragrafos(m.ambiente ? m.ambiente(camp.relogio) : "")}</div>
+        ${viagem.linhas.length ? `<p class="efeitos-resultado">${viagem.linhas.map(esc).join(" · ")}</p>` : ""}`;
+    } else if (resultado) {
       corpo = `
         <div class="narracao">${paragrafos(resultado.texto)}</div>
         ${resultado.linhas.length ? `<p class="efeitos-resultado">${resultado.linhas.map(esc).join(" · ")}</p>` : ""}
@@ -208,7 +252,7 @@ const Cenas = (() => {
         </div>`;
     }
 
-    const livre = !resultado && !(cena && (cena.final || camp.flags.pedirSom));
+    const livre = !viagem && !resultado && !(cena && (cena.final || camp.flags.pedirSom));
     $("#cena").innerHTML = `
       <header class="cena-topo">
         <span class="cena-onde"><b>${EIXOS[m.eixo].glifo}</b> ${esc(m.subtitulo)} · ${esc(nomeLugar)}</span>
@@ -237,6 +281,7 @@ const Cenas = (() => {
       </div>
       ${painel ? painelHtml() : ""}
       ${grupoHtml()}`;
+    if (!viagem) Palco.mostrar(palcoAtual());
     Narrador.cena(textoNarrado(), m.eixo);
   }
 
@@ -747,6 +792,7 @@ const Cenas = (() => {
     }
 
     const m = missao();
+    if (viagem) return;
     if (t.dataset.opcao !== undefined) {
       const doLugar = t.dataset.lugar === "1";
       const lista = doLugar ? acoesDoLugar() : m.cenas[camp.cena].opcoes;
@@ -756,14 +802,7 @@ const Cenas = (() => {
       painel = t.dataset.painel || null;
       return render();
     }
-    if (t.dataset.ir) {
-      avisar(avancarRelogio(custoViagem()));
-      camp.lugar = t.dataset.ir;
-      painel = null;
-      if (camp.relogio >= m.relogioMax) return entrarCena("chamado");
-      salvar();
-      return render();
-    }
+    if (t.dataset.ir) return irPara(t.dataset.ir);
     if (t.dataset.usarPertence) {
       const p = ativo();
       fichaMudou(p, Vida.usar(p, t.dataset.usarPertence, m.eixo));
@@ -781,13 +820,7 @@ const Cenas = (() => {
     if (acao === "confirmar" && pendente) {
       const p = pendente;
       pendente = null;
-      if (p.tipo === "ir") {
-        avisar(avancarRelogio(custoViagem()));
-        camp.lugar = p.lugar;
-        if (camp.relogio >= m.relogioMax) return entrarCena("chamado");
-        salvar();
-        return render();
-      }
+      if (p.tipo === "ir") return irPara(p.lugar);
       const lista = p.doLugar ? acoesDoLugar() : m.cenas[camp.cena].opcoes;
       return executar(lista[p.indice], p.doLugar);
     }

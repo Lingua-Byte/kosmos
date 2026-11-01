@@ -109,6 +109,7 @@ function mostrarTela(id) {
   $("#btn-tradutor").hidden = ["tela-inicio", "tela-transicao", "tela-tradutor", "tela-cena", "tela-mesa"].includes(id);
   window.scrollTo(0, 0);
   if (id !== "tela-cena" && typeof Narrador !== "undefined") Narrador.parar();
+  if (id !== "tela-cena" && typeof Palco !== "undefined") Palco.pausar();
   atualizarTrilha();
 }
 
