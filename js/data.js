@@ -1,9 +1,42 @@
 // Dados do jogo KOSMOS — tudo que é regra ou texto do mundo fica aqui,
 // para poder ser ajustado sem mexer no resto do código.
 
+// Trilha sonora (vídeos da playlist "KOSMUS" no YouTube Music). Cada contexto toca a sua lista, em loop;
+// ao trocar de tela ou de eixo, a trilha troca junto. Para mudar, é só mover os ids entre as listas.
 const MUSICA = {
-  principal: "iDGU-Zyhjgk", // Solar Wind
-  playlist: "PL4qiQiekZJhaGHSaOrmfxzpOyo64ap_ok",
+  contextos: {
+    // tela inicial, abertura, personagens, Mesa. Solar Wind sempre primeiro.
+    inicio: [
+      "iDGU-Zyhjgk", // Solar Wind (feat. Steve Vai) — Matteo Mancuso
+      // ainda sem eixo definido: tocam aqui até o autor decidir
+      "8-UdX0PTP5I", // Aeolia — tonelabs
+      "oTNV3q1HU7Q", // Eugene's Trick Bag — Steve Vai
+      "pXMgPbMYIA8", // Teeth of the Hydra — Steve Vai
+      "RVfGFmBFgoc", // Shape Of My Heart — Sting
+      "taBM9cRUxog", // Shape Of My Heart — Blended Colours
+      "gjFDkcEaKFw", // Shape of My Heart (Daft Punk Style) — PUBG Punk
+      "YdaWQBkUfrY", // Shape of My Heart (A Minor Records Cypher) — toowhite
+      "s5oSscNIyIs", // DAISIES — Justin Bieber
+    ],
+    // prólogos: Solar Wind abre, depois o eixo da missão
+    prologo: ["iDGU-Zyhjgk", "lQpf8pW2YOw"],
+    x: [
+      // "W9-KSIYmik8", // Tender Surrender — Steve Vai: a gravadora bloqueia tocar fora do YouTube. Trocar por outra versão.
+      "lQpf8pW2YOw", // Like Always. Theme — GatiS
+    ],
+    y: [
+      "nm2pykKggjE", // Home in the Shire — Ambient Worlds
+      "3AXn5Qlbvqw", // Shape Of My Heart (Bardcore) — Early Style   · todo bardcore é Eixo Y
+      "ADDluJUpEso", // Shape of my Heart (Bardcore Medieval Cover) — YAREMA
+    ],
+    z: [
+      "fpl80fEhdts", // Cylinder Five — Chris Zabriskie
+      "W3p_xIL75uk", // Sakura Serenity
+      "lQpf8pW2YOw", // Like Always. Theme — GatiS
+    ],
+  },
+  // Faixas que passam a tocar também na tela inicial depois de tocarem numa missão
+  desbloqueiaInicio: ["lQpf8pW2YOw"],
 };
 
 // Os três eixos. Cada personagem existe nos três, mas começa conhecendo só um.

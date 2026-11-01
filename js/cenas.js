@@ -628,6 +628,7 @@ const Cenas = (() => {
 
   return {
     abrir, abrirMesa,
+    missaoAtual: () => (camp && MISSOES[camp.missao]) || null,
     // este personagem tem uma partida em andamento?
     emAndamento: (pid) => Boolean(partidaDe(pid)),
     // "Jogar" na ficha: volta à partida dele, ou abre a Mesa com ele já escolhido
