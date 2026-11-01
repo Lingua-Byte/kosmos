@@ -1,0 +1,640 @@
+// Modo de cenas: a Mesa (quem joga, qual missão) e a tela de jogo.
+// O jogo decide testes, dificuldades e consequências; o jogador escolhe uma opção ou escreve o que faz.
+
+const Cenas = (() => {
+  // Cada grupo de personagens tem a sua partida. Todas ficam em "kosmos.campanhas";
+  // "kosmos.campanhaAtual" diz qual está aberta na tela.
+  const CHAVE = "kosmos.campanhas";
+  const ATUAL = "kosmos.campanhaAtual";
+  const ANTIGA = "kosmos.campanha"; // formato antigo (uma partida só)
+  let camp = null; // a partida aberta
+  let painel = null; // "mapa" | "diario" | null
+  let pendente = null; // interpretação do texto livre esperando confirmação
+  let mensagemLivre = ""; // resposta quando o texto livre não é entendido
+  let resultado = null; // { texto, linhas, depois }
+  let selecionados = new Set();
+
+  const norm = (t) => (t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+  function lerTodas() {
+    let todas = {};
+    try {
+      todas = JSON.parse(localStorage.getItem(CHAVE)) || {};
+      // traz a partida do formato antigo para o novo
+      const antiga = JSON.parse(localStorage.getItem(ANTIGA));
+      if (antiga) {
+        antiga.id = antiga.id || "c" + Date.now().toString(36);
+        todas[antiga.id] = antiga;
+        localStorage.setItem(CHAVE, JSON.stringify(todas));
+        localStorage.setItem(ATUAL, antiga.id);
+        localStorage.removeItem(ANTIGA);
+      }
+    } catch {}
+    return todas;
+  }
+
+  function carregar() {
+    let id = null;
+    try {
+      id = localStorage.getItem(ATUAL);
+    } catch {}
+    camp = (id && lerTodas()[id]) || null;
+    return camp;
+  }
+
+  function salvar() {
+    const todas = lerTodas();
+    todas[camp.id] = camp;
+    try {
+      localStorage.setItem(CHAVE, JSON.stringify(todas));
+      localStorage.setItem(ATUAL, camp.id);
+    } catch {}
+  }
+
+  function escolherPartida(id) {
+    try {
+      localStorage.setItem(ATUAL, id);
+    } catch {}
+    return carregar();
+  }
+
+  // Partidas em andamento (de personagens que ainda existem)
+  function partidas() {
+    const ids = new Set(Armazem.todos().map((p) => p.id));
+    return Object.values(lerTodas()).filter((c) => !c.fim && MISSOES[c.missao] && c.personagens.some((id) => ids.has(id)));
+  }
+  const partidaDe = (pid) => partidas().find((c) => c.personagens.includes(pid)) || null;
+
+  const missao = () => MISSOES[camp.missao];
+  const todos = () => Armazem.todos();
+  const grupo = () => camp.personagens.map((id) => Regras.migrar(todos().find((p) => p.id === id))).filter(Boolean);
+  const ativo = () => {
+    const g = grupo();
+    return g[camp.vez % g.length];
+  };
+  const contexto = () => ({ p: ativo(), camp, trabalho: missao().trabalho(grupo()[0]) });
+  const texto = (v, ctx = contexto()) => (typeof v === "function" ? v(ctx) : v || "");
+  const paragrafos = (t) => t.split(/\n\n+/).map((x) => `<p>${esc(x).replace(/\n/g, "<br>")}</p>`).join("");
+
+  // ======================= Mesa =======================
+
+  // preSelecionados: quem já vem escolhido (ex.: abrindo a Mesa pela ficha de um personagem)
+  function abrirMesa(preSelecionados) {
+    painel = null;
+    definirTema(null);
+    const lista = todos();
+    if (preSelecionados) selecionados = new Set(preSelecionados);
+    selecionados = new Set([...selecionados].filter((id) => lista.some((p) => p.id === id)));
+    if (!selecionados.size && lista.length) selecionados = new Set([lista[0].id]);
+    const nomeDe = (id) => esc(lista.find((p) => p.id === id)?.nome || "?");
+    const andamento = partidas();
+    $("#mesa").innerHTML = `
+      <h2>A Mesa</h2>
+      <p class="sub">Escolha quem joga. Sozinho ou em grupo, na mesma tela: cada um age na sua vez.</p>
+      ${andamento.length ? `<h3>Partidas em andamento</h3>${andamento.map((c) => `
+        <div class="mesa-continuar">
+          <div><strong>${esc(MISSOES[c.missao].titulo)}</strong><span>${esc(MISSOES[c.missao].subtitulo)} · ${c.personagens.map(nomeDe).join(", ")}</span></div>
+          <button class="btn-primario" data-continuar="${c.id}">Continuar</button>
+        </div>`).join("")}` : ""}
+      ${lista.length ? `
+        <h3>Quem joga</h3>
+        <div class="mesa-jogadores">${lista.map((p) => `
+          <button class="mesa-jogador ${selecionados.has(p.id) ? "escolhida" : ""}" data-jogador="${p.id}">
+            <b>${EIXOS[p.origem].glifo}</b><strong>${esc(p.nome)}</strong>
+            <span>${esc(EIXOS[p.origem].papeis[p.papel].nome)}</span>
+          </button>`).join("")}</div>
+        <h3>Missão</h3>
+        <div class="mesa-missoes">${Object.values(MISSOES).map((m) => `
+          <div class="mesa-missao">
+            <span class="tag">${esc(m.subtitulo)}</span>
+            <strong>${esc(m.titulo)}</strong>
+            <p class="sub">${esc(m.resumo)}</p>
+            <button class="btn-primario" data-comecar="${m.id}">Começar</button>
+          </div>`).join("")}
+        </div>
+        <p class="dica">Os prólogos do Medieval e do Espacial ainda não foram escritos: por enquanto, qualquer personagem joga o prólogo do Urbano.</p>`
+      : `<p class="sub">Ainda não há personagens.</p><button class="btn-primario" data-acao="criar">Criar personagem</button>`}
+      <button class="btn-texto" data-acao="personagens">‹ Personagens</button>`;
+    mostrarTela("tela-mesa");
+  }
+
+  function comecar(missaoId) {
+    if (!selecionados.size) return avisar("Escolha pelo menos um personagem.");
+    // um personagem só joga uma partida por vez: a antiga dele é encerrada (com confirmação)
+    const conflito = partidas().filter((c) => c.personagens.some((id) => selecionados.has(id)));
+    if (conflito.length) {
+      const nomes = todos().filter((p) => selecionados.has(p.id) && conflito.some((c) => c.personagens.includes(p.id))).map((p) => p.nome);
+      if (!confirm(`${nomes.join(", ")} já está numa partida em andamento. Começar uma nova e encerrar a antiga?`)) return;
+      const todas = lerTodas();
+      conflito.forEach((c) => delete todas[c.id]);
+      try {
+        localStorage.setItem(CHAVE, JSON.stringify(todas));
+      } catch {}
+    }
+    const m = MISSOES[missaoId];
+    camp = {
+      id: "c" + Date.now().toString(36), missao: missaoId, personagens: [...selecionados], vez: 0, relogio: 0, pistas: [], feitas: [],
+      lugar: m.lugarInicial, cena: m.inicio, flags: {}, rodada: 0, ameaca: null, fim: false,
+    };
+    for (const p of grupo()) {
+      Regras.renovar(p, "sessao");
+      Armazem.salvar(p);
+    }
+    salvar();
+    resultado = null;
+    abrir();
+  }
+
+  // ======================= Tela de jogo =======================
+
+  function abrir(id) {
+    if (id) escolherPartida(id);
+    if (!carregar() || !MISSOES[camp.missao]) return abrirMesa();
+    resultado = null;
+    pendente = null;
+    painel = null;
+    definirTema(missao().eixo);
+    mostrarTela("tela-cena");
+    render();
+  }
+
+  function render() {
+    const m = missao();
+    const ctx = contexto();
+    const cena = camp.cena ? m.cenas[camp.cena] : null;
+    const lugar = m.lugares[camp.lugar];
+    const nomeLugar = cena ? cena.titulo : texto(lugar.nome, ctx);
+
+    // cena com música que ainda não tocou (ou a página recarregou nela): pede para ligar o som
+    if (cena && cena.musica && !camp.flags.radioFoiTocado && !camp.flags.pedirSom && !resultado) camp.flags.pedirSom = true;
+
+    let corpo;
+    if (resultado) {
+      corpo = `
+        <div class="narracao">${paragrafos(resultado.texto)}</div>
+        ${resultado.linhas.length ? `<p class="efeitos-resultado">${resultado.linhas.map(esc).join(" · ")}</p>` : ""}
+        <button class="btn-primario" data-acao="seguir">Continuar</button>`;
+    } else if (cena && camp.flags.pedirSom) {
+      corpo = `
+        <div class="narracao"><p>Esta cena tem música. Ela só toca uma vez.</p></div>
+        <div class="opcoes">
+          <button class="btn-primario" data-acao="ligar-som">Ligar o som</button>
+          <button class="btn-texto" data-acao="sem-som">Seguir sem som</button>
+        </div>`;
+    } else if (cena) {
+      corpo = `
+        <h2 class="cena-titulo">${esc(cena.titulo)}</h2>
+        <div class="narracao">${paragrafos(texto(cena.texto, ctx))}</div>
+        ${cena.tutorial ? `<p class="tutorial">${esc(cena.tutorial)}</p>` : ""}
+        ${camp.ameaca !== null && cena.ameaca ? ameacaHtml(cena.ameaca) : ""}
+        ${cena.final ? finalHtml() : opcoesHtml(cena.opcoes, false)}`;
+    } else {
+      const disponiveis = lugar.acoes.filter((a) => !feita(a));
+      corpo = `
+        <h2 class="cena-titulo">${esc(texto(lugar.nome, ctx))}</h2>
+        <div class="narracao">${paragrafos(texto(lugar.descricao, ctx))}<p class="ambiente">${esc(m.ambiente(camp.relogio))}</p></div>
+        <p class="pergunta-vez">O que ${esc(ctx.p.nome)} faz?</p>
+        ${opcoesHtml(disponiveis, true)}
+        <button class="btn-secundario" data-painel="mapa">Ir para outro lugar</button>`;
+    }
+
+    const livre = !resultado && !(cena && (cena.final || camp.flags.pedirSom));
+    $("#cena").innerHTML = `
+      <header class="cena-topo">
+        <span class="cena-onde"><b>${EIXOS[m.eixo].glifo}</b> ${esc(m.subtitulo)} · ${esc(nomeLugar)}</span>
+        <span class="relogio" title="Relógio de Convergência">${Array.from({ length: m.relogioMax }, (_, i) => `<i class="${i < camp.relogio ? "cheio" : ""}"></i>`).join("")}</span>
+        <span class="tag">Fase 1 · ${esc(m.fase)}</span>
+      </header>
+      <div class="cena-grade">
+        <main class="cena-corpo">
+          ${corpo}
+          ${livre ? livreHtml() : ""}
+        </main>
+        <aside class="cena-lado">
+          <button class="btn-secundario" data-painel="mapa" ${cena ? "disabled" : ""}>Mapa</button>
+          <button class="btn-secundario" data-painel="diario">Diário · ${camp.pistas.length}</button>
+          <button class="btn-secundario" data-acao="ficha">Ficha</button>
+          <button class="btn-secundario" data-acao="tradutor">Tradutor</button>
+          <button class="btn-texto" data-acao="mesa">‹ Mesa</button>
+        </aside>
+      </div>
+      ${painel ? painelHtml() : ""}
+      ${grupoHtml()}`;
+  }
+
+  function feita(a) {
+    return camp.feitas.includes(a.grupo || a.id);
+  }
+
+  // ---------- Opções ----------
+
+  function bloqueio(op, p) {
+    const r = op.req || {};
+    if (r.item && !p.itens.includes(r.item)) return `requer ${Regras.equip(r.item).nomes[missao().eixo]}`;
+    if (r.semItem && p.itens.includes(r.semItem)) return "você tem um jeito melhor";
+    if (r.hab && !p.habs.includes(r.hab)) return `requer ${Regras.hab(r.hab).nomes[missao().eixo]}`;
+    if (r.res && p.ressonancia < r.res) return `requer Ressonância ${r.res}`;
+    if (r.dis && p.dissonancia < r.dis) return `requer Dissonância ${r.dis}`;
+    if (op.situacao) {
+      const s = SITUACOES.find((x) => x.id === op.situacao);
+      if (s.tags.includes("social") && Regras.bloqueado(p, "conversa")) return "bloqueada pela Paranoia";
+    }
+    return "";
+  }
+
+  function rotuloTeste(op, p) {
+    if (op.convergencia) return `<span class="op-info">Convergência · intensidade ${op.convergencia}</span>`;
+    if (op.situacao) {
+      const c = Dados.chanceDe(p, missao().eixo, op.situacao);
+      const attr = EIXOS[missao().eixo].atributos[c.situacao.atributo].nome;
+      return `<span class="op-info">${attr} · ${esc(c.situacao.nome.toLowerCase())}</span>
+        <span class="chance chance-${c.rotulo.toLowerCase().replace(/\s+/g, "-")}">${c.rotulo} ${Math.round(c.chance * 100)}%</span>`;
+    }
+    return `<span class="op-info">sem teste</span>`;
+  }
+
+  function opcoesHtml(lista, doLugar) {
+    const p = ativo();
+    // opções travadas de "semItem" somem (são alternativas), as outras aparecem com o motivo
+    const visiveis = lista.filter((op) => !(op.req && op.req.semItem && p.itens.includes(op.req.semItem)));
+    if (!visiveis.length) return `<p class="sub">Não há mais nada a fazer aqui por enquanto.</p>`;
+    return `<div class="opcoes">${visiveis.map((op) => {
+      const motivo = bloqueio(op, p);
+      const indice = lista.indexOf(op);
+      const tempo = doLugar ? (op.tempo ?? 1) : 0;
+      return `<button class="opcao ${motivo ? "travada" : ""}" data-opcao="${indice}" data-lugar="${doLugar ? 1 : 0}" ${motivo ? "disabled" : ""}>
+        <span class="op-texto">${motivo ? "🔒 " : ""}${esc(op.texto)}</span>
+        ${motivo ? `<span class="op-info">${esc(motivo)}</span>` : rotuloTeste(op, p)}
+        ${tempo ? `<span class="op-tempo" title="Avança o relógio">+${tempo}</span>` : ""}
+      </button>`;
+    }).join("")}</div>`;
+  }
+
+  function ameacaHtml(max) {
+    const v = Math.max(0, camp.ameaca);
+    return `<p class="ameaca"><span>Ameaça</span>${Array.from({ length: max }, (_, i) => `<i class="${i < v ? "cheio" : ""}"></i>`).join("")}</p>`;
+  }
+
+  function finalHtml() {
+    return `<div class="opcoes">
+      <button class="btn-primario" data-acao="ficha-final">Ver a ficha</button>
+      <button class="btn-secundario" data-acao="mesa">Voltar à Mesa</button>
+    </div>
+    <p class="dica">Fim do prólogo. O Eixo Y foi revelado na ficha de quem jogou.</p>`;
+  }
+
+  function grupoHtml() {
+    const g = grupo();
+    const m = missao();
+    return `<footer class="cena-grupo">${g.map((p, i) => `
+      <div class="membro ${i === camp.vez % g.length ? "da-vez" : ""}">
+        <strong>${esc(p.nome)}${i === camp.vez % g.length && g.length > 1 ? " · vez" : ""}</strong>
+        <span>${EIXOS[m.eixo].exposicao.nome} ${p.exposicao[m.eixo]} · Res ${p.ressonancia} · Dis ${p.dissonancia}</span>
+      </div>`).join("")}</footer>`;
+  }
+
+  function livreHtml() {
+    return `
+      ${pendente ? `<div class="pendente"><span>Entendi: <b>${esc(pendente.rotulo)}</b></span>
+          <button class="btn-primario" data-acao="confirmar">Fazer isso</button>
+          <button class="btn-texto" data-acao="cancelar">Não era isso</button></div>` : ""}
+      ${mensagemLivre ? `<p class="livre-resposta">${esc(mensagemLivre)}</p>` : ""}
+      <form class="livre" id="form-livre">
+        <input id="texto-livre" placeholder="Ou escreva o que ${esc(ativo().nome)} faz…" autocomplete="off">
+        <button class="btn-secundario">Agir</button>
+      </form>`;
+  }
+
+  // ---------- Painéis ----------
+
+  function painelHtml() {
+    const m = missao();
+    const ctx = contexto();
+    if (painel === "diario") {
+      return `<div class="cena-painel">
+        <h3>Diário <button class="btn-texto" data-painel="">Fechar</button></h3>
+        ${camp.pistas.length ? `<ul class="pistas">${camp.pistas.map((x) => `<li>${esc(x.texto)}</li>`).join("")}</ul>` : `<p class="sub">Nenhuma pista ainda.</p>`}
+        <p class="dica">Com ${m.pistasParaMarco} pistas, ou com o relógio cheio, a história avança sozinha.</p>
+      </div>`;
+    }
+    const custo = custoViagem();
+    return `<div class="cena-painel">
+      <h3>Mapa <button class="btn-texto" data-painel="">Fechar</button></h3>
+      <p class="sub">${custo ? "Ir a outro lugar avança o relógio em 1." : "Com o carro, ir a outro lugar não gasta tempo."}</p>
+      <div class="mapa">${Object.entries(m.lugares).map(([id, l]) => `
+        <button class="lugar ${id === camp.lugar ? "atual" : ""}" data-ir="${id}" ${id === camp.lugar ? "disabled" : ""}>
+          <b>${esc(l.icone)}</b><strong>${esc(texto(l.nome, ctx))}</strong>
+          <span>${l.acoes.filter((a) => !feita(a)).length} coisas a fazer</span>
+        </button>`).join("")}
+        <button class="lugar trancado" disabled><b>◉</b><strong>Praça Central</strong><span>todos parecem ir para lá</span></button>
+      </div>
+    </div>`;
+  }
+
+  function custoViagem() {
+    return grupo().some((p) => p.itens.includes("veiculo")) ? 0 : 1;
+  }
+
+  // ======================= Ações =======================
+
+  function executar(op, doLugar) {
+    pendente = null;
+    mensagemLivre = "";
+    const p = ativo();
+    if (bloqueio(op, p)) return;
+    const eixo = missao().eixo;
+    const g = grupo();
+    if (op.convergencia) {
+      Dados.abrirConvergencia(p, eixo, {
+        intensidade: op.convergencia, podeAjudar: g.length > 1,
+        aoTerminar: (r) => resolver(op, r.passou ? op.sucesso : op.falha, doLugar),
+      });
+    } else if (op.situacao) {
+      Dados.abrirTeste(p, eixo, null, {
+        situacao: op.situacao, podeAjudar: g.length > 1,
+        aoTerminar: (r) => resolver(op, r.passou ? op.sucesso : op.falha, doLugar),
+      });
+    } else resolver(op, op.resultado, doLugar);
+  }
+
+  function resolver(op, res, doLugar) {
+    carregar();
+    res = res || {};
+    const m = missao();
+    const p = ativo(); // recarregado: já inclui o que o teste de dados mudou
+    const efeitos = res.efeitos || {};
+    const linhas = [];
+    const exp = EIXOS[m.eixo].exposicao.nome;
+
+    if (doLugar) {
+      camp.feitas.push(op.grupo || op.id);
+      camp.relogio = Math.min(m.relogioMax, camp.relogio + (op.tempo ?? 1));
+    }
+    if (efeitos.exposicao) {
+      p.exposicao[m.eixo] = Math.max(0, Math.min(REGRAS.exposicaoMax, p.exposicao[m.eixo] + efeitos.exposicao));
+      linhas.push(`${efeitos.exposicao > 0 ? "+" : ""}${efeitos.exposicao} ${exp}`);
+    }
+    for (const [chave, nome] of [["ressonancia", "Ressonância"], ["dissonancia", "Dissonância"]]) {
+      if (!efeitos[chave]) continue;
+      p[chave] = Math.max(0, Math.min(REGRAS.ressonanciaMax, p[chave] + efeitos[chave]));
+      linhas.push(`${efeitos[chave] > 0 ? "+" : ""}${efeitos[chave]} ${nome}`);
+    }
+    if (efeitos.item && !p.itens.includes(efeitos.item)) {
+      const erro = Regras.alternar(p, "item", efeitos.item);
+      linhas.push(erro ? `Sem espaço para ${Regras.equip(efeitos.item).nomes[m.eixo]}` : `Ganhou: ${Regras.equip(efeitos.item).nomes[m.eixo]}`);
+    }
+    if (efeitos.aprenderX) {
+      const novos = efeitos.aprenderX.filter((id) => !p.linguas.x.includes(id));
+      p.linguas.x.push(...novos);
+      if (novos.length) {
+        const nomes = Lingua.elementos("x").filter((e) => novos.includes(e.id)).map((e) => `${e.s} ${e.nome}`);
+        linhas.push(`Aprendeu no Código Urbano: ${nomes.join(", ")}`);
+      }
+    }
+    if (efeitos.memoria) {
+      p.memorias = (p.memorias ? p.memorias + "\n" : "") + efeitos.memoria;
+      linhas.push("Nova Memória Cruzada");
+    }
+    if (efeitos.ameaca) camp.ameaca = Math.max(0, (camp.ameaca ?? 0) + efeitos.ameaca);
+    if (res.pista && !camp.pistas.some((x) => x.texto === res.pista)) {
+      camp.pistas.push({ texto: res.pista });
+      linhas.push("Nova pista no Diário");
+    }
+    fichaMudou(p);
+
+    // próximo destino
+    let ir = res.ir || null;
+    if (op.rodada) {
+      camp.rodada++;
+      if (camp.ameaca <= 0 || camp.rodada >= 2) ir = "cena:salto";
+    }
+    camp.vez = (camp.vez + 1) % grupo().length;
+    if (doLugar && !ir && (camp.pistas.length >= m.pistasParaMarco || camp.relogio >= m.relogioMax)) ir = "cena:chamado";
+    salvar();
+
+    const quem = p.id; // o teste de Convergência é de quem agiu, não do próximo da vez
+    const depois = () => {
+      resultado = null;
+      if (efeitos.convergencia) {
+        const alvo = grupo().find((x) => x.id === quem);
+        Dados.abrirConvergencia(alvo, m.eixo, { intensidade: efeitos.convergencia, aoTerminar: () => ir_(ir) });
+      } else ir_(ir);
+    };
+    const t = texto(res.texto, contexto());
+    if (t || linhas.length) {
+      resultado = { texto: t || "…", linhas, depois };
+      render();
+    } else depois();
+  }
+
+  function ir_(destino) {
+    carregar();
+    if (destino && destino.startsWith("cena:")) return entrarCena(destino.slice(5));
+    if (destino && destino.startsWith("lugar:")) {
+      camp.cena = null;
+      camp.lugar = destino.slice(6);
+    }
+    salvar();
+    render();
+  }
+
+  function entrarCena(id) {
+    const m = missao();
+    const cena = m.cenas[id];
+    camp.cena = id;
+    if (cena.ameaca && camp.ameaca === null) {
+      camp.ameaca = cena.ameaca;
+      camp.rodada = 0;
+      Musica.pararTrecho(false); // "a música para": silêncio, sem a playlist voltar
+      camp.flags.radioTocando = false;
+    }
+    if (cena.musica && !camp.flags.radioFoiTocado) {
+      if (Musica.ativa()) tocarRadio();
+      else camp.flags.pedirSom = true;
+    }
+    if (cena.final && !camp.fim) {
+      Musica.pararTrecho(false);
+      setTimeout(() => Musica.retomar(), 4000); // depois do salto, a trilha volta
+      for (const p of grupo()) {
+        if (cena.revela) p.revelados[cena.revela] = true;
+        if (cena.memoria) p.memorias = (p.memorias ? p.memorias + "\n" : "") + cena.memoria;
+        fichaMudou(p, [`${p.nome}: Memória Cruzada. O ${EIXOS[cena.revela].nome} (${EIXOS[cena.revela].mundo}) foi revelado na ficha.`]);
+      }
+      camp.fim = true;
+      camp.flags.revelado = cena.revela;
+    }
+    salvar();
+    render();
+  }
+
+  function tocarRadio() {
+    camp.flags.pedirSom = false;
+    camp.flags.radioFoiTocado = true;
+    camp.flags.radioTocando = Musica.tocarTrecho({
+      ...missao().radio,
+      aoTerminar: () => {
+        if (!camp) return;
+        camp.flags.radioTocando = false;
+        salvar();
+      },
+    });
+  }
+
+  // ======================= Texto livre =======================
+
+  function interpretar(entrada) {
+    const palavras = norm(entrada).split(/[^a-z]+/).filter((w) => w.length > 1);
+    if (!palavras.length) return;
+    const m = missao();
+    const ctx = contexto();
+    const cena = camp.cena ? m.cenas[camp.cena] : null;
+    const lista = cena ? cena.opcoes : m.lugares[camp.lugar].acoes.filter((a) => !feita(a));
+    const p = ativo();
+    let melhor = null;
+    let pontos = 0;
+    lista.forEach((op, i) => {
+      if (bloqueio(op, p) || (op.req && op.req.semItem && p.itens.includes(op.req.semItem))) return;
+      let s = 0;
+      for (const raiz of op.palavras || []) {
+        const e = raiz.endsWith("$");
+        const r = e ? raiz.slice(0, -1) : raiz;
+        if (r.includes(" ") ? norm(entrada).includes(r) : palavras.some((w) => (e ? w === r : w.startsWith(r)))) s += 2;
+      }
+      for (const w of norm(op.texto).split(/\s+/)) if (w.length > 4 && palavras.includes(w)) s += 1;
+      if (s > pontos) {
+        pontos = s;
+        melhor = { tipo: "opcao", indice: i, doLugar: !cena, rotulo: op.texto };
+      }
+    });
+    // "ir ao hospital", "voltar para casa"
+    if (!cena) {
+      for (const [id, l] of Object.entries(m.lugares)) {
+        if (id === camp.lugar) continue;
+        const nome = norm(texto(l.nome, ctx));
+        const chaves = nome.split(/\s+/).filter((w) => w.length > 3).concat([id]);
+        if (chaves.some((k) => palavras.some((w) => w.startsWith(k.slice(0, 5))))) {
+          const s = 2 + (palavras.some((w) => /^(ir|vou|volt|seguir|andar|dirig)/.test(w)) ? 1 : 0);
+          if (s > pontos) {
+            pontos = s;
+            melhor = { tipo: "ir", lugar: id, rotulo: `Ir para ${texto(l.nome, ctx)}` };
+          }
+        }
+      }
+    }
+    if (melhor) {
+      pendente = melhor;
+      mensagemLivre = "";
+    } else {
+      pendente = null;
+      mensagemLivre = `Nada acontece. Só uma frase, no fundo da mente: “${fraseAleatoria()}” Tente outras palavras ou escolha uma opção.`;
+    }
+    render();
+    $("#texto-livre")?.focus();
+  }
+
+  // ======================= Eventos =======================
+
+  document.addEventListener("click", (ev) => {
+    const t = ev.target.closest("button");
+    if (!t || t.disabled) return;
+    const naMesa = t.closest("#mesa");
+    const naCena = t.closest("#cena");
+    if (!naMesa && !naCena) return;
+
+    if (naMesa) {
+      if (t.dataset.jogador) {
+        const id = t.dataset.jogador;
+        if (selecionados.has(id)) selecionados.delete(id);
+        else selecionados.add(id);
+        return abrirMesa();
+      }
+      if (t.dataset.comecar) return comecar(t.dataset.comecar);
+      if (t.dataset.continuar) return abrir(t.dataset.continuar);
+      if (t.dataset.acao === "criar") return iniciarCriacao();
+      if (t.dataset.acao === "personagens") return abrirPersonagens();
+      return;
+    }
+
+    const m = missao();
+    if (t.dataset.opcao !== undefined) {
+      const doLugar = t.dataset.lugar === "1";
+      const lista = doLugar ? m.lugares[camp.lugar].acoes.filter((a) => !feita(a)) : m.cenas[camp.cena].opcoes;
+      return executar(lista[+t.dataset.opcao], doLugar);
+    }
+    if (t.dataset.painel !== undefined) {
+      painel = t.dataset.painel || null;
+      return render();
+    }
+    if (t.dataset.ir) {
+      camp.relogio = Math.min(m.relogioMax, camp.relogio + custoViagem());
+      camp.lugar = t.dataset.ir;
+      painel = null;
+      if (camp.relogio >= m.relogioMax) return entrarCena("chamado");
+      salvar();
+      return render();
+    }
+    const acao = t.dataset.acao;
+    if (acao === "seguir" && resultado) return resultado.depois();
+    if (acao === "confirmar" && pendente) {
+      const p = pendente;
+      pendente = null;
+      if (p.tipo === "ir") {
+        camp.relogio = Math.min(m.relogioMax, camp.relogio + custoViagem());
+        camp.lugar = p.lugar;
+        if (camp.relogio >= m.relogioMax) return entrarCena("chamado");
+        salvar();
+        return render();
+      }
+      const lista = p.doLugar ? m.lugares[camp.lugar].acoes.filter((a) => !feita(a)) : m.cenas[camp.cena].opcoes;
+      return executar(lista[p.indice], p.doLugar);
+    }
+    if (acao === "cancelar") {
+      pendente = null;
+      return render();
+    }
+    if (acao === "ligar-som") {
+      Musica.ligar();
+      // o player precisa de um instante para começar
+      setTimeout(() => {
+        tocarRadio();
+        salvar();
+        render();
+      }, 600);
+      return;
+    }
+    if (acao === "sem-som") {
+      camp.flags.pedirSom = false;
+      camp.flags.radioFoiTocado = true;
+      camp.flags.radioTocando = false;
+      salvar();
+      return render();
+    }
+    if (acao === "ficha") return abrirFicha(ativo());
+    if (acao === "ficha-final") {
+      const p = grupo()[0];
+      abrirFicha(p);
+      abaAtual = camp.flags.revelado || p.origem;
+      return renderFicha();
+    }
+    if (acao === "tradutor") return Tradutor.abrir(missao().eixo);
+    if (acao === "mesa") return abrirMesa();
+  });
+
+  document.addEventListener("submit", (ev) => {
+    if (ev.target.id !== "form-livre") return;
+    ev.preventDefault();
+    interpretar($("#texto-livre").value);
+  });
+
+  return {
+    abrir, abrirMesa,
+    // este personagem tem uma partida em andamento?
+    emAndamento: (pid) => Boolean(partidaDe(pid)),
+    // "Jogar" na ficha: volta à partida dele, ou abre a Mesa com ele já escolhido
+    jogarCom(pid) {
+      const c = partidaDe(pid);
+      if (c) abrir(c.id);
+      else abrirMesa([pid]);
+    },
+  };
+})();
