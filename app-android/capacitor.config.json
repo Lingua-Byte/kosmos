@@ -1,0 +1,12 @@
+{
+  "appId": "io.github.linguabyte.kosmos",
+  "appName": "KOSMOS",
+  "webDir": "www",
+  "server": {
+    "url": "https://lingua-byte.github.io/kosmos/",
+    "androidScheme": "https"
+  },
+  "android": {
+    "backgroundColor": "#03050e"
+  }
+}

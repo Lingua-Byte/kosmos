@@ -1,0 +1,94 @@
+# Gera os apps do KOSMOS na nuvem do GitHub e publica para download em
+# https://github.com/Lingua-Byte/kosmos/releases/latest
+#   · KOSMOS.apk (Android)  · KOSMOS-instalador.exe e KOSMOS-portatil.exe (Windows)
+# Os apps abrem o jogo publicado, então mudar o jogo não exige gerar apps novos:
+# só rode isto de novo se mudar o ícone, o nome ou o próprio app (pastas app-android/ e app-pc/).
+# Para rodar: aba Actions do repositório → "Apps (APK e EXE)" → Run workflow.
+
+name: Apps (APK e EXE)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "app-android/**"
+      - "app-pc/**"
+      - ".github/workflows/apps.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Projeto Android
+        working-directory: app-android
+        run: |
+          npm ci
+          npx cap add android
+      - name: Ícone do KOSMOS
+        working-directory: app-android
+        run: |
+          res=android/app/src/main/res
+          rm -rf $res/mipmap-anydpi-v26
+          for par in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
+            pasta=${par%%:*}; tam=${par##*:}
+            convert icone.png -resize ${tam}x${tam} $res/mipmap-$pasta/ic_launcher.png
+            convert icone.png -resize ${tam}x${tam} $res/mipmap-$pasta/ic_launcher_round.png
+            rm -f $res/mipmap-$pasta/ic_launcher_foreground.png
+          done
+      - name: Compilar o APK
+        working-directory: app-android/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+          cp app/build/outputs/apk/debug/app-debug.apk ../../KOSMOS.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: KOSMOS.apk
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Compilar os EXE
+        working-directory: app-pc
+        run: |
+          npm ci
+          npx electron-builder --win portable nsis --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exe
+          path: |
+            app-pc/dist/KOSMOS-instalador.exe
+            app-pc/dist/KOSMOS-portatil.exe
+
+  publicar:
+    needs: [android, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - name: Publicar na página de downloads
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete apps --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag || true
+          gh release create apps --repo "$GITHUB_REPOSITORY" --latest \
+            --title "KOSMOS — apps para Android e PC" \
+            --notes "Baixe e instale. Os apps abrem o jogo publicado e se atualizam sozinhos sempre que o jogo muda." \
+            KOSMOS.apk KOSMOS-instalador.exe KOSMOS-portatil.exe

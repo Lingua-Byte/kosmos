@@ -18,3 +18,9 @@ __pycache__/
 desktop.ini
 /ferramentas/oficina-anterior.json
 /site/dados/oficina.json
+
+# Apps (PC e Android): dependências e builds
+/app-pc/node_modules/
+/app-pc/dist/
+/app-android/node_modules/
+/app-android/android/
