@@ -6,6 +6,8 @@
 // Navegadores só liberam o som depois de um clique, por isso Musica.tocar()
 // é chamado pelo botão "Entrar no Kosmos".
 // Cenas podem tocar um trecho de uma música em loop (Musica.tocarTrecho) e depois a trilha volta.
+// Se o aparelho estiver conectado às músicas do autor (MusicaPropria), elas tocam no lugar do YouTube;
+// o YouTube só é carregado se não houver conexão ou se a trilha própria falhar.
 
 const Musica = (() => {
   const DESBLOQUEADAS = "kosmos.musicas-desbloqueadas";
@@ -21,9 +23,21 @@ const Musica = (() => {
   const botao = document.getElementById("btn-musica");
   const titulo = document.getElementById("musica-titulo");
 
-  const tag = document.createElement("script");
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
+  let youtubeCarregado = false;
+  function carregarYouTube() {
+    if (youtubeCarregado) return;
+    youtubeCarregado = true;
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  }
+  const propria = () => MusicaPropria.usando();
+  if (!MusicaPropria.iniciar(carregarYouTube)) carregarYouTube();
+  MusicaPropria.volume(typeof Opcoes !== "undefined" ? Opcoes.get("musica").volume : 60);
+  if (typeof Opcoes !== "undefined") {
+    ligada = Opcoes.get("musica").ligada;
+    MusicaPropria.definirLigada(ligada);
+  }
 
   function desbloqueadas() {
     try {
@@ -119,6 +133,7 @@ const Musica = (() => {
 
   // Chamado pelo jogo a cada troca de tela/eixo. Espera um instante para não trocar duas vezes seguidas.
   function contexto(nome) {
+    MusicaPropria.contexto(nome);
     contextoAtual = nome;
     clearTimeout(trocaAgendada);
     trocaAgendada = setTimeout(() => {
@@ -129,6 +144,7 @@ const Musica = (() => {
   function tocar() {
     querTocar = true;
     botao.hidden = false;
+    MusicaPropria.tocar();
     if (!pronto || !ligada) return;
     if (contextoTocando === null) tocarContexto(contextoAtual);
     else player.playVideo();
@@ -166,6 +182,7 @@ const Musica = (() => {
   // Toca de "inicio" a "fim" (segundos), "vezes" seguidas (Infinity = até a cena mandar parar).
   // videoId pode ser uma lista de versões da mesma música: se uma estiver bloqueada, tenta a próxima.
   function tocarTrecho({ videoId, inicio, fim, vezes = 1, aoTerminar }) {
+    if (propria()) return MusicaPropria.tocarTrecho({ vezes, aoTerminar });
     if (!pronto || !ligada || !querTocar) {
       if (aoTerminar) aoTerminar(false);
       return false;
@@ -177,6 +194,7 @@ const Musica = (() => {
 
   // Para o trecho antes da hora (o jogador avançou a cena)
   function pararTrecho(retomar = true) {
+    if (propria()) return MusicaPropria.pararTrecho(retomar);
     if (trecho) {
       trecho.aoTerminar = null;
       encerrarTrecho(false, retomar);
@@ -185,6 +203,7 @@ const Musica = (() => {
 
   // Volta a trilha depois de um silêncio pedido por uma cena
   function retomar() {
+    if (propria()) return MusicaPropria.retomar();
     if (!trecho) tocarContexto(contextoAtual);
   }
 
@@ -193,6 +212,7 @@ const Musica = (() => {
   // liga ou desliga a trilha (o botão do canto e o menu de opções usam isto)
   function definirLigada(sim) {
     ligada = sim;
+    MusicaPropria.definirLigada(sim);
     if (pronto) {
       if (ligada && querTocar) {
         if (contextoTocando === null && !trecho) tocarContexto(contextoAtual);
@@ -204,12 +224,13 @@ const Musica = (() => {
   }
 
   botao.addEventListener("click", () => {
-    if (!pronto) return;
+    if (!pronto && !propria()) return;
     if (typeof Opcoes !== "undefined") Opcoes.mudar("musica", { ligada: !ligada });
     else definirLigada(!ligada);
   });
 
   document.getElementById("btn-proxima").addEventListener("click", () => {
+    if (propria()) return MusicaPropria.proxima();
     if (!pronto) return;
     ligada = true;
     if (trecho) return pararTrecho();
@@ -220,17 +241,20 @@ const Musica = (() => {
   return {
     tocar, tocarTrecho, pararTrecho, retomar, contexto, definirLigada,
     volume(v) {
+      MusicaPropria.volume(v);
       if (pronto) player.setVolume(v);
     },
     // a música devia estar tocando mas algo (a voz do narrador, no celular) pausou: volta a tocar
     garantir() {
+      if (propria()) return MusicaPropria.garantir();
       if (!pronto || !ligada || !querTocar) return;
       if (player.getPlayerState() === YT.PlayerState.PAUSED) player.playVideo();
     },
     // o som está realmente tocando? (cenas que dependem de música pedem para ligar)
-    ativa: () => pronto && ligada && querTocar,
+    ativa: () => (propria() ? MusicaPropria.ativa() : pronto && ligada && querTocar),
     ligar: () => {
       ligada = true;
+      MusicaPropria.definirLigada(true);
       tocar();
       botao.classList.add("tocando");
       botao.setAttribute("aria-pressed", "true");
