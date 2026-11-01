@@ -1195,7 +1195,7 @@ body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 
   display: flex; flex-direction: column; align-items: center; gap: 1px;
   background: rgba(2, 10, 5, 0.82); color: var(--texto); border: 1px solid var(--painel-borda);
   border-radius: 8px; padding: 5px 8px; font: inherit; font-size: 0.72rem; line-height: 1.2; cursor: pointer;
-  max-width: 34%; text-align: center;
+  max-width: 26%; text-align: center;
 }
 .mapa-no b { color: var(--acento); font-size: 1.1rem; font-weight: 400; }
 .mapa-no small { color: var(--texto-suave); font-size: 0.65rem; }
@@ -1279,8 +1279,17 @@ body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 
 .condicao { font-size: 0.8rem; padding: 3px 8px; border-radius: 6px; border: 1px solid color-mix(in srgb, #ff7a7a 50%, transparent); color: #ffb4b4; }
 .condicoes-mini { display: block; font-size: 0.75rem; color: #ffb4b4; }
 .mod-cond { color: #ffb4b4; }
-/* no celular o mapa fica em pé, para os lugares não se encostarem */
-@media (max-width: 600px) {
-  .mapa-ilustrado { aspect-ratio: 3 / 4; max-height: none; }
+/* em painéis estreitos (celular) o mapa fica em pé, para os lugares não se encostarem */
+.cena-painel { container-type: inline-size; }
+@container (max-width: 640px) {
+  .mapa-ilustrado { aspect-ratio: 2 / 3; max-height: none; }
   .mapa-no { max-width: 31%; padding: 4px 6px; font-size: 0.68rem; }
 }
+
+/* Diário: linhas de missão */
+.diario-sub { margin: 12px 0 6px; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--texto-suave); }
+.quests { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.quests li { padding: 8px 10px; border: 1px solid var(--painel-borda); border-radius: 8px; }
+.quests li small { display: block; color: var(--texto-suave); margin-top: 2px; }
+.quests .quest-concluida { opacity: 0.75; }
+.quests .quest-perdida strong { text-decoration: line-through; opacity: 0.7; }
