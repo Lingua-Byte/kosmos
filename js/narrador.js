@@ -1,31 +1,45 @@
-// Narrador: lê em voz alta o texto das cenas, com a voz que o próprio aparelho já tem
-// (Web Speech API — gratuita, sem conta, funciona no celular).
-// Cada eixo tem o seu jeito de falar: Medieval mais lento e grave, Espacial mais rápido e agudo.
-// Enquanto o narrador fala, a música abaixa.
+// Narrador (opcional, desligado por padrão): lê em voz alta o texto das cenas com a voz
+// que o próprio aparelho já tem (Web Speech API — gratuita, sem conta).
+// Para soar menos "robô", a leitura é feita frase a frase com pausas de respiração,
+// e muda de tom conforme o que está sendo lido: título, narração, falas entre aspas, perguntas
+// e o ambiente (as frases em itálico, lidas mais baixo e devagar).
+// Cada eixo tem o seu jeito de falar. A música não é tocada aqui: ela segue no volume dela.
 
 const Narrador = (() => {
   const CHAVE = "kosmos.narrador";
   const fala = window.speechSynthesis;
-  const PERFIS = {
-    x: { rate: 1, pitch: 1 },
-    y: { rate: 0.88, pitch: 0.8 },
-    z: { rate: 1.08, pitch: 1.2 },
+  const EIXO = {
+    x: { rate: 0.95, pitch: 1 },
+    y: { rate: 0.82, pitch: 0.85 },
+    z: { rate: 1.0, pitch: 1.12 },
   };
+  // ajustes por tipo de trecho (somados/multiplicados ao perfil do eixo)
+  const TOM = {
+    titulo: { rate: 0.85, pitch: 0.95, volume: 1, pausa: 900 },
+    texto: { rate: 1, pitch: 1, volume: 1, pausa: 420 },
+    fala: { rate: 1.05, pitch: 1.12, volume: 1, pausa: 500 },
+    pergunta: { rate: 0.95, pitch: 1.08, volume: 1, pausa: 650 },
+    ambiente: { rate: 0.85, pitch: 0.9, volume: 0.7, pausa: 700 },
+  };
+  const FIM_PARAGRAFO = 550; // pausa a mais entre parágrafos
+  const RETICENCIAS = 500; // e depois de "..."
+
   let ultimo = "";
   let geracao = 0; // cada nova leitura invalida a anterior
   let falando = false;
+  let espera = null;
 
-  function preferencias() {
+  function ligado() {
     try {
-      return { auto: true, ...JSON.parse(localStorage.getItem(CHAVE)) };
+      return Boolean(JSON.parse(localStorage.getItem(CHAVE))?.ligado);
     } catch {
-      return { auto: true };
+      return false;
     }
   }
 
-  function guardar(p) {
+  function guardar(sim) {
     try {
-      localStorage.setItem(CHAVE, JSON.stringify(p));
+      localStorage.setItem(CHAVE, JSON.stringify({ ligado: sim }));
     } catch {}
   }
 
@@ -36,67 +50,97 @@ const Narrador = (() => {
     return vozes.sort((a, b) => nota(b) - nota(a))[0] || null;
   }
 
-  // O Chrome corta falas longas no meio: lê frase a frase
-  function pedacos(texto) {
-    return (texto.match(/[^.!?…]+[.!?…]+["”»]?|[^.!?…]+$/g) || [])
-      .map((s) => s.trim())
-      .filter(Boolean);
+  // Parágrafos [{tipo, texto}] → falas curtas, cada uma com o seu tom e a pausa que vem depois
+  function roteiro(paragrafos) {
+    const saida = [];
+    for (const { tipo, texto } of paragrafos) {
+      // separa o que está entre aspas (falas de personagens) do resto
+      const blocos = texto.split(/(“[^”]*”|"[^"]*")/).filter((b) => b.trim());
+      for (const bloco of blocos) {
+        const ehFala = /^[“"]/.test(bloco);
+        const frases = bloco.match(/[^.!?…]+[.!?…]+["”»]?|[^.!?…]+$/g) || [bloco];
+        for (const f of frases) {
+          const s = f.trim().replace(/^[“"]|[”"]$/g, "");
+          if (!/[\p{L}\d]/u.test(s)) continue;
+          const t = tipo !== "texto" ? tipo : ehFala ? "fala" : /\?$/.test(s) ? "pergunta" : "texto";
+          saida.push({ texto: s, tom: TOM[t], extra: /(\.\.\.|…)$/.test(s) ? RETICENCIAS : 0 });
+        }
+      }
+      if (saida.length) saida[saida.length - 1].extra += FIM_PARAGRAFO;
+    }
+    return saida;
   }
 
   function aoParar() {
     falando = false;
-    Musica.abaixar(false);
     atualizarBotoes();
+    Musica.garantir(); // em alguns celulares a voz pausa a música: ela volta
   }
 
-  function falar(texto, eixo) {
+  function falar(paragrafos, eixo) {
     if (!fala) return;
     const minha = ++geracao;
+    clearTimeout(espera);
     fala.cancel();
-    const partes = pedacos(texto);
-    if (!partes.length) return aoParar();
+    const falas = roteiro(paragrafos);
+    if (!falas.length) return aoParar();
     const v = voz();
-    const perfil = PERFIS[eixo] || PERFIS.x;
+    const perfil = EIXO[eixo] || EIXO.x;
     falando = true;
-    Musica.abaixar(true);
     atualizarBotoes();
-    partes.forEach((parte, i) => {
-      const u = new SpeechSynthesisUtterance(parte);
+
+    const proxima = (i) => {
+      if (minha !== geracao) return;
+      if (i >= falas.length) return aoParar();
+      const { texto, tom, extra } = falas[i];
+      const u = new SpeechSynthesisUtterance(texto);
       u.lang = v ? v.lang : "pt-BR";
       if (v) u.voice = v;
-      u.rate = perfil.rate;
-      u.pitch = perfil.pitch;
-      if (i === partes.length - 1) u.onend = () => minha === geracao && aoParar();
+      u.rate = perfil.rate * tom.rate;
+      u.pitch = Math.min(2, perfil.pitch * tom.pitch);
+      u.volume = tom.volume;
+      u.onend = () => {
+        if (minha !== geracao) return;
+        espera = setTimeout(() => proxima(i + 1), tom.pausa + extra);
+      };
       u.onerror = () => minha === geracao && aoParar();
       fala.speak(u);
-    });
+      Musica.garantir();
+    };
+    proxima(0);
   }
 
   function parar() {
     if (!fala) return;
     geracao++;
+    clearTimeout(espera);
     fala.cancel();
     if (falando) aoParar();
   }
 
+  function chave(paragrafos) {
+    return paragrafos.map((p) => p.texto).join("\n");
+  }
+
   // Chamado a cada desenho da cena: só lê quando o texto mudou (abrir o mapa não repete a leitura)
-  function cena(texto, eixo) {
+  function cena(paragrafos, eixo) {
     atualizarBotoes();
-    if (!fala || texto === ultimo) return;
-    ultimo = texto;
-    if (preferencias().auto) falar(texto, eixo);
+    const k = chave(paragrafos);
+    if (!fala || k === ultimo) return;
+    ultimo = k;
+    if (ligado()) falar(paragrafos, eixo);
     else parar();
   }
 
   function atualizarBotoes() {
-    const auto = preferencias().auto;
-    document.querySelectorAll("[data-acao='narrar']").forEach((b) => {
-      b.textContent = falando ? "■ Parar" : "🔊 Narrar";
-      b.setAttribute("aria-pressed", String(falando));
+    const sim = ligado();
+    document.querySelectorAll("[data-acao='narrador']").forEach((b) => {
+      b.textContent = sim ? "🔊 Narrador ligado" : "🔇 Narrador desligado";
+      b.setAttribute("aria-pressed", String(sim));
     });
-    document.querySelectorAll("[data-acao='narrar-auto']").forEach((b) => {
-      b.textContent = auto ? "Narração automática: ligada" : "Narração automática: desligada";
-      b.setAttribute("aria-pressed", String(auto));
+    document.querySelectorAll("[data-acao='narrar']").forEach((b) => {
+      b.hidden = !sim;
+      b.textContent = falando ? "■ Parar" : "↻ Ouvir de novo";
     });
   }
 
@@ -107,18 +151,18 @@ const Narrador = (() => {
     disponivel: Boolean(fala),
     cena,
     parar,
-    // botão 🔊: lê de novo o que está na tela, ou para
-    alternar(texto, eixo) {
-      if (falando) parar();
-      else falar(texto, eixo);
-    },
-    alternarAuto(texto, eixo) {
-      const p = preferencias();
-      p.auto = !p.auto;
-      guardar(p);
-      if (p.auto) falar(texto, eixo);
+    // liga/desliga o narrador (fica guardado no aparelho); ao ligar, já lê a cena
+    alternarLigado(paragrafos, eixo) {
+      const sim = !ligado();
+      guardar(sim);
+      if (sim) falar(paragrafos, eixo);
       else parar();
       atualizarBotoes();
+    },
+    // ↻ / ■: lê de novo o que está na tela, ou para
+    alternar(paragrafos, eixo) {
+      if (falando) parar();
+      else falar(paragrafos, eixo);
     },
   };
 })();
