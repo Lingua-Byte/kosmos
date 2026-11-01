@@ -114,7 +114,11 @@ const Opcoes = (() => {
         ${instalado()
           ? `<p class="op-desc">Você está jogando pelo app instalado. Ele se atualiza sozinho sempre que o jogo muda.</p>`
           : `<p class="op-desc">Instale o KOSMOS como app (Android ou PC): abre em tela cheia, com ícone próprio, e se atualiza sozinho.</p>
-             <button class="op-acao" data-op-instalar>Instalar o app</button>
+             <div class="op-servicos">
+               <a class="op-servico" href="https://github.com/Lingua-Byte/kosmos/releases/download/apps/KOSMOS.apk" download>⬇ Android<small>KOSMOS.apk</small></a>
+               <a class="op-servico" href="https://github.com/Lingua-Byte/kosmos/releases/download/apps/KOSMOS-instalador.exe" download>⬇ PC (Windows)<small>instalador .exe</small></a>
+             </div>
+             <button class="op-acao" data-op-instalar>Instalar pelo navegador</button>
 `}
       </section>`;
   }
