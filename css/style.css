@@ -1671,3 +1671,28 @@ body:has(#tela-mesa.ativa) .controle-musica, body:has(#tela-personagens.ativa) .
 .pronto-detalhe { text-align: left; }
 body:has(#tela-prontos.ativa) .controle-musica { top: 8px; bottom: auto; right: 10px; }
 @media (min-height: 900px) { .pronto-retrato { max-width: 92px; } }
+/* prontos, estilo Neverwinter Nights: o retrato ocupa o quadro inteiro, o nome numa faixa embaixo */
+.pronto-card { position: relative; display: block; padding: 0 !important; overflow: hidden; aspect-ratio: 1; border: 2px solid color-mix(in srgb, var(--acento) 35%, #000); border-radius: 6px; background: #000; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.8); }
+.pronto-card .pronto-retrato { position: absolute; inset: 0; max-width: none; width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; }
+.pronto-card .pronto-retrato img { filter: saturate(0.85) brightness(0.8); transition: filter 0.2s, transform 0.3s; }
+.pronto-card:hover .pronto-retrato img, .pronto-card.escolhida .pronto-retrato img { filter: none; transform: scale(1.04); }
+.pronto-card b {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 4px 3px; font-size: 0.78rem; letter-spacing: 0.04em; text-align: center;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.92)); color: #f1e6c8; text-shadow: 0 1px 2px #000;
+}
+.pronto-card.escolhida { border-color: var(--acento); box-shadow: 0 0 0 1px var(--acento), 0 0 14px color-mix(in srgb, var(--acento) 55%, transparent); }
+.pronto-cabeca { display: flex; gap: 10px; align-items: flex-start; }
+.pronto-cabeca > .pronto-retrato { flex: none; width: 92px; max-width: none; aspect-ratio: 1; border: 2px solid var(--acento); border-radius: 6px; }
+.pronto-cabeca > div { display: grid; gap: 4px; min-width: 0; }
+.pronto-cabeca p { margin: 0; }
+@media (min-height: 900px) { .pronto-cabeca > .pronto-retrato { width: 120px; } }
+@media (min-width: 700px) { .prontos-grade { max-width: 480px; margin: 0 auto; width: 100%; } }
+@media (min-width: 900px) {
+  #tela-prontos .prontos { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: 12px 20px; }
+  .prontos-topo { grid-column: 1 / -1; }
+  .prontos-grade { width: min(560px, calc(100dvh - 190px)); max-width: none; margin: 0; align-self: start; }
+  .pronto-detalhe { align-self: stretch; }
+  .pronto-cabeca { flex-direction: column; }
+  .pronto-cabeca > .pronto-retrato { width: min(220px, 34dvh); }
+  .pronto-resumo { font-size: 0.95rem; }
+}
