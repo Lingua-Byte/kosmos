@@ -1160,3 +1160,53 @@ body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* ---------- Mapa ilustrado ---------- */
+.mapa-ilustrado {
+  position: relative; aspect-ratio: 4 / 3; max-height: 70vh; margin-top: 10px;
+  border-radius: 10px; overflow: hidden; border: 1px solid var(--painel-borda);
+}
+.mapa-ilustrado svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mapa-x .fundo-mapa { fill: #020a05; }
+.mapa-x .quarteirao { fill: none; stroke: #2bd96b; stroke-width: 0.6; }
+.mapa-x .avenida { stroke: #2bd96b; stroke-width: 1.4; opacity: 0.35; }
+.mapa-x .praca { fill: rgba(43, 217, 107, 0.12); stroke: #2bd96b; stroke-width: 1; }
+.mapa-x .pulso { fill: none; stroke: #7dffad; stroke-width: 1.2; opacity: 0; transform-box: fill-box; transform-origin: center; animation: pulso-mapa 3.2s infinite; }
+.mapa-x .pulso-1 { animation-delay: 0.35s; }
+.mapa-x .pulso-2 { animation-delay: 0.7s; }
+.mapa-x .pulso-3 { animation-delay: 1.3s; animation-duration: 3.2s; stroke-width: 2.4; }
+@keyframes pulso-mapa {
+  0% { opacity: calc(0.4 + var(--tensao) * 0.6); transform: scale(1); }
+  40% { opacity: 0; transform: scale(calc(3 + var(--tensao) * 5)); }
+  100% { opacity: 0; transform: scale(1); }
+}
+.mapa-x .varredura { animation: varrer 6s linear infinite; }
+.mapa-x .feixe { fill: rgba(43, 217, 107, 0.1); }
+@keyframes varrer { to { transform: rotate(360deg); } }
+.mapa-x .pessoa { fill: #c9ffd9; opacity: 0.8; }
+
+.mapa-centro {
+  position: absolute; transform: translate(-50%, -50%); pointer-events: none;
+  font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--acento);
+  text-shadow: 0 0 6px #000;
+}
+.mapa-no {
+  position: absolute; transform: translate(-50%, -50%); z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  background: rgba(2, 10, 5, 0.82); color: var(--texto); border: 1px solid var(--painel-borda);
+  border-radius: 8px; padding: 5px 8px; font: inherit; font-size: 0.72rem; line-height: 1.2; cursor: pointer;
+  max-width: 34%; text-align: center;
+}
+.mapa-no b { color: var(--acento); font-size: 1.1rem; font-weight: 400; }
+.mapa-no small { color: var(--texto-suave); font-size: 0.65rem; }
+.mapa-no:hover:not(:disabled) { border-color: var(--acento); box-shadow: 0 0 12px color-mix(in srgb, var(--acento) 40%, transparent); }
+.mapa-no.atual { border-color: var(--acento); cursor: default; box-shadow: 0 0 0 2px color-mix(in srgb, var(--acento) 35%, transparent); }
+@media (prefers-reduced-motion: reduce) {
+  .mapa-x .pulso, .mapa-x .varredura { animation: none; }
+}
+
+/* ---------- Ilustração de cena ---------- */
+.cena-imagem { margin: 0 0 12px; border-radius: 10px; overflow: hidden; aspect-ratio: 16 / 7; border: 1px solid var(--painel-borda); }
+.cena-imagem img { width: 100%; height: 100%; object-fit: cover; animation: camera-lenta 30s ease-in-out infinite alternate; }
+@keyframes camera-lenta { from { transform: scale(1.02); } to { transform: scale(1.12) translate(-2%, -1%); } }
+@media (prefers-reduced-motion: reduce) { .cena-imagem img { animation: none; } }
