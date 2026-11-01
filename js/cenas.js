@@ -158,8 +158,8 @@ const Cenas = (() => {
     definirTema(missao().eixo);
     mostrarTela("tela-cena");
     render();
-    // primeira vez neste eixo: a cinemática dele (a Domus, no Eixo Z)
-    Cinematica.primeiraVez(grupo(), missao().eixo);
+    // tela de carregamento do eixo (a vila de Yudur, a Domus)
+    Cinematica.carregamento(missao().eixo, camp.id);
   }
 
   function render() {
