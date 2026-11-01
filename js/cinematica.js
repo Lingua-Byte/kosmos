@@ -4,9 +4,10 @@
 //   · Revelação: quando um eixo é revelado na ficha, uma vez por personagem.
 // Para rever durante o desenvolvimento: ?cinematica=z no endereço.
 
+// foco: no celular em pé o vídeo é recortado em 9:16; "foco" diz qual parte da largura fica (0% = esquerda)
 const CINEMATICAS = {
-  y: { video: "imagens/yudur-vila.mp4", titulo: "Yudur", legenda: "Eixo Y · Medieval" },
-  z: { video: "imagens/domus-viagem.mp4", titulo: "DOMUS", legenda: "Eixo Z · Espacial" },
+  y: { video: "imagens/yudur-vila.mp4", titulo: "Yudur", legenda: "Eixo Y · Medieval", foco: "45%" },
+  z: { video: "imagens/domus-viagem.mp4", titulo: "DOMUS", legenda: "Eixo Z · Espacial", foco: "100%" },
 };
 
 const Cinematica = (() => {
@@ -37,6 +38,7 @@ const Cinematica = (() => {
     tocando = true;
     const el = document.createElement("div");
     el.className = `cinematica cinematica-${eixo}`;
+    el.style.setProperty("--foco", c.foco || "50%");
     el.innerHTML = `
       <video class="cinematica-fundo" src="${c.video}" muted playsinline preload="auto" aria-hidden="true"></video>
       <video class="cinematica-video" src="${c.video}" muted playsinline preload="auto"></video>
@@ -63,12 +65,17 @@ const Cinematica = (() => {
     video.addEventListener("error", terminar); // sem o vídeo (offline): segue o jogo
     el.querySelector(".cinematica-pular").addEventListener("click", terminar);
     requestAnimationFrame(() => el.classList.add("visivel"));
-    // Alguns celulares (economia de bateria/dados) não deixam o vídeo começar sozinho: aparece um ▶
+    // Alguns celulares (economia de bateria/dados) não deixam o vídeo começar sozinho: aparece um ▶.
+    // Qualquer outra falha no início (o vídeo ainda carregando) só tenta de novo quando ele estiver pronto.
+    let tentativas = 0;
     const comecar = () => {
       video.play().then(() => {
         botaoTocar.hidden = true;
         fundo.play().catch(() => {});
-      }).catch(() => (botaoTocar.hidden = false));
+      }).catch((e) => {
+        if (e && e.name !== "NotAllowedError" && tentativas++ < 3) video.addEventListener("canplay", comecar, { once: true });
+        else botaoTocar.hidden = false;
+      });
     };
     const botaoTocar = el.querySelector(".cinematica-tocar");
     botaoTocar.addEventListener("click", comecar);
