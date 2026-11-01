@@ -49,6 +49,9 @@ function novoPersonagem() {
     exposicao: { x: 0, y: 0, z: 0 },
     ressonancia: 0,
     dissonancia: 0,
+    dinheiro: { ...DINHEIRO_INICIAL },
+    pertences: {},
+    condicoes: [],
     memorias: "",
     revelados: { x: false, y: false, z: false },
   };
@@ -616,6 +619,7 @@ function renderEixo(p, id) {
       </div>
       ${recursosHtml(p, "hab", id)}
       ${recursosHtml(p, "item", id)}
+      ${vidaHtml(p, id)}
       ${id === "y" ? runasHtml(p) : ""}
       <div class="bloco exposicao ${alerta}"><h3>${ex.nome}</h3>
         <p class="sub">${ex.desc}</p>
@@ -700,6 +704,19 @@ function fichaMudou(p, avisos = []) {
   atualizarFichaAberta();
 }
 
+// Dinheiro do eixo, pertences (a bolsa se traduz entre os eixos) e condições do corpo
+function vidaHtml(p, eixo) {
+  Vida.garantir(p);
+  const itens = Object.entries(p.pertences);
+  return `<div class="bloco vida"><h3>Dinheiro e pertences</h3>
+    <p class="carteira"><strong>${esc(Vida.dinheiroTexto(eixo, p.dinheiro[eixo]))}</strong> <span class="sub">· bolsa ${Vida.naBolsa(p)}/${BOLSA_MAX}</span></p>
+    ${itens.length ? `<ul class="pertences">${itens.map(([k, n]) => `
+      <li><span>${esc(Vida.nome(k, eixo))}${n > 1 ? ` <b>×${n}</b>` : ""}</span><small>${esc(Vida.pertence(k).efeito)}</small>
+        <button class="btn-rolar" data-usar-pertence="${k}">Usar</button></li>`).join("")}</ul>` : `<p class="sub">Nada na bolsa.</p>`}
+    ${p.condicoes.length ? `<p class="condicoes">${p.condicoes.map((c) => `<span class="condicao" title="Resolve com: ${esc(CONDICOES[c].resolve)}">${esc(CONDICOES[c].nome)}</span>`).join("")}</p>` : ""}
+  </div>`;
+}
+
 function virarCarta(botao) {
   const p = fichaAtual;
   const runa = Regras.virarRuna(p);
@@ -725,6 +742,8 @@ $("#ficha").addEventListener("click", (ev) => {
     const [tipo, chave] = t.dataset.catalogo.split(":");
     const erro = Regras.alternar(p, tipo, chave);
     fichaMudou(p, erro ? [erro] : []);
+  } else if (t.dataset.usarPertence) {
+    fichaMudou(p, Vida.usar(p, t.dataset.usarPertence, abaAtual));
   } else if (t.dataset.usar) {
     const it = Regras.item(t.dataset.usar);
     if (Regras.usosRestantes(p, it.chave) <= 0) return;

@@ -1263,3 +1263,24 @@ body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 
   }
   .cinematica .cinematica-fundo { display: none; }
 }
+
+/* ---------- Vida comum: bolsa, lojas, condições ---------- */
+.acoes-lugar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.carteira { margin: 4px 0 10px; }
+.carteira strong { color: var(--acento); font-size: 1.15rem; }
+.pertences { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 6px; }
+.pertences li {
+  display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: center;
+  padding: 8px 10px; border: 1px solid var(--painel-borda); border-radius: 8px;
+}
+.pertences li small { grid-column: 1; color: var(--texto-suave); font-size: 0.8rem; }
+.pertences li button { grid-row: 1 / span 2; grid-column: 2; }
+.condicoes { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 0; }
+.condicao { font-size: 0.8rem; padding: 3px 8px; border-radius: 6px; border: 1px solid color-mix(in srgb, #ff7a7a 50%, transparent); color: #ffb4b4; }
+.condicoes-mini { display: block; font-size: 0.75rem; color: #ffb4b4; }
+.mod-cond { color: #ffb4b4; }
+/* no celular o mapa fica em pé, para os lugares não se encostarem */
+@media (max-width: 600px) {
+  .mapa-ilustrado { aspect-ratio: 3 / 4; max-height: none; }
+  .mapa-no { max-width: 31%; padding: 4px 6px; font-size: 0.68rem; }
+}

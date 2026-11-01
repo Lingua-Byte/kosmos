@@ -81,9 +81,13 @@ const Regras = (() => {
 
   // Dados ganhos/perdidos automaticamente num teste daquele atributo
   function modificadores(p, atributo) {
+    // condições do corpo (fome, cansaço…) também tiram dados até serem resolvidas
+    const condicoes = (p.condicoes || []).map((c) => CONDICOES[c]).filter((c) => c && c.dados[atributo])
+      .map((c) => ({ fonte: c.nome, dados: c.dados[atributo], trilha: "cond" }));
     return limiaresAtivos(p)
       .filter((l) => l.dados && l.dados[atributo])
-      .map((l) => ({ fonte: l.nome, dados: l.dados[atributo], trilha: l.trilha }));
+      .map((l) => ({ fonte: l.nome, dados: l.dados[atributo], trilha: l.trilha }))
+      .concat(condicoes);
   }
 
   function dificuldadeConvergencia(p) {
@@ -202,6 +206,9 @@ const Regras = (() => {
     if (p.idade !== "" && !(+p.idade >= IDADE.min && +p.idade <= IDADE.max)) p.idade = "";
     if (!p.linguas) p.linguas = { x: [], z: [] };
     if (!p.alfabetoPorClasse && p.papel) aplicarAlfabetoDaClasse(p);
+    if (!p.dinheiro) p.dinheiro = { ...DINHEIRO_INICIAL };
+    if (!p.pertences) p.pertences = {};
+    if (!p.condicoes) p.condicoes = [];
     if (p.habs) return p;
     p.habs = [];
     p.itens = [];
