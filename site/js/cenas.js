@@ -266,6 +266,8 @@ const Cenas = (() => {
     if ([].concat(s.semFlag || []).some((k) => f[k])) return false;
     if (s.algum && ![].concat(s.algum).some((k) => f[k])) return false;
     if (s.relogioMin != null && camp.relogio < s.relogioMin) return false;
+    // só no ponto de entrada da profissão de quem está jogando (as 8 aberturas)
+    if (s.ponto && (!missao().trabalho || missao().trabalho(ativo()).ponto !== s.ponto)) return false;
     return true;
   }
 
@@ -455,7 +457,7 @@ const Cenas = (() => {
       <h3>Bolsa de ${esc(p.nome)} <button class="btn-texto" data-painel="">Fechar</button></h3>
       <p class="carteira"><strong>${esc(Vida.dinheiroTexto(e, p.dinheiro[e]))}</strong> <span class="sub">· bolsa ${Vida.naBolsa(p)}/${BOLSA_MAX}</span></p>
       ${itens.length ? `<ul class="pertences">${itens.map(([k, n]) => `
-        <li><span>${esc(Vida.nome(k, e))}${n > 1 ? ` <b>×${n}</b>` : ""}</span><small>${esc(Vida.pertence(k).efeito)}</small>
+        <li class="com-arte">${Vida.arte(k, e, Vida.nome(k, e))}<span>${esc(Vida.nome(k, e))}${n > 1 ? ` <b>×${n}</b>` : ""}</span><small>${esc(Vida.pertence(k).efeito)}</small>
           <button class="btn-secundario" data-usar-pertence="${k}">Usar</button></li>`).join("")}</ul>` : `<p class="sub">Nada na bolsa. Compre em lojas ou procure pelos lugares.</p>`}
       ${p.condicoes.length ? `<p class="condicoes">${p.condicoes.map((c) => `<span class="condicao">${esc(CONDICOES[c].nome)} · resolve com ${esc(CONDICOES[c].resolve)}</span>`).join("")}</p>` : `<p class="sub">Sem fome, sem cansaço, sem ferimentos.</p>`}
     </div>`;
@@ -471,7 +473,7 @@ const Cenas = (() => {
       <ul class="pertences loja">${lugar.loja.itens.map((o, i) => {
         const motivo = Vida.podeComprar(p, o, e);
         const desc = o.pertence ? Vida.pertence(o.pertence).efeito : Regras.equip(o.equip).efeito;
-        return `<li><span>${esc(Vida.nomeOferta(o, e))}</span><small>${esc(desc)}</small>
+        return `<li class="com-arte">${Vida.arte(o.pertence || o.equip, e, Vida.nomeOferta(o, e))}<span>${esc(Vida.nomeOferta(o, e))}</span><small>${esc(desc)}</small>
           <button class="btn-secundario" data-comprar="${i}" ${motivo ? "disabled" : ""}>${motivo ? esc(motivo) : esc(Vida.dinheiroTexto(e, Vida.preco(o, e)))}</button></li>`;
       }).join("")}</ul>
       <p class="dica">Comprar não gasta tempo.</p>

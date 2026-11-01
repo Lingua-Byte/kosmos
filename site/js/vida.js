@@ -102,5 +102,12 @@ const Vida = (() => {
     return { linha: `Comprou: ${nomeOferta(oferta, eixo)} (−${dinheiroTexto(eixo, preco(oferta, eixo))})` };
   }
 
-  return { garantir, pertence, nome, dinheiroTexto, naBolsa, tem, ganhar, tirar, mudarDinheiro, condicao, usar, preco, nomeOferta, podeComprar, comprar };
+  // Arte de cada item (equipamento ou pertence) em cada eixo: imagens/itens/<chave>-<eixo>.webp.
+  // Enquanto a arte não existe, aparece um quadrado com a inicial do nome.
+  function arte(chave, eixo, nomeItem) {
+    const inicial = esc((nomeItem || chave).trim().charAt(0).toUpperCase());
+    return `<span class="arte-item" aria-hidden="true"><b>${inicial}</b><img src="imagens/itens/${chave}-${eixo}.webp" alt="" loading="lazy" onerror="this.remove()"></span>`;
+  }
+
+  return { arte, garantir, pertence, nome, dinheiroTexto, naBolsa, tem, ganhar, tirar, mudarDinheiro, condicao, usar, preco, nomeOferta, podeComprar, comprar };
 })();

@@ -36,7 +36,7 @@ function ecosDoSalto(ctx) {
   const f = ctx.camp.flags || {};
   const p = ctx.p;
   const partes = [];
-  const salvos = [["salvou-raimundo", "Seu Raimundo"], ["salvou-tiao", "Tião"], ["salvou-diego", "Diego"]].filter(([k]) => f[k]).map(([, n]) => n);
+  const salvos = [["salvou-raimundo", "o Sr. Hollis"], ["salvou-tiao", "Teddy"], ["salvou-diego", "Danny"]].filter(([k]) => f[k]).map(([, n]) => n);
   if (salvos.length) partes.push(`Atrás da pessoa de capuz, um rosto que você conhece: ${salvos[0]}. Não é ele, não pode ser. Mas ele sorri como quem já te deve uma.`);
   if (f["gravou-ouvinte"] || f.fita) partes.push("Em algum lugar do mosteiro, alguém está cantando a melodia da Rádio Pirata. Com outra letra, e a mesma voz.");
   if (p.dissonancia >= 5) partes.push("Suas mãos estão sujas de carvão, e você não lembra de ter riscado nada. A pessoa de capuz olha para elas e recua um passo.");
@@ -64,23 +64,36 @@ MISSOES["prologo-x"] = {
   // Primeiro a versão da playlist (The Police - Topic); se estiver bloqueada no aparelho, o clipe oficial.
   radio: { videoId: ["-SaUrDhp034", "OMOGaugKpzs"], inicio: 162, fim: 195, vezes: Infinity },
 
-  // Onde o personagem trabalha, lido da descrição (ou da classe)
+  // As 8 aberturas: o ponto de entrada da profissão decide onde a noite começa.
+  // nome = como aparece no mapa · onde = "ainda está ___" · desc = o que se vê ao começar.
+  aberturas: {
+    hospital: { nome: "Ambulatório do St. Luke's", onde: "no ambulatório do St. Luke's Memorial", desc: "Fim de plantão. As macas do corredor estão vazias, mas os lençóis ainda estão mornos. No quadro de avisos: “SORRIA. VOCÊ ESTÁ SENDO CUIDADO.”" },
+    defesa: { nome: "Posto da Defesa Civil", onde: "no posto da Defesa Civil do 9º Distrito", desc: "Os rádios chiam sem parar. Metade da equipe não voltou do turno. No mural, o cartaz de sempre: “MANTENHA A CALMA. A DEFESA CIVIL ESTÁ NO CONTROLE.”" },
+    universidade: { nome: "Laboratório de Radiação", onde: "no laboratório de radiação da Universidade de Port Halden", desc: "Os sensores marcam um pico que não deveria existir. Ninguém atende o telefone da diretoria. A cafeteira, como sempre, é a única coisa funcionando." },
+    comercio: { nome: "A loja onde você trabalha", onde: "na loja, atrás do balcão", desc: "O letreiro de neon ainda pisca “ABERTO”. Os clientes saíram no meio da compra: carrinhos largados nos corredores, uma moeda ainda girando em cima do balcão." },
+    escritorio: { nome: "Escritório da Hollister & Crane", onde: "no 14º andar da Hollister & Crane", desc: "Fileiras de baias vazias, monitores acesos. Todos os protetores de tela mostram a mesma coisa: estática. Alguém deixou um café pela metade e um bilhete: “Volto já.” Não voltou." },
+    rua: { nome: "A sua esquina", onde: "na rua, onde passa o dia inteiro", desc: "Você vê primeiro, como sempre vê tudo primeiro: hoje as pessoas andam caladas, todas para o mesmo lado. Nenhuma buzina. Port Halden nunca ficou tão educada." },
+    arte: { nome: "Estúdio da rádio KPHN", onde: "no estúdio da rádio KPHN", desc: "No ar, entre um comercial de pneus e a previsão do tempo, uma frequência pirata entra sozinha: uma voz de mulher cantarolando. O técnico tira os fones e não diz nada." },
+    casa: { nome: "Em frente ao seu prédio", onde: "na calçada em frente ao seu prédio", desc: "Você trabalha de casa. Desceu só para pegar uma encomenda e ficou parado na calçada: a rua está cheia de gente que não fala." },
+  },
+
+  // Onde o personagem trabalha: pela profissão (ponto de entrada); fichas antigas, pela descrição ou pela classe
   trabalho(p) {
+    const of = typeof profissaoDe === "function" ? profissaoDe(p, "x") : null;
+    if (of && this.aberturas[of.ponto]) return { ...this.aberturas[of.ponto], ponto: of.ponto, profissao: of.nome };
     const d = (p.descricao || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
     const lista = [
-      [/vend|carro|concession/, "Concessionária", "O showroom ainda está aceso. Os carros refletem as luzes da rua, que piscam: três rápidas, uma longa."],
-      [/medic|enferm|hospital|psiq|clinic|terapeut/, "Consultório", "A sala de espera está vazia, mas as cadeiras estão todas viradas para a janela."],
-      [/polic|agente|seguranc|militar|guarda|bombeir/, "Base da Defesa Civil", "Os rádios chiam sem parar. Metade da equipe não voltou do turno."],
-      [/profess|estud|escola|universi|pesquis|cienti/, "Universidade", "O laboratório está vazio. Alguém deixou uma equação escrita no quadro — e não é de nenhuma disciplina."],
-      [/bar$|garcom|cozinh|restaur|cafe/, "Restaurante", "As mesas ainda têm pratos cheios. Os clientes saíram no meio do jantar."],
-      [/motorist|taxi|uber|entregador|motoboy/, "Garagem", "Os veículos estão alinhados. Alguém ligou todos os rádios na mesma estação."],
+      [/medic|enferm|hospital|psiq|clinic|terapeut/, "hospital"],
+      [/polic|agente|seguranc|militar|guarda|bombeir/, "defesa"],
+      [/profess|estud|escola|universi|pesquis|cienti/, "universidade"],
+      [/vend|loja|bar$|garcom|cozinh|restaur|cafe|padeir/, "comercio"],
+      [/advog|banc|escritori|program|secret|contad/, "escritorio"],
+      [/motorist|taxi|uber|entregador|motoboy|pedreir|mecanic/, "rua"],
+      [/music|dj|radio|ator|atriz|artist|pintor|jornal/, "arte"],
     ];
-    for (const [re, nome, desc] of lista) if (re.test(d)) return { nome, desc };
-    return {
-      tank: { nome: "Base da Defesa Civil", desc: "Os rádios chiam sem parar. Metade da equipe não voltou do turno." },
-      healer: { nome: "Consultório", desc: "A sala de espera está vazia, mas as cadeiras estão todas viradas para a janela." },
-      support: { nome: "Laboratório de Radiação", desc: "Os sensores marcam um pico que não deveria existir. Ninguém atende o telefone da diretoria." },
-    }[p.papel] || { nome: "Trabalho", desc: "O expediente acabou, mas ninguém foi para casa." };
+    for (const [re, ponto] of lista) if (re.test(d)) return { ...this.aberturas[ponto], ponto };
+    const ponto = { tank: "defesa", healer: "hospital", support: "universidade" }[p.papel] || "casa";
+    return { ...this.aberturas[ponto], ponto };
   },
 
   ambiente(relogio) {
@@ -101,8 +114,8 @@ MISSOES["prologo-x"] = {
       id: "socorrer", texto: "Socorrer quem está cercado por Riscadores", palavras: ["socorr", "ajudar", "cercad", "riscador", "salvar"],
       situacao: "proteger", se: { flag: "riscadores" },
       sucesso: {
-        texto: "Você puxa um rapaz de moletom do meio do círculo. Os Riscadores não correm atrás: voltam para o muro e continuam riscando. Ele se chama Diego, treme inteiro e não larga o seu braço até a esquina.",
-        efeitos: { marca: "salvou:Diego", flag: "salvou-diego", ressonancia: 1, quest: { id: "diego", nome: "Diego, o rapaz do muro", prazo: "media", estado: "concluida", nota: "Você o tirou do cerco. Ele disse que vai te procurar." } },
+        texto: "Você puxa um rapaz de moletom do meio do círculo. Os Riscadores não correm atrás: voltam para o muro e continuam riscando. Ele se chama Danny, treme inteiro e não larga o seu braço até a esquina.",
+        efeitos: { marca: "salvou:Danny", flag: "salvou-diego", ressonancia: 1, quest: { id: "diego", nome: "Danny, o rapaz do muro", prazo: "media", estado: "concluida", nota: "Você o tirou do cerco. Ele disse que vai te procurar." } },
       },
       falha: {
         texto: "Você chega perto demais. Uma mão suja de giz agarra seu pulso e risca três traços na sua pele antes que você consiga se soltar. O rapaz que estava no meio já não está lá.",
@@ -131,9 +144,9 @@ MISSOES["prologo-x"] = {
           Frieza: "Você observa tudo com calma. É o único que parece notar o padrão.",
         };
         const traco = ctx.p.tracos.map((t) => tracos[t]).find(Boolean) || "";
-        return `Há três dias a televisão fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.
+        return `Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.
 
-${ctx.p.nome} ainda está no(a) ${ctx.trabalho.nome}. ${ctx.trabalho.desc}
+${ctx.p.nome} ainda está ${ctx.trabalho.onde}. ${ctx.trabalho.desc}
 
 Lá fora, um homem de terno está parado ao lado de uma picape. Escreveu alguma coisa no vidro embaçado com o dedo, e não se mexe há vinte minutos.
 
@@ -307,6 +320,54 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           sucesso: { texto: "Ele não olha para trás. Vira na avenida e se junta a outros, todos no mesmo passo. Você anota o caminho: a Praça Central. A picape dele ficou destrancada lá na frente.", pista: "Os afetados caminham em sincronia para a Praça Central.", efeitos: { flag: "homem-saiu" } },
           falha: { texto: "Você o perde na esquina. Mas o poste à sua frente pisca três vezes rápido e uma longa, como se apontasse.", efeitos: { exposicao: 1 } },
         },
+        // ---- só no ponto de entrada de cada profissão ----
+        {
+          id: "lista-altas", texto: "Conferir a lista dos pacientes que saíram sem alta", palavras: ["lista", "pacientes", "alta", "prontuario"], situacao: "investigar", se: { ponto: "hospital" },
+          sucesso: { texto: "Onze nomes. Bairros diferentes, idades diferentes, diagnósticos diferentes. A mesma hora de saída anotada pela segurança: 21h47.", pista: "Os pacientes que sumiram saíram todos às 21h47." },
+          falha: { texto: "O sistema trava na tela de login. A senha que você usa há seis anos não funciona mais.", efeitos: { condicao: "abalado" } },
+        },
+        {
+          id: "ultimo-chamado", texto: "Ouvir a gravação do último chamado da central", palavras: ["gravacao", "chamado", "central", "ouvir"], situacao: "perceber", se: { ponto: "defesa" },
+          sucesso: { texto: "Não há voz. Só uma respiração calma do outro lado, e, bem ao fundo, uma música de rádio. A ligação veio de um orelhão da Praça Central.", pista: "O último chamado veio de um orelhão da Praça Central: só respiração e uma música ao fundo." },
+          falha: { texto: "A fita está em branco. Mas o contador marca que ela foi tocada onze vezes hoje.", efeitos: { exposicao: 1 } },
+        },
+        {
+          id: "dados-sensor", texto: "Rever os dados do sensor de radiação", palavras: ["dados", "sensor", "grafico", "rever"], situacao: "investigar", se: { ponto: "universidade" },
+          sucesso: { texto: "O pico não é um pico. É um padrão: três pulsos curtos, um longo, repetindo desde as 21h47 de três dias atrás. Ninguém mais olhou.", pista: "A radiação pulsa num padrão: três curtos, um longo." },
+          falha: { texto: "Os números rolam rápido demais na tela. Por um segundo, parecem letras.", efeitos: { dissonancia: 1 } },
+        },
+        {
+          id: "cameras", texto: "Ver as câmeras de segurança da loja", palavras: ["camera", "seguranca", "video", "gravacao"], situacao: "investigar", se: { ponto: "comercio" },
+          sucesso: { texto: "Na gravação, os clientes param ao mesmo tempo, no meio do gesto, como quem ouve chamarem o próprio nome. Largam tudo e saem juntos. Nenhum olha para trás.", pista: "Nas câmeras, os clientes param juntos, como se ouvissem algo, e saem." },
+          falha: { texto: "A gravação das 21h47 não existe. O arquivo está lá, mas tem zero segundos.", efeitos: { exposicao: 1 } },
+        },
+        {
+          id: "fechar-caixa", comum: true, tempo: 1, texto: "Fechar o caixa e guardar o dinheiro do dia", palavras: ["caixa", "fechar", "dinheiro", "cofre"], se: { ponto: "comercio" },
+          resultado: { texto: "Você conta duas vezes, fecha o cofre e separa a sua parte da semana, como combinado com o gerente. Alguém tem que manter as coisas em ordem.", efeitos: { dinheiro: 60 } },
+        },
+        {
+          id: "telas", texto: "Olhar o que ficou aberto nas telas dos colegas", palavras: ["tela", "monitor", "colegas", "computador"], situacao: "ler", se: { ponto: "escritorio" },
+          sucesso: { texto: "Planilhas, e-mails, um jogo de paciência. E, em todas as telas, o mesmo documento novo, sem título, cheio de símbolos digitados em linha reta: ∃ ψ(t) ⇒ 𝒪(S).", pista: "Nas telas do escritório, todos digitaram os mesmos símbolos antes de sair.", efeitos: { aprenderX: ["existir", "mente", "observar"] } },
+          falha: { texto: "Você lê a mesma linha três vezes e não entende nenhuma. Seu reflexo no monitor apagado parece ler mais rápido que você.", efeitos: { dissonancia: 1 } },
+        },
+        {
+          id: "passante", texto: "Perguntar a um passante para onde ele está indo", palavras: ["perguntar", "passante", "pessoa", "indo"], situacao: "convencer", se: { ponto: "rua" },
+          sucesso: { texto: "“Para casa”, ele responde, gentil, sem parar de andar. Você conhece esse homem: mora três quarteirões na direção contrária.", pista: "Os afetados acham que estão indo para casa." },
+          falha: { texto: "Ele olha através de você e repete a sua pergunta, palavra por palavra, com a sua voz.", efeitos: { condicao: "abalado" } },
+        },
+        {
+          id: "rastrear", texto: "Rastrear a frequência pirata no painel do estúdio", palavras: ["rastrear", "frequencia", "pirata", "antena", "painel"], situacao: "investigar", se: { ponto: "arte" },
+          sucesso: {
+            texto: "A triangulação aponta para um telhado no centro: o Edifício Aurora. A voz agradece no ar, como se tivesse ouvido você procurar: “Obrigada por me achar.”",
+            pista: "A rádio pirata transmite do telhado do Edifício Aurora.",
+            efeitos: { flag: "ouviu-ouvinte", quest: { id: "ouvinte", nome: "Frequência 21:47", prazo: "media", nota: "A voz pirata vem do telhado do Edifício Aurora." } },
+          },
+          falha: { texto: "A agulha do painel gira devagar, uma volta inteira, e para apontando para você.", efeitos: { exposicao: 1 } },
+        },
+        {
+          id: "porteiro", comum: true, texto: "Conversar com o porteiro, o velho Sal", palavras: ["porteiro", "sal", "conversar", "portaria"], se: { ponto: "casa" },
+          resultado: { texto: "Sal não sai da guarita há trinta anos e não vai sair hoje. “Já vi greve, apagão, enchente e um prefeito honesto. Isso aí é só mais uma terça.” Ele te dá um café do garrafão.", efeitos: { condicao: ["-abalado", "-cansaco"] } },
+        },
         {
           id: "picape", texto: "Revistar a picape do homem de terno", palavras: ["picape", "carro", "revist", "porta-luvas"], situacao: "investigar", se: { flag: "homem-saiu" },
           sucesso: {
@@ -318,7 +379,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         },
         {
           id: "ponto", comum: true, tempo: 1, texto: "Fechar o expediente e bater o ponto", palavras: ["ponto", "expedient", "turno", "receb", "salario"],
-          resultado: { texto: "Você termina o que estava fazendo, salva tudo e bate o ponto. A hora extra de hoje vai entrar na conta: R$ 180. Pelo menos isso continua funcionando.", efeitos: { dinheiro: 180 } },
+          resultado: { texto: "Você termina o que estava fazendo, salva tudo e bate o ponto. A hora extra de hoje vai entrar na conta: $ 95. Pelo menos isso continua funcionando.", efeitos: { dinheiro: 95 } },
         },
         {
           id: "copa-cafe", comum: true, repetivel: true, tempo: 0, texto: "Pegar um café na copa", palavras: ["cafe", "copa"],
@@ -326,7 +387,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         },
         {
           id: "copa-lanche", comum: true, tempo: 0, texto: "Pegar o lanche esquecido na geladeira da copa", palavras: ["lanche", "geladeira", "comida", "comer"],
-          resultado: { texto: "Um sanduíche embrulhado, com um bilhete: “Não é seu, Marcos.” Marcos não vai voltar hoje.", efeitos: { pertence: { comida: 1 } } },
+          resultado: { texto: "Um sanduíche embrulhado, com um bilhete: “Não é seu, Gary.” Gary não vai voltar hoje.", efeitos: { pertence: { comida: 1 } } },
         },
         {
           id: "carregar", comum: true, tempo: 1, repetivel: true, texto: "Pôr os aparelhos para carregar na tomada da mesa", palavras: ["carreg", "tomada", "bateria"],
@@ -343,7 +404,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
       acoes: [
         {
           id: "tv", texto: "Ligar a TV no telejornal", palavras: ["tv", "televis", "jornal", "notic"],
-          resultado: { texto: "A âncora fala em “surtos de desorientação coletiva” no centro. A Defesa Civil garante: radiação “dentro do normal”. Ao fundo, fora de foco, dezenas de pessoas atravessam a rua no mesmo passo.", pista: "O telejornal fala em surtos coletivos e em radiação “dentro do normal”." },
+          resultado: { texto: "A âncora do Canal 6 fala em “surtos de desorientação coletiva” no centro. A Defesa Civil garante: radiação “dentro do normal”. Ao fundo, fora de foco, dezenas de pessoas atravessam a rua no mesmo passo.", pista: "O telejornal fala em surtos coletivos e em radiação “dentro do normal”." },
         },
         {
           id: "ligar", texto: "Ligar para alguém próximo", palavras: ["ligar", "telefon", "celular", "chamar"], req: { item: "comunicador" },
@@ -360,15 +421,15 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         },
         {
           id: "geladeira", comum: true, tempo: 0, texto: "Esquentar o que sobrou na geladeira", palavras: ["geladeira", "comer", "comida", "jantar", "esquent"],
-          resultado: { texto: "Arroz, feijão e um resto de frango. Comida quente, no silêncio da cozinha. Por alguns minutos, tudo parece normal.", efeitos: { condicao: "-fome" } },
+          resultado: { texto: "Meio bolo de carne e um resto de purê. Comida quente, no silêncio da cozinha. Por alguns minutos, tudo parece normal.", efeitos: { condicao: "-fome" } },
         },
         {
           id: "cozinhar", comum: true, tempo: 1, texto: "Cozinhar com o que tem nos armários", palavras: ["cozinh", "armario", "macarrao", "fazer comida"],
           resultado: { texto: "Um macarrão rápido. Você come um prato e guarda o resto em potes, para levar.", efeitos: { condicao: "-fome", pertence: { comida: 2 } } },
         },
         {
-          id: "pedir-comida", comum: true, tempo: 1, repetivel: true, texto: "Pedir comida por aplicativo", palavras: ["pedir", "aplicativo", "delivery", "entrega"], req: { item: "comunicador", dinheiro: 40 },
-          resultado: { texto: "O entregador demora, mas chega. Diz que as ruas do centro estão fechadas e que nunca viu tanta gente andando a pé àquela hora.", efeitos: { dinheiro: -40, condicao: "-fome" } },
+          id: "pedir-comida", comum: true, tempo: 1, repetivel: true, texto: "Pedir comida por aplicativo", palavras: ["pedir", "aplicativo", "delivery", "entrega"], req: { item: "comunicador", dinheiro: 25 },
+          resultado: { texto: "O entregador demora, mas chega. Diz que as ruas do centro estão fechadas e que nunca viu tanta gente andando a pé àquela hora.", efeitos: { dinheiro: -25, condicao: "-fome" } },
         },
         {
           id: "banho", comum: true, repetivel: true, tempo: 0, texto: "Tomar um banho quente", palavras: ["banho", "chuveiro", "lavar"],
@@ -384,7 +445,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         },
         {
           id: "reserva", comum: true, tempo: 0, texto: "Pegar o dinheiro guardado na lata de biscoito", palavras: ["dinheiro", "lata", "reserva", "guardado"],
-          resultado: { texto: "A reserva de emergência, dobrada com elástico: R$ 150. Se não é uma emergência hoje, nada é.", efeitos: { dinheiro: 150 } },
+          resultado: { texto: "A reserva de emergência, dobrada com elástico: $ 80. Se não é uma emergência hoje, nada é.", efeitos: { dinheiro: 80 } },
         },
         {
           id: "remedios", comum: true, tempo: 0, texto: "Procurar na caixa de remédios", palavras: ["remedio", "caixa", "curativo", "farmac"],
@@ -426,12 +487,12 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         {
           id: "vizinho-302", grupo: "vizinho-302", texto: "Alguém bate na porta: é o vizinho do 302. Deixar entrar e acalmá-lo", palavras: ["vizinho", "302", "porta", "entrar", "acalm"], situacao: "acalmar", se: { relogioMin: 1 },
           sucesso: {
-            texto: "Seu Raimundo entra de pijama, sem saber por que bateu. Diz que estava vendo o jogo e, de repente, estava na escada, descalço, descendo. Você faz um chá, liga para a filha dele. Quando ela chega para buscá-lo, ele já sabe o próprio nome de novo.",
-            efeitos: { marca: "salvou:Seu Raimundo", flag: "salvou-raimundo", quest: { id: "raimundo", nome: "O vizinho do 302", prazo: "curta", estado: "concluida", nota: "Seu Raimundo ficou em casa, com a filha." } },
+            texto: "O Sr. Hollis entra de pijama, sem saber por que bateu. Diz que estava vendo o jogo e, de repente, estava na escada, descalço, descendo. Você faz um chá, liga para a filha dele. Quando ela chega para buscá-lo, ele já sabe o próprio nome de novo.",
+            efeitos: { marca: "salvou:Sr. Hollis", flag: "salvou-raimundo", quest: { id: "raimundo", nome: "O vizinho do 302", prazo: "curta", estado: "concluida", nota: "O Sr. Hollis ficou em casa, com a filha." } },
           },
           falha: {
             texto: "Ele olha através de você, como se você fosse uma janela. Pede licença, educado, e desce as escadas. Da janela, você o vê virar a esquina, de pijama, no mesmo passo de todos.",
-            efeitos: { condicao: "abalado", quest: { id: "raimundo", nome: "O vizinho do 302", prazo: "curta", estado: "perdida", nota: "Seu Raimundo foi para o centro." } },
+            efeitos: { condicao: "abalado", quest: { id: "raimundo", nome: "O vizinho do 302", prazo: "curta", estado: "perdida", nota: "O Sr. Hollis foi para o centro." } },
           },
         },
         {
@@ -440,13 +501,13 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         },
         {
           id: "vizinha", comum: true, tempo: 1, texto: "Bater na porta da vizinha", palavras: ["vizinh", "bater", "dona"],
-          resultado: { texto: "Dona Cida abre com a corrente passada. Pergunta se você também está ouvindo “aquela musiquinha”, diz que não vai sair de casa nem morta e insiste que você leve um pedaço de bolo de fubá.", efeitos: { pertence: { comida: 1 }, condicao: "-abalado" } },
+          resultado: { texto: "A Sra. Petrakis abre com a corrente passada. Pergunta se você também está ouvindo “aquela musiquinha”, diz que não vai sair de casa nem morta e insiste que você leve um pedaço de torta de maçã.", efeitos: { pertence: { comida: 1 }, condicao: "-abalado" } },
         },
       ],
     },
 
     hospital: {
-      nome: "Hospital São Lucas",
+      nome: "Hospital St. Luke's Memorial",
       icone: "✚",
       mapa: { x: 82, y: 64 },
       descricao: "A recepção está lotada e silenciosa. As luzes piscam no mesmo ritmo das da rua.",
@@ -466,20 +527,20 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           resultado: { texto: "O ponteiro sobe sozinho quando você aponta para o leste. Para a Praça Central.", pista: "A radiação aumenta na direção da Praça Central." },
         },
         {
-          id: "helena", texto: "Procurar a Dra. Helena Viana, a psiquiatra de plantão", palavras: ["helena", "psiquiatr", "medica", "doutora"],
+          id: "helena", texto: "Procurar a Dra. Helen Vance, a psiquiatra de plantão", palavras: ["helena", "psiquiatr", "medica", "doutora"],
           resultado: {
             texto: "Ela está no fim do corredor, jaleco amassado, óculos presos no cabelo, um caderno cheio de desenhos de pacientes debaixo do braço. “Desorientação, marcha sincronizada, grafia compulsiva. Nenhum exame alterado. Você viu alguma coisa? Me fala de padrão, não de milagre.”",
-            efeitos: { flag: "helena", quest: { id: "helena", nome: "O caderno da Dra. Helena", prazo: "media", nota: "Ela quer padrões. Talvez confie em você se tiver o que mostrar." } },
+            efeitos: { flag: "helena", quest: { id: "helena", nome: "O caderno da Dra. Helen", prazo: "media", nota: "Ela quer padrões. Talvez confie em você se tiver o que mostrar." } },
           },
         },
         {
-          id: "helena-caderno", texto: "Contar à Dra. Helena o que você viu na ala de isolamento", palavras: ["contar", "mostrar", "helena", "caderno", "ala"], situacao: "convencer", se: { flag: ["helena", "ala-vista"] },
+          id: "helena-caderno", texto: "Contar à Dra. Helen o que você viu na ala de isolamento", palavras: ["contar", "mostrar", "helena", "caderno", "ala"], situacao: "convencer", se: { flag: ["helena", "ala-vista"] },
           sucesso: {
             texto: "Ela escuta sem interromper, depois abre o caderno na sua frente: desenhos de doze pacientes, de bairros diferentes, que nunca se viram. Os mesmos símbolos, na mesma ordem. “Fica com uma cópia. Se eu… se eu parar de responder, alguém precisa ter isso.”",
             pista: "Pacientes que nunca se viram desenham os mesmos símbolos, na mesma ordem.",
-            efeitos: { marca: "caderno-helena", flag: "helena-aliada", quest: { id: "helena", nome: "O caderno da Dra. Helena", prazo: "media", nota: "Você tem uma cópia do caderno. Helena virou aliada." } },
+            efeitos: { marca: "caderno-helena", flag: "helena-aliada", quest: { id: "helena", nome: "O caderno da Dra. Helen", prazo: "media", nota: "Você tem uma cópia do caderno. Helen virou aliada." } },
           },
-          falha: { texto: "“Isso é impressão sua. Cansaço.” Ela fecha o caderno. Mas, antes de ir, olha duas vezes para as próprias mãos.", efeitos: { quest: { id: "helena", nome: "O caderno da Dra. Helena", prazo: "media", nota: "Ela não acreditou. Ainda." } } },
+          falha: { texto: "“Isso é impressão sua. Cansaço.” Ela fecha o caderno. Mas, antes de ir, olha duas vezes para as próprias mãos.", efeitos: { quest: { id: "helena", nome: "O caderno da Dra. Helen", prazo: "media", nota: "Ela não acreditou. Ainda." } } },
         },
         {
           id: "triagem", comum: true, tempo: 1, repetivel: true, texto: "Pedir um curativo na triagem", palavras: ["curativo", "triagem", "ferid", "machuc"], req: { condicao: "ferido" },
@@ -494,10 +555,10 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
     },
 
     delegacia: {
-      nome: "Delegacia Central",
+      nome: "Delegacia do 9º Distrito",
       icone: "≡",
       mapa: { x: 18, y: 64 },
-      descricao: "Viaturas saem com as sirenes desligadas. Ninguém explica nada.",
+      descricao: "Viaturas saem com as sirenes desligadas. Ninguém explica nada. No mural, um cartaz desbotado da Defesa Civil: “PÂNICO É CONTAGIOSO. FIQUE EM CASA, CIDADÃO.”",
       acoes: [
         {
           id: "plantao", texto: "Pedir informação ao plantão", palavras: ["plantao", "informac", "policia", "delegad", "pergunt"], situacao: "convencer",
@@ -510,22 +571,22 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           falha: { texto: "Só estática. Mas a estática tem ritmo.", efeitos: { exposicao: 1 } },
         },
         {
-          id: "moura", texto: "Pedir para falar com o Agente Moura, da Defesa Civil", palavras: ["moura", "agente", "defesa civil", "falar"],
+          id: "moura", texto: "Pedir para falar com o Agente Moore, da Defesa Civil", palavras: ["moura", "agente", "defesa civil", "falar"],
           resultado: {
-            texto: "Moura aparece de colete, rádio no ombro, cara de quem não dorme há dois dias. Escuta você com metade da atenção e responde com frases de nota oficial. Na mesa atrás dele, uma pasta parda com a etiqueta 21:47.",
+            texto: "Moore aparece de colete, rádio no ombro, cara de quem não dorme há dois dias. Escuta você com metade da atenção e responde com frases de nota oficial. Na mesa atrás dele, uma pasta parda com a etiqueta 21:47.",
             efeitos: { flag: "moura" },
           },
         },
         {
-          id: "moura-pasta", texto: "Ler a pasta esquecida na mesa do Moura", palavras: ["pasta", "ler", "arquivo", "mesa"], situacao: "perceber", se: { flag: "moura" },
+          id: "moura-pasta", texto: "Ler a pasta esquecida na mesa do Moore", palavras: ["pasta", "ler", "arquivo", "mesa"], situacao: "perceber", se: { flag: "moura" },
           sucesso: {
             texto: "Você lê de cabeça para baixo enquanto ele atende o rádio: relatórios de surtos parecidos em 1987. Mesma cidade, mesmo horário, 21h47. Todos com o carimbo “ARQUIVADO — CONTENÇÃO”.",
             pista: "Houve surtos parecidos em 1987, às 21h47, arquivados pela Contenção.",
             efeitos: { marca: "arquivo-1987", quest: { id: "arquivo", nome: "O arquivo 21:47", prazo: "longa", nota: "Surtos em 1987, arquivados pela Contenção. Alguém já viu isso antes." } },
           },
           falha: {
-            texto: "Moura fecha a pasta devagar, olhando para você. “Curiosidade é coisa perigosa numa noite dessas.” Ele anota seu nome.",
-            efeitos: { marca: "moura-desconfia", quest: { id: "arquivo", nome: "O arquivo 21:47", prazo: "longa", nota: "Moura anotou o seu nome." } },
+            texto: "Moore fecha a pasta devagar, olhando para você. “Curiosidade é coisa perigosa numa noite dessas.” Ele anota seu nome.",
+            efeitos: { marca: "moura-desconfia", quest: { id: "arquivo", nome: "O arquivo 21:47", prazo: "longa", nota: "Moore anotou o seu nome." } },
           },
         },
         {
@@ -533,8 +594,8 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           resultado: { texto: "Café de garrafa térmica em copo de plástico. Morno, doce demais. Serve.", efeitos: { condicao: "-cansaco" } },
         },
         {
-          id: "boletim", comum: true, tempo: 1, texto: "Registrar um boletim de ocorrência", palavras: ["boletim", "ocorrencia", "registrar", "denunc"],
-          resultado: { texto: "O escrivão digita devagar, com dois dedos. Pergunta seu nome, endereço, o que aconteceu. Quando você termina, ele imprime o boletim, carimba e diz que alguém vai entrar em contato. Os dois sabem que ninguém vai.", efeitos: { condicao: "-abalado" } },
+          id: "boletim", comum: true, tempo: 1, texto: "Registrar uma queixa formal", palavras: ["boletim", "ocorrencia", "registrar", "denunc"],
+          resultado: { texto: "O sargento de plantão digita devagar, com dois dedos. Pergunta seu nome, endereço, o que aconteceu. Quando você termina, ele imprime a queixa, carimba e diz que alguém vai entrar em contato. Os dois sabem que ninguém vai.", efeitos: { condicao: "-abalado" } },
         },
       ],
     },
@@ -583,29 +644,29 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
           resultado: { texto: "O banco de concreto é frio. Um gato aparece, cheira seus sapatos e vai embora. Suas pernas agradecem.", efeitos: { condicao: "-cansaco" } },
         },
       ],
-      loja: { nome: "Máquina automática (ainda funciona)", itens: [{ pertence: "comida" }, { pertence: "cafe" }] },
+      loja: { nome: "Snak-O-Matic (ainda funciona, de algum jeito)", itens: [{ pertence: "comida" }, { pertence: "cafe" }] },
     },
 
     mercado: {
-      nome: "Mercadinho do Seu Antônio",
+      nome: "Conveniência do Abe",
       icone: "▤",
       mapa: { x: 18, y: 38 },
-      descricao: "Luz amarela, rádio baixinho atrás do balcão. As prateleiras de água e de enlatados estão quase vazias; o resto está igual a sempre.",
+      descricao: "Luz amarela, rádio baixinho atrás do balcão. Na porta, a placa: “ABERTO 24 HORAS. FECHADO SÓ EM CASO DE FIM DO MUNDO.” As prateleiras de água e de enlatados estão quase vazias; o resto está igual a sempre.",
       acoes: [
         {
-          id: "antonio", comum: true, texto: "Conversar com o Seu Antônio", palavras: ["antonio", "convers", "dono", "balcao"],
+          id: "antonio", comum: true, texto: "Conversar com o Abe, atrás do balcão", palavras: ["antonio", "convers", "dono", "balcao"],
           resultado: { texto: "Ele reclama do movimento: todo mundo levou água e pilha, ninguém levou o pão. Diz que já viu de tudo nesse bairro e que amanhã abre no horário. Você sai mais calmo do que entrou.", efeitos: { condicao: "-abalado" } },
         },
         {
           id: "repor", comum: true, tempo: 1, texto: "Ajudar a repor as prateleiras", palavras: ["ajudar", "repor", "prateleira", "trabalh"],
-          resultado: { texto: "Meia hora carregando caixas do estoque. O Seu Antônio paga em dinheiro vivo e ainda põe um pacote de biscoito na sua mão.", efeitos: { dinheiro: 60, pertence: { comida: 1 } } },
+          resultado: { texto: "Meia hora carregando caixas do estoque. Abe paga em dinheiro vivo e ainda põe um pacote de biscoito na sua mão.", efeitos: { dinheiro: 40, pertence: { comida: 1 } } },
         },
         {
           id: "banca", comum: true, tempo: 0, texto: "Ler as manchetes dos jornais pendurados na porta", palavras: ["jornal", "manchete", "banca", "ler"],
-          resultado: { texto: "“Prefeitura pede calma.” “Clássico de domingo adiado.” “Preço do tomate dispara.” A cidade, por escrito, ainda parece a mesma." },
+          resultado: { texto: "“Prefeitura pede calma.” “Jogo de beisebol de domingo é adiado.” “Gasolina sobe pela terceira semana.” A cidade, por escrito, ainda parece a mesma." },
         },
       ],
-      loja: { nome: "Mercadinho do Seu Antônio", itens: [{ pertence: "comida" }, { pertence: "cafe" }, { pertence: "bebida" }, { pertence: "bateria" }, { equip: "luz" }] },
+      loja: { nome: "Conveniência do Abe", itens: [{ pertence: "comida" }, { pertence: "cafe" }, { pertence: "bebida" }, { pertence: "bateria" }, { equip: "luz" }] },
     },
 
     universidade: {
@@ -626,14 +687,14 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         {
           id: "professora", texto: "Falar com a professora que ficou trancada no laboratório", palavras: ["professor", "laboratorio", "falar", "trancada"], situacao: "convencer",
           sucesso: {
-            texto: "A professora Ilda abre a porta só depois de você dizer o seu nome duas vezes. Os alunos saíram no meio da aula, escrevendo. Ela não. Ela tapou os ouvidos. Quando você vai embora, ela empresta o contador Geiger do laboratório: “Devolve. Se der.”",
-            efeitos: { item: "detector", flag: "ilda", marca: "aliada:Ilda" },
+            texto: "A professora Hilde Brandt abre a porta só depois de você dizer o seu nome duas vezes. Os alunos saíram no meio da aula, escrevendo. Ela não. Ela tapou os ouvidos. Quando você vai embora, ela empresta o contador Geiger do laboratório: “Devolve. Se der.”",
+            efeitos: { item: "detector", flag: "ilda", marca: "aliada:Hilde" },
           },
           falha: { texto: "“Vai embora. Vocês todos falam a mesma coisa.” Do outro lado da porta, ela começa a cantarolar e para, assustada consigo mesma.", efeitos: { exposicao: 1 } },
         },
         {
-          id: "maquina-cafe", comum: true, repetivel: true, tempo: 0, texto: "Tomar um café da máquina do corredor", palavras: ["cafe", "maquina"], req: { dinheiro: 5 },
-          resultado: { texto: "Café ralo, açúcar demais, copinho que queima os dedos. Funciona.", efeitos: { dinheiro: -5, condicao: "-cansaco" } },
+          id: "maquina-cafe", comum: true, repetivel: true, tempo: 0, texto: "Tomar um café da máquina do corredor", palavras: ["cafe", "maquina"], req: { dinheiro: 2 },
+          resultado: { texto: "Café ralo, açúcar demais, copinho que queima os dedos. Funciona.", efeitos: { dinheiro: -2, condicao: "-cansaco" } },
         },
         {
           id: "biblioteca", comum: true, tempo: 1, repetivel: true, texto: "Sentar na biblioteca vazia e organizar as ideias", palavras: ["biblioteca", "sentar", "ler", "pensar"],
@@ -664,7 +725,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         },
         {
           id: "ouvinte-avisar", texto: "Avisar que a Defesa Civil vai fechar os prédios do centro", palavras: ["avis", "defesa", "fechar", "policia"], req: { hab: "conversa" },
-          resultado: { texto: "“Então eu mudo de telhado. A música não precisa de prédio.” Ela te passa uma frequência anotada num papel de bala: 94.7. “Liga de vez em quando. Pra eu saber que você ainda está aí.”", efeitos: { marca: "frequencia-94.7", quest: { id: "ouvinte", nome: "Frequência 21:47", prazo: "media", estado: "concluida", nota: "Ela vai transmitir em 94.7." } } },
+          resultado: { texto: "“Então eu mudo de telhado. A música não precisa de prédio.” Ela te passa uma frequência anotada num papel de chiclete: 94.7. “Liga de vez em quando. Pra eu saber que você ainda está aí.”", efeitos: { marca: "frequencia-94.7", quest: { id: "ouvinte", nome: "Frequência 21:47", prazo: "media", estado: "concluida", nota: "Ela vai transmitir em 94.7." } } },
         },
         {
           id: "aurora-vista", comum: true, repetivel: true, texto: "Olhar a cidade lá de cima", palavras: ["olhar", "cidade", "vista", "beirada"],
@@ -674,16 +735,16 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
     },
 
     atlantico: {
-      nome: "Edifício Comercial Atlântico",
+      nome: "Atlantic Tower",
       icone: "▥",
       mapa: { x: 18, y: 86 },
       descricao: "Saguão de mármore, catracas de crachá, um aquário sem peixes. Atrás do balcão, o vigia noturno escreve num caderno sem parar.",
       acoes: [
         {
-          id: "osvaldo", texto: "Puxar conversa com o vigia, Seu Osvaldo", palavras: ["vigia", "osvaldo", "convers", "falar"], situacao: "convencer",
+          id: "osvaldo", texto: "Puxar conversa com o vigia, Oswald", palavras: ["vigia", "osvaldo", "convers", "falar"], situacao: "convencer",
           sucesso: {
-            texto: "Seu Osvaldo é educado, preciso, sem pressa. Responde a uma pergunta que você ainda não fez. Diz que não pode sair do posto até “terminar a contagem”, e que, quando terminar, “a gente chega”. Não diz chegar aonde.",
-            efeitos: { flag: "osvaldo", quest: { id: "vigia", nome: "O vigia que não sai do posto", prazo: "longa", nota: "Seu Osvaldo conta alguma coisa. Quando terminar, “a gente chega”." } },
+            texto: "Oswald é educado, preciso, sem pressa. Responde a uma pergunta que você ainda não fez. Diz que não pode sair do posto até “terminar a contagem”, e que, quando terminar, “a gente chega”. Não diz chegar aonde.",
+            efeitos: { flag: "osvaldo", quest: { id: "vigia", nome: "O vigia que não sai do posto", prazo: "longa", nota: "Oswald conta alguma coisa. Quando terminar, “a gente chega”." } },
           },
           falha: { texto: "Ele não levanta os olhos do caderno. “O prédio está fechado.” A caneta não para.", efeitos: {} },
         },
@@ -702,7 +763,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         },
         {
           id: "bico", comum: true, tempo: 1, texto: "Ajudar o pessoal da limpeza a fechar o andar", palavras: ["ajudar", "limpeza", "trabalh", "bico"],
-          resultado: { texto: "A equipe da limpeza ficou pela metade. Você carrega sacos, empurra carrinho, fecha janelas. A encarregada paga em dinheiro: “Hoje ninguém quer ficar até tarde.”", efeitos: { dinheiro: 70 } },
+          resultado: { texto: "A equipe da limpeza ficou pela metade. Você carrega sacos, empurra carrinho, fecha janelas. A encarregada paga em dinheiro: “Hoje ninguém quer ficar até tarde.”", efeitos: { dinheiro: 45 } },
         },
       ],
     },
@@ -739,40 +800,40 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
     },
 
     farmacia: {
-      nome: "Farmácia Bem-Estar",
+      nome: "Drogaria Goodwell",
       icone: "℞",
       mapa: { x: 82, y: 38 },
-      descricao: "Aberta 24 horas, com a porta de vidro meio baixada e uma corrente passada por dentro. Dona Marta, a farmacêutica, atende por baixo dela.",
+      descricao: "Aberta 24 horas, com a porta de vidro meio baixada e uma corrente passada por dentro. Martha Kowalski, a farmacêutica, atende por baixo dela.",
       acoes: [
         {
-          id: "farmaceutico", comum: true, texto: "Pedir conselho à Dona Marta", palavras: ["conselho", "farmaceutic", "marta", "pressao", "convers"],
+          id: "farmaceutico", comum: true, texto: "Pedir conselho a Martha", palavras: ["conselho", "farmaceutic", "marta", "pressao", "convers"],
           resultado: { texto: "Ela mede sua pressão sem você pedir. “Tá todo mundo com a pressão lá em cima hoje”, diz, e recomenda dormir cedo. Você ri pela primeira vez no dia. Lá dos fundos, alguém conta números em voz baixa.", efeitos: { condicao: "-abalado", flag: "marta-fundos" } },
         },
         {
-          id: "marta-fundos", texto: "Perguntar à Dona Marta quem está contando lá nos fundos", palavras: ["fundos", "contando", "quem", "irmao", "pergunt"], situacao: "convencer", se: { flag: "marta-fundos" },
+          id: "marta-fundos", texto: "Perguntar a Martha quem está contando lá nos fundos", palavras: ["fundos", "contando", "quem", "irmao", "pergunt"], situacao: "convencer", se: { flag: "marta-fundos" },
           sucesso: {
-            texto: "Ela hesita, depois tira a corrente. Nos fundos, entre caixas de remédio, o irmão dela, Tião, está sentado de frente para a parede, contando: vinte e um, quarenta e sete, vinte e um, quarenta e sete. “Ele voltou assim do centro. Não me reconhece. Não posso deixar ele sair de novo.”",
-            efeitos: { flag: "tiao", quest: { id: "tiao", nome: "A porta com corrente", prazo: "media", nota: "Dona Marta esconde o irmão, Tião, que só conta números." } },
+            texto: "Ela hesita, depois tira a corrente. Nos fundos, entre caixas de remédio, o irmão dela, Teddy, está sentado de frente para a parede, contando: vinte e um, quarenta e sete, vinte e um, quarenta e sete. “Ele voltou assim do centro. Não me reconhece. Não posso deixar ele sair de novo.”",
+            efeitos: { flag: "tiao", quest: { id: "tiao", nome: "A porta com corrente", prazo: "media", nota: "Martha esconde o irmão, Teddy, que só conta números." } },
           },
           falha: { texto: "“Rádio”, ela diz, rápido demais, e baixa mais a porta.", efeitos: {} },
         },
         {
-          id: "tiao-acalmar", texto: "Sentar ao lado do Tião e tentar trazê-lo de volta", palavras: ["tiao", "acalm", "sentar", "trazer"], situacao: "acalmar", se: { flag: "tiao" },
+          id: "tiao-acalmar", texto: "Sentar ao lado do Teddy e tentar trazê-lo de volta", palavras: ["tiao", "acalm", "sentar", "trazer"], situacao: "acalmar", se: { flag: "tiao" },
           sucesso: {
-            texto: "Você conta junto com ele, e depois conta diferente: um, dois, três. Ele erra o ritmo. Pisca. Olha para a irmã e diz o nome dela. Dona Marta chora sem barulho e enfia um calmante e um analgésico no seu bolso.",
-            efeitos: { marca: "salvou:Tião", flag: "salvou-tiao", pertence: { calmante: 1, remedio: 1 }, quest: { id: "tiao", nome: "A porta com corrente", prazo: "media", estado: "concluida", nota: "Tião voltou a falar. Dona Marta te deve uma." } },
+            texto: "Você conta junto com ele, e depois conta diferente: um, dois, três. Ele erra o ritmo. Pisca. Olha para a irmã e diz o nome dela. Martha chora sem barulho e enfia um calmante e um analgésico no seu bolso.",
+            efeitos: { marca: "salvou:Teddy", flag: "salvou-tiao", pertence: { calmante: 1, remedio: 1 }, quest: { id: "tiao", nome: "A porta com corrente", prazo: "media", estado: "concluida", nota: "Teddy voltou a falar. Martha te deve uma." } },
           },
           falha: {
-            texto: "Ele para de contar e olha direto para você. “Você também tem um número.” Depois volta a contar, mais rápido. Dona Marta pede que você vá embora.",
-            efeitos: { condicao: "abalado", exposicao: 1, quest: { id: "tiao", nome: "A porta com corrente", prazo: "media", nota: "Tião não voltou. Ainda está nos fundos da farmácia." } },
+            texto: "Ele para de contar e olha direto para você. “Você também tem um número.” Depois volta a contar, mais rápido. Martha pede que você vá embora.",
+            efeitos: { condicao: "abalado", exposicao: 1, quest: { id: "tiao", nome: "A porta com corrente", prazo: "media", nota: "Teddy não voltou. Ainda está nos fundos da farmácia." } },
           },
         },
         {
-          id: "curativo-farmacia", comum: true, repetivel: true, texto: "Pedir para fazer um curativo", palavras: ["curativo", "ferid", "machuc"], req: { condicao: "ferido", dinheiro: 20 },
-          resultado: { texto: "Ele limpa, põe gaze e esparadrapo, cobra o material.", efeitos: { dinheiro: -20, condicao: "-ferido" } },
+          id: "curativo-farmacia", comum: true, repetivel: true, texto: "Pedir para fazer um curativo", palavras: ["curativo", "ferid", "machuc"], req: { condicao: "ferido", dinheiro: 15 },
+          resultado: { texto: "Ele limpa, põe gaze e esparadrapo, cobra o material.", efeitos: { dinheiro: -15, condicao: "-ferido" } },
         },
       ],
-      loja: { nome: "Farmácia Bem-Estar", itens: [{ pertence: "remedio" }, { pertence: "calmante" }, { pertence: "cafe" }, { equip: "kit_medico" }] },
+      loja: { nome: "Drogaria Goodwell", itens: [{ pertence: "remedio" }, { pertence: "calmante" }, { pertence: "cafe" }, { equip: "kit_medico" }] },
     },
   },
 };

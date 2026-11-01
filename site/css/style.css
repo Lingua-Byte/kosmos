@@ -1293,3 +1293,18 @@ body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 
 .quests li small { display: block; color: var(--texto-suave); margin-top: 2px; }
 .quests .quest-concluida { opacity: 0.75; }
 .quests .quest-perdida strong { text-decoration: line-through; opacity: 0.7; }
+
+/* ---------- Arte dos itens ---------- */
+.arte-item {
+  position: relative; display: inline-grid; place-items: center; flex: none;
+  width: 48px; height: 48px; border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--painel-borda); background: color-mix(in srgb, var(--acento) 10%, transparent);
+}
+.arte-item b { color: var(--acento); font-size: 1.2rem; font-weight: 400; }
+.arte-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pertences li.com-arte { grid-template-columns: auto 1fr auto; }
+.pertences li.com-arte .arte-item { grid-row: 1 / span 2; }
+.pertences li.com-arte span, .pertences li.com-arte small { grid-column: 2; }
+.pertences li.com-arte button { grid-column: 3; }
+li.com-arte { display: flex; align-items: center; gap: 10px; }
+.pertences li.com-arte { display: grid; }
