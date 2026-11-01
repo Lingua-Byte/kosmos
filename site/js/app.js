@@ -104,18 +104,15 @@ function definirTema(eixo) {
   atualizarTrilha();
 }
 
-// A trilha acompanha onde o jogador está: prólogo, o eixo em destaque (ficha, tradutor, criação) ou a tela inicial
+// Trilha: dentro de uma missão, as músicas do eixo dela (medieval → Y, espacial → Z…).
+// Fora de missão (abertura, personagens, criação, ficha, tradutor, Mesa): a trilha inicial, com Solar Wind.
+// Abrir a ficha ou o tradutor no meio de uma missão não tira o jogador da missão: a trilha continua.
 function atualizarTrilha() {
+  if (typeof Cenas === "undefined" || typeof Musica === "undefined") return;
   const tela = document.querySelector(".tela.ativa")?.id;
-  const eixo = ["x", "y", "z"].find((e) => document.body.classList.contains("tema-" + e));
-  let contexto = "inicio";
-  if (tela === "tela-cena" && typeof Cenas !== "undefined") {
-    const m = Cenas.missaoAtual();
-    contexto = m && m.id.startsWith("prologo") ? "prologo" : (m && m.eixo) || eixo || "inicio";
-  } else if (["tela-ficha", "tela-tradutor", "tela-criacao"].includes(tela) && eixo) {
-    contexto = eixo;
-  }
-  if (typeof Musica !== "undefined") Musica.contexto(contexto);
+  if (["tela-inicio", "tela-transicao", "tela-personagens", "tela-mesa", "tela-criacao"].includes(tela)) Cenas.sair();
+  const m = Cenas.emJogo() ? Cenas.missaoAtual() : null;
+  Musica.contexto(m ? m.eixo : "inicio");
 }
 
 // Mensagens rápidas no topo da tela (efeitos que ligaram, usos, etc.)

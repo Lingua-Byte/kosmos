@@ -13,6 +13,7 @@ const Cenas = (() => {
   let mensagemLivre = ""; // resposta quando o texto livre não é entendido
   let resultado = null; // { texto, linhas, depois }
   let selecionados = new Set();
+  let emJogo = false; // entrou numa missão e ainda não voltou à Mesa/personagens
 
   const norm = (t) => (t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
@@ -153,6 +154,7 @@ const Cenas = (() => {
     resultado = null;
     pendente = null;
     painel = null;
+    emJogo = true;
     definirTema(missao().eixo);
     mostrarTela("tela-cena");
     render();
@@ -629,6 +631,9 @@ const Cenas = (() => {
   return {
     abrir, abrirMesa,
     missaoAtual: () => (camp && MISSOES[camp.missao]) || null,
+    // o jogador está dentro de uma missão (mesmo com a ficha ou o tradutor abertos por cima)?
+    emJogo: () => emJogo,
+    sair: () => (emJogo = false),
     // este personagem tem uma partida em andamento?
     emAndamento: (pid) => Boolean(partidaDe(pid)),
     // "Jogar" na ficha: volta à partida dele, ou abre a Mesa com ele já escolhido
