@@ -28,6 +28,8 @@ MISSOES["prologo-x"] = {
   pistasParaMarco: 5,
   inicio: "abertura",
   lugarInicial: "trabalho",
+  // o mapa ilustrado: para onde todos caminham
+  centroMapa: { x: 50, y: 50, nome: "Praça Central" },
 
   // O rádio da praça. ⚠️ Música comercial: serve para jogar entre amigos; para publicar, precisa de licença.
   // inicio/fim em segundos do vídeo oficial: o refrão repetido do final da música.
@@ -228,6 +230,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
     trabalho: {
       nome: (ctx) => ctx.trabalho.nome,
       icone: "∃",
+      mapa: { x: 20, y: 26 },
       descricao: (ctx) => ctx.trabalho.desc,
       acoes: [
         {
@@ -261,6 +264,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
     casa: {
       nome: "Sua casa",
       icone: "⌂",
+      mapa: { x: 80, y: 22 },
       descricao: "O prédio está quieto demais. Do corredor vem o som de uma TV ligada sem ninguém assistindo.",
       acoes: [
         {
@@ -286,6 +290,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
     hospital: {
       nome: "Hospital São Lucas",
       icone: "✚",
+      mapa: { x: 82, y: 72 },
       descricao: "A recepção está lotada e silenciosa. As luzes piscam no mesmo ritmo das da rua.",
       acoes: [
         {
@@ -308,6 +313,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
     delegacia: {
       nome: "Delegacia Central",
       icone: "≡",
+      mapa: { x: 18, y: 72 },
       descricao: "Viaturas saem com as sirenes desligadas. Ninguém explica nada.",
       acoes: [
         {
@@ -326,6 +332,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
     metro: {
       nome: "Estação Rua 9",
       icone: "⊂",
+      mapa: { x: 50, y: 90 },
       descricao: "Abandonada há anos. A catraca gira sozinha, uma vez, quando você chega.",
       acoes: [
         {

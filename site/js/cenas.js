@@ -185,6 +185,7 @@ const Cenas = (() => {
         </div>`;
     } else if (cena) {
       corpo = `
+        ${imagemHtml(cena.imagem)}
         <h2 class="cena-titulo">${esc(cena.titulo)}</h2>
         <div class="narracao">${paragrafos(texto(cena.texto, ctx))}</div>
         ${cena.tutorial ? `<p class="tutorial">${esc(cena.tutorial)}</p>` : ""}
@@ -193,6 +194,7 @@ const Cenas = (() => {
     } else {
       const disponiveis = lugar.acoes.filter((a) => !feita(a));
       corpo = `
+        ${imagemHtml(lugar.imagem)}
         <h2 class="cena-titulo">${esc(texto(lugar.nome, ctx))}</h2>
         <div class="narracao">${paragrafos(texto(lugar.descricao, ctx))}<p class="ambiente">${esc(m.ambiente(camp.relogio))}</p></div>
         <p class="pergunta-vez">O que ${esc(ctx.p.nome)} faz?</p>
@@ -240,6 +242,11 @@ const Cenas = (() => {
       }))
       .filter((p) => p.texto)
       .map((p) => (p.tipo === "titulo" && !/[.!?…]$/.test(p.texto) ? { ...p, texto: p.texto + "." } : p));
+  }
+
+  // Ilustração da cena ou do lugar (campo "imagem": caminho dentro de site/, ex.: "imagens/x/hospital.webp")
+  function imagemHtml(src) {
+    return src ? `<figure class="cena-imagem"><img src="${esc(src)}" alt="" loading="lazy"></figure>` : "";
   }
 
   function feita(a) {
@@ -338,6 +345,23 @@ const Cenas = (() => {
       </div>`;
     }
     const custo = custoViagem();
+    // mapa ilustrado (desenhado pelo jogo) quando o eixo e os lugares têm posição; senão, a lista
+    const ilustrado = m.centroMapa && Object.values(m.lugares).every((l) => l.mapa) && Mapas.html({
+      eixo: m.eixo,
+      centro: { ...m.centroMapa, nome: esc(m.centroMapa.nome) },
+      tensao: camp.relogio / m.relogioMax,
+      lugares: Object.entries(m.lugares).map(([id, l]) => ({
+        id, icone: esc(l.icone), nome: esc(texto(l.nome, ctx)), ...l.mapa,
+        atual: id === camp.lugar, pendentes: l.acoes.filter((a) => !feita(a)).length,
+      })),
+    });
+    if (ilustrado) {
+      return `<div class="cena-painel">
+        <h3>Mapa <button class="btn-texto" data-painel="">Fechar</button></h3>
+        <p class="sub">${custo ? "Ir a outro lugar avança o relógio em 1." : "Com o carro, ir a outro lugar não gasta tempo."} Todos parecem ir para a ${esc(m.centroMapa.nome)}.</p>
+        ${ilustrado}
+      </div>`;
+    }
     return `<div class="cena-painel">
       <h3>Mapa <button class="btn-texto" data-painel="">Fechar</button></h3>
       <p class="sub">${custo ? "Ir a outro lugar avança o relógio em 1." : "Com o carro, ir a outro lugar não gasta tempo."}</p>
