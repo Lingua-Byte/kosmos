@@ -1252,3 +1252,9 @@ body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 
 .cinematica-y .cinematica-texto p { font-family: var(--fonte-titulo, Cinzel), serif; color: #e8c77a; letter-spacing: 0.25em; }
 .cinematica-y .cinematica-texto h2 { font-family: Cinzel, serif; font-weight: 600; letter-spacing: 0.3em; color: #f3e6c4; text-shadow: 0 2px 20px #000, 0 0 30px rgba(232, 199, 122, 0.35); }
 .cinematica-y .cinematica-pular { color: #f3e6c4; }
+
+.cinematica-tocar {
+  position: absolute; z-index: 2; width: 84px; height: 84px; border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55); color: #fff; border: 1px solid rgba(255, 255, 255, 0.5);
+  font-size: 2rem; cursor: pointer;
+}
