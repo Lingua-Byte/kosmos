@@ -43,6 +43,16 @@ function noGenero(nome, sexo) {
   return n;
 }
 
+// Profissão em dois passos: qual grupo (ponto de entrada) está aberto; "" = a lista de lugares
+let grupoOficio = "";
+let detalheEscolha = ""; // o efeito do último traço/habilidade/item tocado (um quadro só, no lugar de textos em todas as cartas)
+
+function oficioEscolhidoHtml(e) {
+  const of = rascunho.profissao && profissaoDe(rascunho, e.id);
+  if (!of || !of.nome) return "";
+  return `<p class="oficio-escolhido">Escolhida: <b>${esc(of.nome)}</b>${rascunho.papel ? ` · ${PAPEIS[rascunho.papel]}` : ""}</p>`;
+}
+
 // Profissão do personagem num eixo: { nome, ponto } (ponto = id em PONTOS_ENTRADA[eixo]) ou null.
 // A profissão escrita pelo jogador ("Outra") só existe no eixo de origem.
 function profissaoDe(p, eixo) {
@@ -121,7 +131,7 @@ function criarArquivista() {
 
 function mostrarTela(id) {
   document.querySelectorAll(".tela").forEach((t) => t.classList.toggle("ativa", t.id === id));
-  $("#btn-tradutor").hidden = ["tela-inicio", "tela-transicao", "tela-tradutor", "tela-cena", "tela-mesa", "tela-criacao"].includes(id);
+  $("#btn-tradutor").hidden = ["tela-inicio", "tela-transicao", "tela-tradutor", "tela-cena", "tela-mesa", "tela-criacao", "tela-ficha", "tela-personagens"].includes(id);
   window.scrollTo(0, 0);
   if (id !== "tela-cena" && typeof Narrador !== "undefined") Narrador.parar();
   if (id !== "tela-cena" && typeof Palco !== "undefined") Palco.pausar();
@@ -249,6 +259,7 @@ let passoAtual = 0;
 
 function iniciarCriacao() {
   rascunho = novoPersonagem();
+  grupoOficio = "";
   passoAtual = 0;
   definirTema(null);
   mostrarTela("tela-criacao");
@@ -290,6 +301,8 @@ function renderPasso() {
   alvo.classList.remove("entrar");
   void alvo.offsetWidth;
   alvo.classList.add("entrar");
+  if (alvo.dataset.passo !== PASSOS[passoAtual].id) detalheEscolha = "";
+  alvo.dataset.passo = PASSOS[passoAtual].id;
   alvo.innerHTML = RENDER_PASSO[PASSOS[passoAtual].id](eixo);
   const primeiroCampo = alvo.querySelector("input, textarea");
   if (primeiroCampo && !("ontouchstart" in window)) primeiroCampo.focus();
@@ -331,33 +344,34 @@ const RENDER_PASSO = {
     const livre = rascunho.profissaoLivre || {};
     return `
     <h2>Profissão</h2>
-    <p class="sub">A profissão decide onde a sua história começa e a sua classe. Nos outros mundos, você faz algo parecido, com outro nome.</p>
-    ${pontos.map((pt) => {
-      const lista = PROFISSOES.filter((pr) => pr[e.id].ponto === pt.id);
-      if (!lista.length) return "";
-      return `<section class="grupo-oficio"><h3>${esc(pt.nome)}</h3>
-        <div class="chips">${lista.map((pr) => `<button class="chip chip-oficio ${rascunho.profissao === pr.id ? "escolhida" : ""}" data-profissao="${pr.id}">${esc(noGenero(pr[e.id].nome, rascunho.sexo))}<small>${PAPEIS[pr.papel]}</small></button>`).join("")}</div>
-      </section>`;
-    }).join("")}
-    <section class="grupo-oficio"><h3>Outra</h3>
-      <div class="chips"><button class="chip ${rascunho.profissao === "outra" ? "escolhida" : ""}" data-profissao="outra">Escrever a minha</button></div>
+    ${oficioEscolhidoHtml(e)}
+    ${!grupoOficio ? `
+      <p class="sub">Onde você trabalha? Escolha o lugar e depois a profissão.</p>
+      <div class="grade-lugares">
+        ${pontos.map((pt) => {
+          const n = PROFISSOES.filter((pr) => pr[e.id].ponto === pt.id).length;
+          return n ? `<button class="tile-lugar" data-grupo-oficio="${pt.id}"><strong>${esc(pt.nome)}</strong><small>${n} profiss${n > 1 ? "ões" : "ão"}</small></button>` : "";
+        }).join("")}
+        <button class="tile-lugar" data-grupo-oficio="outra"><strong>Outra</strong><small>escrever a minha</small></button>
+      </div>` : grupoOficio !== "outra" ? `
+      <button class="btn-texto voltar-lugares" data-grupo-oficio="">‹ Outros lugares</button>
+      <h3 class="titulo-grupo">${esc(pontos.find((pt) => pt.id === grupoOficio).nome)}</h3>
+      <div class="chips">${PROFISSOES.filter((pr) => pr[e.id].ponto === grupoOficio).map((pr) => `<button class="chip chip-oficio ${rascunho.profissao === pr.id ? "escolhida" : ""}" data-profissao="${pr.id}">${esc(noGenero(pr[e.id].nome, rascunho.sexo))}<small>${PAPEIS[pr.papel]}</small></button>`).join("")}</div>` : `
+      <button class="btn-texto voltar-lugares" data-grupo-oficio="">‹ Outros lugares</button>
       ${rascunho.profissao === "outra" ? `
         <label class="campo"><span>Sua profissão</span><input id="f-oficio-nome" maxlength="60" value="${esc(livre.nome || "")}" autocomplete="off"></label>
         <label class="campo"><span>Onde a sua história começa</span>
           <select id="f-oficio-ponto"><option value="">—</option>${pontos.map((pt) => `<option value="${pt.id}" ${livre.ponto === pt.id ? "selected" : ""}>${esc(pt.nome)}</option>`).join("")}</select></label>
-        <div class="campo"><span>Classe</span><div class="chips">${Object.entries(PAPEIS).map(([k, n]) => `<button class="chip ${rascunho.papel === k ? "escolhida" : ""}" data-classe="${k}" title="${esc(e.papeis[k].desc)}">${n}</button>`).join("")}</div></div>` : ""}
-    </section>`;
+        <div class="campo"><span>Classe</span><div class="chips">${Object.entries(PAPEIS).map(([k, n]) => `<button class="chip ${rascunho.papel === k ? "escolhida" : ""}" data-classe="${k}" title="${esc(e.papeis[k].desc)}">${n}</button>`).join("")}</div></div>` : ""}`}`;
   },
 
   tracos: () => `
     <h2>Traço central</h2>
-    <p class="sub">Como você age sob pressão? Escolha de ${REGRAS.tracosMin} a ${REGRAS.tracosMax}. Cada traço ajuda em um tipo de situação e atrapalha em outro.</p>
-    <div class="cartas cartas-tracos">
-      ${TRACOS.map((t) => `<button class="carta carta-traco ${rascunho.tracos.includes(t.nome) ? "escolhida" : ""}" data-traco="${esc(t.nome)}">
-        <strong>${esc(t.nome)}</strong>
-        <span class="carta-desc">${esc(t.efeito)}</span>
-      </button>`).join("")}
-    </div>`,
+    <p class="sub">Como você age sob pressão? Escolha de ${REGRAS.tracosMin} a ${REGRAS.tracosMax}.</p>
+    <div class="grade-compacta">
+      ${TRACOS.map((t) => `<button class="tile-compacto ${rascunho.tracos.includes(t.nome) ? "escolhida" : ""}" data-traco="${esc(t.nome)}">${esc(t.nome)}</button>`).join("")}
+    </div>
+    <p class="detalhe-escolha" id="detalhe-escolha">${esc(detalheEscolha || "Toque num traço para ver o que ele faz.")}</p>`,
 
   papel: (e) => `
     <h2>${e.papelRotulo}</h2>
@@ -441,14 +455,13 @@ function catalogoHtml(p, tipo, eixo) {
         const preco = ehHab ? it.custo : it.peso;
         const cabe = sel || usado + preco <= max;
         return `<button class="item-catalogo ${sel ? "escolhida" : ""} ${cabe ? "" : "nao-cabe"}" data-catalogo="${tipo}:${it.chave}">
-          <span class="item-preco">${ehHab ? `${preco} pt${preco > 1 ? "s" : ""}` : `peso ${preco}`}</span>
-          ${sugeridas.includes(it.chave) ? `<span class="item-sugerido">combina com você</span>` : ""}
-          <strong>${esc(it.nomes[eixo])}</strong>
-          <span class="item-efeito">${esc(it.efeito)}</span>
-          <span class="item-usos">${Regras.textoUsos(it)}</span>
+          ${ehHab ? "" : Vida.arte(it.chave, eixo, it.nomes[eixo])}
+          <span class="item-texto"><strong>${esc(it.nomes[eixo])}</strong>
+          <span class="item-preco">${ehHab ? `${preco} pt${preco > 1 ? "s" : ""}` : `peso ${preco}`}${sugeridas.includes(it.chave) ? " · combina com você" : ""}</span></span>
         </button>`;
       }).join("")}
-    </div>`;
+    </div>
+    <p class="detalhe-escolha" id="detalhe-escolha">${esc(detalheEscolha || `Toque ${ehHab ? "numa habilidade" : "num item"} para escolher e ver o que faz.`)}</p>`;
 }
 
 // Trilha de caixinhas clicáveis (atributos, exposição, ressonância…)
@@ -483,11 +496,22 @@ $("#passo").addEventListener("click", (ev) => {
     else if (rascunho.tracos.length < REGRAS.tracosMax) rascunho.tracos.push(nome);
     else $("#aviso").textContent = `No máximo ${REGRAS.tracosMax} traços.`;
     t.classList.toggle("escolhida", rascunho.tracos.includes(nome));
+    const tr = TRACOS.find((x) => x.nome === nome);
+    detalheEscolha = `${nome}: ${tr.efeito}`;
+    $("#detalhe-escolha").textContent = detalheEscolha;
   } else if (t.dataset.sexo) {
     rascunho.sexo = t.dataset.sexo;
     document.querySelectorAll("[data-sexo]").forEach((b) => b.classList.toggle("escolhida", b === t));
   } else if (t.dataset.classe) {
     rascunho.papel = t.dataset.classe;
+    renderPasso();
+  } else if (t.dataset.grupoOficio !== undefined) {
+    grupoOficio = t.dataset.grupoOficio;
+    if (grupoOficio === "outra") {
+      rascunho.profissao = "outra";
+      rascunho.profissaoLivre = rascunho.profissaoLivre || { nome: "", ponto: "" };
+      rascunho.papel = null;
+    }
     renderPasso();
   } else if (t.dataset.profissao) {
     rascunho.profissao = t.dataset.profissao;
@@ -502,7 +526,11 @@ $("#passo").addEventListener("click", (ev) => {
   } else if (t.dataset.catalogo) {
     const [tipo, chave] = t.dataset.catalogo.split(":");
     const erro = Regras.alternar(rascunho, tipo, chave);
+    const it = Regras.item(chave);
+    detalheEscolha = `${it.nomes[rascunho.origem]}: ${it.efeito} (${Regras.textoUsos(it)})`;
+    const rolagem = $("#passo").scrollTop;
     renderPasso();
+    $("#passo").scrollTop = rolagem;
     $("#aviso").textContent = erro;
   } else if (t.dataset.valor) {
     const k = t.closest("[data-trilha]").dataset.trilha.split(":")[1];
@@ -635,7 +663,6 @@ function runasHtml(p) {
   ];
   const resta = Regras.usosRestantes(p, "estudo");
   return `<div class="bloco"><h3>Runas Conhecidas <small>${p.runas.length}/${p.cartasRunas}</small></h3>
-    <p class="sub">A Mente define quantas cartas você começa. Toque numa carta virada para descobrir a runa.</p>
     <div class="cartas-runas">${cartas.join("") || `<p class="sub">Nenhuma carta.</p>`}</div>
     ${Regras.podeAprenderRuna(p)
       ? `<button class="btn-secundario" data-acao="estudar" ${resta <= 0 ? "disabled" : ""}>⚄ Estudar uma runa · Mente, ${RUNAS_CARTAS.estudo.dificuldade} sucessos ${resta <= 0 ? "(já tentou nesta cena)" : ""}</button>`
@@ -664,8 +691,8 @@ function renderEixo(p, id) {
   const alerta = valorEx >= REGRAS.exposicaoMax ? "fim" : ex.limite && valorEx > ex.limite ? "alerta" : "";
   return `
     <div class="eixo-ficha">
-      <p class="glifo-linha" title="Assinatura no ${e.nome}">${esc(glifoEstado(p, id))}</p>
-      <div class="bloco papel-bloco">
+      <p class="glifo-linha" data-sub="personagem" title="Assinatura no ${e.nome}">${esc(glifoEstado(p, id))}</p>
+      <div class="bloco papel-bloco" data-sub="personagem">
         ${(() => {
           const of = profissaoDe(p, id);
           const pt = of && PONTOS_ENTRADA[id].find((x) => x.id === of.ponto);
@@ -674,7 +701,7 @@ function renderEixo(p, id) {
             ${pt ? `<span class="sub">começa em ${esc(pt.nome)}</span>` : ""}`;
         })()}
       </div>
-      <div class="bloco"><h3>Atributos</h3>
+      <div class="bloco" data-sub="personagem"><h3>Atributos</h3>
         ${Object.entries(e.atributos).map(([k, a]) => {
           const mods = Regras.modificadores(p, k);
           const total = Math.max(1, p.atributos[k] + DADOS.dadosExtras + mods.reduce((s, m) => s + m.dados, 0));
@@ -689,11 +716,10 @@ function renderEixo(p, id) {
           </div>`;
         }).join("")}
       </div>
-      ${recursosHtml(p, "hab", id)}
-      ${recursosHtml(p, "item", id)}
-      ${vidaHtml(p, id)}
-      ${id === "y" ? runasHtml(p) : ""}
-      <div class="bloco exposicao ${alerta}"><h3>${ex.nome}</h3>
+      <div data-sub="recursos">${recursosHtml(p, "hab", id)}${recursosHtml(p, "item", id)}</div>
+      <div data-sub="bolsa">${vidaHtml(p, id)}</div>
+      ${id === "y" ? `<div data-sub="linguas">${runasHtml(p)}</div>` : ""}
+      <div class="bloco exposicao ${alerta}" data-sub="convergencia"><h3>${ex.nome}</h3>
         <p class="sub">${ex.desc}</p>
         ${trilha(REGRAS.exposicaoMax, valorEx, `exp:${id}`, { limite: ex.limite, classe: "trilha-longa" })}
         <p class="efeitos">${ex.efeitos}</p>
@@ -708,20 +734,15 @@ function renderFicha(recemCriada = false) {
   $("#ficha").innerHTML = `
     <header class="ficha-topo">
       <div class="ficha-navegacao">
-        <button class="btn-texto" data-acao="personagens">‹ Personagens</button>
-        <button class="btn-primario" data-acao="jogar">${Cenas.emAndamento(p.id) ? "▶ Voltar ao jogo" : "▶ Jogar"}</button>
+        <button class="btn-texto" data-acao="personagens" aria-label="Personagens">‹</button>
+        <h2>${esc(p.nome)}${p.idade ? `<small>, ${esc(p.idade)}</small>` : ""}</h2>
+        <button class="btn-primario" data-acao="jogar">${Cenas.emAndamento(p.id) ? "▶ Voltar" : "▶ Jogar"}</button>
       </div>
       <div class="ficha-id">
-        <h2>${esc(p.nome)}${p.idade ? `<small>, ${esc(p.idade)}</small>` : ""}</h2>
         <p class="resumo-tracos">${p.tracos.map((nome) => {
           const t = TRACOS.find((x) => x.nome === nome);
           return `<span class="traco-ficha" title="${esc(t ? t.efeito : "Traço antigo, sem efeito nas regras")}">${esc(nome)}</span>`;
         }).join(" · ")}</p>
-        ${p.descricao ? `<p class="descricao">${esc(p.descricao)}</p>` : ""}
-      </div>
-      <div class="mesa-barra">
-        <button class="btn-texto" data-acao="nova-cena" title="Renova usos por cena">↻ Nova cena</button>
-        <button class="btn-texto" data-acao="nova-sessao" title="Renova todos os usos">↻ Nova sessão</button>
       </div>
     </header>
     ${fim ? `<p class="fim-de-jogo"><b>${fim.nome}.</b> ${fim.efeito}</p>` : ""}
@@ -734,10 +755,12 @@ function renderFicha(recemCriada = false) {
         </button>`;
       }).join("")}
     </nav>
+    ${p.revelados[abaAtual] ? `<nav class="ficha-subabas" role="tablist">${FICHA_ABAS.map(([k, n]) => `<button role="tab" data-sub-aba="${k}" aria-selected="${subAtual === k}" class="${subAtual === k ? "atual" : ""}">${n}</button>`).join("")}</nav>` : ""}
+    <div class="ficha-corpo" id="ficha-corpo">
     <div class="aba-conteudo">${renderEixo(p, abaAtual)}</div>
-    <section class="convergencia">
+    <section class="convergencia" data-sub="convergencia">
       <h3>Convergência</h3>
-      <p class="sub">Exposição intensa → Teste de Convergência → + Ressonância ou + Dissonância. Cada marca muda o que ${esc(p.nome)} consegue fazer.</p>
+      <p class="sub">Passou no teste: + Ressonância. Falhou: + Dissonância.</p>
       <button class="btn-secundario btn-convergencia" data-acao="convergencia">◉ Teste de Convergência · ${Regras.dificuldadeConvergencia(p)} sucesso${Regras.dificuldadeConvergencia(p) > 1 ? "s" : ""}</button>
       <div class="atributo"><div class="atributo-nome"><strong>Ressonância</strong><span>alinhamento com a Convergência</span></div>
         ${trilha(REGRAS.ressonanciaMax, p.ressonancia, "res", { classe: "trilha-longa trilha-res" })}
@@ -745,9 +768,10 @@ function renderFicha(recemCriada = false) {
       <div class="atributo"><div class="atributo-nome"><strong>Dissonância</strong><span>resistência caótica ao fenômeno</span></div>
         ${trilha(REGRAS.ressonanciaMax, p.dissonancia, "dis", { classe: "trilha-longa trilha-dis" })}
         ${marcasHtml(DISSONANCIA_LIMIARES, p.dissonancia)}</div>
-      <p class="dica">Marcar é livre. Apagar só acontece por habilidade ou item.</p>
+    </section>
+    <section data-sub="linguas">
       <div class="bloco"><h3>Memórias Cruzadas</h3>
-        <textarea data-campo="memorias" rows="4" maxlength="2000" placeholder="Visões de outros mundos…">${esc(p.memorias)}</textarea>
+        <textarea data-campo="memorias" rows="3" maxlength="2000" placeholder="Visões de outros mundos…">${esc(p.memorias)}</textarea>
       </div>
       <div class="bloco"><h3>Línguas</h3>
         <div class="linguas-resumo">
@@ -762,11 +786,36 @@ function renderFicha(recemCriada = false) {
         </div>
         <button class="btn-secundario" data-acao="dicionario">Abrir dicionário</button>
       </div>
-      <div class="bloco"><h3>Rolagens recentes</h3>${Dados.historicoHtml(p)}</div>
     </section>
-    <footer class="ficha-rodape">
-      <button class="btn-texto perigo" data-acao="excluir">Excluir personagem</button>
-    </footer>`;
+    <section data-sub="rolagens">
+      <div class="mesa-barra">
+        <button class="btn-texto" data-acao="nova-cena" title="Renova usos por cena">↻ Nova cena</button>
+        <button class="btn-texto" data-acao="nova-sessao" title="Renova todos os usos">↻ Nova sessão</button>
+      </div>
+      <div class="bloco"><h3>Rolagens recentes</h3>${Dados.historicoHtml(p)}</div>
+      <footer class="ficha-rodape">
+        <button class="btn-texto perigo" data-acao="excluir">Excluir personagem</button>
+      </footer>
+    </section>
+    </div>`;
+  mostrarSubAba();
+}
+
+// A ficha em abas: cada uma cabe na tela (sem rolar a página)
+const FICHA_ABAS = [
+  ["personagem", "Ficha"], ["recursos", "Habilid."], ["bolsa", "Bolsa"],
+  ["convergencia", "Converg."], ["linguas", "Memórias"], ["rolagens", "Dados"],
+];
+let subAtual = "personagem";
+
+function mostrarSubAba() {
+  const corpo = document.getElementById("ficha-corpo");
+  if (!corpo) return;
+  corpo.querySelectorAll("[data-sub]").forEach((el) => (el.hidden = el.dataset.sub !== subAtual));
+  document.querySelectorAll("[data-sub-aba]").forEach((b) => {
+    b.classList.toggle("atual", b.dataset.subAba === subAtual);
+    b.setAttribute("aria-selected", String(b.dataset.subAba === subAtual));
+  });
 }
 
 // Salva, aplica as marcas que ligaram e redesenha mantendo a rolagem da página
@@ -804,7 +853,11 @@ $("#ficha").addEventListener("click", (ev) => {
   const t = ev.target.closest("button");
   if (!t || t.disabled) return;
   const p = fichaAtual;
-  if (t.dataset.aba) {
+  if (t.dataset.subAba) {
+    subAtual = t.dataset.subAba;
+    mostrarSubAba();
+    document.getElementById("ficha-corpo").scrollTop = 0;
+  } else if (t.dataset.aba) {
     abaAtual = t.dataset.aba;
     editando = null;
     renderFicha();
@@ -866,9 +919,10 @@ $("#ficha").addEventListener("click", (ev) => {
 // Chamado quando algo fora da ficha (ex.: uma rolagem) muda o personagem aberto
 function atualizarFichaAberta() {
   if (!fichaAtual || !$("#tela-ficha").classList.contains("ativa")) return;
-  const rolagem = window.scrollY;
+  const rolagem = document.getElementById("ficha-corpo")?.scrollTop || 0;
   renderFicha();
-  window.scrollTo(0, rolagem);
+  const corpo = document.getElementById("ficha-corpo");
+  if (corpo) corpo.scrollTop = rolagem;
 }
 
 $("#ficha").addEventListener("input", (ev) => {
