@@ -73,7 +73,7 @@ const Cenas = (() => {
     const g = grupo();
     return g[camp.vez % g.length];
   };
-  const contexto = () => ({ p: ativo(), camp, trabalho: missao().trabalho(grupo()[0]) });
+  const contexto = () => ({ p: ativo(), camp, grupo: grupo(), trabalho: missao().trabalho ? missao().trabalho(grupo()[0]) : {} });
   const texto = (v, ctx = contexto()) => (typeof v === "function" ? v(ctx) : v || "");
   const paragrafos = (t) => t.split(/\n\n+/).map((x) => `<p>${esc(x).replace(/\n/g, "<br>")}</p>`).join("");
 
@@ -90,7 +90,7 @@ const Cenas = (() => {
     const nomeDe = (id) => esc(lista.find((p) => p.id === id)?.nome || "?");
     const andamento = partidas();
     $("#mesa").innerHTML = `
-      <div class="mesa-topo"><button class="btn-texto" data-acao="personagens" aria-label="Personagens">‹</button><h2>A Mesa</h2></div>
+      <div class="mesa-topo"><button class="btn-texto" data-acao="personagens" aria-label="Personagens">‹</button><h2>A Mesa</h2>${Saves.todos().length ? `<button class="btn-secundario mesa-carregar" data-acao="carregar-jogo">Carregar jogo</button>` : ""}</div>
       ${andamento.length ? `<h3>Partidas em andamento</h3>${andamento.map((c) => `
         <div class="mesa-continuar">
           <div><strong>${esc(MISSOES[c.missao].titulo)}</strong><span>${esc(MISSOES[c.missao].subtitulo)} · ${c.personagens.map(nomeDe).join(", ")}</span></div>
@@ -140,6 +140,7 @@ const Cenas = (() => {
       Armazem.salvar(p);
     }
     salvar();
+    Saves.auto(); // salvamento automático: começo da missão
     resultado = null;
     abrir();
   }
@@ -205,6 +206,7 @@ const Cenas = (() => {
       viagem = null;
       if (!document.querySelector("#tela-cena.ativa")) return; // saiu da missão no meio do caminho
       if (camp.relogio >= m.relogioMax) return entrarCena("chamado");
+      Saves.auto(); // salvamento automático: chegou num lugar
       render();
       if (linhas.length) avisar(linhas);
     });
@@ -263,7 +265,7 @@ const Cenas = (() => {
         <div class="acoes-lugar">
           ${lugar.loja ? `<button class="btn-secundario" data-painel="loja">Comprar aqui</button>` : ""}
           <button class="btn-secundario" data-painel="mapa">Ir para outro lugar</button>
-          ${camp.pistas.length >= m.pistasParaMarco ? `<button class="btn-primario" data-acao="chamado">Seguir a multidão até a ${esc(m.centroMapa ? m.centroMapa.nome : "Praça Central")}</button>` : ""}
+          ${camp.pistas.length >= m.pistasParaMarco ? `<button class="btn-primario" data-acao="chamado">${esc(m.marcoTexto || `Seguir a multidão até a ${m.centroMapa ? m.centroMapa.nome : "Praça Central"}`)}</button>` : ""}
         </div>`;
     }
 
@@ -272,13 +274,14 @@ const Cenas = (() => {
       <header class="cena-topo">
         <span class="cena-onde"><b>${EIXOS[m.eixo].glifo}</b> ${esc(m.subtitulo)} · ${esc(nomeLugar)}</span>
         <span class="relogio" title="Relógio de Convergência">${Array.from({ length: m.relogioMax }, (_, i) => `<i class="${i < camp.relogio ? "cheio" : ""}"></i>`).join("")}</span>
-        <span class="tag">Fase 1 · ${esc(m.fase)}</span>
+        <span class="tag">${esc(m.faseTag || `Fase 1 · ${m.fase}`)}</span>
         ${Narrador.disponivel ? `<span class="narrador">
           <button class="btn-texto narrador-ligar" data-acao="narrador" aria-pressed="false"></button>
           <button class="btn-secundario" data-acao="narrar" hidden></button>
           <button class="btn-texto narrador-ligar" data-acao="narrador-voz" hidden></button>
           <span class="narrador-estado sub"></span>
         </span>` : ""}
+        <button class="btn-texto narrador-ligar" data-acao="saves">⛃ Salvar</button>
         <button class="btn-texto narrador-ligar" data-acao="opcoes">⚙ Opções</button>
       </header>
       <main class="cena-corpo" id="cena-corpo">
@@ -386,6 +389,11 @@ const Cenas = (() => {
     if ([].concat(s.semFlag || []).some((k) => f[k])) return false;
     if (s.algum && ![].concat(s.algum).some((k) => f[k])) return false;
     if (s.relogioMin != null && camp.relogio < s.relogioMin) return false;
+    // marcas que o personagem trouxe de missões anteriores (quem salvou, o que levou): vale qualquer um do grupo
+    const temMarca = (k) => grupo().some((p) => (p.marcas || []).includes(k));
+    if ([].concat(s.marca || []).some((k) => !temMarca(k))) return false;
+    if ([].concat(s.semMarca || []).some((k) => temMarca(k))) return false;
+    if (s.algumaMarca && ![].concat(s.algumaMarca).some(temMarca)) return false;
     // só no ponto de entrada da profissão de quem está jogando (as 8 aberturas)
     if (s.ponto && (!missao().trabalho || missao().trabalho(ativo()).ponto !== s.ponto)) return false;
     return true;
@@ -483,7 +491,7 @@ const Cenas = (() => {
       <button class="btn-primario" data-acao="ficha-final">Ver a ficha</button>
       <button class="btn-secundario" data-acao="mesa">Voltar à Mesa</button>
     </div>
-    <p class="dica">Fim do prólogo. O Eixo Y foi revelado na ficha de quem jogou.</p>`;
+    <p class="dica">${esc(missao().textoFinal || "Fim do prólogo. O Eixo Y foi revelado na ficha de quem jogou.")}</p>`;
   }
 
   function grupoHtml() {
@@ -520,7 +528,7 @@ const Cenas = (() => {
         ${questsHtml()}
         <h4 class="diario-sub">O que você sabe</h4>
         ${camp.pistas.length ? `<ul class="pistas">${camp.pistas.map((x) => `<li>${esc(x.texto)}</li>`).join("")}</ul>` : `<p class="sub">Nenhuma pista ainda.</p>`}
-        <p class="dica">Com ${m.pistasParaMarco} pistas você pode seguir a multidão quando quiser. Com o relógio cheio, não há mais escolha.</p>
+        <p class="dica">${esc(m.marcoDica || `Com ${m.pistasParaMarco} pistas você pode seguir a multidão quando quiser. Com o relógio cheio, não há mais escolha.`)}</p>
       </div>`;
     }
     if (painel === "bolsa") return bolsaHtml();
@@ -539,7 +547,7 @@ const Cenas = (() => {
     if (ilustrado) {
       return `<div class="cena-painel">
         <h3>Mapa <button class="btn-texto" data-painel="">Fechar</button></h3>
-        <p class="sub">${custo ? "Ir a outro lugar avança o relógio em 1." : "Com o carro, ir a outro lugar não gasta tempo."} Todos parecem ir para a ${esc(m.centroMapa.nome)}.</p>
+        <p class="sub">${custo ? "Ir a outro lugar avança o relógio em 1." : "Com o carro, ir a outro lugar não gasta tempo."} ${esc(m.mapaDica || `Todos parecem ir para a ${m.centroMapa.nome}.`)}</p>
         ${ilustrado}
       </div>`;
     }
@@ -551,7 +559,7 @@ const Cenas = (() => {
           <b>${esc(l.icone)}</b><strong>${esc(texto(l.nome, ctx))}</strong>
           <span>${acoesDoLugar(id).filter((a) => !a.comum).length} coisas a fazer</span>
         </button>`).join("")}
-        <button class="lugar trancado" disabled><b>◉</b><strong>Praça Central</strong><span>todos parecem ir para lá</span></button>
+        ${m.centroMapa ? `<button class="lugar trancado" disabled><b>◉</b><strong>${esc(m.centroMapa.nome)}</strong><span>${esc(m.mapaDica || "todos parecem ir para lá")}</span></button>` : ""}
       </div>
     </div>`;
   }
@@ -770,13 +778,16 @@ const Cenas = (() => {
       for (const p of grupo()) {
         if (cena.revela) p.revelados[cena.revela] = true;
         if (cena.memoria) p.memorias = (p.memorias ? p.memorias + "\n" : "") + cena.memoria;
-        fichaMudou(p, [`${p.nome}: Memória Cruzada. O ${EIXOS[cena.revela].nome} (${EIXOS[cena.revela].mundo}) foi revelado na ficha.`]);
+        for (const mc of [].concat(cena.marca || [])) p.marcas = [...new Set([...(p.marcas || []), mc])];
+        if (cena.revela) fichaMudou(p, [`${p.nome}: Memória Cruzada. O ${EIXOS[cena.revela].nome} (${EIXOS[cena.revela].mundo}) foi revelado na ficha.`]);
+        else fichaMudou(p, cena.memoria ? [`${p.nome}: nova Memória Cruzada.`] : []);
       }
       camp.fim = true;
       camp.flags.revelado = cena.revela;
       Cinematica.primeiraVez(grupo(), cena.revela);
     }
     salvar();
+    Saves.auto(); // salvamento automático: cena da história
     render();
   }
 
@@ -865,6 +876,7 @@ const Cenas = (() => {
       if (t.dataset.continuar) return abrir(t.dataset.continuar);
       if (t.dataset.acao === "criar") return iniciarCriacao();
       if (t.dataset.acao === "personagens") return abrirPersonagens();
+      if (t.dataset.acao === "carregar-jogo") return Saves.abrir();
       return;
     }
 
@@ -905,6 +917,7 @@ const Cenas = (() => {
     }
     if (acao === "chamado") return entrarCena("chamado");
     if (acao === "opcoes") return Opcoes.abrir();
+    if (acao === "saves") return Saves.abrir();
     if (acao === "seguir" && resultado) return resultado.depois();
     if (acao === "confirmar" && pendente) {
       const p = pendente;
