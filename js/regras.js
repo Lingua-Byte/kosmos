@@ -111,6 +111,7 @@ const Regras = (() => {
         const oculto = ORDEM_EIXOS.find((id) => !p.revelados[id]);
         if (oculto) {
           p.revelados[oculto] = true;
+          if (typeof Cinematica !== "undefined") Cinematica.primeiraVez(p, oculto);
           avisos.push(`Memória Cruzada: ${p.nome} lembra do ${EIXOS[oculto].nome} — ${EIXOS[oculto].mundo}.`);
         }
       }

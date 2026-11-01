@@ -1207,6 +1207,25 @@ body.tema-z .painel, body.tema-z .criacao, body.tema-z .ficha { box-shadow: 0 0 
 
 /* ---------- Ilustração de cena ---------- */
 .cena-imagem { margin: 0 0 12px; border-radius: 10px; overflow: hidden; aspect-ratio: 16 / 7; border: 1px solid var(--painel-borda); }
-.cena-imagem img { width: 100%; height: 100%; object-fit: cover; animation: camera-lenta 30s ease-in-out infinite alternate; }
+.cena-imagem img, .cena-imagem video { width: 100%; height: 100%; object-fit: cover; animation: camera-lenta 30s ease-in-out infinite alternate; }
 @keyframes camera-lenta { from { transform: scale(1.02); } to { transform: scale(1.12) translate(-2%, -1%); } }
-@media (prefers-reduced-motion: reduce) { .cena-imagem img { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .cena-imagem img, .cena-imagem video { animation: none; } }
+
+/* ---------- Cinemática ---------- */
+.cinematica {
+  position: fixed; inset: 0; z-index: 200; background: #000;
+  display: grid; place-items: center; opacity: 0; transition: opacity 0.9s ease;
+}
+.cinematica.visivel { opacity: 1; }
+.cinematica.saindo { opacity: 0; }
+.cinematica video { width: 100%; height: 100%; object-fit: cover; }
+.cinematica-texto {
+  position: absolute; left: 0; right: 0; bottom: 12%; text-align: center; pointer-events: none;
+  color: #e2f4ff; text-shadow: 0 0 18px #000; animation: cinematica-titulo 8s ease forwards;
+}
+.cinematica-texto p { margin: 0; font-family: "Exo 2", sans-serif; letter-spacing: 0.3em; text-transform: uppercase; font-size: 0.8rem; color: #7fe4ff; }
+.cinematica-texto h2 { margin: 4px 0 0; font-family: "Exo 2", sans-serif; font-weight: 300; letter-spacing: 0.5em; font-size: clamp(2rem, 7vw, 4rem); color: #e2f4ff; }
+@keyframes cinematica-titulo { 0%, 25% { opacity: 0; } 45%, 85% { opacity: 1; } 100% { opacity: 0; } }
+.cinematica-pular { position: absolute; right: 16px; bottom: 16px; color: #e2f4ff; }
+/* no celular em pé, a nave inteira aparece (faixas pretas, como no cinema) */
+@media (orientation: portrait) { .cinematica video { object-fit: contain; } }

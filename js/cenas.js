@@ -158,6 +158,8 @@ const Cenas = (() => {
     definirTema(missao().eixo);
     mostrarTela("tela-cena");
     render();
+    // primeira vez neste eixo: a cinemática dele (a Domus, no Eixo Z)
+    Cinematica.primeiraVez(grupo(), missao().eixo);
   }
 
   function render() {
@@ -246,7 +248,9 @@ const Cenas = (() => {
 
   // Ilustração da cena ou do lugar (campo "imagem": caminho dentro de site/, ex.: "imagens/x/hospital.webp")
   function imagemHtml(src) {
-    return src ? `<figure class="cena-imagem"><img src="${esc(src)}" alt="" loading="lazy"></figure>` : "";
+    if (!src) return "";
+    if (/\.(mp4|webm)$/i.test(src)) return `<figure class="cena-imagem"><video src="${esc(src)}" autoplay muted loop playsinline></video></figure>`;
+    return `<figure class="cena-imagem"><img src="${esc(src)}" alt="" loading="lazy"></figure>`;
   }
 
   function feita(a) {
@@ -506,6 +510,7 @@ const Cenas = (() => {
       }
       camp.fim = true;
       camp.flags.revelado = cena.revela;
+      Cinematica.primeiraVez(grupo(), cena.revela);
     }
     salvar();
     render();
