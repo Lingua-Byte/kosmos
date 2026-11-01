@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Exo+2:wght@400;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/oficina.css?v=2">
+  <link rel="stylesheet" href="css/oficina.css?v=3">
 </head>
 <body>
   <header class="topo">
@@ -22,6 +22,7 @@
     </div>
     <div class="topo-acoes">
       <span id="estado-salvo" class="estado-salvo"></span>
+      <button id="btn-nuvem" class="btn">☁ Nuvem</button>
       <button id="btn-exportar" class="btn">Exportar</button>
       <label class="btn">Importar<input id="btn-importar" type="file" accept="application/json" hidden></label>
     </div>
@@ -37,8 +38,11 @@
 
   <main id="conteudo" class="conteudo"></main>
 
+  <dialog id="dialogo-nuvem" class="dialogo"></dialog>
+
   <script src="js/data.js?v=26"></script>
   <script src="js/motor.js?v=1"></script>
-  <script src="js/oficina.js?v=2"></script>
+  <script src="js/nuvem.js?v=1"></script>
+  <script src="js/oficina.js?v=3"></script>
 </body>
 </html>
