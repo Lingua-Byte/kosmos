@@ -166,6 +166,10 @@ const Cenas = (() => {
 
   let viagem = null; // { titulo, linhas } enquanto o jogador está a caminho
   let rolarTopo = true; // a próxima tela de texto começa do alto
+  // O texto aparece um pedaço (parágrafo) de cada vez, digitado; as escolhas só no fim
+  let lidos = 1;
+  let digitadoChave = "";
+  let digitando = null; // { terminar }
   let ultimoTexto = "";
 
   // Chave da arte do palco: a cena da história, a abertura da profissão ou o lugar
@@ -211,7 +215,10 @@ const Cenas = (() => {
   function render() {
     const m = missao();
     const chaveTexto = `${camp.cena}|${camp.lugar}|${resultado ? resultado.texto : ""}|${viagem ? 1 : 0}`;
-    if (chaveTexto !== ultimoTexto) rolarTopo = true;
+    if (chaveTexto !== ultimoTexto) {
+      rolarTopo = true;
+      lidos = 1;
+    }
     ultimoTexto = chaveTexto;
     const ctx = contexto();
     const cena = camp.cena ? m.cenas[camp.cena] : null;
@@ -290,6 +297,7 @@ const Cenas = (() => {
         <button data-acao="mesa"><b>‹</b><span>Mesa</span></button>
       </nav>
       ${painel ? `<div class="painel-sobre" role="dialog" aria-modal="true">${painelHtml()}</div>` : ""}`;
+    aplicarLeitura(chaveTexto);
     // texto novo começa do topo (a área do texto rola sozinha, a página não)
     const corpoEl = document.getElementById("cena-corpo");
     if (corpoEl && rolarTopo) corpoEl.scrollTop = 0;
@@ -318,6 +326,58 @@ const Cenas = (() => {
     if (!src) return "";
     if (/\.(mp4|webm)$/i.test(src)) return `<figure class="cena-imagem"><video src="${esc(src)}" autoplay muted loop playsinline></video></figure>`;
     return `<figure class="cena-imagem"><img src="${esc(src)}" alt="" loading="lazy"></figure>`;
+  }
+
+  // Mostra um parágrafo por vez; ele é digitado (uma vez). Enquanto houver texto
+  // pela frente, no lugar das escolhas aparece um "continuar" dentro do próprio texto.
+  function aplicarLeitura(chave) {
+    if (digitando) digitando.parar();
+    const corpo = document.getElementById("cena-corpo");
+    if (!corpo || viagem) return;
+    const ps = [...corpo.querySelectorAll(".narracao p")];
+    if (!ps.length) return;
+    lidos = Math.min(Math.max(1, lidos), ps.length);
+    ps.forEach((p, i) => (p.hidden = i !== lidos - 1)); // um pedaço de cada vez: só o atual fica na tela
+    const resto = [...corpo.querySelectorAll(".opcoes, .livre, .acoes-lugar, .pergunta-vez, .efeitos-resultado, .tutorial, .ameaca, .pendente, .livre-resposta, .cena-grupo, [data-acao='seguir']")];
+    const falta = lidos < ps.length;
+    const mais = document.createElement("button");
+    mais.className = "ler-mais";
+    mais.dataset.acao = "ler-mais";
+    mais.innerHTML = "Continuar <b>▸</b>";
+    ps[ps.length - 1].parentNode.after(mais);
+    const fim = () => {
+      digitando = null;
+      mais.hidden = !falta;
+      resto.forEach((e) => (e.hidden = falta));
+    };
+    const chaveP = `${chave}#${lidos}`;
+    if (chaveP === digitadoChave || reduzirMovimento) return fim();
+    digitadoChave = chaveP;
+    mais.hidden = true;
+    resto.forEach((e) => (e.hidden = true));
+    digitar(ps[lidos - 1], fim);
+  }
+
+  // escreve o parágrafo letra a letra, com o tique leve a cada poucas letras
+  function digitar(el, fim) {
+    const texto = el.textContent;
+    el.textContent = "";
+    el.classList.add("digitando");
+    let i = 0;
+    const passo = () => {
+      i = Math.min(texto.length, i + 2);
+      el.textContent = texto.slice(0, i);
+      if (i % 6 === 0) Som.tecla();
+      if (i >= texto.length) terminar();
+    };
+    const relogio = setInterval(passo, 28);
+    function terminar() {
+      clearInterval(relogio);
+      el.textContent = texto;
+      el.classList.remove("digitando");
+      fim();
+    }
+    digitando = { terminar, parar: () => { clearInterval(relogio); el.textContent = texto; digitando = null; } };
   }
 
   // Uma ação, ou um lugar, pode aparecer só depois de certas marcas (se: { flag, semFlag, algum, relogioMin })
@@ -460,7 +520,7 @@ const Cenas = (() => {
       return `<div class="cena-painel">
         <h3>Diário <button class="btn-texto" data-painel="">Fechar</button></h3>
         ${questsHtml()}
-        <h4 class="diario-sub">Pistas</h4>
+        <h4 class="diario-sub">O que você sabe</h4>
         ${camp.pistas.length ? `<ul class="pistas">${camp.pistas.map((x) => `<li>${esc(x.texto)}</li>`).join("")}</ul>` : `<p class="sub">Nenhuma pista ainda.</p>`}
         <p class="dica">Com ${m.pistasParaMarco} pistas você pode seguir a multidão quando quiser. Com o relógio cheio, não há mais escolha.</p>
       </div>`;
@@ -840,6 +900,11 @@ const Cenas = (() => {
       return render();
     }
     const acao = t.dataset.acao;
+    if (acao === "ler-mais") {
+      if (digitando) return digitando.terminar();
+      lidos++;
+      return render();
+    }
     if (acao === "chamado") return entrarCena("chamado");
     if (acao === "opcoes") return Opcoes.abrir();
     if (acao === "seguir" && resultado) return resultado.depois();
@@ -883,6 +948,11 @@ const Cenas = (() => {
     }
     if (acao === "tradutor") return Tradutor.abrir(missao().eixo);
     if (acao === "mesa") return abrirMesa();
+  });
+
+  // tocar no texto enquanto ele é digitado mostra ele inteiro
+  document.addEventListener("click", (ev) => {
+    if (digitando && ev.target.closest && ev.target.closest("#cena-corpo .narracao")) digitando.terminar();
   });
 
   document.addEventListener("keydown", (ev) => {

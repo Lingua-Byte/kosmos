@@ -9,6 +9,7 @@ const Opcoes = (() => {
     sons: { ligados: true, volume: 80 },
     vozes: { ligadas: true, volume: 100 },
     narrador: { volume: 100 },
+    digitacao: { ligada: true, volume: 60 },
   };
   let atual = null;
 
@@ -55,7 +56,10 @@ const Opcoes = (() => {
     ev.preventDefault();
     pedidoInstalar = ev;
   });
-  const instalado = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  // já é o app? (instalado pelo navegador, o .exe do PC ou o .apk do Android)
+  const instalado = () =>
+    matchMedia("(display-mode: standalone)").matches || navigator.standalone === true ||
+    /Electron|KOSMOS-App|; wv\)/.test(navigator.userAgent);
 
   // ---------- O menu ----------
   const SERVICOS = [
@@ -92,6 +96,7 @@ const Opcoes = (() => {
         ${linha("musica", "ligada", "Música do jogo", "A trilha de cada eixo (YouTube).")}
         ${linha("sons", "ligados", "Sons dos menus", "Os cliques e “clunks” de abrir mapa, diário, bolsa, ficha.", true)}
         ${linha("vozes", "ligadas", "Vozes dos personagens", "Cada personagem com a sua voz quando fala.", true)}
+        ${linha("digitacao", "ligada", "Som de digitação", "O tique leve enquanto o texto da missão aparece.", true)}
         ${narr ? `
         <div class="op-linha">
           <div class="op-cabeca"><strong>Narrador</strong>
@@ -110,17 +115,15 @@ const Opcoes = (() => {
         <div class="op-servicos">${SERVICOS.map(([nome, url, extra]) => `<a href="${url}" target="_blank" rel="noopener" class="op-servico">${nome}${extra ? `<small>${extra}</small>` : ""}</a>`).join("")}</div>
         <p class="op-desc pequeno">Tocar o Spotify, o Deezer ou o Apple Music <i>dentro</i> do jogo exige uma conta de desenvolvedor em cada serviço (e Premium, no caso do Spotify). Dá para fazer depois, se você quiser.</p>
       </section>
-      <section class="op-secao"><h3>App</h3>
-        ${instalado()
-          ? `<p class="op-desc">Você está jogando pelo app instalado. Ele se atualiza sozinho sempre que o jogo muda.</p>`
-          : `<p class="op-desc">Instale o KOSMOS como app (Android ou PC): abre em tela cheia, com ícone próprio, e se atualiza sozinho.</p>
+      ${instalado() ? "" : `<section class="op-secao"><h3>App</h3>
+        ${`<p class="op-desc">Instale o KOSMOS como app (Android ou PC): abre em tela cheia, com ícone próprio, e se atualiza sozinho.</p>
              <div class="op-servicos">
                <a class="op-servico" href="https://github.com/Lingua-Byte/kosmos/releases/download/apps/KOSMOS.apk" download>⬇ Android<small>KOSMOS.apk</small></a>
                <a class="op-servico" href="https://github.com/Lingua-Byte/kosmos/releases/download/apps/KOSMOS-instalador.exe" download>⬇ PC (Windows)<small>instalador .exe</small></a>
              </div>
              <button class="op-acao" data-op-instalar>Instalar pelo navegador</button>
 `}
-      </section>`;
+      </section>`}`;
   }
 
   let dialogo = null;
@@ -163,6 +166,7 @@ const Opcoes = (() => {
       dialogo.innerHTML = html();
     }
     if (t.dataset.opTestar === "sons") Som.tocar("abrir");
+    if (t.dataset.opTestar === "digitacao") [0, 60, 120, 180, 240].forEach((d) => setTimeout(() => Som.tecla(), d));
     if (t.dataset.opTestar === "vozes") Vozes.testar();
     if (t.hasAttribute("data-op-minha-musica")) {
       mudar("musica", { ligada: false });

@@ -49,7 +49,7 @@ const EIXOS = {
     mundo: "Urbano",
     glifo: "∃",
     lema: "A população começa lentamente a perder individualidade.",
-    descricao: "Horror urbano, epidemia psicológica e paranoia coletiva. A presença da Entidade gera radiação anômala, surtos e interferências elétricas.",
+    descricao: "Horror de sobrevivência urbano: a cidade enlouquece numa noite. Comida, abrigo, gente para proteger e Riscadores nas ruas. A presença da Entidade gera radiação anômala, surtos e interferências elétricas.",
     papelRotulo: "Profissão",
     papeis: {
       tank: { nome: "Agente de Campo / Segurança", desc: "Linha de frente nas zonas de surto. Contém, protege, resiste." },
@@ -313,7 +313,23 @@ const TRACOS = [
     efeito: "+1 dado para manter a calma e lutar. −1 para perceber perigo: você vai em frente." },
   { nome: "Frieza", bonus: ["convergencia"], penalidade: ["social"],
     efeito: "+1 dado na Convergência: você observa sem se entregar. −1 para convencer e acalmar." },
+  { nome: "Instinto de sobrevivência", bonus: ["perigo", "fuga"], penalidade: ["proteger"],
+    efeito: "+1 dado para perceber perigo e fugir. −1 para proteger alguém: você se salva primeiro." },
+  { nome: "Teimosia", bonus: ["forca"], penalidade: ["fuga"],
+    efeito: "+1 dado para forçar e aguentar dor, frio e cansaço. −1 para fugir: você não recua." },
+  { nome: "Fé", bonus: ["medo"], penalidade: ["simbolos"],
+    efeito: "+1 dado para manter a calma diante do horror. −1 para ler símbolos: você recusa o que não entende." },
+  { nome: "Mãos habilidosas", bonus: ["conserto"], penalidade: ["combate"],
+    efeito: "+1 dado para abrir, consertar e desmontar. −1 para lutar: suas mãos são de outro ofício." },
+  { nome: "Liderança", bonus: ["proteger", "social"], penalidade: ["investigar"],
+    efeito: "+1 dado para proteger e convencer. −1 para investigar: você olha para o grupo, não para os detalhes." },
+  { nome: "Sensibilidade", bonus: ["convergencia"], penalidade: ["medo"],
+    efeito: "+1 dado na Convergência e para sentir o fenômeno. −1 para manter a calma: você sente demais." },
+  { nome: "Raiva contida", bonus: ["combate", "forca"], penalidade: ["social"],
+    efeito: "+1 dado para lutar e forçar. −1 para convencer e acalmar: dá para ver no seu rosto." },
 ];
+
+const SEXOS = { homem: "Homem", mulher: "Mulher" };
 
 const IDADE = { min: 16, max: 90 };
 
@@ -431,6 +447,7 @@ const PRECO_EQUIPAMENTO = {
 // A mesma pessoa nos três eixos: o que ela faz em cada mundo e onde a história dela começa ali.
 // Escrito na Oficina do Autor (aba Profissões); cada ponto de entrada tem a sua abertura nas missões.
 // Na criação, o jogador escolhe na lista ou escreve a sua ("Outra") e escolhe o ponto de entrada.
+// papel: a classe que vem com a profissão (tank = linha de frente, healer = cuidado, support = apoio).
 
 const PONTOS_ENTRADA = {
   "x": [
@@ -575,7 +592,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Médico(a) de bordo",
    "ponto": "enfermaria"
-  }
+  },
+  "papel": "healer"
  },
  {
   "id": "enfermeiro",
@@ -590,7 +608,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Enfermeiro(a) de bordo",
    "ponto": "enfermaria"
-  }
+  },
+  "papel": "healer"
  },
  {
   "id": "psicologo",
@@ -605,7 +624,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Psicólogo(a) de bordo",
    "ponto": "enfermaria"
-  }
+  },
+  "papel": "healer"
  },
  {
   "id": "farmaceutico",
@@ -620,7 +640,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) de suprimentos médicos",
    "ponto": "enfermaria"
-  }
+  },
+  "papel": "healer"
  },
  {
   "id": "veterinario",
@@ -635,7 +656,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) do biotério",
    "ponto": "laboratorio"
-  }
+  },
+  "papel": "healer"
  },
  {
   "id": "policial",
@@ -650,7 +672,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Oficial de segurança",
    "ponto": "seguranca"
-  }
+  },
+  "papel": "tank"
  },
  {
   "id": "bombeiro",
@@ -665,7 +688,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) de contenção de incêndio",
    "ponto": "motores"
-  }
+  },
+  "papel": "tank"
  },
  {
   "id": "agente-da-defesa-civil",
@@ -680,7 +704,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Oficial de protocolo",
    "ponto": "ponte"
-  }
+  },
+  "papel": "tank"
  },
  {
   "id": "militar",
@@ -695,7 +720,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Guarda do arsenal",
    "ponto": "seguranca"
-  }
+  },
+  "papel": "tank"
  },
  {
   "id": "seguranca-particular",
@@ -710,7 +736,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Escolta da Comandante",
    "ponto": "seguranca"
-  }
+  },
+  "papel": "tank"
  },
  {
   "id": "professor",
@@ -725,7 +752,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Instrutor(a) da escola de bordo",
    "ponto": "alojamentos"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "pesquisador",
@@ -740,7 +768,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Cientista do laboratório",
    "ponto": "laboratorio"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "estudante",
@@ -755,7 +784,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Cadete",
    "ponto": "ponte"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "tecnico",
@@ -770,7 +800,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) de sensores",
    "ponto": "laboratorio"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "geografo",
@@ -785,7 +816,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Navegador(a)",
    "ponto": "ponte"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "padre-pastor",
@@ -800,7 +832,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Capelão de bordo",
    "ponto": "alojamentos"
-  }
+  },
+  "papel": "healer"
  },
  {
   "id": "padeiro",
@@ -815,7 +848,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Cozinheiro(a) de bordo",
    "ponto": "servicos"
-  }
+  },
+  "papel": "healer"
  },
  {
   "id": "comerciante",
@@ -830,7 +864,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Intendente",
    "ponto": "servicos"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "garcom-garconete",
@@ -845,7 +880,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Atendente do refeitório",
    "ponto": "servicos"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "vendedor",
@@ -860,7 +896,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Operador(a) do hangar",
    "ponto": "motores"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "advogado",
@@ -875,7 +912,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Oficial de registro",
    "ponto": "ponte"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "bancario",
@@ -890,7 +928,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Contador(a) de recursos",
    "ponto": "servicos"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "programador",
@@ -905,7 +944,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Programador(a) da DOMUS",
    "ponto": "laboratorio"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "secretario",
@@ -920,7 +960,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Assistente da ponte",
    "ponto": "ponte"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "motorista-de-aplicativo",
@@ -935,7 +976,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Piloto(a) de transporte interno",
    "ponto": "motores"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "entregador",
@@ -950,7 +992,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) de logística",
    "ponto": "servicos"
-  }
+  },
+  "papel": "tank"
  },
  {
   "id": "camelo",
@@ -965,7 +1008,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Trocador(a) do mercado de bordo",
    "ponto": "servicos"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "pedreiro",
@@ -980,7 +1024,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) de manutenção estrutural",
    "ponto": "motores"
-  }
+  },
+  "papel": "tank"
  },
  {
   "id": "mecanico",
@@ -995,7 +1040,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Engenheiro(a) de motores",
    "ponto": "motores"
-  }
+  },
+  "papel": "tank"
  },
  {
   "id": "eletricista",
@@ -1010,7 +1056,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) do reator",
    "ponto": "motores"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "jardineiro",
@@ -1025,7 +1072,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) de hidroponia",
    "ponto": "hidroponia"
-  }
+  },
+  "papel": "healer"
  },
  {
   "id": "piloto",
@@ -1040,7 +1088,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Piloto(a) da Domus",
    "ponto": "ponte"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "mineiro",
@@ -1055,7 +1104,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) de coleta de minério",
    "ponto": "motores"
-  }
+  },
+  "papel": "tank"
  },
  {
   "id": "musico",
@@ -1070,7 +1120,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Músico(a) da sala de lazer",
    "ponto": "alojamentos"
-  }
+  },
+  "papel": "healer"
  },
  {
   "id": "jornalista",
@@ -1085,7 +1136,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Operador(a) de comunicações",
    "ponto": "ponte"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "ator",
@@ -1100,7 +1152,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Animador(a) de lazer",
    "ponto": "alojamentos"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "artista-plastico",
@@ -1115,7 +1168,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Designer de hologramas",
    "ponto": "laboratorio"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "desempregado",
@@ -1130,7 +1184,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Tripulante em licença",
    "ponto": "alojamentos"
-  }
+  },
+  "papel": "tank"
  },
  {
   "id": "aposentado",
@@ -1145,7 +1200,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Veterano(a) aposentado(a)",
    "ponto": "alojamentos"
-  }
+  },
+  "papel": "healer"
  },
  {
   "id": "dono",
@@ -1160,7 +1216,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Colono(a)",
    "ponto": "alojamentos"
-  }
+  },
+  "papel": "healer"
  },
  {
   "id": "trabalhador",
@@ -1175,7 +1232,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) do turno da noite",
    "ponto": "servicos"
-  }
+  },
+  "papel": "support"
  },
  {
   "id": "guarda-florestal",
@@ -1190,7 +1248,8 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) de reciclagem de ar",
    "ponto": "hidroponia"
-  }
+  },
+  "papel": "tank"
  },
  {
   "id": "marceneiro",
@@ -1205,6 +1264,7 @@ const PROFISSOES = [
   "z": {
    "nome": "Técnico(a) de fabricação",
    "ponto": "servicos"
-  }
+  },
+  "papel": "tank"
  }
 ];

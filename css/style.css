@@ -1439,3 +1439,52 @@ body.tema-z .dialogo-opcoes { background: #030914; }
 /* convite para instalar o app, discreto, embaixo do botão de entrar */
 .link-instalar { display: inline-block; margin-top: 18px; color: var(--texto-suave); font-size: 0.85rem; letter-spacing: 0.1em; text-decoration: none; border-bottom: 1px solid currentColor; }
 .link-instalar:hover { color: var(--acento); }
+
+/* ===================== Criação numa tela só =====================
+   Topo com Voltar e os passos; o conteúdo no meio (só ele rola, se precisar);
+   o Continuar sempre visível embaixo, sem precisar rolar até ele. */
+#tela-criacao.ativa { display: flex; flex-direction: column; height: 100vh; height: 100dvh; padding: 10px 12px 0; overflow: hidden; }
+#tela-criacao .criacao { flex: 1; min-height: 0; display: flex; flex-direction: column; width: 100%; max-width: 980px; margin: 0 auto; }
+#tela-criacao .criacao-topo { flex: none; margin-bottom: 18px; }
+#tela-criacao .passo { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 4px 2px 12px; }
+#tela-criacao .passo h2 { margin: 0 0 6px; }
+#tela-criacao .criacao-rodape {
+  flex: none; margin: 0; padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--painel-borda); flex-wrap: nowrap;
+}
+#tela-criacao .criacao-rodape .aviso { min-width: 0; font-size: 0.85rem; }
+#tela-criacao .criacao-rodape .btn-primario { flex: none; }
+
+/* profissões com a classe junto */
+.chip-oficio { display: inline-flex; flex-direction: column; align-items: flex-start; line-height: 1.2; }
+.chip-oficio small { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; }
+.grupo-oficio h3 { margin: 12px 0 6px; }
+
+/* "Onde você desperta?": as três cartas cabem na tela do celular */
+@media (max-width: 700px) {
+  .cartas-eixos { grid-template-columns: 1fr; gap: 8px; }
+  .cartas-eixos .carta { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto auto; column-gap: 12px; row-gap: 2px; padding: 10px 12px; }
+  .cartas-eixos .carta-glifo { grid-row: 1 / span 3; font-size: 2.2rem; align-self: center; }
+  .cartas-eixos .carta strong { font-size: 1rem; }
+  .cartas-eixos .carta-desc { font-size: 0.8rem; line-height: 1.35; }
+  .cartas-eixos .carta em { display: none; }
+  .cartas-tracos { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cartas-tracos .carta { padding: 10px; }
+  .cartas-tracos .carta strong { font-size: 0.95rem; }
+  .cartas-tracos .carta-desc { font-size: 0.78rem; }
+}
+
+/* texto em partes: o "Continuar" fica dentro do texto, logo depois do último parágrafo */
+.ler-mais {
+  display: inline-flex; align-items: center; gap: 8px; margin: 2px 0 12px; padding: 8px 16px;
+  font: inherit; font-size: 0.9rem; letter-spacing: 0.08em; cursor: pointer;
+  color: var(--acento); background: none; border: 1px solid var(--acento); border-radius: 999px;
+}
+.ler-mais b { animation: piscar-seta 1.2s ease-in-out infinite; font-weight: 400; }
+@keyframes piscar-seta { 50% { opacity: 0.3; transform: translateX(3px); } }
+.narracao p.digitando::after { content: "▌"; color: var(--acento); animation: piscar-seta 0.8s steps(2) infinite; }
+@media (prefers-reduced-motion: reduce) { .ler-mais b, .narracao p.digitando::after { animation: none; } }
+
+/* na criação, os controles flutuantes sobem para não cobrir o Continuar */
+body:has(#tela-criacao.ativa) .controle-musica { top: 8px; bottom: auto; right: 10px; }
+#tela-criacao .criacao-topo { padding-right: 132px; }
