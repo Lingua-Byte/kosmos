@@ -553,5 +553,106 @@ const Criador = (() => {
     return jm;
   }
 
-  return { painel, aplicar, acrescentar, tirar, tirarItem, novoItem, dadosNovos, importar, exportar, rotuloTeste, pegar, PRONTOS_IDS };
+  // ======================= Conferir antes de publicar =======================
+  // erros: o jogo não roda assim · avisos: roda, mas talvez não seja o que você quer
+  function validar(m) {
+    const erros = [], avisos = [];
+    const no = (id) => m.nos.find((n) => n.id === id);
+    const nome = (n) => `“${n.titulo || "(sem título)"}”`;
+    if (!m.jogo?.id) erros.push("A missão não tem “Id no jogo” (menu ⋯).");
+    const cenas = m.nos.filter((n) => ["entrada", "cena", "final"].includes(n.tipo) && n.d);
+    if (!m.nos.some((n) => n.tipo === "entrada" && n.d)) erros.push("Falta um bloco de Abertura (a primeira cena).");
+    if (!cenas.some((n) => n.d.final)) avisos.push("Nenhuma cena encerra a missão (marque “esta cena encerra a missão” no final).");
+    const chaves = {};
+    for (const n of m.nos.filter((x) => x.d && (x.d.chave || x.tipo === "escolha"))) {
+      const k = n.tipo === "escolha" ? "e:" + (n.d.id || n.id) : (n.tipo === "lugar" ? "l:" : "c:") + n.d.chave;
+      if (chaves[k] && n.tipo !== "escolha") erros.push(`Dois blocos com o mesmo id no jogo: ${nome(n)} e ${nome(chaves[k])}.`);
+      chaves[k] = n;
+    }
+    for (const n of cenas) {
+      if (!String(n.d.texto || "").trim() && !(n.d.variantes || []).length) avisos.push(`A cena ${nome(n)} está sem texto.`);
+      const filhos = m.ligacoes.filter((l) => l.de === n.id && no(l.para)?.tipo === "escolha");
+      if (!filhos.length && !n.d.final && !m.ligacoes.some((l) => l.de === n.id && no(l.para)?.tipo === "lugar"))
+        avisos.push(`A cena ${nome(n)} não tem escolhas: o jogador fica preso nela.`);
+    }
+    for (const e of m.nos.filter((x) => x.tipo === "escolha" && x.d)) {
+      const pai = m.ligacoes.some((l) => l.para === e.id && ["entrada", "cena", "final", "lugar", "mapa"].includes(no(l.de)?.tipo));
+      if (!pai) erros.push(`A escolha ${nome(e)} não pertence a nenhuma cena ou lugar (ligue uma cena a ela).`);
+      const t = e.d.teste?.tipo || "nenhum";
+      const res = e.d.res || {};
+      if (t !== "nenhum" && (!res.sucesso || !res.falha)) erros.push(`A escolha ${nome(e)} tem teste, mas falta o resultado de sucesso ou de falha.`);
+      if (t === "nenhum" && !res.resultado) erros.push(`A escolha ${nome(e)} não tem resultado.`);
+      if (t === "situacao" && !e.d.teste.situacao) erros.push(`A escolha ${nome(e)} tem teste de dados sem situação.`);
+    }
+    const lugares = m.nos.filter((n) => n.tipo === "lugar" && n.d);
+    if (lugares.length && !lugares.some((n) => n.d.inicial)) avisos.push("Nenhum lugar está marcado como “a missão começa aqui”.");
+    if (lugares.length && !m.nos.some((n) => n.tipo === "mapa")) avisos.push("Há lugares, mas falta o bloco de Exploração (relógio e acontecimentos).");
+    return { erros, avisos };
+  }
+
+  // ======================= Publicar no jogo =======================
+  // No PC com o servidor do projeto: grava site/missoes/ (depois, publicar.sh leva para o site).
+  // Em qualquer aparelho: grava direto no GitHub do jogo (branches main e gh-pages), com o token
+  // da ☁. O token precisa ter acesso ao repositório do jogo, além do privado.
+  const b64 = (t) => {
+    const bytes = new TextEncoder().encode(t);
+    let bin = "";
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    return btoa(bin);
+  };
+  const deB64 = (s) => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g, "")), (c) => c.charCodeAt(0)));
+
+  async function publicar(m, { repo = "Lingua-Byte/kosmos", aviso = () => {} } = {}) {
+    const jm = exportar(m);
+    const texto = JSON.stringify(jm, null, 2) + "\n";
+    // 1. servidor do projeto no PC
+    try {
+      if ((await fetch("__versao", { cache: "no-store" })).ok) {
+        const r = await fetch("__missao", { method: "POST", headers: { "Content-Type": "application/json" }, body: texto });
+        if (r.ok) return { onde: "pc", id: jm.id };
+      }
+    } catch {}
+    // 2. GitHub do jogo
+    const c = typeof Nuvem !== "undefined" && Nuvem.config();
+    if (!c) throw new Error("conecte a ☁ (na Oficina) para publicar deste aparelho");
+    const cab = { Authorization: `Bearer ${c.token}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" };
+    const url = (caminho) => `https://api.github.com/repos/${repo}/contents/${caminho}`;
+    async function ler(caminho, ref) {
+      const r = await fetch(`${url(caminho)}?ref=${ref}&t=${Date.now()}`, { headers: cab, cache: "no-store" });
+      if (r.status === 404) return null;
+      if (!r.ok) throw erroGitHub(r.status);
+      return r.json();
+    }
+    async function gravar(caminho, conteudo, ref) {
+      const atual = await ler(caminho, ref);
+      const r = await fetch(url(caminho), {
+        method: "PUT", headers: { ...cab, "Content-Type": "application/json" },
+        body: JSON.stringify({ message: `Missão publicada pelo Criador: ${jm.id}`, content: b64(conteudo), branch: ref, ...(atual ? { sha: atual.sha } : {}) }),
+      });
+      if (!r.ok) throw erroGitHub(r.status);
+    }
+    for (const [ref, pasta] of [["main", "site/missoes/"], ["gh-pages", "missoes/"]]) {
+      aviso(`Gravando em ${ref}…`);
+      await gravar(`${pasta}${jm.id}.json`, texto, ref);
+      const ind = await ler(`${pasta}indice.json`, ref);
+      const ids = ind ? JSON.parse(deB64(ind.content)) : [];
+      if (!ids.includes(jm.id)) {
+        ids.push(jm.id);
+        await gravar(`${pasta}indice.json`, JSON.stringify(ids, null, 2) + "\n", ref);
+      }
+    }
+    return { onde: "github", id: jm.id };
+  }
+  function erroGitHub(status) {
+    const e = new Error({
+      401: "o token não é válido (ou expirou)",
+      403: "o token não tem permissão de escrever no repositório do jogo",
+      404: "o token não tem acesso ao repositório do jogo",
+      409: "o arquivo mudou no meio do caminho; tente de novo",
+    }[status] || `erro ${status} do GitHub`);
+    e.status = status;
+    return e;
+  }
+
+  return { painel, aplicar, acrescentar, tirar, tirarItem, novoItem, dadosNovos, importar, exportar, validar, publicar, rotuloTeste, pegar, PRONTOS_IDS };
 })();

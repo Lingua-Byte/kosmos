@@ -702,6 +702,17 @@ $("#dg-missao").addEventListener("change", (ev) => {
 });
 
 const dlgMissao = $("#dg-dialogo-missao");
+// o que impede (erros) ou merece atenção (avisos) antes de publicar
+function publicarHtml(m) {
+  const { erros, avisos } = Criador.validar(m);
+  const lista = (l, cls) => (l.length ? `<ul class="cr-validacao ${cls}">${l.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : "");
+  return `${lista(erros, "erros")}${lista(avisos, "avisos")}
+    ${!erros.length && !avisos.length ? `<p class="ajuda">✓ Tudo certo para publicar.</p>` : ""}
+    ${m.jogo?.publicadoEm ? `<p class="ajuda">Publicada pela última vez em ${new Date(m.jogo.publicadoEm).toLocaleString("pt-BR")}.</p>` : ""}
+    <div class="linha-botoes"><button class="btn primario" data-m="publicar" ${erros.length ? "disabled" : ""}>Publicar no jogo</button></div>
+    <p class="ajuda" id="dg-publicar-estado">${erros.length ? "Corrija os erros acima para publicar." : "Ela aparece na Mesa para quem tiver liberado (missão anterior terminada e as marcas pedidas)."}</p>`;
+}
+
 // as missões que podem vir antes/depois: as do jogo e as deste criador
 function opcoesMissao(atual) {
   const ids = new Map();
@@ -729,6 +740,8 @@ $("#dg-missao-menu").addEventListener("click", () => {
       <label class="campo"><span>Quem fala (NPCs: um por linha, id: nome)</span><textarea id="dg-j-npcs" rows="4">${esc(Object.entries(m.jogo?.npcs || {}).map(([k, v]) => `${k}: ${v}`).join("\n"))}</textarea></label>
       <details class="cr-secao"><summary>Avançado (JSON)</summary><textarea id="dg-j-avancado" rows="6">${esc(JSON.stringify(m.jogo?.avancado || {}, null, 1))}</textarea></details>
       <div class="linha-botoes"><button class="btn primario" data-m="salvar">Salvar</button><button class="btn" data-m="baixar">Baixar a missão (formato do jogo)</button><button class="btn perigo" data-m="apagar">Apagar missão</button></div>
+      <h3>Publicar no jogo</h3>
+      <div id="dg-publicar">${publicarHtml(m)}</div>
       <hr>` : ""}
     <div class="linha-botoes"><button class="btn" data-m="nova">+ Nova missão em branco</button></div>
     <h3>Importar do jogo</h3>
@@ -761,6 +774,25 @@ dlgMissao.addEventListener("click", (ev) => {
     mudou();
     dlgMissao.close();
     return render();
+  }
+  if (b.dataset.m === "publicar") {
+    const caixa = $("#dg-publicar-estado");
+    if (!confirm(`Publicar “${m.titulo}” no jogo? A versão que está no jogo hoje com o id “${m.jogo?.id}” é substituída.`)) return;
+    b.disabled = true;
+    caixa.textContent = "Publicando…";
+    Criador.publicar(m, { aviso: (t) => (caixa.textContent = t) })
+      .then((r) => {
+        m.jogo = { ...(m.jogo || {}), publicadoEm: new Date().toISOString() };
+        mudou();
+        caixa.innerHTML = r.onde === "pc"
+          ? "✓ Gravada no projeto (site/missoes). Para ir para o site, rode o publicar.sh (ou peça ao Claude)."
+          : "✓ Publicada. Em 1 ou 2 minutos ela está no jogo, em todos os aparelhos.";
+      })
+      .catch((e) => {
+        caixa.innerHTML = `✗ Não publicou: ${esc(e.message)}.${[403, 404].includes(e.status) ? `<br>No GitHub, edite o seu token (Settings → Developer settings → Fine-grained tokens), acrescente o repositório <b>kosmos</b> em <i>Repository access</i> com <i>Contents: Read and write</i>, e tente de novo.` : ""}`;
+      })
+      .finally(() => (b.disabled = false));
+    return;
   }
   if (b.dataset.m === "baixar") {
     const jm = Criador.exportar(m);

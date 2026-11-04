@@ -55,6 +55,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     # A Oficina do Autor salva aqui o que foi escrito: site/dados/oficina.json
     # (a versão anterior fica em ferramentas/oficina-anterior.json, fora do site)
     def do_POST(self):
+        if self.path == "/__missao":
+            return self.publicar_missao()
         if self.path != "/__oficina":
             self.send_error(404)
             return
@@ -78,6 +80,39 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     f.write(antigo)
         with open(destino, "w", encoding="utf-8") as f:
             f.write(novo)
+        corpo = b'{"ok": true}'
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(corpo)))
+        self.end_headers()
+        self.wfile.write(corpo)
+
+    # Criador de missões (diagramas.html → Publicar), no PC: grava site/missoes/<id>.json e o índice
+    def publicar_missao(self):
+        try:
+            tamanho = int(self.headers.get("Content-Length", 0))
+            if tamanho > 20_000_000:
+                raise ValueError("grande demais")
+            missao = json.loads(self.rfile.read(tamanho).decode("utf-8"))
+            mid = str(missao.get("id", ""))
+            if not mid or not all(c.isalnum() or c in "-_" for c in mid) or "cenas" not in missao:
+                raise ValueError("missão sem id ou sem cenas")
+        except (ValueError, UnicodeDecodeError, AttributeError) as erro:
+            self.send_error(400, str(erro))
+            return
+        pasta = os.path.join(SITE, "missoes")
+        os.makedirs(pasta, exist_ok=True)
+        with open(os.path.join(pasta, mid + ".json"), "w", encoding="utf-8") as f:
+            f.write(json.dumps(missao, ensure_ascii=False, indent=2) + "\n")
+        indice = os.path.join(pasta, "indice.json")
+        ids = []
+        if os.path.exists(indice):
+            with open(indice, encoding="utf-8") as f:
+                ids = json.load(f)
+        if mid not in ids:
+            ids.append(mid)
+        with open(indice, "w", encoding="utf-8") as f:
+            f.write(json.dumps(ids, ensure_ascii=False, indent=2) + "\n")
         corpo = b'{"ok": true}'
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
