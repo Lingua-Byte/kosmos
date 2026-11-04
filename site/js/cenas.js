@@ -201,7 +201,8 @@ const Cenas = (() => {
     const m = missao();
     if (camp.cena) {
       const cena = m.cenas[camp.cena];
-      return { eixo: m.eixo, chave: `cena-${camp.cena}`, titulo: cena.titulo, icone: EIXOS[m.eixo].glifo };
+      // cada missão tem as suas cenas: a arte leva o nome da missão (prologo-x-cena-salto.webp)
+      return { eixo: m.eixo, chave: `${m.id}-cena-${camp.cena}`, titulo: cena.titulo, icone: EIXOS[m.eixo].glifo };
     }
     const lugar = m.lugares[camp.lugar];
     const titulo = texto(lugar.nome, contexto());
@@ -209,7 +210,9 @@ const Cenas = (() => {
       const t = m.trabalho(grupo()[0]);
       return { eixo: m.eixo, chave: `abertura-${t.arte || t.ponto}`, titulo, icone: lugar.icone };
     }
-    return { eixo: m.eixo, chave: `lugar-${camp.lugar}`, titulo, icone: lugar.icone };
+    // o lugar é o da cidade (cidade-x.js): a mesma arte serve para todas as missões que passam por ele
+    const cid = temCidade() ? Cidade.idDe(m, camp.lugar, grupo()[0]) : null;
+    return { eixo: m.eixo, chave: `lugar-${cid || camp.lugar}`, titulo, icone: lugar.icone };
   }
 
   function palcoNpc(id) {
