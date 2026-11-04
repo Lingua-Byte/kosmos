@@ -89,6 +89,17 @@ const Som = (() => {
       y: (a) => { estalo(a, { freq: 700, dur: 0.05, vol: 0.14, q: 1.5 }); },
       z: (a) => { tom(a, { freq: 1300, fim: 650, dur: 0.09, tipo: "sine", vol: 0.06 }); },
     },
+    // zoom no mapa: um "zum" curto que sobe (aproximar) ou desce (afastar)
+    "zoom-entrar": {
+      x: (a) => { tom(a, { freq: 520, fim: 1500, dur: 0.11, tipo: "sine", vol: 0.05 }); estalo(a, { freq: 2600, dur: 0.015, vol: 0.05, atraso: 0.09 }); },
+      y: (a) => { estalo(a, { freq: 1200, dur: 0.06, vol: 0.1, q: 3 }); },
+      z: (a) => { tom(a, { freq: 700, fim: 1700, dur: 0.12, tipo: "sine", vol: 0.05 }); },
+    },
+    "zoom-sair": {
+      x: (a) => { tom(a, { freq: 1500, fim: 520, dur: 0.11, tipo: "sine", vol: 0.05 }); estalo(a, { freq: 1800, dur: 0.015, vol: 0.05, atraso: 0.09 }); },
+      y: (a) => { estalo(a, { freq: 600, dur: 0.06, vol: 0.1, q: 3 }); },
+      z: (a) => { tom(a, { freq: 1700, fim: 700, dur: 0.12, tipo: "sine", vol: 0.05 }); },
+    },
     // sair andando para outro lugar
     viajar: {
       x: (a) => { [0, 0.09, 0.18].forEach((d) => tom(a, { freq: 880, dur: 0.04, vol: 0.03, atraso: d })); tom(a, { freq: 660, dur: 0.18, vol: 0.03, atraso: 0.3 }); },

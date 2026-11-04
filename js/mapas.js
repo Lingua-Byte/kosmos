@@ -109,18 +109,149 @@ const Mapas = (() => {
           <span>${nome(l)}</span>
           <small>${l.desconhecido ? "não conhece · +1" : l.atual ? "você está aqui" : l.fora ? "fora desta missão" : l.pendentes != null ? (l.pendentes ? l.pendentes + " a fazer" : "nada novo") : ""}</small>
         </button>`;
+    const vid = compacta ? "ficha" : "missao";
+    const v = vistaDe(vid);
     return `
-      <div class="mapa-ilustrado mapa-${eixo}" style="--tensao:${t.toFixed(2)}">
+      <div class="mapa-ilustrado mapa-${eixo}" style="--tensao:${t.toFixed(2)}" data-vista="${vid}">
+        <div class="mapa-mundo" style="${estiloVista(v)}">
         ${desenho({ centro, tensao: t, bairros })}
         ${bairros.map((b) => `<span class="mapa-bairro ${b.conhecido ? "" : "nevoa"}" style="left:${b.x}%;top:${b.y}%">${b.conhecido ? b.nome : "???"}</span>`).join("")}
         <span class="mapa-centro" style="left:${centro.x}%;top:${centro.y}%">${centro.nome}</span>
         ${fora.map(pino).join("")}
         ${ordem.map(pino).join("")}
+        </div>
+        <div class="mapa-zoom" aria-label="Zoom do mapa">
+          <button data-zoom-mapa="1" aria-label="Aproximar">+</button><button data-zoom-mapa="-1" aria-label="Afastar">−</button><button data-zoom-mapa="0" aria-label="Ver o mapa inteiro">⟲</button>
+        </div>
       </div>
       ${!ordem.length ? "" : compacta
         ? `<p class="mapa-legenda-corrida">${[...new Set(ordem.map((l) => l.bairro || ""))].map((b) => `${b ? `<b>${b}:</b> ` : ""}${ordem.filter((l) => (l.bairro || "") === b).map((l) => `<i>${l.n}</i> ${l.nome}`).join(" · ")}`).join("<br>")}</p>`
         : `<div class="mapa-legenda">${ordem.map(linha).join("")}</div>`}`;
   }
+
+  // ---------- Zoom e arrasto (roda do mouse, pinça, botões, arrastar) ----------
+  // A vista de cada mapa (o da missão e o da ficha) fica guardada enquanto o jogo está aberto:
+  // redesenhar a tela não perde o zoom. x e y em % do próprio mapa; z de 1 (inteiro) a 4.
+  const vistas = {};
+  const vistaDe = (id) => (vistas[id] = vistas[id] || { z: 1, x: 0, y: 0 });
+  const estiloVista = (v) => `transform:translate(${v.x}%,${v.y}%) scale(${v.z});--z:${v.z}`;
+  const prender = (v) => {
+    v.z = Math.min(4, Math.max(1, v.z));
+    v.x = Math.min(0, Math.max(100 * (1 - v.z), v.x));
+    v.y = Math.min(0, Math.max(100 * (1 - v.z), v.y));
+    return v;
+  };
+  function aplicar(caixa) {
+    const mundo = caixa.querySelector(".mapa-mundo");
+    if (mundo) mundo.setAttribute("style", estiloVista(vistaDe(caixa.dataset.vista)));
+    caixa.classList.toggle("ampliado", vistaDe(caixa.dataset.vista).z > 1.01);
+  }
+  let ultimoSom = 0;
+  function somZoom(entrar) {
+    const agora = performance.now();
+    if (agora - ultimoSom < 140 || typeof Som === "undefined") return;
+    ultimoSom = agora;
+    Som.tocar(entrar ? "zoom-entrar" : "zoom-sair");
+  }
+  // aproxima/afasta em volta de um ponto (px, py em % do mapa)
+  function zoomEm(caixa, fator, px = 50, py = 50) {
+    const v = vistaDe(caixa.dataset.vista);
+    const z = Math.min(4, Math.max(1, v.z * fator));
+    if (Math.abs(z - v.z) < 0.001) return;
+    somZoom(z > v.z);
+    v.x = px - (px - v.x) * (z / v.z);
+    v.y = py - (py - v.y) * (z / v.z);
+    v.z = z;
+    prender(v);
+    aplicar(caixa);
+  }
+  const pontoEm = (caixa, ev) => {
+    const r = caixa.getBoundingClientRect();
+    return { x: ((ev.clientX - r.left) / r.width) * 100, y: ((ev.clientY - r.top) / r.height) * 100 };
+  };
+
+  document.addEventListener("wheel", (ev) => {
+    const caixa = ev.target.closest && ev.target.closest(".mapa-ilustrado[data-vista]");
+    if (!caixa) return;
+    ev.preventDefault();
+    const p = pontoEm(caixa, ev);
+    zoomEm(caixa, ev.deltaY < 0 ? 1.2 : 1 / 1.2, p.x, p.y);
+  }, { passive: false });
+
+  document.addEventListener("click", (ev) => {
+    const b = ev.target.closest && ev.target.closest("[data-zoom-mapa]");
+    if (!b) return;
+    const caixa = b.closest(".mapa-ilustrado");
+    const z = +b.dataset.zoomMapa;
+    if (z === 0) {
+      const v = vistaDe(caixa.dataset.vista);
+      if (v.z > 1.01) somZoom(false);
+      Object.assign(v, { z: 1, x: 0, y: 0 });
+      aplicar(caixa);
+    } else zoomEm(caixa, z > 0 ? 1.5 : 1 / 1.5);
+  });
+
+  // arrastar com um dedo/mouse; pinça com dois dedos. Um toque sem arrastar continua sendo clique.
+  let gesto = null;
+  const dedos = new Map();
+  let engolirClique = false;
+  document.addEventListener("pointerdown", (ev) => {
+    const caixa = ev.target.closest && ev.target.closest(".mapa-ilustrado[data-vista]");
+    if (!caixa || ev.target.closest(".mapa-zoom")) return;
+    dedos.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+    const v = vistaDe(caixa.dataset.vista);
+    if (dedos.size === 2) {
+      const [a, b] = [...dedos.values()];
+      gesto = { tipo: "pinca", caixa, dist: Math.hypot(a.x - b.x, a.y - b.y) };
+    } else gesto = { tipo: "arrasto", caixa, x0: ev.clientX, y0: ev.clientY, vx: v.x, vy: v.y, moveu: false, id: ev.pointerId };
+  });
+  document.addEventListener("pointermove", (ev) => {
+    if (!gesto || !dedos.has(ev.pointerId)) return;
+    dedos.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+    const caixa = gesto.caixa;
+    if (gesto.tipo === "pinca" && dedos.size >= 2) {
+      const [a, b] = [...dedos.values()];
+      const dist = Math.hypot(a.x - b.x, a.y - b.y);
+      const meio = pontoEm(caixa, { clientX: (a.x + b.x) / 2, clientY: (a.y + b.y) / 2 });
+      zoomEm(caixa, dist / gesto.dist, meio.x, meio.y);
+      gesto.dist = dist;
+      engolirClique = true;
+      return;
+    }
+    if (gesto.tipo !== "arrasto") return;
+    const dx = ev.clientX - gesto.x0, dy = ev.clientY - gesto.y0;
+    if (!gesto.moveu && Math.hypot(dx, dy) < 6) return;
+    const v = vistaDe(caixa.dataset.vista);
+    if (v.z <= 1.01) return; // inteiro: não há para onde arrastar
+    if (!gesto.moveu) {
+      gesto.moveu = true;
+      try { caixa.setPointerCapture(gesto.id); } catch {}
+      caixa.classList.add("arrastando");
+    }
+    const r = caixa.getBoundingClientRect();
+    v.x = gesto.vx + (dx / r.width) * 100;
+    v.y = gesto.vy + (dy / r.height) * 100;
+    prender(v);
+    aplicar(caixa);
+  });
+  const soltar = (ev) => {
+    dedos.delete(ev.pointerId);
+    if (!gesto) return;
+    if (gesto.moveu) engolirClique = true;
+    gesto.caixa.classList.remove("arrastando");
+    if (!dedos.size) gesto = null;
+  };
+  document.addEventListener("pointerup", soltar);
+  document.addEventListener("pointercancel", soltar);
+  // depois de arrastar, o clique que vem junto não viaja para o lugar embaixo do dedo
+  window.addEventListener("click", (ev) => {
+    if (!engolirClique) return;
+    engolirClique = false;
+    if (ev.target.closest && ev.target.closest(".mapa-ilustrado")) {
+      ev.stopPropagation();
+      ev.preventDefault();
+    }
+  }, true);
 
   return { html };
 })();

@@ -994,7 +994,7 @@ const Cenas = (() => {
     const m = missao();
     if (viagem) return;
     // todo botão da missão faz o seu clique; menus têm o som próprio
-    if (t.dataset.painel === undefined && !t.dataset.ir) Som.tocar(["ficha", "tradutor", "mesa"].includes(t.dataset.acao) ? "abrir" : "clique");
+    if (t.dataset.painel === undefined && !t.dataset.ir && !t.dataset.zoomMapa) Som.tocar(["ficha", "tradutor", "mesa"].includes(t.dataset.acao) ? "abrir" : "clique");
     if (t.dataset.opcao !== undefined) {
       const doLugar = t.dataset.lugar === "1";
       const lista = doLugar ? acoesDoLugar() : opcoesDaCena(m.cenas[camp.cena]);
