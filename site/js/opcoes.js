@@ -92,6 +92,7 @@ const Opcoes = (() => {
     const narr = null; // o narrador (voz que lê o texto) saiu: agora as vozes são à moda antiga
     return `
       <div class="op-topo"><h2>Opções</h2><button class="op-fechar" data-op-fechar>Fechar</button></div>
+      ${contaHtml()}
       ${jogoHtml()}
       <section class="op-secao"><h3>Som</h3>
         ${linha("musica", "ligada", "Música do jogo", typeof MusicaPropria !== "undefined" && MusicaPropria.conexao() ? "A trilha de cada eixo (as suas músicas, guardadas no aparelho)." : "A trilha de cada eixo (YouTube).")}
@@ -170,6 +171,61 @@ const Opcoes = (() => {
     setTimeout(() => location.reload(), 600);
   }
 
+  // Conta na nuvem (conta.js): entrar com e-mail + código, para continuar no celular e no PC
+  let contaEmail = "";
+  let contaPasso = "email"; // "email" | "codigo"
+  let contaMsg = "";
+  function contaHtml() {
+    if (typeof Conta === "undefined" || !Conta.configurada()) return "";
+    const u = Conta.usuario();
+    const sync = Conta.ultimaSync();
+    return `<section class="op-secao"><h3>Conta</h3>
+      ${u ? `
+        <p class="op-desc">Conectado como <b>${esc(u.email)}</b>. Personagens, partidas e saves ficam iguais no celular, no PC e nos apps.${sync ? ` Última sincronização: ${sync.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}.` : ""}</p>
+        <div class="op-jogo"><button class="op-acao" data-op-conta="sync">Sincronizar agora</button><button class="op-acao" data-op-conta="sair">Sair da conta</button></div>`
+      : contaPasso === "email" ? `
+        <p class="op-desc">Entre para continuar o mesmo jogo no celular e no PC. Sem senha: você recebe um código por e-mail.</p>
+        <div class="op-trilha-form"><input id="op-conta-email" type="email" inputmode="email" autocomplete="email" placeholder="seu e-mail" value="${esc(contaEmail)}"><button class="op-acao" data-op-conta="enviar">Receber código</button></div>`
+      : `
+        <p class="op-desc">Mandamos um código para <b>${esc(contaEmail)}</b>. Digite aqui (olhe também no spam).</p>
+        <div class="op-trilha-form"><input id="op-conta-codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="código"><button class="op-acao" data-op-conta="confirmar">Entrar</button><button class="op-acao" data-op-conta="voltar">Outro e-mail</button></div>`}
+      ${contaMsg ? `<p class="op-desc pequeno">${contaMsg}</p>` : ""}
+    </section>`;
+  }
+
+  async function conta(acao) {
+    const redesenhar = () => (dialogo.innerHTML = html());
+    try {
+      if (acao === "enviar") {
+        contaEmail = dialogo.querySelector("#op-conta-email").value.trim();
+        if (!/^\S+@\S+\.\S+$/.test(contaEmail)) { contaMsg = "Digite um e-mail válido."; return redesenhar(); }
+        contaMsg = "Enviando…";
+        redesenhar();
+        await Conta.enviarCodigo(contaEmail);
+        contaPasso = "codigo";
+        contaMsg = "";
+      }
+      if (acao === "confirmar") {
+        contaMsg = "Entrando…";
+        const codigo = dialogo.querySelector("#op-conta-codigo").value;
+        redesenhar();
+        await Conta.confirmarCodigo(contaEmail, codigo);
+        contaPasso = "email";
+        contaMsg = "Pronto! O seu progresso agora fica na nuvem.";
+      }
+      if (acao === "voltar") { contaPasso = "email"; contaMsg = ""; }
+      if (acao === "sync") { contaMsg = "Sincronizando…"; redesenhar(); await Conta.sincronizar(); contaMsg = "Sincronizado."; }
+      if (acao === "sair") {
+        if (!confirm("Sair da conta neste aparelho? O progresso continua na nuvem e neste aparelho.")) return;
+        await Conta.sair();
+        contaMsg = "";
+      }
+    } catch (e) {
+      contaMsg = `Não deu: ${e.message}.`;
+    }
+    redesenhar();
+  }
+
   // Jogo: salvar/carregar e voltar ao menu inicial
   function jogoHtml() {
     const naInicial = document.querySelector("#tela-inicio.ativa");
@@ -232,6 +288,7 @@ const Opcoes = (() => {
       dialogo.innerHTML = html();
     }
     if (t.dataset.opTrilha) trilhaPropria(t.dataset.opTrilha);
+    if (t.dataset.opConta) conta(t.dataset.opConta);
     if (t.dataset.opJogo === "saves") {
       dialogo.close();
       return Saves.abrir();

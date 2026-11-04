@@ -228,7 +228,11 @@ function voltarAoMenu() {
 function mostrarCarregarInicio() {
   const b = $("#btn-carregar-inicio");
   if (b) b.hidden = !(typeof Saves !== "undefined" && Saves.todos().length);
+  // conta na nuvem: aparece quando está configurada e o jogador ainda não entrou
+  const c = $("#btn-conta-inicio");
+  if (c) c.hidden = !(typeof Conta !== "undefined" && Conta.configurada() && !Conta.usuario());
 }
+$("#btn-conta-inicio").addEventListener("click", () => Opcoes.abrir());
 $("#btn-carregar-inicio").addEventListener("click", () => {
   Musica.tocar();
   Saves.abrir();
