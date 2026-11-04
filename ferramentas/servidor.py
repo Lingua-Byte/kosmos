@@ -94,6 +94,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             if tamanho > 20_000_000:
                 raise ValueError("grande demais")
             missao = json.loads(self.rfile.read(tamanho).decode("utf-8"))
+            # as tendências dos personagens (herói, anti-herói, vilão) vão num arquivo próprio
+            if isinstance(missao, dict) and "tendencias" in missao and "cenas" not in missao:
+                pasta = os.path.join(SITE, "missoes")
+                os.makedirs(pasta, exist_ok=True)
+                with open(os.path.join(pasta, "personagens.json"), "w", encoding="utf-8") as f:
+                    f.write(json.dumps(missao, ensure_ascii=False, indent=2) + "\n")
+                corpo = b'{"ok": true}'
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(corpo)))
+                self.end_headers()
+                self.wfile.write(corpo)
+                return
             mid = str(missao.get("id", ""))
             if not mid or not all(c.isalnum() or c in "-_" for c in mid) or "cenas" not in missao:
                 raise ValueError("missão sem id ou sem cenas")

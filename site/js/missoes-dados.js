@@ -14,6 +14,11 @@
 const MissoesDados = (() => {
   // desbloqueio das missões que ainda estão só no código
   const PADRAO = { "x1-manha": { anterior: "prologo-x" }, "prologo-x": { proxima: "x1-manha" } };
+  // tendência de cada personagem pronto (herói, anti-herói, vilão): missoes/personagens.json
+  let TENDENCIAS = {};
+  const tendenciaDe = (p) => (p && (p.tendencia || TENDENCIAS[p.pronto])) || "";
+  // atitude de cada NPC com o personagem (fica na ficha: p.atitudes = { abe: 2 })
+  const atitudeDe = (p, npc) => ((p && p.atitudes) || {})[npc] || 0;
 
   // ---------- condições (as mesmas do motor, mais classe, rodada e Ressonância/Dissonância) ----------
   function condicao(se, ctx) {
@@ -36,7 +41,17 @@ const MissoesDados = (() => {
     if (se.resMin != null && (p.ressonancia || 0) < se.resMin) return false;
     if (se.disMin != null && (p.dissonancia || 0) < se.disMin) return false;
     if (se.ponto && (ctx.trabalho || {}).ponto !== se.ponto) return false;
+    if (se.tendencia && tendenciaDe(p) !== se.tendencia) return false;
+    for (const [npc, n] of Object.entries(se.atitudeMin || {})) if (atitudeDe(p, npc) < n) return false;
+    for (const [npc, n] of Object.entries(se.atitudeMax || {})) if (atitudeDe(p, npc) > n) return false;
     return true;
+  }
+
+  // o texto do botão de uma escolha: a fala do personagem que está jogando
+  function textoOpcao(op, ctx) {
+    if (!op.textoVariantes?.length) return op.texto;
+    const v = op.textoVariantes.find((x) => x.texto && condicao(x.se, ctx));
+    return tokens(v ? v.texto : op.texto, ctx);
   }
 
   function tokens(t, ctx) {
@@ -108,6 +123,10 @@ const MissoesDados = (() => {
   const pronto = (async () => {
     for (const [id, d] of Object.entries(PADRAO)) if (window.MISSOES?.[id]) Object.assign(MISSOES[id], { ...d, ...MISSOES[id] });
     try {
+      const r = await fetch("missoes/personagens.json", { cache: "no-store" });
+      if (r.ok) TENDENCIAS = (await r.json()).tendencias || {};
+    } catch {}
+    try {
       const r = await fetch("missoes/indice.json", { cache: "no-store" });
       if (!r.ok) return;
       const ids = await r.json();
@@ -126,5 +145,5 @@ const MissoesDados = (() => {
     return [].concat(m.desbloqueio?.marca || []).every((k) => (p.marcas || []).includes(k));
   }
 
-  return { pronto, adaptar, condicao, textoDe, resultado, liberada };
+  return { pronto, adaptar, condicao, textoDe, textoOpcao, resultado, liberada, tendenciaDe };
 })();
