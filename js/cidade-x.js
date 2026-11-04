@@ -9,56 +9,57 @@
 //   O lugar inicial "trabalho" do prólogo depende de quem joga (ORIGENS_X[...].cidade ou o ponto).
 // · Lugar da missão que o personagem não conhece aparece como "?" e custa +1 no relógio
 //   (achar o caminho). Os lugares conhecidos fora da missão aparecem apagados no mapa.
-// As posições seguem três colunas (oeste 16, centro 50, leste 84) para os nomes não se encostarem.
+// As posições seguem o mapa de referência do autor (Artes/mapa-port-halden-referencia.webp):
+// universidade ao norte, porto e docas ao sul. regiao = elipse do bairro [cx, cy, rx, ry] para a névoa.
 // =====================================================================
 
 const CIDADE_X = {
   nome: "Port Halden",
-  centro: { x: 50, y: 50, nome: "Praça Central" },
+  centro: { x: 50, y: 52, nome: "Praça Central" },
   bairros: {
-    universidade: { nome: "Universidade", x: 33, y: 11 },
-    westside: { nome: "Westside", x: 33, y: 30 },
-    distrito9: { nome: "9º Distrito", x: 33, y: 58 },
-    docas: { nome: "Docas", x: 33, y: 85 },
-    centro: { nome: "Centro", x: 67, y: 41 },
-    maple: { nome: "Maple Heights", x: 67, y: 12 },
-    midtown: { nome: "Midtown", x: 67, y: 55 },
-    eastside: { nome: "Eastside", x: 67, y: 80 },
+    universidade: { nome: "Universidade", x: 52, y: 20, regiao: [51, 14, 20, 15] },
+    westside: { nome: "Westside", x: 26, y: 29, regiao: [19, 39, 16, 21] },
+    distrito9: { nome: "9º Distrito", x: 22, y: 64, regiao: [19, 70, 18, 15] },
+    docas: { nome: "Docas", x: 47, y: 79, regiao: [50, 87, 28, 11] },
+    centro: { nome: "Centro", x: 51, y: 38, regiao: [50, 49, 21, 21] },
+    maple: { nome: "Maple Heights", x: 87, y: 21, regiao: [83, 24, 19, 16] },
+    midtown: { nome: "Midtown", x: 87, y: 45, regiao: [83, 50, 14, 13] },
+    eastside: { nome: "Eastside", x: 84, y: 68, regiao: [82, 77, 22, 19] },
   },
   lugares: {
     // Universidade
     universidade: { nome: "Instituto de Física", bairro: "universidade", x: 50, y: 6, icone: "Σ" },
-    laboratorio: { nome: "Laboratório de Radiação", bairro: "universidade", x: 50, y: 16, icone: "☢" },
+    laboratorio: { nome: "Laboratório de Radiação", bairro: "universidade", x: 60, y: 14, icone: "☢" },
     // Westside
-    kphn: { nome: "Rádio KPHN", bairro: "westside", x: 16, y: 8, icone: "◖" },
-    hollister: { nome: "Hollister & Crane", bairro: "westside", x: 16, y: 18, icone: "▤" },
-    "distrito-4": { nome: "4º Distrito", bairro: "westside", x: 16, y: 29, icone: "★" },
-    galeria: { nome: "Galeria da 5ª Avenida", bairro: "westside", x: 16, y: 40, icone: "⌂" },
+    kphn: { nome: "Rádio KPHN", bairro: "westside", x: 15, y: 35, icone: "◖" },
+    hollister: { nome: "Hollister & Crane", bairro: "westside", x: 25, y: 41, icone: "▤" },
+    "distrito-4": { nome: "4º Distrito", bairro: "westside", x: 15, y: 49, icone: "★" },
+    galeria: { nome: "Galeria da 5ª Avenida", bairro: "westside", x: 25, y: 53, icone: "⌂" },
     // 9º Distrito
-    "delegacia-9": { nome: "Delegacia do 9º Distrito", bairro: "distrito9", x: 16, y: 52, icone: "★" },
-    ginasio: { nome: "Ginásio Lincoln", bairro: "distrito9", x: 16, y: 64, icone: "▦" },
+    "delegacia-9": { nome: "Delegacia do 9º Distrito", bairro: "distrito9", x: 14, y: 72, icone: "★" },
+    ginasio: { nome: "Ginásio Lincoln", bairro: "distrito9", x: 28, y: 77, icone: "▦" },
     // Docas
-    harbor: { nome: "Harbor Street", bairro: "docas", x: 16, y: 78, icone: "⚓" },
-    "st-brendans": { nome: "St. Brendan's", bairro: "docas", x: 16, y: 90, icone: "✝" },
-    metro: { nome: "Estação Rua 9", bairro: "docas", x: 50, y: 80, icone: "Ⓜ" },
-    "ponto-linha9": { nome: "Ponto de táxi da Linha 9", bairro: "docas", x: 50, y: 90, icone: "◘" },
+    harbor: { nome: "Harbor Street", bairro: "docas", x: 35, y: 86, icone: "⚓" },
+    "st-brendans": { nome: "St. Brendan's", bairro: "docas", x: 45, y: 88, icone: "✝" },
+    metro: { nome: "Estação Rua 9", bairro: "docas", x: 53, y: 90, icone: "Ⓜ" },
+    "ponto-linha9": { nome: "Ponto de táxi da Linha 9", bairro: "docas", x: 64, y: 86, icone: "◘" },
     // Centro
-    aurora: { nome: "Edifício Aurora", bairro: "centro", x: 50, y: 27, icone: "▲" },
-    federal: { nome: "Prédio Federal", bairro: "centro", x: 50, y: 37, icone: "⊟", segredo: true },
-    atlantico: { nome: "Atlantic Tower", bairro: "centro", x: 50, y: 61, icone: "▥" },
-    cerca: { nome: "A cerca do centro", bairro: "centro", x: 50, y: 70, icone: "⊠", segredo: true },
+    aurora: { nome: "Edifício Aurora", bairro: "centro", x: 38, y: 45, icone: "▲" },
+    federal: { nome: "Prédio Federal", bairro: "centro", x: 50, y: 67, icone: "⊟", segredo: true },
+    atlantico: { nome: "Atlantic Tower", bairro: "centro", x: 63, y: 44, icone: "▥" },
+    cerca: { nome: "A cerca do centro", bairro: "centro", x: 39, y: 65, icone: "⊠", segredo: true },
     // Maple Heights
-    casa: { nome: "Sua casa", bairro: "maple", x: 84, y: 6, icone: "⌂" },
-    comunitario: { nome: "Centro comunitário", bairro: "maple", x: 84, y: 16, icone: "♣" },
-    drogaria: { nome: "Drogaria Goodwell", bairro: "maple", x: 84, y: 27, icone: "✚" },
-    abe: { nome: "Conveniência do Abe", bairro: "maple", x: 84, y: 37, icone: "$" },
+    casa: { nome: "Sua casa", bairro: "maple", x: 78, y: 18, icone: "⌂" },
+    comunitario: { nome: "Centro comunitário", bairro: "maple", x: 70, y: 23, icone: "♣" },
+    drogaria: { nome: "Drogaria Goodwell", bairro: "maple", x: 81, y: 31, icone: "✚" },
+    abe: { nome: "Conveniência do Abe", bairro: "maple", x: 90, y: 32, icone: "$" },
     // Midtown
-    "st-lukes": { nome: "St. Luke's Memorial", bairro: "midtown", x: 84, y: 49, icone: "✚" },
-    "st-lukes-ps": { nome: "Pronto-socorro do St. Luke's", bairro: "midtown", x: 84, y: 59, icone: "✚" },
+    "st-lukes": { nome: "St. Luke's Memorial", bairro: "midtown", x: 80, y: 52, icone: "✚" },
+    "st-lukes-ps": { nome: "Pronto-socorro do St. Luke's", bairro: "midtown", x: 89, y: 57, icone: "✚" },
     // Eastside
-    "estacao-9": { nome: "Estação 9 dos Bombeiros", bairro: "eastside", x: 84, y: 70, icone: "♨" },
-    viaduto: { nome: "Viaduto Leste", bairro: "eastside", x: 84, y: 80, icone: "≋" },
-    delancey: { nome: "Delancey Street", bairro: "eastside", x: 84, y: 90, icone: "▣", segredo: true },
+    "estacao-9": { nome: "Estação 9 dos Bombeiros", bairro: "eastside", x: 72, y: 74, icone: "♨" },
+    viaduto: { nome: "Viaduto Leste", bairro: "eastside", x: 88, y: 75, icone: "≋" },
+    delancey: { nome: "Delancey Street", bairro: "eastside", x: 88, y: 85, icone: "▣", segredo: true },
   },
 };
 
@@ -141,8 +142,8 @@ const Cidade = (() => {
     const ids = garantir(p);
     const total = Object.values(C.lugares).filter((l) => !l.segredo).length;
     const html = Mapas.html({
-      eixo: "x", centro: C.centro, tensao: 0, bairros: bairros(ids),
-      lugares: ids.map((id) => ({ id, nome: C.lugares[id].nome, icone: C.lugares[id].icone, x: C.lugares[id].x, y: C.lugares[id].y, fora: true })),
+      eixo: "x", centro: C.centro, tensao: 0, bairros: bairros(ids), compacta: true,
+      lugares: ids.map((id) => ({ id, nome: C.lugares[id].nome, icone: C.lugares[id].icone, x: C.lugares[id].x, y: C.lugares[id].y, trancado: true, bairro: C.bairros[C.lugares[id].bairro].nome })),
     });
     return { html, conhecidos: ids.length, total };
   }

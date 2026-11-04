@@ -66,36 +66,65 @@ const Mapas = (() => {
 
   const ESTILOS = { x: cidade };
 
+  // A geografia por cima do radar, esticada para o tamanho do mapa (0–100 nos dois eixos):
+  // o mar e o porto ao sul, e a região de cada bairro (os desconhecidos ficam na névoa).
+  function geografia(eixo, bairros) {
+    if (eixo !== "x" || !bairros.some((b) => b.regiao)) return "";
+    const regioes = bairros.filter((b) => b.regiao).map((b) => {
+      const [cx, cy, rx, ry] = b.regiao;
+      return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" class="regiao ${b.conhecido ? "conhecida" : "nevoa"}"/>`;
+    }).join("");
+    // a costa: o porto no meio, o mar entrando pelos cantos de baixo
+    const mar = `<path class="mar" d="M0,84 C8,86 12,95 22,96 C30,97 34,93 40,96 L40,100 L0,100 Z"/>
+      <path class="mar" d="M38,97 C48,95 58,96 66,95 C74,94 80,97 88,95 C94,93 97,88 100,86 L100,100 L38,100 Z"/>
+      ${[42, 48, 54, 60, 66, 72].map((x) => `<line class="cais" x1="${x}" y1="95.5" x2="${x}" y2="99.5"/>`).join("")}`;
+    return `<svg class="mapa-geografia" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${mar}${regioes}</svg>`;
+  }
+
   // lugares: nós do mapa. Além dos da missão:
   //   fora: true → lugar que o personagem conhece, mas que não está nesta missão (ponto apagado, sem clique)
   //   desconhecido: true → lugar da missão que ele ainda não conhece ("?", dá para ir, procurando)
   // bairros: [{ nome, x, y, conhecido }] → nomes dos bairros; os desconhecidos aparecem como "???"
-  function html({ eixo, lugares, centro, tensao = 0, bairros = [] }) {
+  // Cada lugar é um alfinete no ponto exato do mapa (só o ícone, para não encostar nos vizinhos);
+  // os nomes ficam numa legenda numerada embaixo, como num mapa de verdade. O alfinete e a
+  // linha da legenda levam ao lugar (data-ir). Lugares "fora" (conhecidos, mas não desta missão)
+  // são pontinhos apagados, só com o nome na legenda.
+  // compacta: true → versão de consulta (ficha): alfinete só com o número e a legenda corrida por bairro
+  function html({ eixo, lugares, centro, tensao = 0, bairros = [], compacta = false }) {
     const desenho = ESTILOS[eixo];
     if (!desenho) return null; // eixo sem mapa ilustrado ainda: a missão usa a lista
     const t = Math.max(0, Math.min(1, tensao));
-    // as colunas das bordas ficam presas à borda (senão o nome passa para fora do mapa)
-    const pos = (l) => (l.x > 66
-      ? `right:${Math.max(1, 100 - l.x - 14)}%;top:${l.y}%;transform:translate(0,-50%)`
-      : l.x < 34 ? `left:${Math.max(1, l.x - 14)}%;top:${l.y}%;transform:translate(0,-50%)` : `left:${l.x}%;top:${l.y}%`);
-    const no = (l) => {
-      if (l.fora) return `<span class="mapa-ponto" style="left:${l.x}%;top:${l.y}%" title="${l.nome}"><i></i><small>${l.nome}</small></span>`;
-      return `
-          <button class="mapa-no ${l.atual ? "atual" : ""} ${l.trancado ? "trancado" : ""} ${l.desconhecido ? "desconhecido" : ""}" style="${pos(l)}"
-            ${l.trancado || l.atual ? "disabled" : `data-ir="${l.id}"`} title="${l.dica || ""}">
-            <b>${l.desconhecido ? "?" : l.icone}</b>
-            <span class="mapa-no-texto"><span>${l.desconhecido ? l.bairro || "Desconhecido" : l.nome}</span>
-            ${l.desconhecido ? `<small>não conhece · +1</small>` : l.atual ? `<small>você está aqui</small>` : l.pendentes != null ? `<small>${l.pendentes ? l.pendentes + " a fazer" : "nada novo"}</small>` : ""}</span>
-          </button>`;
-    };
+    // numeração de cima para baixo, da esquerda para a direita (como se lê o mapa)
+    // só os lugares desta missão ganham número e linha na legenda; os de fora são pontinhos
+    const ordem = lugares.filter((l) => !l.fora).sort((a, b) => (a.y - b.y) || (a.x - b.x));
+    const fora = lugares.filter((l) => l.fora);
+    ordem.forEach((l, i) => (l.n = i + 1));
+    const ir = (l) => (l.trancado || l.atual || l.fora ? "disabled" : `data-ir="${l.id}"`);
+    const nome = (l) => (l.desconhecido ? `${l.bairro || "Lugar"} · ?` : l.nome);
+    const pino = (l) => l.fora
+      ? `<span class="mapa-ponto" style="left:${l.x}%;top:${l.y}%" title="${l.nome}"><i></i></span>`
+      : compacta
+        ? `<span class="mapa-pino mini" style="left:${l.x}%;top:${l.y}%" title="${nome(l)}">${l.n}</span>`
+        : `<button class="mapa-pino ${l.atual ? "atual" : ""} ${l.desconhecido ? "desconhecido" : ""}" style="left:${l.x}%;top:${l.y}%" ${ir(l)} title="${nome(l)}" aria-label="${l.n}. ${nome(l)}">
+          <b>${l.desconhecido ? "?" : l.icone}</b><small>${l.n}</small></button>`;
+    const linha = (l) => `
+        <button class="mapa-legenda-item ${l.atual ? "atual" : ""} ${l.desconhecido ? "desconhecido" : ""} ${l.fora ? "fora" : ""}" ${ir(l)}>
+          <i>${l.n}</i><b>${l.desconhecido ? "?" : l.icone}</b>
+          <span>${nome(l)}</span>
+          <small>${l.desconhecido ? "não conhece · +1" : l.atual ? "você está aqui" : l.fora ? "fora desta missão" : l.pendentes != null ? (l.pendentes ? l.pendentes + " a fazer" : "nada novo") : ""}</small>
+        </button>`;
     return `
       <div class="mapa-ilustrado mapa-${eixo}" style="--tensao:${t.toFixed(2)}">
         ${desenho({ centro, tensao: t })}
+        ${geografia(eixo, bairros)}
         ${bairros.map((b) => `<span class="mapa-bairro ${b.conhecido ? "" : "nevoa"}" style="left:${b.x}%;top:${b.y}%">${b.conhecido ? b.nome : "???"}</span>`).join("")}
         <span class="mapa-centro" style="left:${centro.x}%;top:${centro.y}%">${centro.nome}</span>
-        ${lugares.filter((l) => l.fora).map(no).join("")}
-        ${lugares.filter((l) => !l.fora).map(no).join("")}
-      </div>`;
+        ${fora.map(pino).join("")}
+        ${ordem.map(pino).join("")}
+      </div>
+      ${!ordem.length ? "" : compacta
+        ? `<p class="mapa-legenda-corrida">${[...new Set(ordem.map((l) => l.bairro || ""))].map((b) => `${b ? `<b>${b}:</b> ` : ""}${ordem.filter((l) => (l.bairro || "") === b).map((l) => `<i>${l.n}</i> ${l.nome}`).join(" · ")}`).join("<br>")}</p>`
+        : `<div class="mapa-legenda">${ordem.map(linha).join("")}</div>`}`;
   }
 
   return { html };
