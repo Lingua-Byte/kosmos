@@ -48,6 +48,7 @@ const CIDADE_X = {
     federal: { nome: "Prédio Federal", bairro: "centro", x: 50, y: 67, icone: "⊟", segredo: true },
     atlantico: { nome: "Atlantic Tower", bairro: "centro", x: 63, y: 44, icone: "▥" },
     cerca: { nome: "A cerca do centro", bairro: "centro", x: 39, y: 65, icone: "⊠", segredo: true },
+    biblioteca: { nome: "Biblioteca Municipal", bairro: "centro", x: 61, y: 60, icone: "❡" },
     // Maple Heights
     casa: { nome: "Sua casa", bairro: "maple", x: 78, y: 18, icone: "⌂" },
     comunitario: { nome: "Centro comunitário", bairro: "maple", x: 70, y: 23, icone: "♣" },
