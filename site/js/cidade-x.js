@@ -10,21 +10,21 @@
 // · Lugar da missão que o personagem não conhece aparece como "?" e custa +1 no relógio
 //   (achar o caminho). Os lugares conhecidos fora da missão aparecem apagados no mapa.
 // As posições seguem o mapa de referência do autor (Artes/mapa-port-halden-referencia.webp):
-// universidade ao norte, porto e docas ao sul. regiao = elipse do bairro [cx, cy, rx, ry] para a névoa.
+// universidade ao norte, porto e docas ao sul. forma = contorno do bairro (pontos x, y em %), desenhado com curvas; os desconhecidos ficam na névoa.
 // =====================================================================
 
 const CIDADE_X = {
   nome: "Port Halden",
   centro: { x: 50, y: 52, nome: "Praça Central" },
   bairros: {
-    universidade: { nome: "Universidade", x: 52, y: 20, regiao: [51, 14, 20, 15] },
-    westside: { nome: "Westside", x: 26, y: 29, regiao: [19, 39, 16, 21] },
-    distrito9: { nome: "9º Distrito", x: 22, y: 64, regiao: [19, 70, 18, 15] },
-    docas: { nome: "Docas", x: 47, y: 79, regiao: [50, 87, 28, 11] },
-    centro: { nome: "Centro", x: 51, y: 38, regiao: [50, 49, 21, 21] },
-    maple: { nome: "Maple Heights", x: 87, y: 21, regiao: [83, 24, 19, 16] },
-    midtown: { nome: "Midtown", x: 87, y: 45, regiao: [83, 50, 14, 13] },
-    eastside: { nome: "Eastside", x: 84, y: 68, regiao: [82, 77, 22, 19] },
+    universidade: { nome: "Universidade", x: 52, y: 20, forma: [[30.6, 22.6], [34.3, 6.0], [42.6, 1.2], [55.6, 0], [64.8, 4.8], [70.4, 13.1], [69.4, 23.8], [61.1, 28.6], [42.6, 28.6]] },
+    westside: { nome: "Westside", x: 26, y: 29, forma: [[2.8, 32.1], [7.4, 21.4], [18.5, 16.7], [29.6, 20.2], [32.4, 32.1], [31.5, 50.0], [25.9, 56.0], [13.9, 57.1], [4.6, 52.4]] },
+    distrito9: { nome: "9º Distrito", x: 22, y: 64, forma: [[1.9, 59.5], [13.9, 58.3], [27.8, 60.1], [36.1, 67.3], [36.6, 78.0], [29.6, 82.7], [13.9, 83.3], [2.8, 76.2]] },
+    docas: { nome: "Docas", x: 47, y: 79, forma: [[18.5, 83.9], [32.4, 77.4], [50.0, 76.2], [61.1, 76.8], [73.1, 83.9], [71.3, 92.3], [50.0, 94.6], [27.8, 93.8], [18.5, 90.5]] },
+    centro: { nome: "Centro", x: 51, y: 38, forma: [[31.5, 32.1], [35.2, 29.2], [50.0, 28.6], [66.7, 29.2], [69.9, 38.1], [70.4, 58.9], [63.9, 69.6], [50.0, 73.2], [34.3, 70.8], [31.0, 59.5]] },
+    maple: { nome: "Maple Heights", x: 87, y: 21, forma: [[64.8, 13.7], [69.4, 7.1], [79.6, 6.0], [92.6, 8.3], [99.5, 15.5], [100, 26.2], [97.2, 34.5], [88.0, 35.7], [74.1, 32.7], [68.5, 26.8]] },
+    midtown: { nome: "Midtown", x: 87, y: 45, forma: [[71.3, 40.5], [78.7, 36.3], [92.6, 37.5], [96.3, 46.4], [93.5, 58.9], [83.3, 62.5], [72.7, 60.1]] },
+    eastside: { nome: "Eastside", x: 84, y: 68, forma: [[59.3, 70.2], [72.2, 63.7], [88.9, 64.9], [99.5, 69.6], [100, 83.3], [92.6, 94.6], [78.7, 97.0], [74.5, 85.7], [63.9, 79.2]] },
   },
   lugares: {
     // Universidade
