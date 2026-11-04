@@ -1748,3 +1748,20 @@ body:has(#tela-prontos.ativa) .controle-musica { top: 8px; bottom: auto; right: 
   .mapa-no small { font-size: 0.55rem; }
   .mapa-no b { font-size: 0.85rem; }
 }
+
+/* ===================== Ajustes de leitura (tela inicial, carregamento, texto do jogo) ===================== */
+/* segurar o dedo no texto do jogo não abre o menu de copiar e colar (campos de escrever continuam normais) */
+body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+input, textarea, select, [contenteditable] { -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
+/* a frase embaixo do logo: mais clara e com sombra para descolar da galáxia */
+.pergunta { color: #efe6cf; text-shadow: 0 1px 2px #000, 0 0 14px rgba(0, 0, 0, 0.9); }
+/* o botão de entrar: menos transparente */
+.btn-entrar { background: rgba(20, 16, 8, 0.82); border-width: 2px; color: #fff1cf; text-shadow: 0 1px 2px #000; box-shadow: 0 0 24px rgba(0, 0, 0, 0.6); }
+.btn-entrar:hover { background: rgba(60, 46, 18, 0.92); }
+/* as frases da tela de carregamento: um fundo escuro atrás e letra sólida */
+.frase-transicao { color: #fff3d6; font-style: normal; font-weight: 600; text-shadow: 0 2px 4px #000, 0 0 24px rgba(0, 0, 0, 0.95); }
+.frase-transicao::before {
+  content: ""; position: absolute; left: 50%; top: 50%; width: min(900px, 96vw); height: 40%; transform: translate(-50%, -50%); z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(3, 4, 10, 0.88) 0%, rgba(3, 4, 10, 0.6) 45%, transparent 75%);
+}
+.frase-transicao { isolation: isolate; }

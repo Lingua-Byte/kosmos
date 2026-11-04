@@ -62,6 +62,14 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
 - O eixo seguinte começa **no meio da ação** (não é um segundo prólogo): é o Ato 1, já na fase de Padrões.
 - Escritos/por escrever pelo autor: Urbano (ideia pronta), Medieval (pronto), Espacial (a escrever).
 
+### Estrutura simplificada (decisão do autor, 03/11/2026)
+- O jogo **começa com uma história de contextualização no Eixo Z** (a Domus), depois vem o
+  **Prólogo no Eixo X** (Port Halden). Os eixos **Y e Z só se liberam mais tarde**; o **Z é o Endgame**.
+- Os 9 personagens ficam, e cada um tem uma **tendência**: herói, anti-herói ou vilão. Ainda não
+  está definido quem é quem, nem se a tendência aparece para o jogador.
+- Consequência: por enquanto só o Urbano precisa de origens (as 9 de `origens-x.js`). Origens do
+  Medieval e do Espacial ficam para quando esses eixos abrirem.
+
 ### Personagens e prólogos (modelo "Dragon Age: Origins")
 - **9 personagens prontos**, 3 por classe (Tank, Healer, Support). A criação própria está desligada por enquanto.
 - **3 prólogos, um por mundo**, cada um com **9 origens curtas** (a abertura de cada personagem
