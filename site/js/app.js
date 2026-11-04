@@ -228,9 +228,13 @@ function voltarAoMenu() {
 function mostrarCarregarInicio() {
   const b = $("#btn-carregar-inicio");
   if (b) b.hidden = !(typeof Saves !== "undefined" && Saves.todos().length);
-  // conta na nuvem: aparece quando está configurada e o jogador ainda não entrou
+  // conta na nuvem: sempre à vista (entrar, ou quem está conectado); abre a Conta no menu ⚙
   const c = $("#btn-conta-inicio");
-  if (c) c.hidden = !(typeof Conta !== "undefined" && Conta.configurada() && !Conta.usuario());
+  if (c) {
+    const temConta = typeof Conta !== "undefined" && Conta.configurada();
+    c.hidden = !temConta;
+    if (temConta) c.textContent = Conta.usuario() ? `☁ Conta: ${Conta.usuario().email}` : "☁ Entrar na conta";
+  }
 }
 $("#btn-conta-inicio").addEventListener("click", () => Opcoes.abrir());
 $("#btn-carregar-inicio").addEventListener("click", () => {
@@ -649,8 +653,10 @@ function recursosHtml(p, tipo, eixo) {
       <button class="btn-secundario" data-acao="editar-fim">Pronto</button></div>`;
   }
   const chaves = ehHab ? p.habs : p.itens;
+  // personagem pronto: as habilidades são dele e não se trocam (RPG linear, cada um com o seu kit)
+  const fixas = ehHab && !!p.pronto;
   const resumo = ehHab
-    ? `${Regras.pontosGastos(p)}/${LIMITES.pontosHabilidade} pts`
+    ? (fixas ? "do personagem" : `${Regras.pontosGastos(p)}/${LIMITES.pontosHabilidade} pts`)
     : `carga ${Regras.carga(p)}/${Regras.cargaMax(p)}`;
   const linhas = chaves.map((c) => {
     const it = Regras.item(c);
@@ -672,7 +678,7 @@ function recursosHtml(p, tipo, eixo) {
     </li>`;
   });
   return `<div class="bloco">
-    <h3>${titulo} <small>${resumo}</small> <button class="btn-texto ajustar" data-acao="editar" data-tipo="${tipo}">Ajustar</button></h3>
+    <h3>${titulo} <small>${resumo}</small> ${fixas ? "" : `<button class="btn-texto ajustar" data-acao="editar" data-tipo="${tipo}">Ajustar</button>`}</h3>
     ${linhas.length ? `<ul class="recursos">${linhas.join("")}</ul>` : `<p class="sub">Nada ainda.</p>`}
   </div>`;
 }
@@ -935,6 +941,7 @@ $("#ficha").addEventListener("click", (ev) => {
     Regras.renovar(p, periodo);
     fichaMudou(p, [periodo === "cena" ? "Nova cena: usos por cena renovados." : "Nova sessão: todos os usos renovados."]);
   } else if (t.dataset.acao === "editar") {
+    if (t.dataset.tipo === "hab" && fichaAtual.pronto) return; // habilidades fixas
     editando = t.dataset.tipo;
     renderFicha();
   } else if (t.dataset.acao === "editar-fim") {
