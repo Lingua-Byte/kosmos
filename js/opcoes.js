@@ -171,9 +171,7 @@ const Opcoes = (() => {
     setTimeout(() => location.reload(), 600);
   }
 
-  // Conta na nuvem (conta.js): entrar com e-mail + código, para continuar no celular e no PC
-  let contaEmail = "";
-  let contaPasso = "email"; // "email" | "codigo"
+  // Conta na nuvem (conta.js): e-mail e senha, para continuar o mesmo jogo no celular e no PC
   let contaMsg = "";
   function contaHtml() {
     if (typeof Conta === "undefined" || !Conta.configurada()) return "";
@@ -183,37 +181,31 @@ const Opcoes = (() => {
       ${u ? `
         <p class="op-desc">Conectado como <b>${esc(u.email)}</b>. Personagens, partidas e saves ficam iguais no celular, no PC e nos apps.${sync ? ` Última sincronização: ${sync.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}.` : ""}</p>
         <div class="op-jogo"><button class="op-acao" data-op-conta="sync">Sincronizar agora</button><button class="op-acao" data-op-conta="sair">Sair da conta</button></div>`
-      : contaPasso === "email" ? `
-        <p class="op-desc">Entre para continuar o mesmo jogo no celular e no PC. Sem senha: você recebe um código por e-mail.</p>
-        <div class="op-trilha-form"><input id="op-conta-email" type="email" inputmode="email" autocomplete="email" placeholder="seu e-mail" value="${esc(contaEmail)}"><button class="op-acao" data-op-conta="enviar">Receber código</button></div>`
       : `
-        <p class="op-desc">Mandamos um código para <b>${esc(contaEmail)}</b>. Digite aqui (olhe também no spam).</p>
-        <div class="op-trilha-form"><input id="op-conta-codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="código"><button class="op-acao" data-op-conta="confirmar">Entrar</button><button class="op-acao" data-op-conta="voltar">Outro e-mail</button></div>`}
-      ${contaMsg ? `<p class="op-desc pequeno">${contaMsg}</p>` : ""}
+        <p class="op-desc">Entre para continuar o mesmo jogo no celular e no PC. Primeira vez? Escolha um e-mail e uma senha e toque em Criar conta.</p>
+        <form class="op-trilha-form" data-op-conta-form>
+          <input id="op-conta-email" type="email" inputmode="email" autocomplete="email" placeholder="e-mail">
+          <input id="op-conta-senha" type="password" autocomplete="current-password" placeholder="senha (6 ou mais caracteres)">
+          <div class="op-jogo"><button class="op-acao" data-op-conta="entrar">Entrar</button><button class="op-acao" data-op-conta="criar">Criar conta</button></div>
+        </form>`}
+      ${contaMsg ? `<p class="op-desc pequeno">${esc(contaMsg)}</p>` : ""}
     </section>`;
   }
 
   async function conta(acao) {
     const redesenhar = () => (dialogo.innerHTML = html());
     try {
-      if (acao === "enviar") {
-        contaEmail = dialogo.querySelector("#op-conta-email").value.trim();
-        if (!/^\S+@\S+\.\S+$/.test(contaEmail)) { contaMsg = "Digite um e-mail válido."; return redesenhar(); }
-        contaMsg = "Enviando…";
-        redesenhar();
-        await Conta.enviarCodigo(contaEmail);
-        contaPasso = "codigo";
-        contaMsg = "";
+      if (acao === "entrar" || acao === "criar") {
+        const email = dialogo.querySelector("#op-conta-email").value.trim();
+        const senha = dialogo.querySelector("#op-conta-senha").value;
+        if (!/^\S+@\S+\.\S+$/.test(email)) { contaMsg = "Digite um e-mail válido."; return redesenhar(); }
+        if (senha.length < 6) { contaMsg = "A senha precisa ter pelo menos 6 caracteres."; return redesenhar(); }
+        contaMsg = acao === "criar" ? "Criando a conta…" : "Entrando…";
+        dialogo.querySelector(".op-desc.pequeno")?.remove();
+        if (acao === "criar") await Conta.criarConta(email, senha);
+        else await Conta.entrar(email, senha);
+        contaMsg = acao === "criar" ? "Conta criada! O seu progresso agora fica na nuvem." : "Pronto! Progresso sincronizado.";
       }
-      if (acao === "confirmar") {
-        contaMsg = "Entrando…";
-        const codigo = dialogo.querySelector("#op-conta-codigo").value;
-        redesenhar();
-        await Conta.confirmarCodigo(contaEmail, codigo);
-        contaPasso = "email";
-        contaMsg = "Pronto! O seu progresso agora fica na nuvem.";
-      }
-      if (acao === "voltar") { contaPasso = "email"; contaMsg = ""; }
       if (acao === "sync") { contaMsg = "Sincronizando…"; redesenhar(); await Conta.sincronizar(); contaMsg = "Sincronizado."; }
       if (acao === "sair") {
         if (!confirm("Sair da conta neste aparelho? O progresso continua na nuvem e neste aparelho.")) return;
@@ -224,6 +216,7 @@ const Opcoes = (() => {
       contaMsg = `Não deu: ${e.message}.`;
     }
     redesenhar();
+    if (typeof mostrarCarregarInicio === "function") mostrarCarregarInicio();
   }
 
   // Jogo: salvar/carregar e voltar ao menu inicial
@@ -288,7 +281,10 @@ const Opcoes = (() => {
       dialogo.innerHTML = html();
     }
     if (t.dataset.opTrilha) trilhaPropria(t.dataset.opTrilha);
-    if (t.dataset.opConta) conta(t.dataset.opConta);
+    if (t.dataset.opConta) {
+      ev.preventDefault();
+      conta(t.dataset.opConta);
+    }
     if (t.dataset.opJogo === "saves") {
       dialogo.close();
       return Saves.abrir();

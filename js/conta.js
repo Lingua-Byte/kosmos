@@ -1,4 +1,4 @@
-// Conta do jogador na nuvem (Supabase): entra com o e-mail e um código de 6 dígitos (sem senha),
+// Conta do jogador na nuvem (Supabase): entra com e-mail e senha (criados no próprio jogo),
 // e o progresso (personagens, partidas, saves) fica o mesmo no celular, no PC e nos apps.
 //
 // Como funciona:
@@ -54,7 +54,7 @@ const Conta = (() => {
     if (carregando) return carregando;
     carregando = new Promise((ok) => {
       const s = document.createElement("script");
-      s.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js";
+      s.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.0/dist/umd/supabase.js";
       s.onload = () => {
         cliente = window.supabase.createClient(CONTA_CONFIG.url, CONTA_CONFIG.chave, { auth: { persistSession: true, storageKey: "kosmos.conta.sessao" } });
         ok(cliente);
@@ -65,18 +65,24 @@ const Conta = (() => {
     return carregando;
   }
 
-  // ---------- Entrar e sair ----------
-  async function enviarCodigo(email) {
+  // ---------- Entrar, criar conta e sair ----------
+  // (o projeto não pede confirmação por e-mail: criou, já entrou)
+  async function entrar(email, senha) {
     const c = await iniciarCliente();
     if (!c) throw new Error("sem conexão com o servidor de contas");
-    const { error } = await c.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+    const { data, error } = await c.auth.signInWithPassword({ email, password: senha });
     if (error) throw new Error(traduzir(error.message));
+    usuario = data.user;
+    await sincronizar({ primeiraVez: true });
+    return usuario;
   }
 
-  async function confirmarCodigo(email, codigo) {
+  async function criarConta(email, senha) {
     const c = await iniciarCliente();
-    const { data, error } = await c.auth.verifyOtp({ email, token: codigo.trim(), type: "email" });
+    if (!c) throw new Error("sem conexão com o servidor de contas");
+    const { data, error } = await c.auth.signUp({ email, password: senha });
     if (error) throw new Error(traduzir(error.message));
+    if (!data.session) throw new Error("conta criada, mas não entrou; tente Entrar");
     usuario = data.user;
     await sincronizar({ primeiraVez: true });
     return usuario;
@@ -91,7 +97,9 @@ const Conta = (() => {
 
   function traduzir(msg) {
     if (/rate limit|too many/i.test(msg)) return "muitas tentativas; espere alguns minutos";
-    if (/expired|invalid/i.test(msg)) return "código errado ou vencido; peça outro";
+    if (/invalid login credentials/i.test(msg)) return "e-mail ou senha errados";
+    if (/already registered|already exists/i.test(msg)) return "esse e-mail já tem conta; use Entrar";
+    if (/password/i.test(msg) && /(least|short|weak)/i.test(msg)) return "a senha precisa ter pelo menos 6 caracteres";
     if (/email/i.test(msg) && /invalid/i.test(msg)) return "e-mail inválido";
     return msg;
   }
@@ -202,7 +210,7 @@ const Conta = (() => {
   })();
 
   return {
-    configurada, enviarCodigo, confirmarCodigo, sair, sincronizar,
+    configurada, entrar, criarConta, sair, sincronizar,
     usuario: () => usuario,
     ultimaSync: () => ultimaSync,
   };
