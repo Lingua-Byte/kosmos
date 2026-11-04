@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Exo+2:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/oficina.css?v=5">
-  <link rel="stylesheet" href="css/diagramas.css?v=3">
+  <link rel="stylesheet" href="css/diagramas.css?v=4">
 </head>
 <body class="pagina-diagramas">
   <header class="dg-topo">
@@ -28,7 +28,8 @@
     <nav class="dg-ferramentas" aria-label="Acrescentar bloco">
       <button data-novo="entrada" title="Abertura / origem"><i class="t-entrada"></i><span>Abertura</span></button>
       <button data-novo="cena" title="Cena da história"><i class="t-cena"></i><span>Cena</span></button>
-      <button data-novo="lugar" title="Lugar / exploração livre"><i class="t-lugar"></i><span>Lugar</span></button>
+      <button data-novo="lugar" title="Lugar"><i class="t-lugar"></i><span>Lugar</span></button>
+      <button data-novo="mapa" title="Exploração: relógio, acontecimentos, ações em toda parte"><i class="t-mapa"></i><span>Exploração</span></button>
       <button data-novo="escolha" title="Escolha ou teste"><i class="t-escolha"></i><span>Escolha</span></button>
       <button data-novo="final" title="Final / salto"><i class="t-final"></i><span>Final</span></button>
       <button data-novo="marca" title="Marca que passa para as próximas missões"><i class="t-marca"></i><span>Marca</span></button>
@@ -68,8 +69,10 @@
   <script src="js/missoes/prologo-x.js?v=82"></script>
   <script src="js/missoes/origens-x.js?v=82"></script>
   <script src="js/missoes/x1-manha.js?v=82"></script>
+  <script src="js/cidade-x.js?v=82"></script>
   <script src="js/nuvem.js?v=3"></script>
-  <script src="js/diagramas.js?v=4"></script>
+  <script src="js/criador.js?v=1"></script>
+  <script src="js/diagramas.js?v=5"></script>
   <script>
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
   </script>
