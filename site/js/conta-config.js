@@ -4,6 +4,6 @@
 //   chave: a chave pública "anon" / "publishable" (feita para ficar no site; NÃO é a service_role)
 // Enquanto estiver vazio, o jogo funciona normal, só sem login.
 const CONTA_CONFIG = {
-  url: "",
-  chave: "",
+  url: "https://spwotoclymfnlmrwcqtx.supabase.co",
+  chave: "sb_publishable_sUnS6bFS_tCJFeF09r9y_A_ftmmTNxK",
 };

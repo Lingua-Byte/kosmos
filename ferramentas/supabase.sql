@@ -21,3 +21,7 @@ create policy "jogador cria o próprio progresso" on public.progresso
 drop policy if exists "jogador atualiza o próprio progresso" on public.progresso;
 create policy "jogador atualiza o próprio progresso" on public.progresso
   for update using (auth.uid() = usuario) with check (auth.uid() = usuario);
+
+-- O projeto não expõe tabelas novas sozinho: libera só esta, só para quem entrou na conta
+grant select, insert, update on public.progresso to authenticated;
+revoke all on public.progresso from anon;
