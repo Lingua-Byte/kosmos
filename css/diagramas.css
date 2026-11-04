@@ -111,3 +111,12 @@
   .dg-painel { position: absolute; left: 0; right: 0; bottom: 0; width: auto; max-height: 58%; border-left: 0; border-top: 2px solid var(--acento); border-radius: 14px 14px 0 0; box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5); }
   .dg-topo h1 { display: none; }
 }
+/* o botão de ramo fica no canto de baixo (as setas saem do meio da borda) */
+.dg-no-ramo { top: auto; bottom: -14px; right: -14px; transform: none; }
+.dg-rotulos { z-index: 2; }
+@media (max-width: 760px) {
+  .dg-topo { gap: 6px; padding: 6px 8px; }
+  .dg-topo #btn-nuvem { order: 4; }
+  .dg-topo .estado-salvo { order: 5; flex-basis: 100%; margin: 0; font-size: 0.7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dg-topo .btn { padding: 6px 10px; }
+}

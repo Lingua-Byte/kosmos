@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Exo+2:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/oficina.css?v=5">
-  <link rel="stylesheet" href="css/diagramas.css?v=1">
+  <link rel="stylesheet" href="css/diagramas.css?v=3">
 </head>
 <body class="pagina-diagramas">
   <header class="dg-topo">
@@ -50,6 +50,7 @@
           <g id="dg-linhas"></g>
         </svg>
         <div id="dg-nos"></div>
+        <svg class="dg-ligacoes dg-rotulos" width="1" height="1"><g id="dg-rotulos"></g></svg>
       </div>
       <p id="dg-aviso" class="dg-aviso" hidden></p>
       <p id="dg-vazio" class="dg-vazio" hidden></p>
@@ -68,7 +69,7 @@
   <script src="js/missoes/origens-x.js?v=82"></script>
   <script src="js/missoes/x1-manha.js?v=82"></script>
   <script src="js/nuvem.js?v=3"></script>
-  <script src="js/diagramas.js?v=1"></script>
+  <script src="js/diagramas.js?v=4"></script>
   <script>
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
   </script>
