@@ -12,13 +12,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Exo+2:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/oficina.css?v=5">
-  <link rel="stylesheet" href="css/diagramas.css?v=6">
+  <link rel="stylesheet" href="css/diagramas.css?v=8">
 </head>
 <body class="pagina-diagramas">
   <header class="dg-topo">
     <a href="oficina.html" class="btn-texto" title="Voltar à Oficina">‹ Oficina</a>
     <h1>Diagramas</h1>
     <select id="dg-missao" aria-label="Missão"></select>
+    <button id="btn-assistente" class="btn primario" title="Criar e mudar a missão respondendo perguntas">✦ Assistente</button>
     <button id="dg-missao-menu" class="btn" title="Nome, eixo e resumo da missão">⋯</button>
     <span id="estado-salvo" class="estado-salvo"></span>
     <button id="btn-nuvem" class="btn">☁</button>
@@ -73,6 +74,7 @@
   <script src="js/nuvem.js?v=3"></script>
   <script src="js/criador.js?v=4"></script>
   <script src="js/diagramas.js?v=7"></script>
+  <script src="js/assistente.js?v=2"></script>
   <script>
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
   </script>
