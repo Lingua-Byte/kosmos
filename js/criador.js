@@ -17,6 +17,8 @@
 const Criador = (() => {
   const PRONTOS_IDS = ["frank-brennan", "rosa-delgado", "marcus-bell", "denise-carter", "michael-doyle", "june-albright", "eli-navarro", "tess-monroe", "ray-okafor"];
   const PRONTO_PAPEL = { "frank-brennan": "tank", "rosa-delgado": "tank", "marcus-bell": "tank", "denise-carter": "healer", "michael-doyle": "healer", "june-albright": "healer", "eli-navarro": "support", "tess-monroe": "support", "ray-okafor": "support" };
+  const TENDENCIAS = ["heroi", "anti-heroi", "vilao"];
+  const NOME_TENDENCIA = { heroi: "Herói", "anti-heroi": "Anti-herói", vilao: "Vilão" };
   const nomePronto = (id) => id.split("-").map((p) => p[0].toUpperCase() + p.slice(1)).join(" ");
 
   // ---------- Catálogos (o que dá para escolher em cada campo) ----------
@@ -29,6 +31,7 @@ const Criador = (() => {
     condicaoReq: () => (typeof CONDICOES !== "undefined" ? Object.entries(CONDICOES).map(([k, c]) => [k, c.nome]) : []),
     pronto: () => PRONTOS_IDS.map((id) => [id, nomePronto(id)]),
     classe: () => [["tank", "Tank"], ["healer", "Healer"], ["support", "Support"]],
+    tendencia: () => TENDENCIAS.map((t) => [t, NOME_TENDENCIA[t]]),
     eixo: () => [["x", "∃ Urbano"], ["y", "ᛉ Medieval"], ["z", "◉ Espacial"]],
     prazo: () => [["curta", "curta"], ["media", "média"], ["longa", "longa"]],
     estado: () => [["", "aberta"], ["concluida", "concluída"], ["perdida", "perdida"]],
@@ -42,6 +45,8 @@ const Criador = (() => {
     algumaMarca: ["tem alguma destas marcas", "lista"], pronto: ["só este personagem", "sel:pronto"], classe: ["só esta classe", "sel:classe"],
     ponto: ["só a profissão (ponto)", "txt"], semPronto: ["só personagem criado (não pronto)", "bool"], rodadaMin: ["rodada do perigo a partir de", "num"],
     resMin: ["Ressonância a partir de", "num"], disMin: ["Dissonância a partir de", "num"],
+    tendencia: ["só esta tendência", "sel:tendencia"],
+    atitudeMin: ["NPC gosta pelo menos (ex.: abe:1)", "pares"], atitudeMax: ["NPC gosta no máximo (ex.: abe:-1)", "pares"],
   };
   const REQ = {
     item: ["precisa do equipamento", "sel:equip"], semItem: ["some se tiver o equipamento", "sel:equip"], hab: ["precisa da habilidade", "sel:hab"],
@@ -49,6 +54,7 @@ const Criador = (() => {
     pertence: ["precisa do pertence", "sel:pertence"], condicao: ["só se estiver", "sel:condicaoReq"],
   };
   const EF = {
+    atitude: ["atitude do NPC (ex.: abe:1, moore:-2)", "pares"],
     flag: ["marca o acontecimento (flag)", "lista"], tirarFlag: ["desfaz o acontecimento", "lista"], marca: ["marca no personagem (vai para as próximas)", "lista"],
     quest: ["linha no Diário", "quest"], dinheiro: ["dinheiro (+/−)", "num"], pertence: ["ganha pertences", "pares"], consumir: ["gasta o pertence", "sel:pertence"],
     item: ["ganha equipamento", "sel:equip"], condicao: ["condição", "sel:condicao"], exposicao: ["exposição (+/−)", "num"],
@@ -149,6 +155,15 @@ const Criador = (() => {
       <div class="dg-botoes"><button class="btn" data-novo-item="${caminho}.variantes">+ Variação</button>${acrescimos ? `<button class="btn" data-novo-item="${caminho}.acrescimos">+ Acréscimo</button>` : ""}</div>`;
   }
 
+  // variações de um texto curto: [{ se, texto }] (a primeira que servir vale)
+  function variantesCurtas(rot, caminho, lista = [], ajuda = "") {
+    return secao(`${rot} <small>${lista.length}</small>`, `${ajuda ? `<p class="ajuda">${ajuda}</p>` : ""}
+      ${lista.map((v, i) => `<div class="cr-variante"><div class="cr-variante-topo"><b>Variação ${i + 1}</b> <small>quando:</small><button class="cr-x" data-tirar-item="${caminho}.${i}">✕</button></div>
+        ${linhas("se", `${caminho}.${i}.se`, v.se)}
+        <input data-p="${caminho}.${i}.texto" data-k="txt" value="${esc(v.texto)}" placeholder="o texto para esse caso"></div>`).join("")}
+      <button class="btn" data-novo-item="${caminho}">+ Variação</button>`, !!lista.length);
+  }
+
   function secao(titulo, corpo, aberta = true) {
     return `<details class="cr-secao" ${aberta ? "open" : ""}><summary>${titulo}</summary>${corpo}</details>`;
   }
@@ -162,6 +177,7 @@ const Criador = (() => {
     if (t === "lugar") {
       return `
         ${campoTxt("Nome do lugar", "titulo", n.titulo)}
+        ${variantesCurtas("O nome muda para…", "d.nomeVariantes", d.nomeVariantes, "Ex.: o lugar inicial tem um nome para cada personagem.")}
         <div class="cr-duas">${campoTxt("Ícone", "d.icone", d.icone)}${campoTxt("Id no jogo", "d.chave", d.chave)}</div>
         ${textoHtml("Descrição (o que se vê ao chegar)", "d.descricao", d.descricao || {}, {})}
         ${secao("Só aparece no mapa se…", linhas("se", "d.se", d.se), !!(d.se && Object.keys(d.se).length))}
@@ -244,7 +260,8 @@ const Criador = (() => {
     };
     return `
       <p class="ajuda">Escolha de: <b>${esc(pai ? pai.titulo : "— (ligue a uma cena ou lugar)")}</b></p>
-      ${campoTxt("Texto do botão", "titulo", n.titulo)}
+      ${campoTxt("Texto do botão (a fala ou ação do personagem)", "titulo", n.titulo)}
+      ${variantesCurtas("Cada personagem diz do seu jeito", "d.botaoVariantes", d.botaoVariantes, "O botão muda conforme quem joga: personagem, classe, tendência, marca… A primeira variação que servir vale.")}
       <div class="cr-duas">${campoTxt("Id (voz e ‘feita’)", "d.id", d.id)}${campoTxt("Quem fala (NPC)", "d.npc", d.npc)}</div>
       ${campoTxt("Palavras para o texto livre", "d.palavras", (d.palavras || []).join(", "))}
       ${secao("Teste", `
@@ -520,7 +537,7 @@ const Criador = (() => {
     const destinoDe = (n) => (n.tipo === "lugar" ? "lugar:" : "cena:") + n.d.chave;
     const opcao = (e) => {
       const d = e.d;
-      const op = limpar({ id: d.id || undefined, texto: e.titulo, palavras: d.palavras, npc: d.npc, comum: d.comum, repetivel: d.repetivel, tempo: d.tempo, grupo: d.grupo, se: d.se, req: d.req, rodada: d.rodada });
+      const op = limpar({ id: d.id || undefined, texto: e.titulo, textoVariantes: d.botaoVariantes?.length ? d.botaoVariantes : undefined, palavras: d.palavras, npc: d.npc, comum: d.comum, repetivel: d.repetivel, tempo: d.tempo, grupo: d.grupo, se: d.se, req: d.req, rodada: d.rodada });
       if (d.teste?.tipo === "convergencia") op.convergencia = d.teste.intensidade || 1;
       if (d.teste?.tipo === "situacao") op.situacao = d.teste.situacao;
       for (const [k, tipo] of [["sucesso", "sucesso"], ["falha", "falha"], ["resultado", "segue"]]) {
@@ -531,7 +548,7 @@ const Criador = (() => {
       }
       return op;
     };
-    const jm = { id: m.jogo?.id || m.id, eixo: m.eixo, titulo: m.titulo, resumo: m.resumo, ...limpar({ subtitulo: m.jogo?.subtitulo, fase: m.jogo?.fase, faseTag: m.jogo?.faseTag, npcs: m.jogo?.npcs, anterior: m.jogo?.anterior || undefined, proxima: m.jogo?.proxima || undefined, desbloqueio: m.jogo?.desbloqueio }), ...(m.jogo?.avancado || {}), cenas: {}, lugares: {} };
+    const jm = { id: m.jogo?.id || m.id, eixo: m.eixo, titulo: m.titulo, resumo: m.resumo, ...limpar({ subtitulo: m.jogo?.subtitulo, fase: m.jogo?.fase, faseTag: m.jogo?.faseTag, npcs: m.jogo?.npcs, anterior: m.jogo?.anterior || undefined, proxima: m.jogo?.proxima || undefined, desbloqueio: m.jogo?.desbloqueio, tutorial: m.jogo?.tutorial }), ...(m.jogo?.avancado || {}), cenas: {}, lugares: {} };
     for (const n of m.nos.filter((x) => ["entrada", "cena", "final"].includes(x.tipo) && x.d)) {
       const d = n.d;
       jm.cenas[d.chave] = limpar({ titulo: n.titulo, texto: d.texto, variantes: d.variantes, acrescimos: d.acrescimos, tutorial: d.tutorial, ameaca: d.ameaca, musica: d.musica, final: d.final, revela: d.revela, memoria: d.memoria, marca: d.marca, imagem: d.imagem, opcoes: escolhasDe(n.id).map(opcao) });
@@ -551,6 +568,103 @@ const Criador = (() => {
       if (d.inicial) jm.lugarInicial = d.chave;
     }
     return jm;
+  }
+
+  // ======================= Treino do autor (tutorial jogável) =======================
+  // Uma missão curta na Conveniência do Abe que mostra, com notas ao lado, como os 9
+  // personagens falam diferente e como o NPC reage (classe, personagem, tendência, atitude).
+  // Recriar = um projeto novo, igual ao original. No jogo, aparece na Mesa só para o autor.
+  function tutorial() {
+    const id = () => "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    const m = {
+      id: "m" + Date.now().toString(36), titulo: "Treino: nove vozes", eixo: "x", nos: [], ligacoes: [],
+      resumo: "Uma conversa com o Abe, no balcão. Jogue com personagens diferentes e veja o que muda.",
+      jogo: { id: "treino-vozes", tutorial: true, subtitulo: "Treino do autor", fase: "Treino", npcs: { abe: "Abe" }, anterior: "", proxima: "", desbloqueio: {} },
+    };
+    const bloco = (tipo, titulo, x, y, d, notas = "") => {
+      const n = { id: id(), tipo, titulo, texto: "", condicao: "", efeitos: "", notas, x, y, ...(d ? { d } : {}) };
+      m.nos.push(n);
+      return n;
+    };
+    const nota = (titulo, texto, x, y) => bloco("nota", titulo, x, y, null, "").texto = texto;
+    const lig = (a, b, tipo = "segue") => m.ligacoes.push({ id: "l" + id(), de: a.id, para: b.id, rotulo: "", tipo });
+
+    const chegada = bloco("entrada", "O balcão do Abe", 0, 0, {
+      chave: "chegada",
+      texto: "{nome} empurra a porta da Conveniência do Abe. O sininho toca. O velho Abe levanta os olhos do jornal.\n\n“Fechando em dez minutos. O que vai ser?”",
+      variantes: [
+        { se: { classe: "tank" }, texto: "{nome} entra ocupando a porta inteira. O sininho toca duas vezes. Abe abaixa o jornal devagar.\n\n“Opa. Sem confusão hoje, tá? O que vai ser?”" },
+        { se: { classe: "healer" }, texto: "{nome} entra e o Abe tosse, rápido, como quem esconde o cigarro atrás do balcão.\n\n“Ah, é você. Não vai me mandar parar de fumar de novo, vai? O que vai ser?”" },
+      ],
+      acrescimos: [{ se: { marca: ["salvou:Danny"] }, texto: "Num canto, o Danny acena para você. Pelo jeito do Abe, ele já contou o que você fez por ele." }],
+    });
+
+    const vozes = {
+      "frank-brennan": "Um café preto, Abe. Forte como o da estação.",
+      "rosa-delgado": "Café. E não me pergunte do meu dia.",
+      "marcus-bell": "Um café pra viagem, rapidinho, que a moto tá ligada.",
+      "denise-carter": "Café, por favor. É o quarto do dia, não conta pra ninguém.",
+      "michael-doyle": "Um café, meu filho. Que Deus abençoe essa sua máquina.",
+      "june-albright": "Um chá, querido. Café a essa hora me deixa elétrica.",
+      "eli-navarro": "Café. Duplo. Eu calculei: preciso de duplo.",
+      "tess-monroe": "O que tiver de mais forte. Entro no ar em uma hora.",
+      "ray-okafor": "O de sempre, meu chapa.",
+    };
+    const cafe = bloco("escolha", "Pedir um café", 0, 260, {
+      id: "treino-cafe", npc: "abe", teste: { tipo: "nenhum" }, tempo: 0,
+      botaoVariantes: Object.entries(vozes).map(([pid, texto]) => ({ se: { pronto: pid }, texto })),
+      res: { resultado: {
+        texto: "Abe serve sem pressa. “Tá aqui. Três pratas.”", efeitos: { dinheiro: -3, condicao: "-cansaco" },
+        variantes: [
+          { se: { tendencia: "heroi" }, texto: "Abe serve e empurra um biscoito junto. “Por conta da casa. Gente como você faz falta nesta cidade.”", efeitos: { dinheiro: 3, atitude: { abe: 1 } } },
+          { se: { tendencia: "vilao" }, texto: "Abe serve sem olhar nos seus olhos e conta o troco duas vezes.", efeitos: { atitude: { abe: -1 } } },
+          { se: { tendencia: "anti-heroi" }, texto: "Abe serve e espera você pagar primeiro. “Nada pessoal.”" },
+        ],
+      } },
+    });
+    const ameaca = bloco("escolha", "Levar o caixa “emprestado”", 0, 470, {
+      id: "treino-ameaca", npc: "abe", teste: { tipo: "nenhum" }, se: { tendencia: "vilao" },
+      botaoVariantes: [{ se: { classe: "tank" }, texto: "Encostar no balcão até ele estalar" }],
+      res: { resultado: { texto: "Abe abre o caixa sem tirar os olhos de você.\n\n“Leva. Mas não volta aqui.”", efeitos: { dinheiro: 40, atitude: { abe: -3 }, marca: ["roubou-o-abe"] } } },
+    });
+    const remedio = bloco("escolha", "Perguntar se ele tomou o remédio da pressão", 0, 680, {
+      id: "treino-remedio", npc: "abe", teste: { tipo: "nenhum" }, se: { classe: "healer" },
+      res: { resultado: { texto: "Abe ri, sem graça. “Tomei. Tomei, sim.” Ele não tomou. Mas agora vai.", efeitos: { atitude: { abe: 2 } },
+        variantes: [
+          { se: { pronto: "denise-carter" }, texto: "Abe ri, sem graça. “Tomei, doutora. Tomei, sim.” Ele não tomou. Mas agora vai." },
+          { se: { pronto: "michael-doyle" }, texto: "Abe ri, sem graça. “Tomei, padre. Juro.” E faz o sinal da cruz, por via das dúvidas." },
+          { se: { pronto: "june-albright" }, texto: "Abe abaixa a cabeça. “A senhora parece a minha falecida. Tomo agora, June. Agora mesmo.”" },
+        ] } },
+    });
+    const fiado = bloco("escolha", "Pedir para pendurar umas compras", 0, 890, {
+      id: "treino-fiado", npc: "abe", teste: { tipo: "situacao", situacao: "convencer" },
+      res: {
+        sucesso: { texto: "Abe abre o caderno de fiado e anota o seu nome. “Até sexta, hein.”", efeitos: { pertence: { comida: 2 } } },
+        falha: { texto: "“Fiado só amanhã”, diz o Abe, apontando a plaquinha. Hoje é sempre hoje.",
+          variantes: [{ se: { atitudeMin: { abe: 1 } }, texto: "“Fiado só amanhã…” Abe olha para você, suspira e anota mesmo assim. “Pra você, tudo bem.”", efeitos: { pertence: { comida: 2 } } }] },
+      },
+    });
+    const fim = bloco("final", "Hora de fechar", 760, 300, {
+      chave: "despedida", final: true,
+      texto: "Abe vira a plaquinha para FECHADO e apaga metade das luzes.",
+      variantes: [
+        { se: { atitudeMin: { abe: 1 } }, texto: "Abe grita da porta: “Volta amanhã! Guardo um pão pra você.” E fica olhando até você virar a esquina." },
+        { se: { atitudeMax: { abe: -1 } }, texto: "Abe tranca a porta antes de você chegar na calçada. Ele vai lembrar disso." },
+      ],
+      textoFinal: "Fim do treino. Jogue de novo com outro personagem e veja o que muda. A atitude do Abe fica guardada no personagem: jogando com o mesmo, o Abe lembra.",
+    });
+    for (const e of [cafe, ameaca, remedio, fiado]) lig(chegada, e);
+    lig(cafe, fim); lig(ameaca, fim); lig(remedio, fim);
+    lig(fiado, fim, "sucesso"); lig(fiado, fim, "falha");
+
+    // as notas: como cada coisa foi feita
+    nota("1 · Texto que muda por classe", "Toque em “O balcão do Abe”. No texto da cena, “+ Variação” com a condição “só esta classe”. Tank e Healer têm entrada própria; os outros veem o texto principal.\n\nEmbaixo, um “+ Acréscimo”: um parágrafo a mais só para quem tem a marca salvou:Danny.", -420, -40);
+    nota("2 · Nove vozes no mesmo botão", "Toque em “Pedir um café”. Em “Cada personagem diz do seu jeito” há 9 variações, uma por personagem (“só este personagem”). O botão que o jogador vê é a fala dele.", -420, 250);
+    nota("3 · O NPC reage pela tendência", "Ainda em “Pedir um café”, no Resultado: variações com “só esta tendência”. O herói ganha o café e +1 de atitude com o Abe; o vilão, −1.\n\nDefina as tendências em ⋯ → Personagens e tendências (e publique) para ver no jogo.", -420, 470);
+    nota("4 · Escolhas que só alguns veem", "“Levar o caixa” só aparece para vilões (Só aparece se… → só esta tendência). “O remédio da pressão” só para Healers, e o Michael tem uma resposta própria.", -420, 690);
+    nota("5 · Atitude: o NPC lembra", "Efeito “atitude do NPC” (abe:1). Depois, a condição “NPC gosta pelo menos (abe:1)” muda a falha de “Pendurar umas compras” e a despedida. A atitude fica no personagem, de missão em missão.", -420, 900);
+    nota("6 · Jogar e jogar de novo", "Publique (⋯ → Publicar no jogo). No jogo, a Mesa mostra “Treino do autor” para quem abriu o Criador neste aparelho. Jogue com o Frank, depois com a Denise e a June: a conversa muda. Para recomeçar o treino do zero aqui: ⋯ → Criar o treino de novo.", 380, 620);
+    return m;
   }
 
   // ======================= Conferir antes de publicar =======================
@@ -584,6 +698,12 @@ const Criador = (() => {
       if (t === "nenhum" && !res.resultado) erros.push(`A escolha ${nome(e)} não tem resultado.`);
       if (t === "situacao" && !e.d.teste.situacao) erros.push(`A escolha ${nome(e)} tem teste de dados sem situação.`);
     }
+    for (const n of m.nos.filter((x) => x.d)) {
+      for (const v of [...(n.d.botaoVariantes || []), ...(n.d.nomeVariantes || [])]) {
+        if (!String(v.texto || "").trim()) avisos.push(`${nome(n)} tem uma variação sem texto.`);
+        if (!v.se || !Object.keys(v.se).length) avisos.push(`${nome(n)} tem uma variação sem condição (vale sempre).`);
+      }
+    }
     const lugares = m.nos.filter((n) => n.tipo === "lugar" && n.d);
     if (lugares.length && !lugares.some((n) => n.d.inicial)) avisos.push("Nenhum lugar está marcado como “a missão começa aqui”.");
     if (lugares.length && !m.nos.some((n) => n.tipo === "mapa")) avisos.push("Há lugares, mas falta o bloco de Exploração (relógio e acontecimentos).");
@@ -602,13 +722,16 @@ const Criador = (() => {
   };
   const deB64 = (s) => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g, "")), (c) => c.charCodeAt(0)));
 
-  async function publicar(m, { repo = "Lingua-Byte/kosmos", aviso = () => {} } = {}) {
+  // tendencias: { "frank-brennan": "heroi", … } (definidas em ⋯ → Personagens e tendências)
+  async function publicar(m, { repo = "Lingua-Byte/kosmos", aviso = () => {}, tendencias = {} } = {}) {
     const jm = exportar(m);
     const texto = JSON.stringify(jm, null, 2) + "\n";
+    const pers = JSON.stringify({ tendencias }, null, 2) + "\n";
     // 1. servidor do projeto no PC
     try {
       if ((await fetch("__versao", { cache: "no-store" })).ok) {
         const r = await fetch("__missao", { method: "POST", headers: { "Content-Type": "application/json" }, body: texto });
+        await fetch("__missao", { method: "POST", headers: { "Content-Type": "application/json" }, body: pers });
         if (r.ok) return { onde: "pc", id: jm.id };
       }
     } catch {}
@@ -634,6 +757,8 @@ const Criador = (() => {
     for (const [ref, pasta] of [["main", "site/missoes/"], ["gh-pages", "missoes/"]]) {
       aviso(`Gravando em ${ref}…`);
       await gravar(`${pasta}${jm.id}.json`, texto, ref);
+      const atualPers = await ler(`${pasta}personagens.json`, ref);
+      if (!atualPers || deB64(atualPers.content) !== pers) await gravar(`${pasta}personagens.json`, pers, ref);
       const ind = await ler(`${pasta}indice.json`, ref);
       const ids = ind ? JSON.parse(deB64(ind.content)) : [];
       if (!ids.includes(jm.id)) {
@@ -654,5 +779,5 @@ const Criador = (() => {
     return e;
   }
 
-  return { painel, aplicar, acrescentar, tirar, tirarItem, novoItem, dadosNovos, importar, exportar, validar, publicar, rotuloTeste, pegar, PRONTOS_IDS };
+  return { painel, aplicar, acrescentar, tirar, tirarItem, novoItem, dadosNovos, importar, exportar, validar, publicar, tutorial, rotuloTeste, pegar, PRONTOS_IDS, TENDENCIAS, NOME_TENDENCIA, nomePronto };
 })();

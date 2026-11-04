@@ -119,7 +119,13 @@ function juntar(b, l, r) {
       ligacoes: Nuvem.juntarLista(mb?.ligacoes, ml.ligacoes, mr.ligacoes),
     });
   }
-  return { ...r, versao: r.versao || 1, missoes };
+  const tb = b.personagens?.tendencias || {}, tl = l.personagens?.tendencias || {}, tr = r.personagens?.tendencias || {};
+  const tendencias = {};
+  for (const k of new Set([...Object.keys(tl), ...Object.keys(tr), ...Object.keys(tb)])) {
+    const v = tb[k] !== tl[k] ? tl[k] : tr[k];
+    if (v) tendencias[k] = v;
+  }
+  return { ...r, versao: r.versao || 1, missoes, personagens: { ...(r.personagens || {}), tendencias } };
 }
 
 async function sincronizar() {
@@ -743,12 +749,26 @@ $("#dg-missao-menu").addEventListener("click", () => {
       <h3>Publicar no jogo</h3>
       <div id="dg-publicar">${publicarHtml(m)}</div>
       <hr>` : ""}
-    <div class="linha-botoes"><button class="btn" data-m="nova">+ Nova missão em branco</button></div>
+    <div class="linha-botoes"><button class="btn" data-m="nova">+ Nova missão em branco</button><button class="btn" data-m="treino">◇ Criar o treino (tutorial)</button></div>
+    <details class="cr-secao"><summary>Personagens e tendências</summary>
+      <p class="ajuda">Herói, anti-herói ou vilão: usado nas condições “só esta tendência”. O jogador não vê. Vale no jogo depois de publicar qualquer missão.</p>
+      <div class="cr-tendencias">${Criador.PRONTOS_IDS.map((pid) => `<label class="campo"><span>${esc(Criador.nomePronto(pid))}</span><select data-tendencia="${pid}"><option value="">— (sem definir)</option>${Criador.TENDENCIAS.map((t) => `<option value="${t}" ${mundo.personagens?.tendencias?.[pid] === t ? "selected" : ""}>${Criador.NOME_TENDENCIA[t]}</option>`).join("")}</select></label>`).join("")}</div>
+    </details>
     <h3>Importar do jogo</h3>
     <p class="ajuda">Traz a missão inteira como ela está no jogo hoje: todos os textos (com as variações por personagem), escolhas, testes, efeitos, condições, lugares, relógio e acontecimentos. Vira um projeto aqui, para você mudar qualquer detalhe.</p>
     <div class="linha-botoes">${doJogo.map((j) => `<button class="btn" data-importar="${j.id}">${esc(j.titulo)}</button>`).join("")}</div>
     <div class="linha-botoes"><button class="btn" data-m="fechar">Fechar</button></div>`;
   dlgMissao.showModal();
+});
+
+dlgMissao.addEventListener("change", (ev) => {
+  const t = ev.target;
+  if (!t.dataset.tendencia) return;
+  mundo.personagens = mundo.personagens || {};
+  mundo.personagens.tendencias = { ...(mundo.personagens.tendencias || {}) };
+  if (t.value) mundo.personagens.tendencias[t.dataset.tendencia] = t.value;
+  else delete mundo.personagens.tendencias[t.dataset.tendencia];
+  mudou();
 });
 
 dlgMissao.addEventListener("click", (ev) => {
@@ -780,7 +800,7 @@ dlgMissao.addEventListener("click", (ev) => {
     if (!confirm(`Publicar “${m.titulo}” no jogo? A versão que está no jogo hoje com o id “${m.jogo?.id}” é substituída.`)) return;
     b.disabled = true;
     caixa.textContent = "Publicando…";
-    Criador.publicar(m, { aviso: (t) => (caixa.textContent = t) })
+    Criador.publicar(m, { aviso: (t) => (caixa.textContent = t), tendencias: mundo.personagens?.tendencias || {} })
       .then((r) => {
         m.jogo = { ...(m.jogo || {}), publicadoEm: new Date().toISOString() };
         mudou();
@@ -800,6 +820,20 @@ dlgMissao.addEventListener("click", (ev) => {
     a.href = URL.createObjectURL(new Blob([JSON.stringify(jm, null, 2)], { type: "application/json" }));
     a.download = `${jm.id || "missao"}.json`;
     a.click();
+    return;
+  }
+  if (b.dataset.m === "treino") {
+    const velho = mundo.missoes.find((x) => x.jogo?.id === "treino-vozes");
+    if (velho && !confirm("Já existe um treino aqui. Criar de novo, do zero? (O antigo é substituído.)")) return;
+    if (velho) mundo.missoes = mundo.missoes.filter((x) => x !== velho);
+    const t = Criador.tutorial();
+    mundo.missoes.push(t);
+    escolherMissao(t.id);
+    selecao = { tipo: "no", id: t.nos[0].id };
+    mudou();
+    dlgMissao.close();
+    render();
+    requestAnimationFrame(() => { renderLigacoes(); enquadrar(); });
     return;
   }
   if (b.dataset.m === "nova") {
@@ -959,6 +993,8 @@ function importar(jm) {
 }
 
 // ======================= Começo =======================
+
+try { localStorage.setItem("kosmos.autor", "1"); } catch {}
 
 (async function carregar() {
   const l = lerLocal();

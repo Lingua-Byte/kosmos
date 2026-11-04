@@ -1,0 +1,273 @@
+{
+  "id": "treino-vozes",
+  "eixo": "x",
+  "titulo": "Treino: nove vozes",
+  "resumo": "Uma conversa com o Abe, no balcão. Jogue com personagens diferentes e veja o que muda.",
+  "subtitulo": "Treino do autor",
+  "fase": "Treino",
+  "npcs": {
+    "abe": "Abe"
+  },
+  "desbloqueio": {},
+  "tutorial": true,
+  "cenas": {
+    "chegada": {
+      "titulo": "O balcão do Abe",
+      "texto": "{nome} empurra a porta da Conveniência do Abe. O sininho toca. O velho Abe levanta os olhos do jornal.\n\n“Fechando em dez minutos. O que vai ser?”",
+      "variantes": [
+        {
+          "se": {
+            "classe": "tank"
+          },
+          "texto": "{nome} entra ocupando a porta inteira. O sininho toca duas vezes. Abe abaixa o jornal devagar.\n\n“Opa. Sem confusão hoje, tá? O que vai ser?”"
+        },
+        {
+          "se": {
+            "classe": "healer"
+          },
+          "texto": "{nome} entra e o Abe tosse, rápido, como quem esconde o cigarro atrás do balcão.\n\n“Ah, é você. Não vai me mandar parar de fumar de novo, vai? O que vai ser?”"
+        }
+      ],
+      "acrescimos": [
+        {
+          "se": {
+            "marca": [
+              "salvou:Danny"
+            ]
+          },
+          "texto": "Num canto, o Danny acena para você. Pelo jeito do Abe, ele já contou o que você fez por ele."
+        }
+      ],
+      "opcoes": [
+        {
+          "id": "treino-cafe",
+          "texto": "Pedir um café",
+          "textoVariantes": [
+            {
+              "se": {
+                "pronto": "frank-brennan"
+              },
+              "texto": "Um café preto, Abe. Forte como o da estação."
+            },
+            {
+              "se": {
+                "pronto": "rosa-delgado"
+              },
+              "texto": "Café. E não me pergunte do meu dia."
+            },
+            {
+              "se": {
+                "pronto": "marcus-bell"
+              },
+              "texto": "Um café pra viagem, rapidinho, que a moto tá ligada."
+            },
+            {
+              "se": {
+                "pronto": "denise-carter"
+              },
+              "texto": "Café, por favor. É o quarto do dia, não conta pra ninguém."
+            },
+            {
+              "se": {
+                "pronto": "michael-doyle"
+              },
+              "texto": "Um café, meu filho. Que Deus abençoe essa sua máquina."
+            },
+            {
+              "se": {
+                "pronto": "june-albright"
+              },
+              "texto": "Um chá, querido. Café a essa hora me deixa elétrica."
+            },
+            {
+              "se": {
+                "pronto": "eli-navarro"
+              },
+              "texto": "Café. Duplo. Eu calculei: preciso de duplo."
+            },
+            {
+              "se": {
+                "pronto": "tess-monroe"
+              },
+              "texto": "O que tiver de mais forte. Entro no ar em uma hora."
+            },
+            {
+              "se": {
+                "pronto": "ray-okafor"
+              },
+              "texto": "O de sempre, meu chapa."
+            }
+          ],
+          "npc": "abe",
+          "tempo": 0,
+          "resultado": {
+            "texto": "Abe serve sem pressa. “Tá aqui. Três pratas.”",
+            "efeitos": {
+              "dinheiro": -3,
+              "condicao": "-cansaco"
+            },
+            "variantes": [
+              {
+                "se": {
+                  "tendencia": "heroi"
+                },
+                "texto": "Abe serve e empurra um biscoito junto. “Por conta da casa. Gente como você faz falta nesta cidade.”",
+                "efeitos": {
+                  "dinheiro": 3,
+                  "atitude": {
+                    "abe": 1
+                  }
+                }
+              },
+              {
+                "se": {
+                  "tendencia": "vilao"
+                },
+                "texto": "Abe serve sem olhar nos seus olhos e conta o troco duas vezes.",
+                "efeitos": {
+                  "atitude": {
+                    "abe": -1
+                  }
+                }
+              },
+              {
+                "se": {
+                  "tendencia": "anti-heroi"
+                },
+                "texto": "Abe serve e espera você pagar primeiro. “Nada pessoal.”"
+              }
+            ],
+            "ir": "cena:despedida"
+          }
+        },
+        {
+          "id": "treino-ameaca",
+          "texto": "Levar o caixa “emprestado”",
+          "textoVariantes": [
+            {
+              "se": {
+                "classe": "tank"
+              },
+              "texto": "Encostar no balcão até ele estalar"
+            }
+          ],
+          "npc": "abe",
+          "se": {
+            "tendencia": "vilao"
+          },
+          "resultado": {
+            "texto": "Abe abre o caixa sem tirar os olhos de você.\n\n“Leva. Mas não volta aqui.”",
+            "efeitos": {
+              "dinheiro": 40,
+              "atitude": {
+                "abe": -3
+              },
+              "marca": [
+                "roubou-o-abe"
+              ]
+            },
+            "ir": "cena:despedida"
+          }
+        },
+        {
+          "id": "treino-remedio",
+          "texto": "Perguntar se ele tomou o remédio da pressão",
+          "npc": "abe",
+          "se": {
+            "classe": "healer"
+          },
+          "resultado": {
+            "texto": "Abe ri, sem graça. “Tomei. Tomei, sim.” Ele não tomou. Mas agora vai.",
+            "efeitos": {
+              "atitude": {
+                "abe": 2
+              }
+            },
+            "variantes": [
+              {
+                "se": {
+                  "pronto": "denise-carter"
+                },
+                "texto": "Abe ri, sem graça. “Tomei, doutora. Tomei, sim.” Ele não tomou. Mas agora vai."
+              },
+              {
+                "se": {
+                  "pronto": "michael-doyle"
+                },
+                "texto": "Abe ri, sem graça. “Tomei, padre. Juro.” E faz o sinal da cruz, por via das dúvidas."
+              },
+              {
+                "se": {
+                  "pronto": "june-albright"
+                },
+                "texto": "Abe abaixa a cabeça. “A senhora parece a minha falecida. Tomo agora, June. Agora mesmo.”"
+              }
+            ],
+            "ir": "cena:despedida"
+          }
+        },
+        {
+          "id": "treino-fiado",
+          "texto": "Pedir para pendurar umas compras",
+          "npc": "abe",
+          "situacao": "convencer",
+          "sucesso": {
+            "texto": "Abe abre o caderno de fiado e anota o seu nome. “Até sexta, hein.”",
+            "efeitos": {
+              "pertence": {
+                "comida": 2
+              }
+            },
+            "ir": "cena:despedida"
+          },
+          "falha": {
+            "texto": "“Fiado só amanhã”, diz o Abe, apontando a plaquinha. Hoje é sempre hoje.",
+            "variantes": [
+              {
+                "se": {
+                  "atitudeMin": {
+                    "abe": 1
+                  }
+                },
+                "texto": "“Fiado só amanhã…” Abe olha para você, suspira e anota mesmo assim. “Pra você, tudo bem.”",
+                "efeitos": {
+                  "pertence": {
+                    "comida": 2
+                  }
+                }
+              }
+            ],
+            "ir": "cena:despedida"
+          }
+        }
+      ]
+    },
+    "despedida": {
+      "titulo": "Hora de fechar",
+      "texto": "Abe vira a plaquinha para FECHADO e apaga metade das luzes.",
+      "variantes": [
+        {
+          "se": {
+            "atitudeMin": {
+              "abe": 1
+            }
+          },
+          "texto": "Abe grita da porta: “Volta amanhã! Guardo um pão pra você.” E fica olhando até você virar a esquina."
+        },
+        {
+          "se": {
+            "atitudeMax": {
+              "abe": -1
+            }
+          },
+          "texto": "Abe tranca a porta antes de você chegar na calçada. Ele vai lembrar disso."
+        }
+      ],
+      "final": true,
+      "opcoes": []
+    }
+  },
+  "lugares": {},
+  "inicio": "chegada",
+  "textoFinal": "Fim do treino. Jogue de novo com outro personagem e veja o que muda. A atitude do Abe fica guardada no personagem: jogando com o mesmo, o Abe lembra."
+}

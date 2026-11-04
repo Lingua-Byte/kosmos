@@ -94,7 +94,10 @@ const Cenas = (() => {
     const p = lista.find((x) => selecionados.has(x.id));
     if (p) migrarConcluidas(p);
     const andamento = p ? partidas().filter((c) => c.personagens.includes(p.id)) : [];
-    const missoes = Object.values(MISSOES);
+    let autor = false;
+    try { autor = localStorage.getItem("kosmos.autor") === "1"; } catch {}
+    const treinos = autor && p ? Object.values(MISSOES).filter((m) => m.tutorial) : [];
+    const missoes = Object.values(MISSOES).filter((m) => !m.tutorial);
     const concluidas = p ? p.concluidas || [] : [];
     const emCurso = new Set(andamento.map((c) => c.missao));
     const abertas = p ? missoes.filter((m) => MissoesDados.liberada(m, p) && !concluidas.includes(m.id) && !emCurso.has(m.id)) : [];
@@ -122,6 +125,7 @@ const Cenas = (() => {
           </div>`).join("")}` : ""}
         ${abertas.length || !andamento.length ? `<h3>Missões</h3>
         <div class="mesa-missoes">${abertas.map((m) => cartao(m, "Começar")).join("") || `<p class="sub">Nenhuma missão nova liberada para ${esc(p.nome)}.</p>`}</div>` : ""}
+        ${treinos.length ? `<h3>Treino do autor</h3><div class="mesa-missoes">${treinos.map((m) => cartao(m, concluidas.includes(m.id) ? "Jogar de novo" : "Começar")).join("")}</div>` : ""}
         ${feitas.length ? `<h3>Já jogadas</h3><div class="mesa-missoes">${feitas.map((m) => cartao(m, "Jogar de novo")).join("")}</div>` : ""}`
       : `<p class="sub">Ainda não há personagens.</p><button class="btn-primario" data-acao="criar">Escolher personagem</button>`}`;
     mostrarTela("tela-mesa");
@@ -278,7 +282,7 @@ const Cenas = (() => {
         <div class="narracao">${paragrafos(texto(cena.texto, ctx))}</div>
         ${cena.tutorial ? `<p class="tutorial">${esc(cena.tutorial)}</p>` : ""}
         ${camp.ameaca !== null && cena.ameaca ? ameacaHtml(cena.ameaca) : ""}
-        ${cena.final ? finalHtml() : opcoesHtml(cena.opcoes, false)}`;
+        ${cena.final ? finalHtml() : opcoesHtml(opcoesDaCena(cena), false)}`;
     } else {
       const disponiveis = acoesDoLugar();
       corpo = `
@@ -428,9 +432,14 @@ const Cenas = (() => {
     if (s.semPronto && grupo()[0].pronto) return false; // coisas de escritório que não cabem nas origens
     // só no ponto de entrada da profissão de quem está jogando (as 8 aberturas)
     if (s.ponto && (!missao().trabalho || missao().trabalho(ativo()).ponto !== s.ponto)) return false;
-    if ((s.classe || s.rodadaMin != null || s.resMin != null || s.disMin != null) &&
-      !MissoesDados.condicao({ classe: s.classe, rodadaMin: s.rodadaMin, resMin: s.resMin, disMin: s.disMin }, { p: ativo(), camp, grupo: grupo() })) return false;
+    if ((s.classe || s.rodadaMin != null || s.resMin != null || s.disMin != null || s.tendencia || s.atitudeMin || s.atitudeMax) &&
+      !MissoesDados.condicao({ classe: s.classe, rodadaMin: s.rodadaMin, resMin: s.resMin, disMin: s.disMin, tendencia: s.tendencia, atitudeMin: s.atitudeMin, atitudeMax: s.atitudeMax }, { p: ativo(), camp, grupo: grupo() })) return false;
     return true;
+  }
+
+  // As escolhas de uma cena que valem agora (as com "Só aparece se…" que não servem somem)
+  function opcoesDaCena(cena) {
+    return (cena.opcoes || []).filter(visivel);
   }
 
   // O que dá para fazer neste lugar agora: as ações dele e as que acontecem em toda parte (eventos)
@@ -508,7 +517,7 @@ const Cenas = (() => {
       const indice = lista.indexOf(op);
       const tempo = doLugar ? (op.tempo ?? (op.comum ? 0 : 1)) : 0;
       return `<button class="opcao ${motivo ? "travada" : ""}" data-opcao="${indice}" data-lugar="${doLugar ? 1 : 0}" ${motivo ? "disabled" : ""}>
-        <span class="op-texto">${motivo ? "🔒 " : ""}${esc(op.texto)}</span>
+        <span class="op-texto">${motivo ? "🔒 " : ""}${esc(MissoesDados.textoOpcao(op, contexto()))}</span>
         ${motivo ? `<span class="op-info">${esc(motivo)}</span>` : rotuloTeste(op, p)}
         ${tempo ? `<span class="op-tempo" title="Avança o relógio">+${tempo}</span>` : ""}
       </button>`;
@@ -784,6 +793,13 @@ const Cenas = (() => {
       linhas.push(...conhecerLugares(efeitos.revela));
       Object.assign(p, { mapa: todos().find((x) => x.id === p.id).mapa }); // p é uma cópia: traz o mapa novo
     }
+    // atitude dos NPCs com o personagem: fica na ficha, de missão em missão
+    for (const [npc, n] of Object.entries(efeitos.atitude || {})) {
+      if (!n) continue;
+      p.atitudes = { ...(p.atitudes || {}), [npc]: ((p.atitudes || {})[npc] || 0) + n };
+      const quem = (m.npcs || {})[npc] || npc;
+      linhas.push(n > 0 ? `${quem} gostou disso (+${n})` : `${quem} não gostou nada disso (${n})`);
+    }
     for (const f of [].concat(efeitos.flag || [])) camp.flags[f] = true;
     for (const f of [].concat(efeitos.tirarFlag || [])) delete camp.flags[f];
     // marca no personagem: fica para as próximas missões (quem ele salvou, o que ele levou)
@@ -904,7 +920,7 @@ const Cenas = (() => {
     const m = missao();
     const ctx = contexto();
     const cena = camp.cena ? m.cenas[camp.cena] : null;
-    const lista = cena ? cena.opcoes : acoesDoLugar();
+    const lista = cena ? opcoesDaCena(cena) : acoesDoLugar();
     const p = ativo();
     let melhor = null;
     let pontos = 0;
@@ -976,7 +992,7 @@ const Cenas = (() => {
     if (t.dataset.painel === undefined && !t.dataset.ir) Som.tocar(["ficha", "tradutor", "mesa"].includes(t.dataset.acao) ? "abrir" : "clique");
     if (t.dataset.opcao !== undefined) {
       const doLugar = t.dataset.lugar === "1";
-      const lista = doLugar ? acoesDoLugar() : m.cenas[camp.cena].opcoes;
+      const lista = doLugar ? acoesDoLugar() : opcoesDaCena(m.cenas[camp.cena]);
       return executar(lista[+t.dataset.opcao], doLugar);
     }
     if (t.dataset.painel !== undefined) {
@@ -1013,7 +1029,7 @@ const Cenas = (() => {
       const p = pendente;
       pendente = null;
       if (p.tipo === "ir") return irPara(p.lugar);
-      const lista = p.doLugar ? acoesDoLugar() : m.cenas[camp.cena].opcoes;
+      const lista = p.doLugar ? acoesDoLugar() : opcoesDaCena(m.cenas[camp.cena]);
       return executar(lista[p.indice], p.doLugar);
     }
     if (acao === "cancelar") {
