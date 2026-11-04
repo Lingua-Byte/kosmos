@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Diagramas de missão · KOSMOS</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#070912">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icones/icone-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Exo+2:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/oficina.css?v=5">
+  <link rel="stylesheet" href="css/diagramas.css?v=1">
+</head>
+<body class="pagina-diagramas">
+  <header class="dg-topo">
+    <a href="oficina.html" class="btn-texto" title="Voltar à Oficina">‹ Oficina</a>
+    <h1>Diagramas</h1>
+    <select id="dg-missao" aria-label="Missão"></select>
+    <button id="dg-missao-menu" class="btn" title="Nome, eixo e resumo da missão">⋯</button>
+    <span id="estado-salvo" class="estado-salvo"></span>
+    <button id="btn-nuvem" class="btn">☁</button>
+  </header>
+
+  <div class="dg-area">
+    <nav class="dg-ferramentas" aria-label="Acrescentar bloco">
+      <button data-novo="entrada" title="Abertura / origem"><i class="t-entrada"></i><span>Abertura</span></button>
+      <button data-novo="cena" title="Cena da história"><i class="t-cena"></i><span>Cena</span></button>
+      <button data-novo="lugar" title="Lugar / exploração livre"><i class="t-lugar"></i><span>Lugar</span></button>
+      <button data-novo="escolha" title="Escolha ou teste"><i class="t-escolha"></i><span>Escolha</span></button>
+      <button data-novo="final" title="Final / salto"><i class="t-final"></i><span>Final</span></button>
+      <button data-novo="marca" title="Marca que passa para as próximas missões"><i class="t-marca"></i><span>Marca</span></button>
+      <button data-novo="nota" title="Anotação do autor"><i class="t-nota"></i><span>Nota</span></button>
+      <span class="dg-sep"></span>
+      <button data-zoom="-1" title="Afastar">−</button>
+      <button data-zoom="1" title="Aproximar">+</button>
+      <button data-zoom="0" title="Ver tudo">⤢</button>
+    </nav>
+
+    <div id="dg-quadro" class="dg-quadro">
+      <div id="dg-mundo" class="dg-mundo">
+        <svg id="dg-ligacoes" class="dg-ligacoes" width="1" height="1">
+          <defs>
+            <marker id="ponta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/>
+            </marker>
+          </defs>
+          <g id="dg-linhas"></g>
+        </svg>
+        <div id="dg-nos"></div>
+      </div>
+      <p id="dg-aviso" class="dg-aviso" hidden></p>
+      <p id="dg-vazio" class="dg-vazio" hidden></p>
+    </div>
+
+    <aside id="dg-painel" class="dg-painel" hidden></aside>
+  </div>
+
+  <dialog id="dialogo-nuvem" class="dialogo"></dialog>
+  <dialog id="dg-dialogo-missao" class="dialogo"></dialog>
+
+  <!-- as missões do jogo, para "Importar do jogo" -->
+  <script>window.MISSOES = {};</script>
+  <script src="js/data.js?v=82"></script>
+  <script src="js/missoes/prologo-x.js?v=82"></script>
+  <script src="js/missoes/origens-x.js?v=82"></script>
+  <script src="js/missoes/x1-manha.js?v=82"></script>
+  <script src="js/nuvem.js?v=3"></script>
+  <script src="js/diagramas.js?v=1"></script>
+  <script>
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+  </script>
+</body>
+</html>

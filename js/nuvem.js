@@ -26,8 +26,9 @@ const Nuvem = (() => {
     } catch {}
   }
 
-  function url(c) {
-    return `https://api.github.com/repos/${c.repo}/contents/${ARQUIVO}`;
+  // arquivo: "oficina.json" (padrão) ou outro arquivo do mesmo repositório (ex.: "diagramas.json")
+  function url(c, arquivo = ARQUIVO) {
+    return `https://api.github.com/repos/${c.repo}/contents/${arquivo}`;
   }
 
   function cabecalhos(c) {
@@ -67,8 +68,8 @@ const Nuvem = (() => {
   }
 
   // { dados, sha } ou { dados: null, sha: null } se o arquivo ainda não existe no repositório
-  async function baixar(c = config()) {
-    const r = await fetch(url(c) + `?t=${Date.now()}`, { headers: cabecalhos(c), cache: "no-store" });
+  async function baixar(c = config(), arquivo = ARQUIVO) {
+    const r = await fetch(url(c, arquivo) + `?t=${Date.now()}`, { headers: cabecalhos(c), cache: "no-store" });
     if (r.status === 404) {
       // repositório existe mas o arquivo não? (o repositório inexistente também dá 404)
       const repo = await fetch(`https://api.github.com/repos/${c.repo}`, { headers: cabecalhos(c), cache: "no-store" });
@@ -81,10 +82,10 @@ const Nuvem = (() => {
   }
 
   // Grava; se outro aparelho salvou antes (sha diferente), lança Erro com status 409
-  async function enviar(dados, sha, c = config()) {
-    const corpo = { message: `Oficina: ${new Date().toLocaleString("pt-BR")}`, content: paraBase64(JSON.stringify(dados, null, 2) + "\n") };
+  async function enviar(dados, sha, c = config(), arquivo = ARQUIVO) {
+    const corpo = { message: `${arquivo === ARQUIVO ? "Oficina" : arquivo}: ${new Date().toLocaleString("pt-BR")}`, content: paraBase64(JSON.stringify(dados, null, 2) + "\n") };
     if (sha) corpo.sha = sha;
-    const r = await fetch(url(c), { method: "PUT", headers: { ...cabecalhos(c), "Content-Type": "application/json" }, body: JSON.stringify(corpo) });
+    const r = await fetch(url(c, arquivo), { method: "PUT", headers: { ...cabecalhos(c), "Content-Type": "application/json" }, body: JSON.stringify(corpo) });
     if (r.status === 409 || r.status === 422) throw new Erro(409, "o arquivo mudou em outro aparelho");
     if (!r.ok) throw await erroDe(r);
     return (await r.json()).content.sha;
@@ -131,5 +132,5 @@ const Nuvem = (() => {
     };
   }
 
-  return { config, configurar, baixar, enviar, juntar, igual };
+  return { config, configurar, baixar, enviar, juntar, juntarLista, igual };
 })();
