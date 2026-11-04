@@ -19,7 +19,7 @@ const LOCAL = "kosmos.diagramas.local"; // { dados, base, sha }
 const ATUAL = "kosmos.diagramas.atual"; // missão aberta e a vista dela
 
 const TIPOS = {
-  entrada: "Abertura / origem", cena: "Cena", lugar: "Lugar / exploração", escolha: "Escolha / teste",
+  entrada: "Abertura / origem", cena: "Cena", lugar: "Lugar", mapa: "Exploração / mapa", escolha: "Escolha / teste",
   final: "Final / salto", marca: "Marca (passa adiante)", nota: "Nota do autor",
 };
 const LIGACOES = { segue: "segue", sucesso: "✓ sucesso", falha: "✗ falha", abre: "abre / destrava" };
@@ -112,7 +112,7 @@ function juntar(b, l, r) {
     if (!ml) { if (mr && mb && !Nuvem.igual(mb, mr)) missoes.push(mr); else if (mr && !mb) missoes.push(mr); continue; }
     if (!mr) { if (!mb || !Nuvem.igual(mb, ml)) missoes.push(ml); continue; }
     const meta = {};
-    for (const k of ["titulo", "eixo", "resumo"]) meta[k] = mb && !Nuvem.igual(mb[k], ml[k]) ? ml[k] : mr[k];
+    for (const k of ["titulo", "eixo", "resumo", "jogo"]) meta[k] = mb && !Nuvem.igual(mb[k], ml[k]) ? ml[k] : mr[k];
     missoes.push({
       ...mr, ...meta, id,
       nos: Nuvem.juntarLista(mb?.nos, ml.nos, mr.nos),
@@ -185,11 +185,19 @@ function renderNos() {
     <div class="dg-no t-${n.tipo} ${selecao?.tipo === "no" && selecao.id === n.id ? "selecionado" : ""} ${ligandoDe ? "alvo-ligar" : ""}" data-no="${n.id}" style="left:${n.x}px;top:${n.y}px">
       <div class="dg-no-tipo">${esc(TIPOS[n.tipo] || n.tipo)}</div>
       <div class="dg-no-titulo">${esc(n.titulo || "(sem título)")}</div>
-      ${n.texto ? `<div class="dg-no-texto">${esc(n.texto)}</div>` : ""}
-      ${linhaCond(n)}
+      ${previa(n) ? `<div class="dg-no-texto">${esc(previa(n))}</div>` : ""}
+      ${n.d && n.tipo === "escolha" ? `<div class="dg-no-cond">${esc(Criador.rotuloTeste(n.d))}</div>` : linhaCond(n)}
       ${n.efeitos ? `<div class="dg-no-efeitos">★ ${esc(n.efeitos)}</div>` : ""}
       ${n.tipo !== "nota" && n.tipo !== "final" ? `<button class="dg-no-ramo" data-ramo="${n.id}" title="Novo ramo a partir daqui">+</button>` : ""}
     </div>`).join("") : "";
+}
+
+// o que aparece dentro do bloco: o começo do texto de verdade (ou o resumo do planejamento)
+function previa(n) {
+  if (!n.d) return n.texto;
+  const d = n.d;
+  const t = n.tipo === "lugar" ? d.descricao?.texto : n.tipo === "escolha" ? (d.res?.sucesso || d.res?.resultado)?.texto : n.tipo === "mapa" ? `Relógio ${d.relogioMax || "?"} · ${(d.eventos || []).length} acontecimentos` : d.texto;
+  return (t || n.texto || "").split(/\n\n/)[0];
 }
 
 // pontos de saída e chegada: o lado do bloco que fica de frente para o outro
@@ -255,6 +263,21 @@ function renderPainel() {
     if (!n) return (painel.hidden = true);
     const saidas = m.ligacoes.filter((l) => l.de === n.id);
     const entradas = m.ligacoes.filter((l) => l.para === n.id);
+    if (n.d) {
+      const rolagem = painel.scrollTop;
+      painel.innerHTML = `
+      <h2>${esc(TIPOS[n.tipo] || "Bloco")} <button class="btn" data-painel="fechar">Fechar</button></h2>
+      ${Criador.painel(n, ctxCriador())}
+      <details class="cr-secao"><summary>Notas do autor</summary>${campo("Notas", "notas", n.notas, "textarea", `rows="3"`)}</details>
+      <div class="dg-botoes">
+        <button class="btn primario" data-acao="ramo">+ Ramo</button>
+        <button class="btn" data-acao="ligar">Ligar a outro bloco</button>
+        <button class="btn" data-acao="duplicar">Duplicar</button>
+        <button class="btn perigo" data-acao="apagar">Apagar</button>
+      </div>`;
+      painel.scrollTop = rolagem;
+      return;
+    }
     painel.innerHTML = `
       <h2>Bloco <button class="btn" data-painel="fechar">Fechar</button></h2>
       <label class="campo"><span>Tipo</span><select data-campo="tipo">${Object.entries(TIPOS).map(([k, v]) => `<option value="${k}" ${n.tipo === k ? "selected" : ""}>${v}</option>`).join("")}</select></label>
@@ -293,11 +316,28 @@ function renderPainel() {
   }
 }
 
+// O que o painel do criador precisa saber do diagrama
+const porY = (a, b) => a.y - b.y || a.x - b.x;
+function ctxCriador() {
+  const m = missao();
+  const escolhasDe = (id) => m.ligacoes.filter((l) => l.de === id).map((l) => no(l.para)).filter((n) => n && n.tipo === "escolha").sort(porY);
+  const paiDe = (id) => m.ligacoes.filter((l) => l.para === id).map((l) => no(l.de)).find((n) => n && ["entrada", "cena", "final", "lugar", "mapa"].includes(n.tipo));
+  const tipoLig = { sucesso: "sucesso", falha: "falha", resultado: "segue" };
+  const opcoesDestino = (id, chave) => {
+    const atual = m.ligacoes.find((l) => l.de === id && l.tipo === tipoLig[chave] && no(l.para) && no(l.para).tipo !== "escolha");
+    const alvos = m.nos.filter((n) => ["entrada", "cena", "final", "lugar"].includes(n.tipo)).sort((a, b) => (a.tipo === "lugar") - (b.tipo === "lugar") || porY(a, b));
+    return `<option value="">fica onde está / volta ao lugar</option>${alvos.map((n) => `<option value="${n.id}" ${atual && atual.para === n.id ? "selected" : ""}>${n.tipo === "lugar" ? "⌂ " : "▸ "}${esc(n.titulo)}</option>`).join("")}`;
+  };
+  return { m, escolhasDe, paiDe, opcoesDestino };
+}
+
 // ======================= Editar =======================
 
 function criarNo(tipo, x, y, extra = {}) {
   const m = missao();
   const n = { id: novoId("n"), tipo, titulo: TIPOS[tipo].split(" /")[0], texto: "", condicao: "", efeitos: "", notas: "", x: Math.round(x), y: Math.round(y), ...extra };
+  // blocos que viram jogo já nascem com os dados completos (cena, lugar, escolha…)
+  if (!("d" in extra)) { const d = Criador.dadosNovos(tipo); if (d) n.d = d; }
   m.nos.push(n);
   return n;
 }
@@ -316,7 +356,8 @@ function novoRamo(deId) {
   const pai = no(deId);
   const irmaos = m.ligacoes.filter((l) => l.de === deId).map((l) => no(l.para)).filter(Boolean);
   const y = irmaos.length ? Math.max(...irmaos.map((n) => n.y)) + 170 : pai.y;
-  const tipo = pai.tipo === "lugar" ? "escolha" : pai.tipo === "escolha" ? "cena" : pai.tipo === "entrada" ? "cena" : pai.tipo === "marca" ? "cena" : "cena";
+  // de cena, lugar ou exploração nasce uma escolha; de uma escolha, a cena que vem depois
+  const tipo = ["lugar", "mapa", "cena", "entrada"].includes(pai.tipo) && pai.d ? "escolha" : "cena";
   const n = criarNo(tipo, pai.x + LARG + 90, y);
   // não nasce em cima de outro bloco: procura o espaço livre mais perto (um pouco abaixo, depois à direita)
   const livre = (x, yy) => !m.nos.some((o) => o !== n && Math.abs(o.x - x) < LARG + 20 && Math.abs(o.y - yy) < 160);
@@ -327,7 +368,11 @@ function novoRamo(deId) {
       const x = x0 + col * (LARG + 40), yy = y + lin * 180;
       if (livre(x, yy)) { n.x = x; n.y = yy; break procura; }
     }
-  ligar(deId, n.id);
+  // de uma escolha com teste: o primeiro ramo é o do sucesso, o segundo o da falha
+  let tipoLig = "segue";
+  if (pai.tipo === "escolha" && pai.d?.teste?.tipo && pai.d.teste.tipo !== "nenhum")
+    tipoLig = m.ligacoes.some((l) => l.de === deId && l.tipo === "sucesso") ? "falha" : "sucesso";
+  ligar(deId, n.id, { tipo: tipoLig });
   selecao = { tipo: "no", id: n.id };
   mudou();
   render();
@@ -336,7 +381,7 @@ function novoRamo(deId) {
 
 function focarNoTitulo() {
   mostrarSelecionado();
-  const t = painel.querySelector('[data-campo="titulo"]');
+  const t = painel.querySelector('[data-campo="titulo"], [data-p="titulo"]');
   if (t && matchMedia("(min-width: 761px)").matches) { t.focus(); t.select(); }
 }
 
@@ -404,6 +449,15 @@ $(".dg-ferramentas").addEventListener("click", (ev) => {
 // ---------- Painel ----------
 painel.addEventListener("input", (ev) => {
   const t = ev.target;
+  if (t.dataset.p && selecao?.tipo === "no") {
+    const n = no(selecao.id);
+    const r = Criador.aplicar(n, t);
+    renderNos();
+    renderLigacoes();
+    if (r === "repintar") renderPainel();
+    mudou();
+    return;
+  }
   if (t.dataset.campo && selecao?.tipo === "no") {
     const n = no(selecao.id);
     n[t.dataset.campo] = t.value;
@@ -420,10 +474,45 @@ painel.addEventListener("input", (ev) => {
     mudou();
   }
 });
+// selects que mudam a estrutura: + condição/efeito e "vai para"
+painel.addEventListener("change", (ev) => {
+  const t = ev.target;
+  const n = selecao?.tipo === "no" && no(selecao.id);
+  if (!n) return;
+  if (t.classList.contains("cr-add")) {
+    Criador.acrescentar(n, t);
+    mudou();
+    return renderPainel();
+  }
+  if (t.dataset.destino) {
+    const m = missao();
+    const tipo = { sucesso: "sucesso", falha: "falha", resultado: "segue" }[t.dataset.destino];
+    m.ligacoes = m.ligacoes.filter((l) => !(l.de === n.id && l.tipo === tipo && no(l.para) && no(l.para).tipo !== "escolha"));
+    if (t.value) m.ligacoes.push({ id: novoId("l"), de: n.id, para: t.value, rotulo: "", tipo });
+    mudou();
+    renderLigacoes();
+  }
+});
+
 painel.addEventListener("click", (ev) => {
   const b = ev.target.closest("button");
   if (!b) return;
   const m = missao();
+  const n0 = selecao?.tipo === "no" && no(selecao.id);
+  if (n0 && (b.dataset.tirar || b.dataset.tirarItem || b.dataset.novoItem)) {
+    if (b.dataset.tirar) Criador.tirar(n0, b.dataset.tirar);
+    if (b.dataset.tirarItem) Criador.tirarItem(n0, b.dataset.tirarItem);
+    if (b.dataset.novoItem) Criador.novoItem(n0, b.dataset.novoItem);
+    mudou();
+    renderNos();
+    return renderPainel();
+  }
+  if (b.dataset.novaEscolha) return novoRamo(b.dataset.novaEscolha);
+  if (b.dataset.irNo) {
+    selecao = { tipo: "no", id: b.dataset.irNo };
+    render();
+    return mostrarSelecionado();
+  }
   if (b.dataset.painel === "fechar") { selecao = null; ligandoDe = null; aviso(""); return render(); }
   if (b.dataset.tirarLig) {
     m.ligacoes = m.ligacoes.filter((l) => l.id !== b.dataset.tirarLig);
@@ -440,7 +529,10 @@ painel.addEventListener("click", (ev) => {
   }
   if (acao === "duplicar") {
     const n = no(selecao.id);
-    const c = criarNo(n.tipo, n.x + 30, n.y + 160, { titulo: n.titulo + " (cópia)", texto: n.texto, condicao: n.condicao, efeitos: n.efeitos, notas: n.notas });
+    const c = criarNo(n.tipo, n.x + 30, n.y + 160, { titulo: n.titulo + " (cópia)", texto: n.texto, condicao: n.condicao, efeitos: n.efeitos, notas: n.notas, d: n.d ? copia(n.d) : undefined });
+    if (!c.d) delete c.d;
+    else if (c.d.chave) c.d.chave += "-copia";
+    else if (c.tipo === "escolha" && c.d.id) c.d.id += "-copia";
     selecao = { tipo: "no", id: c.id };
     mudou();
     return render();
@@ -610,6 +702,13 @@ $("#dg-missao").addEventListener("change", (ev) => {
 });
 
 const dlgMissao = $("#dg-dialogo-missao");
+// as missões que podem vir antes/depois: as do jogo e as deste criador
+function opcoesMissao(atual) {
+  const ids = new Map();
+  for (const j of Object.values(window.MISSOES || {})) ids.set(j.id, j.titulo);
+  for (const x of mundo.missoes) if (x.jogo?.id) ids.set(x.jogo.id, x.titulo);
+  return `<option value="">(nenhuma)</option>${[...ids].map(([id, t]) => `<option value="${esc(id)}" ${id === atual ? "selected" : ""}>${esc(t)} · ${esc(id)}</option>`).join("")}`;
+}
 $("#dg-missao-menu").addEventListener("click", () => {
   const m = missao();
   const doJogo = Object.values(window.MISSOES || {});
@@ -618,12 +717,22 @@ $("#dg-missao-menu").addEventListener("click", () => {
     ${m ? `
       <label class="campo"><span>Nome</span><input id="dg-m-titulo" value="${esc(m.titulo)}"></label>
       <label class="campo"><span>Mundo</span><select id="dg-m-eixo">${Object.entries(EIXOS_NOMES).map(([k, v]) => `<option value="${k}" ${m.eixo === k ? "selected" : ""}>${v}</option>`).join("")}</select></label>
-      <label class="campo"><span>Resumo</span><textarea id="dg-m-resumo" rows="3">${esc(m.resumo)}</textarea></label>
-      <div class="linha-botoes"><button class="btn primario" data-m="salvar">Salvar</button><button class="btn perigo" data-m="apagar">Apagar missão</button></div>
+      <label class="campo"><span>Resumo (aparece na Mesa)</span><textarea id="dg-m-resumo" rows="3">${esc(m.resumo)}</textarea></label>
+      <h3>No jogo</h3>
+      <div class="cr-duas"><label class="campo"><span>Id no jogo</span><input id="dg-j-id" value="${esc(m.jogo?.id || "")}" placeholder="ex.: x2-frequencia"></label>
+        <label class="campo"><span>Subtítulo</span><input id="dg-j-sub" value="${esc(m.jogo?.subtitulo || "")}" placeholder="Ato 1 · Eixo X — Urbano"></label></div>
+      <label class="campo"><span>Fase (etiqueta no topo)</span><input id="dg-j-fase" value="${esc(m.jogo?.fase || "")}"></label>
+      <h3>Desbloqueio e encadeamento</h3>
+      <div class="cr-duas"><label class="campo"><span>Missão anterior (precisa ter terminado)</span><select id="dg-j-anterior">${opcoesMissao(m.jogo?.anterior)}</select></label>
+        <label class="campo"><span>Próxima missão</span><select id="dg-j-proxima">${opcoesMissao(m.jogo?.proxima)}</select></label></div>
+      <label class="campo"><span>E também precisa das marcas (separadas por vírgula; vazio = nenhuma)</span><input id="dg-j-marcas" value="${esc([].concat(m.jogo?.desbloqueio?.marca || []).join(", "))}" placeholder="ex.: salvou:Danny"></label>
+      <label class="campo"><span>Quem fala (NPCs: um por linha, id: nome)</span><textarea id="dg-j-npcs" rows="4">${esc(Object.entries(m.jogo?.npcs || {}).map(([k, v]) => `${k}: ${v}`).join("\n"))}</textarea></label>
+      <details class="cr-secao"><summary>Avançado (JSON)</summary><textarea id="dg-j-avancado" rows="6">${esc(JSON.stringify(m.jogo?.avancado || {}, null, 1))}</textarea></details>
+      <div class="linha-botoes"><button class="btn primario" data-m="salvar">Salvar</button><button class="btn" data-m="baixar">Baixar a missão (formato do jogo)</button><button class="btn perigo" data-m="apagar">Apagar missão</button></div>
       <hr>` : ""}
     <div class="linha-botoes"><button class="btn" data-m="nova">+ Nova missão em branco</button></div>
     <h3>Importar do jogo</h3>
-    <p class="ajuda">Monta o diagrama a partir da missão como ela está no jogo hoje (cenas, lugares, ações, o que destrava o quê). Vira uma missão nova aqui, para você editar à vontade.</p>
+    <p class="ajuda">Traz a missão inteira como ela está no jogo hoje: todos os textos (com as variações por personagem), escolhas, testes, efeitos, condições, lugares, relógio e acontecimentos. Vira um projeto aqui, para você mudar qualquer detalhe.</p>
     <div class="linha-botoes">${doJogo.map((j) => `<button class="btn" data-importar="${j.id}">${esc(j.titulo)}</button>`).join("")}</div>
     <div class="linha-botoes"><button class="btn" data-m="fechar">Fechar</button></div>`;
   dlgMissao.showModal();
@@ -636,6 +745,11 @@ dlgMissao.addEventListener("click", (ev) => {
   if (b.dataset.m === "fechar") return dlgMissao.close();
   if (b.dataset.m === "salvar") {
     Object.assign(m, { titulo: $("#dg-m-titulo").value.trim() || m.titulo, eixo: $("#dg-m-eixo").value, resumo: $("#dg-m-resumo").value });
+    let avancado = m.jogo?.avancado || {};
+    try { avancado = JSON.parse($("#dg-j-avancado").value || "{}"); } catch { return alert("O JSON do Avançado tem um erro. Confira as vírgulas e aspas."); }
+    const marcas = $("#dg-j-marcas").value.split(",").map((x) => x.trim()).filter(Boolean);
+    const npcs = Object.fromEntries($("#dg-j-npcs").value.split("\n").map((l) => l.split(":")).filter((p) => p.length > 1 && p[0].trim()).map(([k, ...v]) => [k.trim(), v.join(":").trim()]));
+    m.jogo = { ...(m.jogo || {}), id: $("#dg-j-id").value.trim(), subtitulo: $("#dg-j-sub").value, fase: $("#dg-j-fase").value, anterior: $("#dg-j-anterior").value, proxima: $("#dg-j-proxima").value, desbloqueio: marcas.length ? { marca: marcas } : {}, npcs, avancado };
     mudou();
     dlgMissao.close();
     return render();
@@ -648,13 +762,21 @@ dlgMissao.addEventListener("click", (ev) => {
     dlgMissao.close();
     return render();
   }
+  if (b.dataset.m === "baixar") {
+    const jm = Criador.exportar(m);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(jm, null, 2)], { type: "application/json" }));
+    a.download = `${jm.id || "missao"}.json`;
+    a.click();
+    return;
+  }
   if (b.dataset.m === "nova") {
     novaMissao();
     dlgMissao.close();
     return render();
   }
   if (b.dataset.importar) {
-    const nova = importar(window.MISSOES[b.dataset.importar]);
+    const nova = Criador.importar(window.MISSOES[b.dataset.importar]);
     mundo.missoes.push(nova);
     escolherMissao(nova.id);
     mudou();
