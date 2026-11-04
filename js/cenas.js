@@ -208,7 +208,9 @@ const Cenas = (() => {
     const titulo = texto(lugar.nome, contexto());
     if (camp.lugar === "trabalho" && m.trabalho) {
       const t = m.trabalho(grupo()[0]);
-      return { eixo: m.eixo, chave: `abertura-${t.arte || t.ponto}`, titulo, icone: lugar.icone };
+      // sem a arte própria da origem, mostra a do lugar da cidade onde ela fica
+      const cid = temCidade() ? Cidade.idDe(m, "trabalho", grupo()[0]) : null;
+      return { eixo: m.eixo, chave: `abertura-${t.arte || t.ponto}`, reserva: cid ? `lugar-${cid}` : null, titulo, icone: lugar.icone };
     }
     // o lugar é o da cidade (cidade-x.js): a mesma arte serve para todas as missões que passam por ele
     const cid = temCidade() ? Cidade.idDe(m, camp.lugar, grupo()[0]) : null;
