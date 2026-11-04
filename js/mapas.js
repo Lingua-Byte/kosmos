@@ -17,69 +17,65 @@ const Mapas = (() => {
     };
   }
 
-  // ---------- Eixo X: a cidade num radar verde ----------
-  function cidade({ centro, tensao }) {
-    const W = 400, H = 300;
-    const cx = (centro.x / 100) * W, cy = (centro.y / 100) * H;
-    const r = sorte(2147);
-    let s = "";
+  // ---------- Eixo X: Port Halden num radar verde ----------
+  // Tudo desenhado em 0–100 (a mesma escala dos alfinetes), esticado para o tamanho do mapa:
+  // a costa e o porto ao sul, os bairros com contorno curvo (os desconhecidos na névoa),
+  // um anel de avenidas em volta da Praça Central e avenidas curvas saindo dele.
+  // A varredura e o pulso ficam por cima, em HTML, para continuarem redondos em qualquer tela.
 
-    // quarteirões: uma grade torta de ruas
-    const ruasV = [30, 85, 150, 205, 262, 330, 372];
-    const ruasH = [28, 80, 128, 176, 228, 270];
-    for (let i = 0; i < ruasV.length - 1; i++) {
-      for (let j = 0; j < ruasH.length - 1; j++) {
-        const x = ruasV[i] + 6, y = ruasH[j] + 6;
-        const w = ruasV[i + 1] - ruasV[i] - 12, h = ruasH[j + 1] - ruasH[j] - 12;
-        if (Math.hypot(x + w / 2 - cx, y + h / 2 - cy) < 34) continue; // a praça fica livre
-        s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" class="quarteirao" style="opacity:${0.35 + r() * 0.4}"/>`;
-      }
+  // contorno fechado e suave passando pelos pontos (Catmull-Rom → curvas de Bézier)
+  function curvaFechada(pts) {
+    const n = pts.length;
+    const p = (i) => pts[(i + n) % n];
+    let d = `M${p(0)[0]},${p(0)[1]}`;
+    for (let i = 0; i < n; i++) {
+      const [a, b, c, e] = [p(i - 1), p(i), p(i + 1), p(i + 2)];
+      const c1 = [b[0] + (c[0] - a[0]) / 6, b[1] + (c[1] - a[1]) / 6];
+      const c2 = [c[0] - (e[0] - b[0]) / 6, c[1] - (e[1] - b[1]) / 6];
+      d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${c[0]},${c[1]}`;
     }
-    // avenidas diagonais até a praça
-    for (const [x, y] of [[0, 0], [W, 0], [0, H], [W, H], [W / 2, 0]]) s += `<line x1="${x}" y1="${y}" x2="${cx}" y2="${cy}" class="avenida"/>`;
+    return d + " Z";
+  }
 
-    // a praça e os anéis do pulso: três rápidos, um longo
-    s += `<circle cx="${cx}" cy="${cy}" r="26" class="praca"/>`;
-    for (let i = 0; i < 4; i++) s += `<circle cx="${cx}" cy="${cy}" r="26" class="pulso pulso-${i}"/>`;
-
-    // varredura do radar
-    s += `<g class="varredura" style="transform-origin:${cx}px ${cy}px"><path d="M${cx},${cy} L${cx + 260},${cy - 40} A260,260 0 0,1 ${cx + 260},${cy + 40} Z" class="feixe"/></g>`;
-
-    // a multidão: pontos que andam para a praça; mais gente quanto mais cheio o relógio
-    const pessoas = Math.round(8 + tensao * 46);
-    for (let i = 0; i < pessoas; i++) {
-      const ang = r() * Math.PI * 2;
-      const dist = 150 + r() * 120;
-      const x0 = cx + Math.cos(ang) * dist, y0 = cy + Math.sin(ang) * dist * 0.75;
-      const dur = (14 - tensao * 7 + r() * 6).toFixed(1);
-      s += `<circle r="1.6" class="pessoa"><animateMotion dur="${dur}s" begin="-${(r() * dur).toFixed(1)}s" repeatCount="indefinite" path="M${x0.toFixed(0)},${y0.toFixed(0)} L${cx.toFixed(0)},${cy.toFixed(0)}"/></circle>`;
-    }
-
-    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <filter id="distorcao"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="${(tensao * 14).toFixed(1)}"/></filter>
-      </defs>
-      <rect width="${W}" height="${H}" class="fundo-mapa"/>
-      <g filter="url(#distorcao)">${s}</g>
-    </svg>`;
+  function cidade({ centro, tensao, bairros = [] }) {
+    const cx = centro.x, cy = centro.y;
+    const regioes = bairros.filter((b) => b.forma).map((b) =>
+      `<path d="${curvaFechada(b.forma)}" class="bairro ${b.conhecido ? "conhecido" : "nevoa"}"/>`).join("");
+    // avenidas: saem do anel da praça e curvam até os bairros
+    const avenidas = [
+      `M${cx},${cy - 11} C${cx - 1},${cy - 25} ${cx + 3},${cy - 38} ${cx + 1},2`,          // norte: Universidade
+      `M${cx + 12},${cy - 5} C${cx + 22},${cy - 14} ${cx + 32},${cy - 22} 98,${cy - 30}`,  // nordeste: Maple Heights
+      `M${cx + 13},${cy + 1} C${cx + 24},${cy + 1} ${cx + 34},${cy - 4} 99,${cy - 6}`,     // leste: Midtown
+      `M${cx + 9},${cy + 9} C${cx + 18},${cy + 18} ${cx + 30},${cy + 26} 98,${cy + 30}`,   // sudeste: Eastside
+      `M${cx},${cy + 11} C${cx - 2},${cy + 22} ${cx + 3},${cy + 32} ${cx + 1},96`,         // sul: o porto
+      `M${cx - 10},${cy + 8} C${cx - 20},${cy + 16} ${cx - 32},${cy + 20} 2,${cy + 26}`,   // sudoeste: 9º Distrito
+      `M${cx - 13},${cy} C${cx - 24},${cy - 4} ${cx - 36},${cy - 14} 2,${cy - 20}`,        // oeste: Westside
+      `M${cx - 9},${cy - 8} C${cx - 16},${cy - 18} ${cx - 22},${cy - 30} ${cx - 30},4`,    // noroeste
+    ].map((d) => `<path d="${d}" class="avenida"/>`).join("");
+    // ruas menores: arcos curtos dentro dos bairros, só para dar textura
+    const ruas = [
+      "M8,30 C14,26 22,27 28,33", "M6,44 C14,40 22,42 30,46", "M66,14 C74,10 84,11 94,16", "M68,26 C78,22 88,24 96,29",
+      "M74,44 C80,41 88,42 94,46", "M6,66 C14,63 24,64 34,70", "M8,76 C16,74 26,76 34,80", "M66,70 C74,67 84,68 96,72",
+      "M70,82 C78,80 86,82 94,88", "M36,10 C42,6 52,6 62,10", "M38,20 C46,17 56,17 64,21",
+    ].map((d) => `<path d="${d}" class="rua"/>`).join("");
+    // a via expressa do Viaduto Leste, cortando o Eastside até a borda
+    const viaduto = `<path d="M${cx + 24},100 C${cx + 28},88 ${cx + 38},78 100,${cy + 16}" class="expressa"/>`;
+    // o mar: entra pelo sudoeste e passa embaixo das Docas; os cais saem da costa
+    const mar = `<path class="mar" d="M0,78 C6,82 10,90 18,94 C28,99 40,97 52,97 C62,97 70,99 78,100 L0,100 Z"/>
+      ${[30, 37, 44, 51, 58, 65].map((x) => `<path class="cais" d="M${x},96.3 L${x},100"/>`).join("")}`;
+    return `<svg class="mapa-geografia" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <rect width="100" height="100" class="fundo-mapa"/>
+        ${mar}${regioes}${ruas}${viaduto}${avenidas}
+        <ellipse cx="${cx}" cy="${cy}" rx="12.5" ry="11" class="anel"/>
+        <ellipse cx="${cx}" cy="${cy}" rx="5.5" ry="5" class="praca"/>
+      </svg>
+      <div class="radar" style="left:${cx}%;top:${cy}%;--tensao:${tensao.toFixed(2)}">
+        <i class="radar-varredura"></i>
+        ${[0, 1, 2, 3].map((k) => `<i class="radar-pulso radar-pulso-${k}"></i>`).join("")}
+      </div>`;
   }
 
   const ESTILOS = { x: cidade };
-
-  // A geografia por cima do radar, esticada para o tamanho do mapa (0–100 nos dois eixos):
-  // o mar e o porto ao sul, e a região de cada bairro (os desconhecidos ficam na névoa).
-  function geografia(eixo, bairros) {
-    if (eixo !== "x" || !bairros.some((b) => b.regiao)) return "";
-    const regioes = bairros.filter((b) => b.regiao).map((b) => {
-      const [cx, cy, rx, ry] = b.regiao;
-      return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" class="regiao ${b.conhecido ? "conhecida" : "nevoa"}"/>`;
-    }).join("");
-    // a costa: o porto no meio, o mar entrando pelos cantos de baixo
-    const mar = `<path class="mar" d="M0,84 C8,86 12,95 22,96 C30,97 34,93 40,96 L40,100 L0,100 Z"/>
-      <path class="mar" d="M38,97 C48,95 58,96 66,95 C74,94 80,97 88,95 C94,93 97,88 100,86 L100,100 L38,100 Z"/>
-      ${[42, 48, 54, 60, 66, 72].map((x) => `<line class="cais" x1="${x}" y1="95.5" x2="${x}" y2="99.5"/>`).join("")}`;
-    return `<svg class="mapa-geografia" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${mar}${regioes}</svg>`;
-  }
 
   // lugares: nós do mapa. Além dos da missão:
   //   fora: true → lugar que o personagem conhece, mas que não está nesta missão (ponto apagado, sem clique)
@@ -115,8 +111,7 @@ const Mapas = (() => {
         </button>`;
     return `
       <div class="mapa-ilustrado mapa-${eixo}" style="--tensao:${t.toFixed(2)}">
-        ${desenho({ centro, tensao: t })}
-        ${geografia(eixo, bairros)}
+        ${desenho({ centro, tensao: t, bairros })}
         ${bairros.map((b) => `<span class="mapa-bairro ${b.conhecido ? "" : "nevoa"}" style="left:${b.x}%;top:${b.y}%">${b.conhecido ? b.nome : "???"}</span>`).join("")}
         <span class="mapa-centro" style="left:${centro.x}%;top:${centro.y}%">${centro.nome}</span>
         ${fora.map(pino).join("")}
