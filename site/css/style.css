@@ -1765,3 +1765,56 @@ input, textarea, select, [contenteditable] { -webkit-user-select: text; user-sel
   background: radial-gradient(ellipse at center, rgba(3, 4, 10, 0.88) 0%, rgba(3, 4, 10, 0.6) 45%, transparent 75%);
 }
 .frase-transicao { isolation: isolate; }
+
+/* ===================== Mapa de Port Halden: bairros, névoa e o porto (sobre o radar) ===================== */
+.mapa-geografia { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.mapa-geografia .regiao { vector-effect: non-scaling-stroke; stroke-width: 1.2; }
+.mapa-geografia .regiao.conhecida { fill: rgba(43, 217, 107, 0.07); stroke: rgba(43, 217, 107, 0.55); stroke-dasharray: 5 4; }
+.mapa-geografia .regiao.nevoa { fill: rgba(2, 8, 4, 0.72); stroke: rgba(43, 217, 107, 0.15); }
+.mapa-geografia .mar { fill: rgba(30, 120, 160, 0.22); stroke: rgba(80, 190, 220, 0.5); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.mapa-geografia .cais { stroke: rgba(150, 230, 200, 0.45); stroke-width: 2; vector-effect: non-scaling-stroke; }
+/* alfinetes no mapa e a legenda numerada embaixo */
+.mapa-pino {
+  position: absolute; transform: translate(-50%, -50%); z-index: 2; width: 30px; height: 30px; padding: 0; cursor: pointer;
+  display: grid; place-items: center; border-radius: 50%; font: inherit; color: var(--acento);
+  background: rgba(2, 10, 5, 0.9); border: 1.5px solid var(--acento); box-shadow: 0 0 8px rgba(43, 217, 107, 0.45);
+}
+.mapa-pino b { font-size: 0.9rem; font-weight: 400; line-height: 1; }
+.mapa-pino small { position: absolute; right: -7px; top: -7px; min-width: 16px; height: 16px; padding: 0 3px; border-radius: 8px; font-size: 0.6rem; line-height: 16px; text-align: center; background: var(--acento); color: #021; font-weight: 700; }
+.mapa-pino.atual { background: var(--acento); color: #021; box-shadow: 0 0 0 3px rgba(43, 217, 107, 0.35), 0 0 16px var(--acento); cursor: default; }
+.mapa-pino.atual small { background: #021; color: var(--acento); }
+.mapa-pino.desconhecido { border-style: dashed; opacity: 0.85; }
+.mapa-pino:hover:not(:disabled) { transform: translate(-50%, -50%) scale(1.15); }
+.mapa-ponto small { font-size: 0.55rem; }
+.mapa-legenda { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 4px 8px; margin-top: 8px; }
+.mapa-legenda-item {
+  display: grid; grid-template-columns: auto auto 1fr; grid-template-rows: auto auto; align-items: center; gap: 0 6px; text-align: left;
+  padding: 5px 8px; font: inherit; font-size: 0.78rem; color: var(--texto); cursor: pointer;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid var(--painel-borda); border-radius: 8px;
+}
+.mapa-legenda-item i { grid-row: 1 / span 2; font-style: normal; font-size: 0.65rem; min-width: 18px; height: 18px; line-height: 18px; text-align: center; border-radius: 9px; background: var(--acento); color: #021; font-weight: 700; }
+.mapa-legenda-item b { grid-row: 1 / span 2; color: var(--acento); font-weight: 400; }
+.mapa-legenda-item span { line-height: 1.2; }
+.mapa-legenda-item small { grid-column: 3; color: var(--texto-suave); font-size: 0.65rem; }
+.mapa-legenda-item.atual { border-color: var(--acento); cursor: default; }
+.mapa-legenda-item.desconhecido { border-style: dashed; }
+.mapa-legenda-item.fora { opacity: 0.6; cursor: default; }
+.mapa-legenda-item:hover:not(:disabled) { border-color: var(--acento); }
+@container (max-width: 640px) { .cena-painel .mapa-ilustrado { aspect-ratio: 3 / 4; } .mapa-legenda { grid-template-columns: 1fr 1fr; } }
+.ficha-corpo [data-sub="mapa"] .mapa-ilustrado { aspect-ratio: 3 / 4; max-height: 44dvh; }
+@media (min-width: 700px) { .ficha-corpo [data-sub="mapa"] .mapa-ilustrado { aspect-ratio: 4 / 3; } }
+.mapa-pino { width: 28px; height: 28px; }
+.mapa-ponto { pointer-events: auto; }
+@container (max-width: 640px) {
+  .cena-painel .mapa-ilustrado { aspect-ratio: 5 / 6; margin-top: 6px; }
+  .mapa-legenda { gap: 3px 6px; margin-top: 6px; }
+  .mapa-legenda-item { padding: 3px 6px; font-size: 0.7rem; }
+  .mapa-legenda-item small { font-size: 0.6rem; }
+  .cena-painel > .sub { font-size: 0.75rem; margin: 2px 0; }
+}
+.mapa-pino.mini { width: 18px; height: 18px; font-size: 0.6rem; font-weight: 700; color: #021; background: var(--acento); border: 1px solid #021; box-shadow: 0 0 6px rgba(43, 217, 107, 0.6); cursor: default; }
+.mapa-legenda-corrida { margin: 6px 0 0; font-size: 0.7rem; line-height: 1.55; color: var(--texto-suave); }
+.mapa-legenda-corrida b { color: var(--acento); font-weight: 600; }
+.mapa-legenda-corrida i { font-style: normal; font-weight: 700; color: #021; background: var(--acento); border-radius: 7px; padding: 0 4px; font-size: 0.6rem; }
+.ficha-corpo [data-sub="mapa"] .mapa-ilustrado { max-height: 40dvh; }
+@container (min-width: 641px) { .cena-painel .mapa-ilustrado { max-height: 56vh; } }
