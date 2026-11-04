@@ -1853,3 +1853,20 @@ input, textarea, select, [contenteditable] { -webkit-user-select: text; user-sel
 }
 @media (prefers-reduced-motion: reduce) { .radar-varredura, .radar-pulso { animation: none; } }
 .mapa-bairro { z-index: 1; }
+
+/* ===================== Zoom do mapa ===================== */
+.mapa-ilustrado[data-vista] { touch-action: none; cursor: zoom-in; }
+.mapa-ilustrado.ampliado { cursor: grab; }
+.mapa-ilustrado.arrastando { cursor: grabbing; }
+.mapa-mundo { position: absolute; inset: 0; transform-origin: 0 0; transition: transform 0.12s ease-out; }
+.mapa-ilustrado.arrastando .mapa-mundo { transition: none; }
+/* alfinetes e nomes não crescem com o zoom: só se espalham */
+.mapa-mundo .mapa-pino, .mapa-mundo .mapa-ponto, .mapa-mundo .mapa-bairro, .mapa-mundo .mapa-centro { transform: translate(-50%, -50%) scale(calc(1 / var(--z, 1))); }
+.mapa-mundo .mapa-pino:hover:not(:disabled) { transform: translate(-50%, -50%) scale(calc(1.15 / var(--z, 1))); }
+.mapa-zoom { position: absolute; right: 8px; bottom: 8px; z-index: 3; display: grid; gap: 4px; }
+.mapa-zoom button {
+  width: 32px; height: 32px; padding: 0; font-size: 1.05rem; font-weight: 600; line-height: 1; cursor: pointer; color: var(--acento);
+  background: rgba(2, 10, 5, 0.88); border: 1px solid var(--acento); border-radius: 8px;
+}
+.mapa-zoom button:hover { background: rgba(43, 217, 107, 0.18); }
+@media (prefers-reduced-motion: reduce) { .mapa-mundo { transition: none; } }
