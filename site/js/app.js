@@ -740,8 +740,8 @@ function renderEixo(p, id) {
           </div>`;
         }).join("")}
       </div>
-      <div data-sub="recursos">${recursosHtml(p, "hab", id)}${recursosHtml(p, "item", id)}</div>
-      <div data-sub="bolsa">${vidaHtml(p, id)}</div>
+      <div data-sub="recursos">${recursosHtml(p, "hab", id)}</div>
+      <div data-sub="bolsa">${recursosHtml(p, "item", id)}${vidaHtml(p, id)}</div>
       ${id === "y" ? `<div data-sub="linguas">${runasHtml(p)}</div>` : ""}
       <div class="bloco exposicao ${alerta}" data-sub="convergencia"><h3>${ex.nome}</h3>
         <p class="sub">${ex.desc}</p>
