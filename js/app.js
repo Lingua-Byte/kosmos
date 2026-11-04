@@ -182,7 +182,7 @@ $("#btn-entrar").addEventListener("click", () => {
   const frase = $("#frase-transicao");
   const eixos = $("#eixos-transicao");
   const frases = [fraseAleatoria(), fraseAleatoria(), "A separação foi apenas percepção."];
-  const passo = reduzirMovimento ? 700 : 1700;
+  const passo = reduzirMovimento ? 900 : 2600; // tempo para ler cada frase
   const agendar = (fn, ms) => transicaoTimers.push(setTimeout(fn, ms));
 
   frases.forEach((f, i) => {

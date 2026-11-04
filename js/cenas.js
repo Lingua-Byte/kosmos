@@ -614,6 +614,13 @@ const Cenas = (() => {
     return `<div class="cena-painel">
       <h3>Bolsa de ${esc(p.nome)} <button class="btn-texto" data-painel="">Fechar</button></h3>
       <p class="carteira"><strong>${esc(Vida.dinheiroTexto(e, p.dinheiro[e]))}</strong> <span class="sub">· bolsa ${Vida.naBolsa(p)}/${BOLSA_MAX}</span></p>
+      <h4 class="diario-sub">Equipamento <small>carga ${Regras.carga(p)}/${Regras.cargaMax(p)}</small></h4>
+      ${p.itens.length ? `<ul class="pertences">${p.itens.map((k) => {
+        const it = Regras.equip(k);
+        const resta = Regras.usosRestantes(p, k);
+        return `<li class="com-arte">${Vida.arte(k, e, it.nomes[e])}<span>${esc(it.nomes[e])}</span><small>${esc(it.efeito)} · ${esc(Regras.textoUsos(it))}${Number.isFinite(resta) ? ` · restam ${resta}` : ""}</small></li>`;
+      }).join("")}</ul>` : `<p class="sub">Nenhum equipamento.</p>`}
+      <h4 class="diario-sub">Pertences</h4>
       ${itens.length ? `<ul class="pertences">${itens.map(([k, n]) => `
         <li class="com-arte">${Vida.arte(k, e, Vida.nome(k, e))}<span>${esc(Vida.nome(k, e))}${n > 1 ? ` <b>×${n}</b>` : ""}</span><small>${esc(Vida.pertence(k).efeito)}</small>
           <button class="btn-secundario" data-usar-pertence="${k}">Usar</button></li>`).join("")}</ul>` : `<p class="sub">Nada na bolsa. Compre em lojas ou procure pelos lugares.</p>`}
