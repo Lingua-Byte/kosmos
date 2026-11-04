@@ -80,45 +80,64 @@ const Cenas = (() => {
   // ======================= Mesa =======================
 
   // preSelecionados: quem já vem escolhido (ex.: abrindo a Mesa pela ficha de um personagem)
+  // A Mesa: single player. Um personagem por vez; só aparecem as missões que ele já liberou
+  // (a anterior terminou e ele tem as marcas pedidas). As que ele já terminou ficam embaixo.
+  let missoesCarregadas = false;
   function abrirMesa(preSelecionados) {
+    if (!missoesCarregadas) MissoesDados.pronto.then(() => { missoesCarregadas = true; if (document.querySelector("#tela-mesa.ativa")) abrirMesa(); });
     painel = null;
     definirTema(null);
     const lista = todos();
-    if (preSelecionados) selecionados = new Set(preSelecionados);
-    selecionados = new Set([...selecionados].filter((id) => lista.some((p) => p.id === id)));
+    if (preSelecionados && preSelecionados.length) selecionados = new Set(preSelecionados.slice(0, 1));
+    selecionados = new Set([...selecionados].filter((id) => lista.some((p) => p.id === id)).slice(0, 1));
     if (!selecionados.size && lista.length) selecionados = new Set([lista[0].id]);
-    const nomeDe = (id) => esc(lista.find((p) => p.id === id)?.nome || "?");
-    const andamento = partidas();
+    const p = lista.find((x) => selecionados.has(x.id));
+    if (p) migrarConcluidas(p);
+    const andamento = p ? partidas().filter((c) => c.personagens.includes(p.id)) : [];
+    const missoes = Object.values(MISSOES);
+    const concluidas = p ? p.concluidas || [] : [];
+    const emCurso = new Set(andamento.map((c) => c.missao));
+    const abertas = p ? missoes.filter((m) => MissoesDados.liberada(m, p) && !concluidas.includes(m.id) && !emCurso.has(m.id)) : [];
+    const feitas = p ? missoes.filter((m) => concluidas.includes(m.id)) : [];
+    const cartao = (m, rotulo) => `
+          <div class="mesa-missao">
+            <span class="tag">${esc(m.subtitulo || "")}</span>
+            <strong>${esc(m.titulo)}</strong>
+            <p class="sub">${esc(typeof m.resumo === "string" ? m.resumo : "")}</p>
+            <button class="btn-primario" data-comecar="${m.id}">${rotulo}</button>
+          </div>`;
     $("#mesa").innerHTML = `
       <div class="mesa-topo"><button class="btn-texto" data-acao="personagens" aria-label="Personagens">‹</button><h2>A Mesa</h2>${Saves.todos().length ? `<button class="btn-secundario mesa-carregar" data-acao="carregar-jogo">Carregar jogo</button>` : ""}</div>
-      ${andamento.length ? `<h3>Partidas em andamento</h3>${andamento.map((c) => `
-        <div class="mesa-continuar">
-          <div><strong>${esc(MISSOES[c.missao].titulo)}</strong><span>${esc(MISSOES[c.missao].subtitulo)} · ${c.personagens.map(nomeDe).join(", ")}</span></div>
-          <button class="btn-primario" data-continuar="${c.id}">Continuar</button>
-        </div>`).join("")}` : ""}
       ${lista.length ? `
-        <h3>Quem joga <small class="sub">· sozinho ou em grupo, cada um na sua vez</small></h3>
-        <div class="mesa-jogadores">${lista.map((p) => `
-          <button class="mesa-jogador ${selecionados.has(p.id) ? "escolhida" : ""}" data-jogador="${p.id}">
-            <b>${EIXOS[p.origem].glifo}</b><strong>${esc(p.nome)}</strong>
-            <span>${esc((profissaoDe(p, p.origem) || { nome: EIXOS[p.origem].papeis[p.papel].nome }).nome)}</span>
+        <h3>Quem joga</h3>
+        <div class="mesa-jogadores">${lista.map((x) => `
+          <button class="mesa-jogador ${selecionados.has(x.id) ? "escolhida" : ""}" data-jogador="${x.id}">
+            <b>${EIXOS[x.origem].glifo}</b><strong>${esc(x.nome)}</strong>
+            <span>${esc((profissaoDe(x, x.origem) || { nome: EIXOS[x.origem].papeis[x.papel].nome }).nome)}</span>
           </button>`).join("")}</div>
-        <h3>Missão</h3>
-        <div class="mesa-missoes">${Object.values(MISSOES).map((m) => `
-          <div class="mesa-missao">
-            <span class="tag">${esc(m.subtitulo)}</span>
-            <strong>${esc(m.titulo)}</strong>
-            <p class="sub">${esc(m.resumo)}</p>
-            <button class="btn-primario" data-comecar="${m.id}">Começar</button>
-          </div>`).join("")}
-        </div>
-        <p class="dica">Os prólogos do Medieval e do Espacial ainda não foram escritos: por enquanto, todos começam no Urbano.</p>`
+        ${andamento.length ? `<h3>Em andamento</h3>${andamento.map((c) => `
+          <div class="mesa-continuar">
+            <div><strong>${esc(MISSOES[c.missao].titulo)}</strong><span>${esc(MISSOES[c.missao].subtitulo || "")}</span></div>
+            <button class="btn-primario" data-continuar="${c.id}">Continuar</button>
+          </div>`).join("")}` : ""}
+        ${abertas.length || !andamento.length ? `<h3>Missões</h3>
+        <div class="mesa-missoes">${abertas.map((m) => cartao(m, "Começar")).join("") || `<p class="sub">Nenhuma missão nova liberada para ${esc(p.nome)}.</p>`}</div>` : ""}
+        ${feitas.length ? `<h3>Já jogadas</h3><div class="mesa-missoes">${feitas.map((m) => cartao(m, "Jogar de novo")).join("")}</div>` : ""}`
       : `<p class="sub">Ainda não há personagens.</p><button class="btn-primario" data-acao="criar">Escolher personagem</button>`}`;
     mostrarTela("tela-mesa");
   }
 
+  // personagens que terminaram missões antes de existir "concluídas" (pelas partidas encerradas)
+  function migrarConcluidas(p) {
+    if (p.concluidasMigradas) return;
+    const feitas = Object.values(lerTodas()).filter((c) => c.fim && c.personagens.includes(p.id)).map((c) => c.missao);
+    p.concluidas = [...new Set([...(p.concluidas || []), ...feitas])];
+    p.concluidasMigradas = true;
+    Armazem.salvar(p);
+  }
+
   function comecar(missaoId) {
-    if (!selecionados.size) return avisar("Escolha pelo menos um personagem.");
+    if (!selecionados.size) return avisar("Escolha quem joga.");
     // um personagem só joga uma partida por vez: a antiga dele é encerrada (com confirmação)
     const conflito = partidas().filter((c) => c.personagens.some((id) => selecionados.has(id)));
     if (conflito.length) {
@@ -149,6 +168,7 @@ const Cenas = (() => {
   // ======================= Tela de jogo =======================
 
   function abrir(id) {
+    if (!missoesCarregadas) return MissoesDados.pronto.then(() => { missoesCarregadas = true; abrir(id); });
     if (id) escolherPartida(id);
     if (!carregar() || !MISSOES[camp.missao]) return abrirMesa();
     resultado = null;
@@ -408,6 +428,8 @@ const Cenas = (() => {
     if (s.semPronto && grupo()[0].pronto) return false; // coisas de escritório que não cabem nas origens
     // só no ponto de entrada da profissão de quem está jogando (as 8 aberturas)
     if (s.ponto && (!missao().trabalho || missao().trabalho(ativo()).ponto !== s.ponto)) return false;
+    if ((s.classe || s.rodadaMin != null || s.resMin != null || s.disMin != null) &&
+      !MissoesDados.condicao({ classe: s.classe, rodadaMin: s.rodadaMin, resMin: s.resMin, disMin: s.disMin }, { p: ativo(), camp, grupo: grupo() })) return false;
     return true;
   }
 
@@ -499,8 +521,13 @@ const Cenas = (() => {
   }
 
   function finalHtml() {
+    const m = missao();
+    const prox = m.proxima && MISSOES[m.proxima];
+    const p = grupo()[0];
+    const podeSeguir = prox && p && MissoesDados.liberada(prox, p);
     return `<div class="opcoes">
-      <button class="btn-primario" data-acao="ficha-final">Ver a ficha</button>
+      ${podeSeguir ? `<button class="btn-primario" data-comecar-proxima="${prox.id}">Próxima missão: ${esc(prox.titulo)}</button>` : ""}
+      <button class="${podeSeguir ? "btn-secundario" : "btn-primario"}" data-acao="ficha-final">Ver a ficha</button>
       <button class="btn-secundario" data-acao="mesa">Voltar à Mesa</button>
     </div>
     <p class="dica">${esc(missao().textoFinal || "Fim do prólogo. O Eixo Y foi revelado na ficha de quem jogou.")}</p>`;
@@ -694,7 +721,8 @@ const Cenas = (() => {
 
   function resolver(op, res, doLugar) {
     carregar();
-    res = res || {};
+    const campo = res === op.sucesso ? "sucesso" : res === op.falha ? "falha" : "resultado";
+    res = MissoesDados.resultado(res || {}, contexto()) || {};
     const m = missao();
     const p = ativo(); // recarregado: já inclui o que o teste de dados mudou
     const efeitos = res.efeitos || {};
@@ -802,7 +830,6 @@ const Cenas = (() => {
     const t = texto(res.texto, contexto());
     if (t || linhas.length) {
       const npc = res.npc || op.npc;
-      const campo = res === op.sucesso ? "sucesso" : res === op.falha ? "falha" : "resultado";
       resultado = { texto: t || "…", linhas, depois, npc, fala: npc && op.id ? `${op.id}-${campo}` : null };
       render();
     } else depois();
@@ -842,6 +869,10 @@ const Cenas = (() => {
         for (const mc of [].concat(cena.marca || [])) p.marcas = [...new Set([...(p.marcas || []), mc])];
         if (cena.revela) fichaMudou(p, [`${p.nome}: Memória Cruzada. O ${EIXOS[cena.revela].nome} (${EIXOS[cena.revela].mundo}) foi revelado na ficha.`]);
         else fichaMudou(p, cena.memoria ? [`${p.nome}: nova Memória Cruzada.`] : []);
+      }
+      for (const p of grupo()) {
+        p.concluidas = [...new Set([...(p.concluidas || []), camp.missao])];
+        Armazem.salvar(p);
       }
       camp.fim = true;
       camp.flags.revelado = cena.revela;
@@ -928,9 +959,7 @@ const Cenas = (() => {
 
     if (naMesa) {
       if (t.dataset.jogador) {
-        const id = t.dataset.jogador;
-        if (selecionados.has(id)) selecionados.delete(id);
-        else selecionados.add(id);
+        selecionados = new Set([t.dataset.jogador]);
         return abrirMesa();
       }
       if (t.dataset.comecar) return comecar(t.dataset.comecar);
@@ -1012,6 +1041,10 @@ const Cenas = (() => {
     if (acao === "narrador-voz") return Narrador.alternarVoz(textoNarrado(), m.eixo);
     if (acao === "narrador") return Narrador.alternarLigado(textoNarrado(), m.eixo);
     if (acao === "ficha") return abrirFicha(ativo());
+    if (t.dataset.comecarProxima) {
+      selecionados = new Set([grupo()[0].id]);
+      return comecar(t.dataset.comecarProxima);
+    }
     if (acao === "ficha-final") {
       const p = grupo()[0];
       abrirFicha(p);
