@@ -156,6 +156,7 @@ document.addEventListener("visibilitychange", () => document.visibilityState ===
 const mundoEl = $("#dg-mundo");
 const nosEl = $("#dg-nos");
 const linhasEl = $("#dg-linhas");
+const rotulosEl = $("#dg-rotulos"); // os rótulos ficam por cima dos blocos (senão os blocos cobrem)
 const quadro = $("#dg-quadro");
 
 function aplicarVista() {
@@ -207,7 +208,8 @@ function ancoras(a, b) {
 
 function renderLigacoes() {
   const m = missao();
-  if (!m) return (linhasEl.innerHTML = "");
+  if (!m) return (linhasEl.innerHTML = rotulosEl.innerHTML = "");
+  const rotulos = [];
   linhasEl.innerHTML = m.ligacoes.map((l) => {
     const a = no(l.de), b = no(l.para);
     if (!a || !b) return "";
@@ -219,11 +221,13 @@ function renderLigacoes() {
     const sel = selecao?.tipo === "ligacao" && selecao.id === l.id ? "l-selecionada" : "";
     const meio = { x: (p1.x + 3 * c1.x + 3 * c2.x + p2.x) / 8, y: (p1.y + 3 * c1.y + 3 * c2.y + p2.y) / 8 };
     const rot = l.rotulo || (l.tipo === "sucesso" ? "✓" : l.tipo === "falha" ? "✗" : l.tipo === "abre" ? "abre" : "");
-    const w = rot ? Math.min(220, rot.length * 7 + 14) : 0;
+    const curto = rot.length > 22 ? rot.slice(0, 21) + "…" : rot;
+    const w = curto.length * 7 + 16;
+    if (rot) rotulos.push(`<g class="rotulo" data-ligacao="${l.id}"><title>${esc(rot)}</title><rect x="${meio.x - w / 2}" y="${meio.y - 11}" width="${w}" height="22" rx="11"/><text x="${meio.x}" y="${meio.y + 4}" text-anchor="middle">${esc(curto)}</text></g>`);
     return `<path d="${d}" class="l-${l.tipo || "segue"} ${sel}" marker-end="url(#ponta)"/>
-      <path d="${d}" class="alvo" data-ligacao="${l.id}"/>
-      ${rot ? `<g class="rotulo" data-ligacao="${l.id}"><rect x="${meio.x - w / 2}" y="${meio.y - 11}" width="${w}" height="22" rx="11"/><text x="${meio.x}" y="${meio.y + 4}" text-anchor="middle">${esc(rot.length > 30 ? rot.slice(0, 29) + "…" : rot)}</text></g>` : ""}`;
+      <path d="${d}" class="alvo" data-ligacao="${l.id}"/>`;
   }).join("");
+  rotulosEl.innerHTML = rotulos.join("");
 }
 
 function renderSeletor() {
@@ -314,6 +318,15 @@ function novoRamo(deId) {
   const y = irmaos.length ? Math.max(...irmaos.map((n) => n.y)) + 170 : pai.y;
   const tipo = pai.tipo === "lugar" ? "escolha" : pai.tipo === "escolha" ? "cena" : pai.tipo === "entrada" ? "cena" : pai.tipo === "marca" ? "cena" : "cena";
   const n = criarNo(tipo, pai.x + LARG + 90, y);
+  // não nasce em cima de outro bloco: procura o espaço livre mais perto (um pouco abaixo, depois à direita)
+  const livre = (x, yy) => !m.nos.some((o) => o !== n && Math.abs(o.x - x) < LARG + 20 && Math.abs(o.y - yy) < 160);
+  procura: for (let col = 0; col < 12; col++)
+    for (let lin = 0; lin < 3; lin++) {
+      // com irmãos, entra no fim da fila deles (mesma coluna); sem irmãos, à direita do bloco
+      const x0 = irmaos.length ? irmaos.reduce((a, b) => (b.y > a.y ? b : a)).x : pai.x + LARG + 90;
+      const x = x0 + col * (LARG + 40), yy = y + lin * 180;
+      if (livre(x, yy)) { n.x = x; n.y = yy; break procura; }
+    }
   ligar(deId, n.id);
   selecao = { tipo: "no", id: n.id };
   mudou();
@@ -322,8 +335,31 @@ function novoRamo(deId) {
 }
 
 function focarNoTitulo() {
+  mostrarSelecionado();
   const t = painel.querySelector('[data-campo="titulo"]');
   if (t && matchMedia("(min-width: 761px)").matches) { t.focus(); t.select(); }
+}
+
+// o bloco selecionado fica à vista: se nasceu atrás do painel ou fora da tela, o quadro anda até ele
+function mostrarSelecionado() {
+  const el = selecao?.tipo === "no" && nosEl.querySelector(`[data-no="${selecao.id}"]`);
+  if (!el) return;
+  const q = quadro.getBoundingClientRect();
+  const r = el.getBoundingClientRect();
+  const p = painel.hidden ? null : painel.getBoundingClientRect();
+  const celular = matchMedia("(max-width: 760px)").matches;
+  // área livre: o quadro menos o painel (à direita no PC, embaixo no celular)
+  const livre = { left: q.left, top: q.top, right: !celular && p ? Math.min(q.right, p.left) : q.right, bottom: celular && p ? Math.min(q.bottom, p.top) : q.bottom };
+  let dx = 0, dy = 0;
+  if (r.right > livre.right - 20) dx = livre.right - 20 - r.right;
+  if (r.left + dx < livre.left + 20) dx = livre.left + 20 - r.left;
+  if (r.bottom > livre.bottom - 20) dy = livre.bottom - 20 - r.bottom;
+  if (r.top + dy < livre.top + 20) dy = livre.top + 20 - r.top;
+  if (!dx && !dy) return;
+  vista.x += dx;
+  vista.y += dy;
+  aplicarVista();
+  guardarLocal();
 }
 
 // centro da tela, em coordenadas do mundo
@@ -529,7 +565,8 @@ function soltar(ev) {
       aviso("");
       selecao = { tipo: "no", id: a.id };
     } else selecao = { tipo: "no", id: a.id };
-    return render();
+    render();
+    return mostrarSelecionado();
   }
   if (a.tipo === "fundo") {
     if (a.moveu) return guardarLocal();
