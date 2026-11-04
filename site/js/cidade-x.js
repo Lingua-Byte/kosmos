@@ -49,6 +49,16 @@ const CIDADE_X = {
     atlantico: { nome: "Atlantic Tower", bairro: "centro", x: 63, y: 44, icone: "▥" },
     cerca: { nome: "A cerca do centro", bairro: "centro", x: 39, y: 65, icone: "⊠", segredo: true },
     biblioteca: { nome: "Biblioteca Municipal", bairro: "centro", x: 61, y: 60, icone: "❡" },
+    // lugares novos (artes do autor, 04/11): ainda sem missão; ficam à mão no Criador
+    "estacao-central": { nome: "Estação Central", bairro: "midtown", x: 76, y: 62, icone: "⇌" },
+    "mercy-vale": { nome: "Hospital Mercy Vale", bairro: "westside", x: 9, y: 27, icone: "✚" },
+    "delegacia-porto": { nome: "Delegacia do Porto", bairro: "docas", x: 23, y: 90, icone: "★" },
+    "cafe-halden": { nome: "Café Halden", bairro: "docas", x: 71, y: 93, icone: "◒" },
+    mirante: { nome: "Mirante de Port Halden", bairro: "universidade", x: 69, y: 6, icone: "◬" },
+    "armazem-16": { nome: "Armazém 16", bairro: "eastside", x: 84, y: 95, icone: "▧" },
+    porto: { nome: "O Porto (cais)", bairro: "docas", x: 62, y: 96, icone: "≈" },
+    "feira-viaduto": { nome: "Feira sob o viaduto", bairro: "eastside", x: 95, y: 69, icone: "✿" },
+    campus: { nome: "Universidade de Port Halden", bairro: "universidade", x: 38, y: 21, icone: "◫" },
     // Maple Heights
     casa: { nome: "Sua casa", bairro: "maple", x: 78, y: 18, icone: "⌂" },
     comunitario: { nome: "Centro comunitário", bairro: "maple", x: 70, y: 23, icone: "♣" },
