@@ -14,9 +14,11 @@ const Palco = (() => {
   const base = (eixo, chave) => `imagens/${eixo}/${chave}`;
 
   // Monta a melhor mídia disponível dentro de "alvo": vídeo → imagem → cartão
-  function midia(alvo, { eixo, chave, titulo, icone }, { loop = true, aoTerminar } = {}) {
+  // reserva: outra chave para tentar antes do cartão (ex.: a origem sem arte usa a arte do lugar)
+  function midia(alvo, { eixo, chave, titulo, icone, reserva }, { loop = true, aoTerminar } = {}) {
     const id = `${eixo}/${chave}`;
     const cartao = () => {
+      if (reserva) return midia(alvo, { eixo, chave: reserva, titulo, icone }, { loop, aoTerminar });
       achados[id] = achados[id] || "nada";
       alvo.innerHTML = `<div class="palco-cartao"><b>${esc(icone || "◉")}</b><span>${esc(titulo || "")}</span></div>`;
       if (aoTerminar) aoTerminar();

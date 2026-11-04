@@ -4,7 +4,9 @@ Levantado do código em 04/11/2026 (Prólogo "O Pulso" + X1 "A Manhã Seguinte")
 O jogo já funciona sem elas: onde falta arte aparece um cartão com ícone e nome. Basta salvar o
 arquivo com o nome certo na pasta certa e a arte aparece sozinha.
 
-**Já prontas:** 48 itens (16 itens × 3 mundos) e 9 retratos dos personagens prontos.
+**Já prontas (04/11):** os **25 lugares de Port Halden + a Praça Central** (prancha de lugares, em `site/imagens/x/lugar-*.webp`). Enquanto as 9 origens não têm arte própria, a abertura de cada personagem mostra a arte do lugar onde ela fica.
+
+**Também prontas:** 48 itens (16 itens × 3 mundos) e 9 retratos dos personagens prontos.
 
 ---
 
