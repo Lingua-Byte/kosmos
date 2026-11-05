@@ -1,0 +1,41 @@
+# Junta sozinho na main o que foi feito em outro branch (ex.: Claude Code na web, pelo Android)
+# e publica o site atualizado no GitHub Pages. O autor não precisa abrir nem aprovar pull request.
+# Só roda para branches deste repositório (quem não tem acesso não consegue enviar branch aqui).
+# Se houver conflito, a junção falha e nada muda na main: a próxima sessão do Claude resolve.
+
+name: Juntar na main
+
+on:
+  push:
+    branches-ignore:
+      - main
+      - gh-pages
+
+permissions:
+  contents: write
+
+concurrency:
+  group: juntar-main
+  cancel-in-progress: false
+
+jobs:
+  juntar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Juntar o branch na main
+        env:
+          RAMO: ${{ github.ref_name }}
+        run: |
+          git config user.name "kosmos-robo"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "$RAMO"
+          git merge --no-edit "origin/$RAMO" -m "Junta $RAMO na main"
+          git push origin main
+      - name: Publicar o site (GitHub Pages)
+        run: |
+          git subtree split --prefix site -b site-publicado
+          git push -f origin site-publicado:gh-pages

@@ -3,6 +3,13 @@
 RPG de texto (site em `site/`, servidor do PC em `ferramentas/servidor.py`). Referências: Fallout 1 e 2, TES antes de Morrowind, Neverwinter Nights.
 Este arquivo vale para qualquer conta ou aparelho que abra o projeto. Decisões novas do autor entram aqui.
 
+## Salvar é automático (o autor não mexe com git)
+O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code na web). Ele não usa git: salvar e sincronizar é tarefa do Claude, sem pedir.
+- **Ao terminar cada pedido que mudou arquivos, faça commit e push na hora, sem perguntar.** Mensagem de commit em português.
+- **Na web (Android):** envie para o branch da sessão. Um robô do GitHub (`.github/workflows/juntar.yml`) junta esse branch na `main` sozinho. Não precisa abrir nem aprovar pull request.
+- **No PC:** trabalhe na `main`; ao abrir a sessão, as novidades já são puxadas (gancho local em `.claude/settings.json`, fora do git). Para publicar o site, use `sh ferramentas/publicar.sh`.
+- Se a junção der conflito, o robô falha: resolva na próxima sessão e avise o autor em uma frase simples, sem termos técnicos.
+
 ## Onde está cada coisa
 - Visão geral do jogo: `DESIGN.md` (ainda diz "três mundos": vale o que está abaixo).
 - Lore completa, com selos Decidido / Para considerar / Em aberto: `site/js/historia.js`, que aparece na aba **História** da Oficina (`site/oficina.html`). Lore nova: atualizar esse arquivo.
