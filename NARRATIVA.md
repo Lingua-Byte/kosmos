@@ -1,5 +1,8 @@
 # KOSMOS — Bíblia narrativa: estrutura e missões
 
+> **Rascunho do Claude, escrito sem a participação do autor.** Nada aqui vale como lore do jogo até o autor aprovar,
+> parte por parte. O que vale está no `CLAUDE.md` e no que está "Decidido" em `site/js/historia.js`.
+
 Como o KOSMOS conta a sua história: o que aprender com os RPGs de referência, a ordem dos eixos,
 as missões fora do eixo (Travessias) e o arco das 17 missões principais.
 Os personagens estão em `PERSONAGENS.md`; os lugares (Port Halden, Yudur, Domus), em `LUGARES.md`.

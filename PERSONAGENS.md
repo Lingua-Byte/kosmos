@@ -1,5 +1,8 @@
 # KOSMOS — Personagens e arcos
 
+> **Rascunho do Claude, escrito sem a participação do autor.** Nada aqui vale como lore do jogo até o autor aprovar,
+> parte por parte. O que vale está no `CLAUDE.md` e no que está "Decidido" em `site/js/historia.js`.
+
 Os 9 personagens prontos e os NPCs dos três eixos: o que querem, como falam, o que escondem e para onde vão.
 Estrutura das missões em `NARRATIVA.md`; lugares em `LUGARES.md`.
 

@@ -47,7 +47,7 @@ const HISTORIA = {
     },
     {
       titulo: "Yudur por dentro",
-      estado: "considerar",
+      estado: "aberto",
       html: `
         <ul>
           <li>A <b>Pedra da Lei</b> é o cartório do vale, não um altar. Ela e as runas da base são mais velhas que o povo; ninguém lembra quem a pôs ali.</li>
@@ -55,7 +55,7 @@ const HISTORIA = {
           <li>Cada pessoa tem um nome de boca e um <b>nome de Pedra</b>. Na <b>noite mais longa</b>, os mortos são lidos e a família responde "lembrado". É lembrança, não reza.</li>
           <li>A pior pena é o <b>exílio</b> além dos marcos. Para o povo, o Runático é "gravador sem marca": primeiro crime, depois doença, depois medo.</li>
         </ul>
-        <p>Detalhes em <b>YUDUR.md</b>.</p>`,
+        <p><b>Rascunho do Claude, ainda sem a participação do autor.</b> Detalhes em <b>YUDUR.md</b>.</p>`,
     },
     {
       titulo: "A Domus e o buraco negro",
