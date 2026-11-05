@@ -323,6 +323,7 @@ const Cenas = (() => {
         <button data-painel="bolsa"><b>⛁</b><span>${esc(Vida.dinheiroTexto(m.eixo, Vida.garantir(ativo()).dinheiro[m.eixo]))}</span></button>
         <button data-acao="ficha"><b>☰</b><span>Ficha</span></button>
         <button data-acao="tradutor"><b>${EIXOS[m.eixo].glifo}</b><span>Tradutor</span></button>
+        <button data-acao="colecao"><b>◈</b><span>Coleção</span></button>
         <button data-acao="mesa"><b>‹</b><span>Mesa</span></button>
       </nav>
       ${painel ? `<div class="painel-sobre" role="dialog" aria-modal="true">${painelHtml()}</div>` : ""}`;
@@ -794,6 +795,13 @@ const Cenas = (() => {
         linhas.push("Nova Memória Cruzada");
       } else linhas.push("Uma sensação de já ter vivido isso, mas a lembrança não vem (precisa de mais Ressonância)");
     }
+    // documento de lore: entra na Coleção e abre para ler na hora
+    for (const id of [].concat(efeitos.documento || [])) {
+      const r = typeof Colecao !== "undefined" ? Colecao.documento(id) : { doc: null };
+      if (!r.doc) continue;
+      linhas.push(r.novo ? `◈ Novo texto na Coleção: ${r.doc.titulo}` : `◈ ${r.doc.titulo} (já está na Coleção)`);
+      if (r.novo) setTimeout(() => Colecao.ler(id), 700);
+    }
     if (efeitos.revela && temCidade()) {
       linhas.push(...conhecerLugares(efeitos.revela));
       Object.assign(p, { mapa: todos().find((x) => x.id === p.id).mapa }); // p é uma cópia: traz o mapa novo
@@ -1073,6 +1081,7 @@ const Cenas = (() => {
       return renderFicha();
     }
     if (acao === "tradutor") return Tradutor.abrir(missao().eixo);
+    if (acao === "colecao") return Colecao.abrir();
     if (acao === "mesa") return abrirMesa();
   });
 
