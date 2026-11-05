@@ -2,7 +2,7 @@
   "id": "prologo-x",
   "eixo": "x",
   "titulo": "O Pulso",
-  "resumo": "Uma noite em que a cidade enlouquece. Pessoas caminham todas na mesma direção, Riscadores tomam as ruas. Sobreviva: comida, abrigo, quem você consegue salvar.",
+  "resumo": "Terça-feira à noite em Port Halden. Há dias tem gente andando estranha, e a cidade trata isso como trata tudo: reclamando e seguindo a vida. Comida, abrigo, os seus. A noite ainda parece uma noite qualquer.",
   "subtitulo": "Prólogo · Eixo X — Urbano",
   "fase": "Sobrevivência",
   "npcs": {
@@ -42,101 +42,101 @@
     "hospital": {
       "nome": "Ambulatório do St. Luke's",
       "onde": "no ambulatório do St. Luke's Memorial",
-      "desc": "Fim de plantão. As macas do corredor estão vazias, mas os lençóis ainda estão mornos. No quadro de avisos: “SORRIA. VOCÊ ESTÁ SENDO CUIDADO.”"
+      "desc": "Fim de plantão. A ala está cheia de “passeadores”, como os enfermeiros apelidaram: gente que a família trouxe porque saiu andando sem rumo. Exame normal, alta, e amanhã voltam. No quadro de avisos: “SORRIA. VOCÊ ESTÁ SENDO CUIDADO.”"
     },
     "defesa": {
       "nome": "Posto da Defesa Civil",
       "onde": "no posto da Defesa Civil do 9º Distrito",
-      "desc": "Os rádios chiam sem parar. Metade da equipe não voltou do turno. No mural, o cartaz de sempre: “MANTENHA A CALMA. A DEFESA CIVIL ESTÁ NO CONTROLE.”"
+      "desc": "Os rádios não param: trânsito travado no centro, reclamação de barulho, um cachorro preso num carro. Metade da equipe pediu folga. No mural, o cartaz de sempre: “MANTENHA A CALMA. A DEFESA CIVIL ESTÁ NO CONTROLE.”"
     },
     "universidade": {
       "nome": "Laboratório de Radiação",
       "onde": "no laboratório de radiação da Universidade de Port Halden",
-      "desc": "Os sensores marcam um pico que não deveria existir. Ninguém atende o telefone da diretoria. A cafeteira, como sempre, é a única coisa funcionando."
+      "desc": "Os sensores marcam uma oscilação que ninguém sabe explicar. Provavelmente defeito. A diretoria não responde e-mail desde sábado. A cafeteira, como sempre, é a única coisa funcionando."
     },
     "comercio": {
       "nome": "A loja onde você trabalha",
       "onde": "na loja, atrás do balcão",
-      "desc": "O letreiro de neon ainda pisca “ABERTO”. Os clientes saíram no meio da compra: carrinhos largados nos corredores, uma moeda ainda girando em cima do balcão."
+      "desc": "O letreiro de neon pisca “ABERTO”. Movimento fraco desde domingo: o centro está interditado, e meio bairro foi “ver a praça”. Um cliente largou o carrinho pela metade no corredor 3 e saiu sem pagar nem reclamar."
     },
     "escritorio": {
       "nome": "Escritório da Hollister & Crane",
       "onde": "no 14º andar da Hollister & Crane",
-      "desc": "Fileiras de baias vazias, monitores acesos. Todos os protetores de tela mostram a mesma coisa: estática. Alguém deixou um café pela metade e um bilhete: “Volto já.” Não voltou."
+      "desc": "Metade das baias vazias. O RH mandou e-mail pedindo “atestado para todas as ausências desta semana”. Na mesa ao lado, um café pela metade e um bilhete: “Fui ver a praça. Volto já.”"
     },
     "rua": {
       "nome": "A sua esquina",
       "onde": "na rua, onde passa o dia inteiro",
-      "desc": "Você vê primeiro, como sempre vê tudo primeiro: hoje as pessoas andam caladas, todas para o mesmo lado. Nenhuma buzina. Port Halden nunca ficou tão educada."
+      "desc": "Você vê primeiro, como sempre vê tudo primeiro: hoje tem mais gente a pé do que de costume, quase todo mundo indo para o mesmo lado. Os camelôs reclamam. Ninguém para pra comprar nada."
     },
     "arte": {
       "nome": "Estúdio da rádio KPHN",
       "onde": "no estúdio da rádio KPHN",
-      "desc": "No ar, entre um comercial de pneus e a previsão do tempo, uma frequência pirata entra sozinha: uma voz de mulher cantarolando. O técnico tira os fones e não diz nada."
+      "desc": "No ar, entre um comercial de pneus e a previsão do tempo, uma frequência pirata invade a transmissão por dois segundos: uma mulher cantarolando. O técnico xinga a antena nova e anota no relatório."
     },
     "casa": {
       "nome": "Em frente ao seu prédio",
       "onde": "na calçada em frente ao seu prédio",
-      "desc": "Você trabalha de casa. Desceu só para pegar uma encomenda e ficou parado na calçada: a rua está cheia de gente que não fala."
+      "desc": "Você trabalha de casa. Desceu só para pegar uma encomenda. Na calçada, o vizinho do térreo comenta, como quem fala do tempo: “Viu o movimento? Tá todo mundo indo pra praça. Deve ser show.”"
     }
   },
   "cenas": {
     "abertura": {
-      "titulo": "Terça-feira, 21h47",
-      "texto": "Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.\n\nFrank Brennan está sentado no estribo do caminhão, na Estação 9, com um café que esfriou faz uma hora. Trinta anos de bombeiro. Dois para a aposentadoria.\n\nÀs 21h47 o telefone da parede toca. É o Joe Kessler, o antigo parceiro, aposentado desde 1988. Ele não liga há dez anos.\n\n“Frank. O fogo da Delancey Street. O de oitenta e sete. Ele voltou a queimar, Frank. Só que agora ninguém está vendo.”\n\nA linha fica muda. O alarme da estação dispara sozinho: três toques curtos, um longo.\n\nUma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela.",
+      "titulo": "Terça-feira à noite",
+      "texto": "Estação 9. Faltam vinte minutos para a troca de turno, e Frank Brennan está sentado no estribo do caminhão com um café que esfriou faz uma hora. Trinta anos de bombeiro. Dois para a aposentadoria.\n\nO Kowalski entra resmungando. “Mais um que não veio. Terceiro esta semana. A mulher dele saiu pra ver a tal da praça e ele foi atrás.” Pendura o casaco. “A cidade inteira resolveu tirar folga ao mesmo tempo.”\n\nO telefone da parede toca. É o Joe Kessler, seu antigo parceiro, aposentado desde 88. Não liga há dez anos.\n\n“Frank. Lembra da Delancey Street? O fogo de oitenta e sete?” Uma pausa comprida. “Esquece. Tô ficando velho. Liguei por besteira. E essas costas, como vão?”\n\nEle desliga antes que você responda.",
       "variantes": [
         {
           "se": {
             "pronto": "rosa-delgado"
           },
-          "texto": "Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.\n\nA patrulheira Rosa Delgado está ao volante da viatura 4-12, parada na frente do 4º Distrito. O parceiro dela, o policial Dale Pruitt, estava no meio de uma frase quando parou de falar.\n\nEle abriu a porta, saiu do carro e foi andando para o centro, no passo de quem está atrasado para alguma coisa. Deixou o distintivo no painel.\n\nNo rádio, alguém repete o código de chamada da viatura dela, devagar, sem parar: “Quatro... doze. Quatro... doze.”\n\nUma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela."
+          "texto": "Viatura 4-12, em frente ao 4º Distrito. Faltam quarenta minutos para o fim do turno.\n\nO Dale Pruitt fala da churrasqueira nova pela terceira vez hoje. “…a gás, Rosa. Ninguém mais quer carvão. Domingo você aparece lá e me diz se não é a melhor costela de Port Halden.”\n\nEle para no meio da frase. Olha para o fim da rua, para o lado do centro, como quem escutou alguém chamar o nome dele.\n\n“Vou ali pegar um café. Quer?” Não espera a resposta. Deixa o distintivo no painel, ao lado da caixa de rosquinhas, e vai a pé.\n\nNo rádio, a Central: “Quatro-doze, na escuta? Quatro-doze.”"
         },
         {
           "se": {
             "pronto": "marcus-bell"
           },
-          "texto": "Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.\n\nMarcus Bell está parado na Harbor Street, em cima da moto, com a última entrega do dia na bag térmica.\n\nO aplicativo apita. O endereço de entrega é o telhado do Edifício Aurora. O nome do destinatário é Marcus Bell. O remetente também.\n\nO pacote é pequeno, pesa quase nada e está quente, como se tivesse acabado de sair de um forno. No campo de observações: “Entregar até 21h47 de amanhã. Não abra.”\n\nUma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela."
+          "texto": "Harbor Street. Última entrega do dia, e Marcus Bell já faz a conta de cabeça: catorze corridas, sete gorjetas, o pneu de trás pedindo troca.\n\nO aplicativo apita. Entrega: telhado do Edifício Aurora. Destinatário: Marcus Bell. Remetente: Marcus Bell.\n\n“Ótimo. Agora o app quer que eu entregue pra mim mesmo.” Ele tira um print para reclamar com o suporte.\n\nNo balcão da coleta, o pacote já está esperando, embalado. Pequeno, leve, morno. No campo de observações: “Entregar até amanhã à noite. Não abra.”\n\nRecusar a corrida derruba a nota. Ele põe o pacote na bag."
         },
         {
           "se": {
             "pronto": "denise-carter"
           },
-          "texto": "Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.\n\nA Dra. Denise Carter está no pronto-socorro do St. Luke's, seis horas depois do fim do plantão.\n\nNo leito 9 está o Leo, nove anos, em coma há três semanas desde o acidente no ônibus escolar. Às 21h47 ele abriu os olhos, sentou na cama e disse, muito educado:\n\n“A Dra. Carter pode vir? Eu preciso contar uma coisa pra ela antes de todo mundo ir embora.”\n\nQuando a enfermeira foi te chamar, ele já tinha deitado de novo. Olhos fechados. Os dedos riscando o lençol.\n\nUma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela."
+          "texto": "Pronto-socorro do St. Luke's. Seis horas de hora extra, e a Dra. Denise Carter ainda não almoçou.\n\nA ala está assim desde sábado: gente trazida pela família porque “saiu andando sem rumo”. Exames normais, pressão normal, alta. No dia seguinte, voltam. A diretoria chama de “surto de estresse”. Os enfermeiros chamam de “os passeadores”.\n\nA enfermeira Paula aparece na porta. “Doutora. O Leo, do leito 9. Ele abriu os olhos.”\n\nNove anos. Três semanas em coma desde o acidente do ônibus escolar.\n\n“Perguntou pela senhora. Pelo nome. Depois dormiu de novo.” Ela hesita. “Deve ser reflexo, né?”"
         },
         {
           "se": {
             "pronto": "michael-doyle"
           },
-          "texto": "Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.\n\nO padre Michael Doyle está sozinho na St. Brendan's, apagando as velas da missa das oito.\n\nÀs 21h, um homem entrou no confessionário. Não confessou nada que tivesse feito. Confessou o que ia fazer amanhã, às 21h47, em detalhes, com a voz tranquila de quem lê uma lista de compras. Depois agradeceu e foi embora.\n\nNo banco do confessionário ficou um terço. As contas estão riscadas com símbolos pequenos, feitos à unha.\n\nUma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela."
+          "texto": "St. Brendan's, depois da missa das oito. Onze fiéis hoje; na semana passada eram quarenta. O padre Michael Doyle apaga as velas uma por uma e tenta não fazer a conta.\n\nNa saída, o Sr. Ruiz, do conselho paroquial, comentou: “O pessoal anda indo ver a praça, padre. Dizem que lá a gente sente uma paz.” Falou como quem fala de uma feira nova no bairro.\n\nMais cedo, um homem entrou no confessionário. Não confessou nada que tivesse feito. Contou o que ia fazer amanhã à noite, detalhe por detalhe, como quem lê uma lista de compras. Agradeceu e foi embora.\n\nNo banco do confessionário, ele esqueceu um terço."
         },
         {
           "se": {
             "pronto": "june-albright"
           },
-          "texto": "Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.\n\nJune Albright foi enfermeira por quarenta anos. Hoje é a voluntária dos primeiros socorros do bingo de terça, no centro comunitário da Maple Street.\n\nÀs 21h47, no meio de uma rodada, todo mundo parou de marcar a cartela ao mesmo tempo. Levantaram, empurraram as cadeiras para baixo da mesa, educados, e saíram em fila.\n\nNa sua bolsa, que ficou o tempo todo no seu colo, tem uma carta que não estava lá antes. A letra é do Harold, o seu marido. O Harold morreu há seis anos. A carta está datada de amanhã.\n\nUma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela."
+          "texto": "Centro comunitário da Maple Street, bingo de terça. June Albright foi enfermeira por quarenta anos; hoje cuida do estojo de primeiros socorros e das brigas pela cartela da sorte.\n\nDas trinta senhoras de sempre, vieram doze. “A Doris foi pra praça com a filha”, explica a Sra. Petrakis, marcando o B-7. “Diz que lá dorme melhor. Na idade dela, eu também ia.”\n\nNo meio da rodada, mais três se levantam, empurram as cadeiras para baixo da mesa e saem juntas, sem se despedir. A Sra. Petrakis estala a língua. “Nem terminaram o chá.”\n\nNa hora de pegar os óculos, June encontra na bolsa um envelope que não estava lá. A letra é do Harold, o marido dela. O Harold morreu há seis anos."
         },
         {
           "se": {
             "pronto": "eli-navarro"
           },
-          "texto": "Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.\n\nEli Navarro está há três dias no laboratório de radiação da universidade. Foi ele quem viu primeiro: os números subindo, sempre às 21h47, sempre no mesmo padrão.\n\nEle mandou os dados para a diretoria na segunda. Na terça, chegou a resposta, de um endereço que não é da universidade:\n\n“Apague os arquivos. Não fale com a imprensa. Obrigado pela colaboração. — C.”\n\nEle não apagou. O pendrive está no bolso dele agora, pesando como se fosse de chumbo.\n\nUma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela."
+          "texto": "Laboratório de radiação da universidade, terceira noite seguida. Eli Navarro dorme no sofá da sala dos bolsistas e vive de café da máquina.\n\nNo sábado, os sensores do telhado pegaram uma oscilação. Pequena. Provavelmente defeito. Ele mandou os dados para a diretoria pedindo verba para trocar o equipamento.\n\nA resposta chegou hoje, de um endereço que não é da universidade:\n\n“Apague os arquivos. Não fale com a imprensa. Obrigado pela colaboração. — C.”\n\nEle ri sozinho, meio sem graça. Depois copia tudo para um pendrive. Por garantia."
         },
         {
           "se": {
             "pronto": "tess-monroe"
           },
-          "texto": "Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.\n\nTess Monroe apresenta o “Port Halden After Dark”, da meia-noite às quatro, na KPHN. Hoje ela entrou mais cedo, porque o programa das nove não teve apresentador.\n\nHá três noites, um ouvinte liga sempre às 21h47 pela linha 3. Nunca fala. Só respira, no ritmo de três curtas e uma longa.\n\nHoje, às 21h47, a linha 3 acende de novo. Dessa vez a voz fala. É a sua voz, Tess, dizendo devagar: “Você vai entender amanhã. Não desliga.”\n\nUma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela."
+          "texto": "KPHN, estúdio B. Tess Monroe apresenta o “Port Halden After Dark”, da meia-noite às quatro. Hoje entrou mais cedo: o apresentador das nove não apareceu, e o diretor prometeu hora extra “assim que essa loucura passar”.\n\nO painel de ligações não para. Gente reclamando do trânsito no centro. Uma senhora pedindo música para o marido, “que foi ver a praça e não voltou pra jantar”. Um rapaz jurando que é vazamento de gás.\n\nE a linha 3. Há três noites alguém liga e só respira: três curtas, uma longa. O técnico já pediu para bloquear o número.\n\nHoje a linha 3 acende de novo. Dessa vez, alguém fala, numa voz parecida demais com a sua: “Você vai entender amanhã. Não desliga.”"
         },
         {
           "se": {
             "pronto": "ray-okafor"
           },
-          "texto": "Há três dias o Canal 6 de Port Halden fala em “surtos de desorientação coletiva”. Primeiro foram casos isolados. Depois, bairros inteiros.\n\nRay Okafor dirige táxi em Port Halden há vinte anos. Hoje é motorista de aplicativo, mas o carro ainda é o mesmo, e o taxímetro antigo ainda funciona.\n\nÀs 21h40 entrou um passageiro no banco de trás. Terno cinza, sem bagagem. Pediu “Praça Central, por favor” e não disse mais nada.\n\nÀs 21h47 você olhou pelo retrovisor. O banco de trás está vazio. As portas estão travadas. E o taxímetro continua correndo, como se a corrida ainda não tivesse acabado.\n\nUma coisa é certa: esta noite, o que importa é chegar vivo ao fim dela."
+          "texto": "Ray Okafor dirige em Port Halden há vinte anos. Primeiro táxi, hoje aplicativo. O carro é o mesmo, e o taxímetro antigo continua no painel, porque ele gosta do barulhinho.\n\nO centro está interditado desde domingo, e tudo vira desvio. Os passageiros só falam disso: “Meu cunhado foi ver a praça e voltou outro.” “É gás. Só pode ser gás.”\n\nO último entrou na Rua 9. Terno cinza, sem bagagem. “Praça Central, por favor.” Depois disso, nenhuma palavra.\n\nNo sinal vermelho, Ray olha pelo retrovisor. O banco de trás está vazio. As portas continuam travadas.\n\nO taxímetro segue correndo."
         }
       ],
       "opcoes": [
         {
-          "texto": "Levantar e encarar a noite",
+          "texto": "Seguir com a noite",
           "palavras": [
             "levant",
             "comec",
@@ -146,7 +146,7 @@
             "encarar"
           ],
           "resultado": {
-            "texto": "Você levanta. Isso vai ter que esperar até amanhã. Se houver amanhã.",
+            "texto": "Amanhã você pensa nisso. Ainda tem o resto da noite pela frente.",
             "variantes": [
               {
                 "se": {
@@ -157,7 +157,7 @@
                     "id": "fio-frank",
                     "nome": "O fogo da Delancey Street",
                     "prazo": "longa",
-                    "nota": "Joe Kessler, o antigo parceiro, ligou depois de dez anos: o incêndio de 1987 “voltou a queimar”."
+                    "nota": "Joe Kessler, o antigo parceiro, ligou depois de dez anos, perguntou do incêndio de 1987 e desligou dizendo que era besteira."
                   }
                 }
               },
@@ -170,7 +170,7 @@
                     "id": "fio-rosa",
                     "nome": "O parceiro que foi embora",
                     "prazo": "longa",
-                    "nota": "Dale Pruitt saiu da viatura no meio de uma frase e foi andando para o centro. Deixou o distintivo."
+                    "nota": "Dale Pruitt parou no meio de uma frase, disse que ia buscar café e foi a pé para o lado do centro. Deixou o distintivo."
                   }
                 }
               },
@@ -183,7 +183,7 @@
                     "id": "fio-marcus",
                     "nome": "A entrega para si mesmo",
                     "prazo": "longa",
-                    "nota": "Um pacote de Marcus Bell para Marcus Bell. Destino: o telhado do Edifício Aurora. Prazo: 21h47 de amanhã."
+                    "nota": "Um pacote de Marcus Bell para Marcus Bell. Destino: o telhado do Edifício Aurora. Prazo: amanhã à noite."
                   }
                 }
               },
@@ -196,7 +196,7 @@
                     "id": "fio-denise",
                     "nome": "O menino do leito 9",
                     "prazo": "longa",
-                    "nota": "Leo, nove anos, em coma, acordou às 21h47 e chamou pela Dra. Carter. Depois voltou a dormir."
+                    "nota": "Leo, nove anos, em coma, abriu os olhos e chamou pela Dra. Carter. Depois voltou a dormir."
                   }
                 }
               },
@@ -209,7 +209,7 @@
                     "id": "fio-michael",
                     "nome": "A confissão do amanhã",
                     "prazo": "longa",
-                    "nota": "Um homem confessou o que vai fazer amanhã às 21h47. Deixou um terço riscado com símbolos."
+                    "nota": "Um homem confessou o que vai fazer amanhã à noite. Esqueceu um terço no confessionário."
                   }
                 }
               },
@@ -222,7 +222,7 @@
                     "id": "fio-june",
                     "nome": "A carta do Harold",
                     "prazo": "longa",
-                    "nota": "Uma carta do falecido marido, Harold, datada de amanhã, apareceu na bolsa."
+                    "nota": "Um envelope com a letra do Harold, morto há seis anos, apareceu na bolsa."
                   }
                 }
               },
@@ -248,7 +248,7 @@
                     "id": "fio-tess",
                     "nome": "A ligação da linha 3",
                     "prazo": "longa",
-                    "nota": "Às 21h47, pela linha 3, uma voz igual à de Tess: “Você vai entender amanhã. Não desliga.”"
+                    "nota": "Pela linha 3, uma voz parecida com a de Tess: “Você vai entender amanhã. Não desliga.”"
                   }
                 }
               },
@@ -273,19 +273,19 @@
     },
     "chamado": {
       "titulo": "O chamado",
-      "texto": "O rádio de serviço, agora sem chiado nenhum: “Todas as unidades para a Praça Central. Agora.”\n\nNão há mais como evitar. As pessoas passam por você em silêncio, todas na mesma direção, no mesmo passo. Ninguém olha para trás.",
+      "texto": "O rádio de serviço, sem chiado nenhum: “Todas as unidades para a Praça Central. Agora.”\n\nNa rua, ninguém mais finge que é normal. Lojas fechando com gente dentro, carros parados de porta aberta. E as pessoas passando em silêncio, todas para o mesmo lado.",
       "variantes": [
         {
           "se": {
             "classe": "healer"
           },
-          "texto": "Uma foto chega no seu celular: seus pacientes, de pé, no meio da Praça Central. Sorrindo.\n\nNão há mais como evitar. As pessoas passam por você em silêncio, todas na mesma direção, no mesmo passo. Ninguém olha para trás."
+          "texto": "Uma foto chega no seu celular: seus pacientes, de pé, no meio da Praça Central. Sorrindo.\n\nNa rua, ninguém mais finge que é normal. Lojas fechando com gente dentro, carros parados de porta aberta. E as pessoas passando em silêncio, todas para o mesmo lado."
         },
         {
           "se": {
             "classe": "support"
           },
-          "texto": "O medidor estala sem parar. A agulha não se mexe mais: aponta, fixa, para a Praça Central.\n\nNão há mais como evitar. As pessoas passam por você em silêncio, todas na mesma direção, no mesmo passo. Ninguém olha para trás."
+          "texto": "O medidor estala sem parar. A agulha não volta mais: aponta, fixa, para a Praça Central.\n\nNa rua, ninguém mais finge que é normal. Lojas fechando com gente dentro, carros parados de porta aberta. E as pessoas passando em silêncio, todas para o mesmo lado."
         }
       ],
       "opcoes": [
@@ -674,25 +674,25 @@
       ],
       "icone": "∃",
       "descricao": {
-        "texto": "O caminhão está lavado, as mangueiras enroladas, o turno quase acabando. Na parede, a placa de sempre: “EVERYONE GOES HOME.” Hoje ninguém da equipe voltou do último chamado.",
+        "texto": "O caminhão está lavado, as mangueiras enroladas, o turno quase acabando. Na parede, a placa de sempre: “EVERYONE GOES HOME.” Embaixo, a escala da semana, com três nomes riscados a caneta. Faltas.",
         "variantes": [
           {
             "se": {
               "pronto": "rosa-delgado"
             },
-            "texto": "O giroflex gira sem som. O rádio está aberto no canal do distrito, mas ninguém responde ao chamado há quarenta minutos. O banco do carona ainda está quente."
+            "texto": "Giroflex desligado, rádio aberto no canal do distrito. A Central chama a 4-12 de novo. O banco do carona ainda está quente, e a caixa de rosquinhas, aberta no painel."
           },
           {
             "se": {
               "pronto": "marcus-bell"
             },
-            "texto": "A bag térmica nas costas, o celular no suporte do guidão, o motor ligado. Os semáforos piscam todos juntos, amarelo, amarelo, amarelo, vermelho."
+            "texto": "A bag térmica nas costas, o celular no suporte do guidão, o motor ligado. Os semáforos da Harbor estão no amarelo piscante desde domingo. A prefeitura diz que é manutenção."
           },
           {
             "se": {
               "pronto": "denise-carter"
             },
-            "texto": "Seis horas de hora extra. Macas no corredor, o monitor de alguém apitando em algum lugar, o cheiro de café queimado da sala dos médicos. Ninguém no balcão da triagem."
+            "texto": "Macas no corredor, o monitor de alguém apitando, o cheiro de café queimado da sala dos médicos. Na triagem, uma fila de famílias segurando parentes pelo braço, como quem segura criança em shopping."
           },
           {
             "se": {
@@ -710,19 +710,19 @@
             "se": {
               "pronto": "eli-navarro"
             },
-            "texto": "Os sensores marcam um pico que não deveria existir. A impressora cospe gráficos sem parar. Ninguém atende o telefone da diretoria."
+            "texto": "Os sensores marcam a mesma oscilação de sábado. A impressora cospe gráficos sem parar. Ninguém atende o telefone da diretoria."
           },
           {
             "se": {
               "pronto": "tess-monroe"
             },
-            "texto": "A luz vermelha de NO AR acesa, o café no copo de papel, o painel de ligações piscando. Todas as linhas piscam ao mesmo tempo. O técnico foi embora sem tirar os fones."
+            "texto": "A luz vermelha de NO AR acesa, o café no copo de papel, o painel de ligações piscando sem parar. O técnico saiu para fumar há meia hora e não voltou."
           },
           {
             "se": {
               "pronto": "ray-okafor"
             },
-            "texto": "O taxímetro ligado, o rosário pendurado no retrovisor, a foto das filhas no painel. Lá fora, ninguém faz sinal. Todos andam para o mesmo lado."
+            "texto": "O taxímetro ligado, o rosário pendurado no retrovisor, a foto das filhas no painel. Lá fora, ninguém faz sinal. Quem está na calçada vai a pé, para o lado do centro."
           }
         ]
       },
@@ -792,7 +792,7 @@
             "pronto": "frank-brennan"
           },
           "resultado": {
-            "texto": "O peso da capa nos ombros é o único peso que ainda faz sentido hoje. O machado vai junto. Por via das dúvidas.",
+            "texto": "Capa, capacete, o machado no ombro. Trinta anos de profissão, e a mão ainda vai sozinha nas fivelas.",
             "efeitos": {
               "condicao": "-abalado"
             }
@@ -845,7 +845,7 @@
             "pronto": "rosa-delgado"
           },
           "resultado": {
-            "texto": "Você guarda o distintivo no bolso da camisa, do lado do seu. Um dia você devolve. Olhando nos olhos dele.",
+            "texto": "Você guarda o distintivo do Dale no bolso da camisa. Quando ele voltar, vai ouvir um sermão.",
             "efeitos": {
               "marca": "distintivo-pruitt"
             }
@@ -1687,7 +1687,7 @@
       "nome": "Sua casa",
       "icone": "⌂",
       "descricao": {
-        "texto": "O prédio está quieto demais. Do corredor vem o som de uma TV ligada sem ninguém assistindo."
+        "texto": "O prédio de sempre: elevador quebrado, cheiro de fritura do 201, a TV do vizinho alta demais. Na portaria, um aviso novo do síndico: “Moradores, NÃO deixem o portão aberto ao sair à noite.”"
       },
       "cidade": "casa",
       "caminho": "caminho-escada",
@@ -2170,7 +2170,7 @@
       "nome": "Hospital St. Luke's Memorial",
       "icone": "✚",
       "descricao": {
-        "texto": "A recepção está lotada e silenciosa. As luzes piscam no mesmo ritmo das da rua."
+        "texto": "A recepção está lotada: famílias com parentes que “saíram andando sem rumo”, um segurança cansado, a TV da sala de espera no Canal 6. Uma lâmpada do teto pisca, e ninguém se dá ao trabalho de reclamar."
       },
       "cidade": "st-lukes",
       "caminho": "caminho-calcada",
@@ -2367,7 +2367,7 @@
       "nome": "Delegacia do 9º Distrito",
       "icone": "≡",
       "descricao": {
-        "texto": "Viaturas saem com as sirenes desligadas. Ninguém explica nada. No mural, um cartaz desbotado da Defesa Civil: “PÂNICO É CONTAGIOSO. FIQUE EM CASA, CIDADÃO.”"
+        "texto": "Fila no balcão: gente registrando o sumiço de parente que “só foi ver a praça”. O escrivão já nem levanta os olhos. No mural, um cartaz desbotado da Defesa Civil: “PÂNICO É CONTAGIOSO. FIQUE EM CASA, CIDADÃO.”"
       },
       "cidade": "delegacia-9",
       "caminho": "caminho-calcada",
@@ -3353,12 +3353,16 @@
   "pistasParaMarco": 5,
   "ambiente": [
     {
-      "ate": 4,
-      "texto": "Nas ruas ainda há gente comum. Mas alguns passam olhando para o nada."
+      "ate": 3,
+      "texto": "Na rua, a noite de sempre: ônibus atrasado, buzina, alguém reclamando do desvio no centro."
     },
     {
-      "ate": 10,
-      "texto": "Cada vez mais pessoas caminham em silêncio, todas na mesma direção."
+      "ate": 7,
+      "texto": "Tem mais gente a pé do que o normal. Quase todos vão para o mesmo lado, e ninguém comenta."
+    },
+    {
+      "ate": 11,
+      "texto": "Cada vez mais pessoas caminham em silêncio, na mesma direção. As lojas começam a baixar as portas mais cedo."
     },
     {
       "ate": 99,
@@ -3369,12 +3373,12 @@
     {
       "em": 4,
       "flag": "apagao",
-      "texto": "Apagão: as luzes da cidade inteira piscam juntas, três rápidas e uma longa, e voltam. No Viaduto Leste, alguém começou a riscar os muros."
+      "texto": "As luzes da cidade inteira piscam e voltam: três vezes rápidas, uma longa. Na calçada, alguém xinga a companhia de energia. Um entregador comenta que, no Viaduto Leste, um sujeito começou a riscar os muros."
     },
     {
       "em": 10,
       "flag": "multidoes",
-      "texto": "As ruas enchem de gente andando para o centro. Ir de um lugar a outro agora demora mais."
+      "texto": "As ruas enchem de gente andando para o centro. Já não dá para fingir que é show ou protesto. Ir de um lugar a outro agora demora mais."
     },
     {
       "em": 12,
