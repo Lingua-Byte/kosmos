@@ -12,8 +12,9 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 
 ## Onde está cada coisa
 - Ferramentas gratuitas, IA e mecânicas planejadas: `FERRAMENTAS.md`.
+- Mecânicas (o que existe, propostas e o que o autor decidiu): `MECANICAS.md`.
 - Como escrever (técnicas de Fallout, TES e Resident Evil; o que soa como IA): `GUIA_ESCRITA.md`. O agente `editor-de-texto` segue esse guia.
-- **Agentes e skills** (`.claude/agents/`, `.claude/skills/`): `editor-de-texto`, `guardiao-da-lore`, `testador`; skills `nova-missao-x`, `novo-npc`, `lore-nova`. Antes de enviar mudança em missão, rodar `node ferramentas/testar.js` (o robô `.github/workflows/testes.yml` roda a cada envio).
+- **Agentes e skills** (`.claude/agents/`, `.claude/skills/`): `editor-de-texto`, `guardiao-da-lore`, `testador`, `designer-de-mecanicas`; skills `nova-missao-x`, `novo-npc`, `lore-nova`. Antes de enviar mudança em missão, rodar `node ferramentas/testar.js` (o robô `.github/workflows/testes.yml` roda a cada envio).
 - Índice de continuidade (o que o jogador já viu: NPCs, datas, horários, nomes): `LORE_CONTINUIDADE.md`, gerado por `node ferramentas/continuidade.js` (não editar à mão; o guardião da lore regrava).
 - Blender ligado ao Claude (só no PC): `ferramentas/BLENDER.md`.
 - Visão geral do jogo: `DESIGN.md` (ainda diz "três mundos": vale o que está abaixo).
