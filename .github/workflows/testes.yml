@@ -1,0 +1,28 @@
+# Testador do KOSMOS: a cada envio, confere as missões e abre o jogo num navegador de verdade
+# (ferramentas/testar.js). Se aparecer ✗ vermelho na aba Actions, alguma missão tem erro;
+# a próxima sessão do Claude lê o relatório e corrige. Não impede a junção na main.
+
+name: Testes do jogo
+
+on:
+  push:
+    paths:
+      - "site/**"
+      - "ferramentas/testar.js"
+      - ".github/workflows/testes.yml"
+  workflow_dispatch:
+
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Instalar o navegador de teste
+        run: |
+          npm install --no-save playwright@1.63.0
+          npx playwright install --with-deps chromium
+      - name: Testar
+        run: node ferramentas/testar.js
