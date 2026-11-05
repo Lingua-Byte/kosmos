@@ -28,6 +28,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Em aberto:** quem fala do Lime (candidata forte: a IA da Domus), o objetivo da missão da Domus, ancestrais ou ecos.
 
 ## Jeito de fazer
+- **Slow burn em toda missão:** começa na rotina; o estranho entra aos poucos e as pessoas tratam como incômodo do dia a dia ("foi ver a praça", "deve ser gás"), não como apocalipse. O que é pesado chega com o relógio ou com a investigação; sobrevivência total só perto do clímax. Nada de frase de efeito anunciando o perigo.
 - **Eixo X é sobrevivência**, não investigação: comida, abrigo, gente para proteger, chegar vivo ao fim da noite.
 - **Telas sem rolagem**, texto em pedaços (um parágrafo por vez, digitado, com "Continuar ▸"), no celular e no PC.
 - **Menus intocados:** a galáxia animada fica nos menus; artes vão para dentro das missões, mapas e retratos.

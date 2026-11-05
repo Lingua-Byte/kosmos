@@ -46,6 +46,8 @@ Estes vícios já aparecem no jogo. Aponte cada ocorrência, com o trecho citado
 
 ## 3. Regras do KOSMOS que não podem quebrar
 
+- **Slow burn:** toda missão começa na rotina. O estranho chega aos poucos, e as pessoas reagem como a um incômodo
+  (reclamam, fazem piada, arrumam explicação boba). Aponte qualquer texto que entregue o horror cedo demais.
 - Telas sem rolagem: parágrafos curtos, um por vez. Cena longa vira mais telas, não parágrafo maior.
 - Eixo X é **sobrevivência** (comida, abrigo, gente para proteger, chegar vivo ao fim da noite), não investigação.
 - Riscadores e Runáticos são mobs, nunca facção. Ressonância/Dissonância quase não são ditas no mundo.
