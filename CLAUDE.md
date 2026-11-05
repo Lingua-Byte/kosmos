@@ -7,7 +7,7 @@ Este arquivo vale para qualquer conta ou aparelho que abra o projeto. Decisões 
 O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code na web). Ele não usa git: salvar e sincronizar é tarefa do Claude, sem pedir.
 - **Ao terminar cada pedido que mudou arquivos, faça commit e push na hora, sem perguntar.** Mensagem de commit em português.
 - **Na web (Android):** envie para o branch da sessão. Um robô do GitHub (`.github/workflows/juntar.yml`) junta esse branch na `main` sozinho. Não precisa abrir nem aprovar pull request.
-- **No PC:** trabalhe na `main`; ao abrir a sessão, as novidades já são puxadas (gancho local em `.claude/settings.json`, fora do git). Para publicar o site, use `sh ferramentas/publicar.sh`.
+- **No PC:** trabalhe na `main`; ao abrir a sessão, `ferramentas/sincronizar.sh` puxa as novidades e avisa se algum branch ficou fora da main (gancho local em `.claude/settings.json`, fora do git). O `publicar.sh` junta com merge, nunca com rebase. Para publicar o site, use `sh ferramentas/publicar.sh`.
 - Se a junção der conflito, o robô falha: resolva na próxima sessão e avise o autor em uma frase simples, sem termos técnicos.
 
 ## Onde está cada coisa
