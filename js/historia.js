@@ -43,6 +43,7 @@ const HISTORIA = {
           <li>O Y é o <b>passado</b> da mesma realidade, não um mundo de fantasia à parte.</li>
           <li>As pessoas do Y <b>leem runas</b>. A princípio, é isso.</li>
           <li><b>Nada religioso:</b> sem heresia, sem igreja, sem deuses explicando o fenômeno.</li>
+          <li><b>Mesmo chão:</b> o Y acontece no lugar onde um dia vai existir Port Halden, muito antes da cidade. Andar pelo Y é andar pela mesma terra em outro tempo.</li>
         </ul>`,
     },
     {
@@ -54,6 +55,16 @@ const HISTORIA = {
           <li>Visto de fora, quem cai parece <b>congelar na borda para sempre</b>. A base da missão vê a Domus parada e sem resposta: daí ela “vagar sem contato” (detalhe secundário, que já vem explicado).</li>
           <li>Dentro do horizonte, <b>espaço e tempo trocam de papel</b>: o centro deixa de ser um lugar e vira um momento que não se pode evitar. <b>A Domus cair é a Domus avançar no tempo.</b></li>
           <li>A “estrela que observa” é a luz de fora chegando concentrada, com o disco brilhante em volta do centro escuro: parece um olho, sem ser um.</li>
+        </ul>`,
+    },
+    {
+      titulo: "21h47: a hora em que a Domus cruzou",
+      estado: "decidido",
+      html: `
+        <ul>
+          <li><b>21h47 é a hora do relógio de bordo da Domus quando ela cruzou o horizonte do buraco negro.</b> É por isso que tudo em Port Halden acontece às 21h47.</li>
+          <li>Na intro do Z, a hora aparece num momento banal (um relógio de cozinha, um registro automático), sem ninguém apontar para ela. O jogador só liga os pontos muito depois.</li>
+          <li>Ideia para considerar: o número aparece em objetos (relógios, etiquetas, livros de registro), não na narração apontando para ele, para não cansar.</li>
         </ul>`,
     },
     {

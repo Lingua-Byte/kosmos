@@ -10,7 +10,7 @@
 // O relógio é o dia; cheio, vem o toque de recolher.
 //
 // Paga os fios do prólogo pelas marcas do personagem (se: { marca, semMarca, algumaMarca }):
-// salvou:Danny, salvou:Teddy, salvou:Sr. Hollis, caderno-helena, cracha-contencao, arquivo-1987,
+// salvou:Danny, salvou:Teddy, salvou:Sr. Hollis, caderno-helena, cracha-contencao, arquivo-contencao,
 // moura-desconfia, vigia-412, frequencia-94.7, fita-parte-2.
 // =====================================================================
 
@@ -447,11 +447,11 @@ Seja o que for que termina na sexta às 21:47, não termina só aqui.`,
             },
           },
           {
-            id: "walt", npc: "walt", texto: "Um velho encara a cerca, de braços cruzados: puxar conversa", palavras: ["velho", "walt", "conversa", "aposentado", "1987"], situacao: "convencer",
+            id: "walt", npc: "walt", texto: "Um velho encara a cerca, de braços cruzados: puxar conversa", palavras: ["velho", "walt", "conversa", "aposentado", "metro"], situacao: "convencer",
             sucesso: {
-              texto: (ctx) => `“Walt Brody. Trabalhei trinta anos no metrô. Em 87 a gente teve uma noite assim. A Estação Rua 9 estava cheia, esperando um trem que nunca chegou. No dia seguinte, cerca, caminhão branco, todo mundo assinando papel. Disseram que foi vazamento de gás.”${temMarca(ctx, "arquivo-1987") ? "\n\nVocê lembra do arquivo da delegacia: 1987, Diretoria de Contenção. Walt vê a sua cara e ri sem graça. “É. Também não acreditei no gás.”" : ""}\n\n“Sabe o que mais? Em 87, uns também contavam. Pararam quando chegou no zero.”`,
-              pista: "Em 1987, na noite da Estação Rua 9, também havia gente contando. Pararam no zero.",
-              efeitos: { quest: { id: "1987", nome: "Fio 1987", prazo: "longa", nota: "Walt Brody, do metrô: em 1987 a Estação Rua 9 teve uma noite igual, e gente contando até zero." } },
+              texto: (ctx) => `“Walt Brody. Trabalhei trinta anos no metrô. Ontem à noite a Estação Rua 9 encheu de gente esperando trem. A linha está fechada há anos. Hoje cedo: cerca, caminhão branco, todo mundo assinando papel. Disseram que foi vazamento de gás.”${temMarca(ctx, "arquivo-contencao") ? "\n\nVocê lembra da pasta do Moore: a Rua 9 estava na lista da Contenção. Walt vê a sua cara e ri sem graça. “É. Também não acreditei no gás.”" : ""}\n\n“Sabe o que mais? Uns contavam, em voz alta. Pararam quando chegou no zero.”`,
+              pista: "Na noite passada, na Estação Rua 9, havia gente contando. Pararam no zero.",
+              efeitos: { quest: { id: "rua-9", nome: "A noite da Rua 9", prazo: "longa", nota: "Walt Brody, do metrô: ontem a Estação Rua 9, fechada há anos, encheu de gente esperando trem. Uns contavam até zero." } },
             },
             falha: { texto: "“Não falo com repórter.” Ele cospe no chão e vai embora mancando.", efeitos: {} },
           },
