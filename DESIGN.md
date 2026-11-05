@@ -142,6 +142,9 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
      com peças do autor: lugar, pessoa, onde a palavra aparece, pista). A lição sempre ensina a palavra.
   5. Com a palavra aprendida, o enigma aparece resolvido. A recompensa é a mesma nos dois modos.
   6. Fácil ou difícil: escolha do jogador na criação do personagem, trocável no menu.
+  - **Decidido pelo autor:** a lição que ensina a palavra é ótima. Quando o jogador não consegue completar a frase de
+    jeito nenhum, nem com as dicas, há **penalidade de Dissonância**, e ela vem do jeito natural do jogo: a lição é uma
+    **missão com Travessia** (aprender a palavra no outro tempo custa Ressonância, que vira Dissonância).
   - A programar: efeito "aprender palavra de runa", tela do enigma, campos do enigma no Criador, escolha fácil/difícil,
     lista "onde a palavra aparece" no gerador. Para depois: o Z, a lição gerada durante a partida, a frase partida completa.
 
