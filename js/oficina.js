@@ -1,4 +1,4 @@
-// Oficina do Autor: editor de perguntas, NPCs, missões (storylets) e tabelas dos geradores.
+// Oficina do Autor: a história do KOSMOS (historia.js), as tabelas dos geradores e o teste das missões.
 // Onde os textos ficam:
 //   · Conectada à nuvem (repositório privado do GitHub, ver nuvem.js): celular e PC veem a mesma
 //     coisa; cada aparelho guarda também uma cópia, para funcionar sem internet.
@@ -12,9 +12,8 @@ const RASCUNHO_ANTIGO = "kosmos.oficina.rascunho";
 const EIXOS_NOMES = { x: "∃ X · Urbano", y: "ᛉ Y · Medieval", z: "◉ Z · Espacial", lime: "Lime", todos: "Todos os eixos" };
 
 let mundo = null;
-let aba = "perguntas";
-let npcAtual = null;
-let missaoAtual = null;
+let aba = "historia";
+const ABAS = ["historia", "geradores", "testar"];
 let eixoGerador = "y";
 let gerado = { npc: null, missao: null };
 let salvarAgendado = null;
@@ -70,7 +69,8 @@ async function carregar() {
     comServidor = (await fetch("__versao", { cache: "no-store" })).ok;
   } catch {}
   try {
-    aba = sessionStorage.getItem("oficina.aba") || aba;
+    const salva = sessionStorage.getItem("oficina.aba");
+    if (ABAS.includes(salva)) aba = salva;
   } catch {}
   const guardado = lerLocal();
 
@@ -98,8 +98,6 @@ async function carregar() {
 
 function mostrar() {
   mundo = normalizar(mundo);
-  if (!mundo.npcs.some((n) => n.id === npcAtual)) npcAtual = mundo.npcs[0]?.id || null;
-  if (!mundo.storylets.some((s) => s.id === missaoAtual)) missaoAtual = mundo.storylets[0]?.id || null;
   render();
 }
 
@@ -396,13 +394,10 @@ document.addEventListener("change", (ev) => {
   const el = ev.target;
   if (!el.dataset.caminho) return;
   escrever(el.dataset.caminho, deTexto(el));
-  // trocou o código (id): o item continua selecionado
-  if (/^npcs\.\d+\.id$/.test(el.dataset.caminho)) npcAtual = el.value;
-  if (/^storylets\.\d+\.id$/.test(el.dataset.caminho)) missaoAtual = el.value;
   if (el.dataset.estrutura || el.tagName === "SELECT" || el.type === "checkbox") {
     mudou();
     render();
-  } else renderListas();
+  }
 });
 
 function ajustarAltura(el) {
@@ -424,322 +419,24 @@ document.querySelectorAll("[data-aba]").forEach((b) =>
 
 function render() {
   document.querySelectorAll("[data-aba]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.aba === aba)));
-  const r = { perguntas: renderPerguntas, profissoes: renderProfissoes, npcs: renderNPCs, missoes: renderMissoes, geradores: renderGeradores, testar: renderTestar }[aba];
+  const r = { historia: renderHistoria, geradores: renderGeradores, testar: renderTestar }[aba];
   r();
   document.querySelectorAll("#conteudo textarea").forEach(ajustarAltura);
 }
 
-// listas laterais mudam de nome sem redesenhar o formulário (o cursor não pula)
-function renderListas() {
-  if (aba === "npcs") $("#lista-npcs").innerHTML = listaNPCs();
-  if (aba === "missoes") $("#lista-missoes").innerHTML = listaMissoes();
-  if (aba === "perguntas") $("#progresso").textContent = progresso();
-}
+// ======================= História =======================
+// Só leitura: o conteúdo fica em js/historia.js.
 
-// ======================= Perguntas =======================
-
-function progresso() {
-  const feitas = mundo.perguntas.filter((p) => (p.resposta || "").trim()).length;
-  return `${feitas} de ${mundo.perguntas.length} respondidas`;
-}
-
-function renderPerguntas() {
-  const temas = [...new Set(mundo.perguntas.map((p) => p.tema || "Outros"))];
+function renderHistoria() {
+  const ROT = { decidido: "Decidido", considerar: "Para considerar", aberto: "Em aberto" };
   $("#conteudo").innerHTML = `
-    <section class="intro">
-      <p>Responda no seu ritmo, em tópicos ou em texto corrido. Pode deixar em branco o que ainda não sabe. Cada resposta me ajuda a escrever as storylets e os geradores do jeito do KOSMOS.</p>
-      <p class="sub" id="progresso">${progresso()}</p>
-    </section>
-    ${temas.map((tema) => `
-      <section class="grupo">
-        <h2>${esc(tema)}</h2>
-        ${mundo.perguntas.map((p, i) => ({ p, i })).filter(({ p }) => (p.tema || "Outros") === tema).map(({ p, i }) => `
-          <article class="cartao pergunta ${(p.resposta || "").trim() ? "respondida" : ""}">
-            ${campo("Pergunta", `perguntas.${i}.pergunta`, { area: true, linhas: 1, classe: "titulo-pergunta" })}
-            ${p.ja ? `<p class="ja"><b>O que já sei:</b> ${esc(p.ja)}</p>` : ""}
-            ${p.ajuda ? `<p class="ajuda">${esc(p.ajuda)}</p>` : ""}
-            ${campo("Sua resposta", `perguntas.${i}.resposta`, { area: true, linhas: 3 })}
-            ${p.minha ? `<button class="btn-texto perigo" data-apagar-pergunta="${i}">Apagar esta nota</button>` : ""}
-          </article>`).join("")}
-      </section>`).join("")}
-    <button class="btn primario" data-acao="nova-pergunta">+ Nova pergunta ou nota</button>`;
-}
-
-// ======================= Profissões =======================
-// Cada linha é a mesma pessoa nos três eixos (o personagem existe nos três mundos):
-// a profissão em cada eixo e o ponto de entrada onde a história dele começa ali.
-
-let eixoProfissoes = "x";
-
-function renderProfissoes() {
-  const e = eixoProfissoes;
-  const pontos = mundo.pontos[e] || [];
-  const opPontos = (eixo) => (mundo.pontos[eixo] || []).map((p) => [p.id, p.nome]);
-  const linha = (p, i) => `
-    <article class="prof">
-      ${["x", "y", "z"].map((ex) => `
-        <div class="prof-eixo ${ex === e ? "atual" : ""}">
-          <span class="prof-glifo">${EIXOS_NOMES[ex].split(" ")[0]}</span>
-          ${campo("Profissão", `profissoes.${i}.${ex}.nome`, { classe: "largo" })}
-          ${campo("Começa em", `profissoes.${i}.${ex}.ponto`, { opcoes: [["", "—"], ...opPontos(ex)] })}
-        </div>`).join("")}
-      <button class="btn-texto perigo" data-apagar-prof="${i}" title="Apagar">Apagar</button>
-    </article>`;
-  const comPonto = (id) => mundo.profissoes.map((p, i) => ({ p, i })).filter(({ p }) => (p[e] && p[e].ponto) === id);
-  const semPonto = comPonto("");
-  $("#conteudo").innerHTML = `
-    <section class="intro">
-      <p>Na criação do personagem, o jogador escolhe a profissão numa lista (ou escreve a sua e escolhe onde ela começa). Cada linha é a mesma pessoa nos três eixos: o que ela faz em cada mundo e o <b>ponto de entrada</b> onde a história dela começa ali. Cada ponto de entrada terá a sua abertura e as suas side quests.</p>
-      <p class="sub">${mundo.profissoes.length} profissões</p>
-    </section>
-    <div class="linha">
-      <label class="campo"><span>Ver pelos pontos de entrada do</span>
-        <select data-eixo-profissoes>${["x", "y", "z"].map((x) => `<option value="${x}" ${x === e ? "selected" : ""}>${EIXOS_NOMES[x]}</option>`).join("")}</select>
-      </label>
-    </div>
-    ${pontos.map((pt, pi) => `
-      <section class="grupo">
-        <div class="cartao ponto">
-          ${campo("Ponto de entrada", `pontos.${e}.${pi}.nome`, { classe: "titulo-ponto" })}
-          ${campo("Como é", `pontos.${e}.${pi}.descricao`, { area: true, linhas: 2 })}
-        </div>
-        ${comPonto(pt.id).map(({ p, i }) => linha(p, i)).join("") || `<p class="sub">Nenhuma profissão começa aqui ainda.</p>`}
-        <button class="btn" data-nova-prof="${esc(pt.id)}">+ Profissão que começa em ${esc(pt.nome)}</button>
-      </section>`).join("")}
-    ${semPonto.length ? `<section class="grupo"><h2>Sem ponto de entrada neste eixo</h2>${semPonto.map(({ p, i }) => linha(p, i)).join("")}</section>` : ""}
-    <button class="btn" data-acao="novo-ponto">+ Novo ponto de entrada em ${esc(EIXOS_NOMES[e])}</button>`;
-}
-
-// ======================= NPCs =======================
-
-const opEixos = (com = ["x", "y", "z", "lime", "todos"]) => com.map((e) => [e, EIXOS_NOMES[e]]);
-
-function listaNPCs() {
-  return mundo.npcs.map((n) => `
-    <button class="item ${n.id === npcAtual ? "ativo" : ""}" data-npc="${esc(n.id)}">
-      <b>${esc(n.nome || "(sem nome)")}</b><small>${esc(EIXOS_NOMES[n.eixo] || "")} · ${esc(n.papel || "")}</small>
-    </button>`).join("");
-}
-
-function renderNPCs() {
-  const i = mundo.npcs.findIndex((n) => n.id === npcAtual);
-  const n = mundo.npcs[i];
-  const c = (k) => `npcs.${i}.${k}`;
-  const usos = n ? mundo.storylets.filter((s) => s.npc === n.id || JSON.stringify(s).includes(`npc:${n.id}`) || JSON.stringify(s.opcoes || []).includes(`"${n.id}"`)) : [];
-  $("#conteudo").innerHTML = `
-    <div class="dividido">
-      <aside class="lateral">
-        <div class="lateral-acoes">
-          <button class="btn primario" data-acao="novo-npc">+ Novo NPC</button>
-          <button class="btn" data-acao="ir-gerador">Gerar NPC</button>
-        </div>
-        <div id="lista-npcs" class="lista">${listaNPCs()}</div>
-      </aside>
-      <section class="editor">
-        ${!n ? `<p class="sub">Nenhum NPC ainda. Crie um ou use o gerador.</p>` : `
-        <div class="cartao">
-          <div class="linha">
-            ${campo("Nome", c("nome"), { classe: "largo" })}
-            ${campo("Eixo", c("eixo"), { opcoes: opEixos() })}
-          </div>
-          <div class="linha">
-            ${campo("Papel no mundo", c("papel"), { classe: "largo", exemplo: "Herbalista da aldeia" })}
-            ${campo("Código (id)", c("id"), { estrutura: true, ajuda: "Usado nas missões ({npc:id.nome}). Evite mudar depois de usar." })}
-          </div>
-          ${campo("Aparência", c("aparencia"), { area: true, linhas: 2 })}
-          ${campo("Jeito de falar", c("voz"), { area: true, linhas: 2 })}
-          <div class="linha tres">
-            ${campo("Desejo", c("desejo"), { area: true, linhas: 2 })}
-            ${campo("Medo", c("medo"), { area: true, linhas: 2 })}
-            ${campo("Segredo", c("segredo"), { area: true, linhas: 2 })}
-          </div>
-          ${campo("Relação com a Entidade", c("entidade"), { area: true, linhas: 1 })}
-        </div>
-        <div class="cartao">
-          <h3>Ecos nos outros eixos</h3>
-          <p class="ajuda">Quem essa pessoa é nos outros mundos. Deixe em branco o eixo dela.</p>
-          ${["x", "y", "z"].map((e) => campo(EIXOS_NOMES[e], c(`ecos.${e}`), { area: true, linhas: 1 })).join("")}
-        </div>
-        <div class="cartao">
-          <h3>No jogo</h3>
-          <div class="linha">
-            ${campo("Onde aparece", c("onde"), { tipo: "lista", classe: "largo", ajuda: "Lugares separados por vírgula: aldeia, taverna" })}
-            ${campo("Atitude inicial", c("atitude"), { tipo: "numero", ajuda: "−3 hostil · 0 neutro · +3 aliado" })}
-          </div>
-          ${campo("Falas típicas (uma por linha)", c("falas"), { tipo: "linhas", area: true, linhas: 3, ajuda: "O marcador {npc.fala} sorteia uma delas." })}
-          ${campo("Notas para o autor", c("notas"), { area: true, linhas: 2 })}
-        </div>
-        <div class="cartao">
-          <h3>Missões com ${esc(n.nome)}</h3>
-          ${usos.length ? `<ul class="usos">${usos.map((s) => `<li><button class="btn-texto" data-ver-missao="${esc(s.id)}">${esc(s.titulo)}</button></li>`).join("")}</ul>` : `<p class="sub">Nenhuma ainda.</p>`}
-          <button class="btn" data-acao="missao-para-npc">+ Nova missão com ${esc(n.nome)}</button>
-        </div>
-        <div class="rodape-editor">
-          <button class="btn" data-acao="duplicar-npc">Duplicar</button>
-          <button class="btn perigo" data-acao="apagar-npc">Apagar NPC</button>
-        </div>`}
-      </section>
-    </div>`;
-}
-
-// ======================= Missões (storylets) =======================
-
-function listaMissoes() {
-  const grupos = {};
-  for (const s of mundo.storylets) (grupos[s.eixo || "todos"] = grupos[s.eixo || "todos"] || []).push(s);
-  return Object.entries(grupos).map(([e, lista]) => `
-    <p class="lista-grupo">${esc(EIXOS_NOMES[e] || e)}</p>
-    ${lista.map((s) => `
-      <button class="item ${s.id === missaoAtual ? "ativo" : ""}" data-missao="${esc(s.id)}">
-        <b>${esc(s.titulo || "(sem título)")}</b><small>${esc(s.tipo || "")}${+(s.peso ?? 1) === 0 ? " · continuação" : ""}${s.npc ? " · " + esc(Motor.npc(mundo, s.npc)?.nome || s.npc) : ""}</small>
-      </button>`).join("")}`).join("");
-}
-
-const opSituacoes = () => SITUACOES.map((s) => [s.id, `${s.nome} (${s.atributo})`]);
-const opItens = () => [["", "—"], ...EQUIPAMENTOS.map((e) => [e.chave, `${e.nomes.x} / ${e.nomes.y} / ${e.nomes.z}`])];
-const opHabs = () => [["", "—"], ...HABILIDADES.map((h) => [h.chave, `${h.nomes.x} / ${h.nomes.y} / ${h.nomes.z}`])];
-const opDestinos = () => [["", "— volta ao lugar —"], ...mundo.storylets.map((s) => [`storylet:${s.id}`, `→ ${s.titulo}`])];
-
-function blocoResultado(rotulo, base, classe) {
-  return `
-    <div class="resultado ${classe}">
-      <h4>${rotulo}</h4>
-      ${campo("O que acontece", `${base}.texto`, { area: true, linhas: 3 })}
-      <div class="linha">
-        ${campo("Pista no Diário", `${base}.pista`, { classe: "largo" })}
-        ${campo("Depois vai para", `${base}.ir`, { opcoes: opDestinos() })}
-      </div>
-      <details ${ler(base + ".efeitos") ? "open" : ""}>
-        <summary>Efeitos</summary>
-        <div class="linha efeitos">
-          ${campo("Ressonância", `${base}.efeitos.ressonancia`, { tipo: "numero" })}
-          ${campo("Dissonância", `${base}.efeitos.dissonancia`, { tipo: "numero" })}
-          ${campo("Exposição", `${base}.efeitos.exposicao`, { tipo: "numero" })}
-          ${campo("Convergência", `${base}.efeitos.convergencia`, { tipo: "numero", ajuda: "abre um teste (1–3)" })}
-        </div>
-        <div class="linha">
-          ${campo("Marca no mundo (flags)", `${base}.efeitos.flag`, { tipo: "lista", classe: "largo", ajuda: "O mundo lembra: outras missões podem exigir ou evitar essas marcas." })}
-          ${campo("Apaga marcas", `${base}.efeitos.tirarFlag`, { tipo: "lista" })}
-        </div>
-        <div class="linha">
-          ${campo("Atitude dos NPCs", `${base}.efeitos.atitude`, { tipo: "atitude", exemplo: "mabel: 2, vasko: -1" })}
-          ${campo("Ganha item", `${base}.efeitos.item`, { opcoes: opItens() })}
-          ${campo("Aprende (Código Urbano)", `${base}.efeitos.aprenderX`, { tipo: "lista" })}
-        </div>
-        ${campo("Memória Cruzada", `${base}.efeitos.memoria`, { area: true, linhas: 2, ajuda: "Um vislumbre da vida do personagem em outro eixo." })}
-      </details>
-    </div>`;
-}
-
-function blocoOpcao(si, oi) {
-  const op = mundo.storylets[si].opcoes[oi];
-  const b = `storylets.${si}.opcoes.${oi}`;
-  const tipo = Motor.tipoDeTeste(op);
-  return `
-    <article class="opcao">
-      <div class="opcao-topo">
-        <b>Opção ${oi + 1}</b>
-        <span>
-          <button class="btn-texto" data-mover-opcao="${oi}" data-direcao="-1" title="Subir">↑</button>
-          <button class="btn-texto" data-mover-opcao="${oi}" data-direcao="1" title="Descer">↓</button>
-          <button class="btn-texto perigo" data-apagar-opcao="${oi}">Apagar</button>
-        </span>
-      </div>
-      ${campo("O que o jogador escolhe", `${b}.texto`, { classe: "largo" })}
-      <div class="linha">
-        ${campo("Palavras que a resposta livre reconhece", `${b}.palavras`, { tipo: "lista", classe: "largo", ajuda: "Começos de palavras: examin, ver, olhar" })}
-      </div>
-      <div class="linha">
-        <label class="campo"><span>Tipo</span>
-          <select data-tipo-opcao="${oi}">
-            <option value="nenhum" ${tipo === "nenhum" ? "selected" : ""}>Sem teste</option>
-            <option value="teste" ${tipo === "teste" ? "selected" : ""}>Teste de dados</option>
-            <option value="convergencia" ${tipo === "convergencia" ? "selected" : ""}>Teste de Convergência</option>
-          </select>
-        </label>
-        ${tipo === "teste" ? campo("Situação (define atributo e dificuldade)", `${b}.situacao`, { opcoes: opSituacoes() }) : ""}
-        ${tipo === "convergencia" ? campo("Intensidade", `${b}.convergencia`, { tipo: "numero" }) : ""}
-      </div>
-      <details ${op.req ? "open" : ""}>
-        <summary>Requisitos (opcional)</summary>
-        <div class="linha">
-          ${campo("Precisa do item", `${b}.req.item`, { opcoes: opItens() })}
-          ${campo("Precisa da habilidade", `${b}.req.hab`, { opcoes: opHabs() })}
-          ${campo("Precisa da marca", `${b}.req.flag`)}
-        </div>
-      </details>
-      ${tipo === "nenhum"
-        ? blocoResultado("Resultado", `${b}.resultado`, "")
-        : `<div class="linha resultados">
-            ${blocoResultado(tipo === "convergencia" ? "Se ressoar (passou)" : "Se der certo", `${b}.sucesso`, "sucesso")}
-            ${blocoResultado(tipo === "convergencia" ? "Se dissoar (falhou)" : "Se der errado", `${b}.falha`, "falha")}
-          </div>`}
-    </article>`;
-}
-
-function renderMissoes() {
-  const si = mundo.storylets.findIndex((s) => s.id === missaoAtual);
-  const s = mundo.storylets[si];
-  const c = (k) => `storylets.${si}.${k}`;
-  $("#conteudo").innerHTML = `
-    <div class="dividido">
-      <aside class="lateral">
-        <div class="lateral-acoes">
-          <button class="btn primario" data-acao="nova-missao">+ Nova missão</button>
-          <button class="btn" data-acao="ir-gerador">Gerar missão</button>
-        </div>
-        <div id="lista-missoes" class="lista">${listaMissoes()}</div>
-      </aside>
-      <section class="editor">
-        ${!s ? `<p class="sub">Nenhuma missão ainda.</p>` : `
-        <div class="cartao">
-          <div class="linha">
-            ${campo("Título", c("titulo"), { classe: "largo" })}
-            ${campo("Eixo", c("eixo"), { opcoes: opEixos() })}
-            ${campo("Tipo", c("tipo"), { opcoes: [["side", "Side quest"], ["evento", "Evento do mundo"], ["principal", "Missão principal"]] })}
-          </div>
-          <div class="linha">
-            ${campo("NPC principal", c("npc"), { opcoes: [["", "—"], ...mundo.npcs.map((n) => [n.id, n.nome])] })}
-            ${campo("Código (id)", c("id"), { estrutura: true, ajuda: "Usado para ligar uma parte à outra." })}
-          </div>
-        </div>
-        <div class="cartao">
-          <h3>Quando e onde aparece</h3>
-          <div class="linha">
-            ${campo("Lugares", c("onde"), { tipo: "lista", classe: "largo", ajuda: "Separados por vírgula. Vazio = qualquer lugar." })}
-            ${campo("Peso", c("peso"), { tipo: "numero", ajuda: "Chance de ser sorteada. 0 = só como continuação." })}
-            ${campo("Pode repetir", c("repetivel"), { tipo: "marca", classe: "marca-alinhada" })}
-          </div>
-          <div class="linha">
-            ${campo("Relógio a partir de", c("quando.relogioMin"), { tipo: "numero" })}
-            ${campo("Relógio até", c("quando.relogioMax"), { tipo: "numero" })}
-            ${campo("Ressonância mínima", c("quando.ressonanciaMin"), { tipo: "numero" })}
-            ${campo("Dissonância mínima", c("quando.dissonanciaMin"), { tipo: "numero" })}
-          </div>
-          <div class="linha">
-            ${campo("Precisa das marcas", c("quando.flags"), { tipo: "lista", classe: "largo" })}
-            ${campo("Não pode ter as marcas", c("quando.semFlags"), { tipo: "lista", classe: "largo" })}
-            ${campo("Atitude mínima", c("quando.atitude"), { tipo: "atitude", exemplo: "mabel: 2" })}
-          </div>
-        </div>
-        <div class="cartao">
-          <h3>Texto da cena</h3>
-          ${campo("Narração", c("texto"), { area: true, linhas: 6, ajuda: "Marcadores: {p.nome} personagem · {npc.nome} · {npc.fala} (uma fala sorteada) · {npc.papel} · {npc:mabel.nome} (outro NPC) · {npc.eco.y} (o eco dele no Eixo Y)" })}
-        </div>
-        <div class="cartao">
-          <h3>Opções</h3>
-          ${(s.opcoes || []).map((_, oi) => blocoOpcao(si, oi)).join("")}
-          <button class="btn" data-acao="nova-opcao">+ Nova opção</button>
-        </div>
-        <div class="cartao">
-          ${campo("Notas para o autor", c("notas"), { area: true, linhas: 2 })}
-        </div>
-        <div class="rodape-editor">
-          <button class="btn primario" data-acao="testar-missao">▶ Testar esta missão</button>
-          <button class="btn" data-acao="duplicar-missao">Duplicar</button>
-          <button class="btn perigo" data-acao="apagar-missao">Apagar missão</button>
-        </div>`}
-      </section>
+    <section class="intro"><p>${HISTORIA.intro}</p></section>
+    <div class="historia">
+      ${HISTORIA.secoes.map((x) => `
+        <section class="cartao secao-historia">
+          <h3>${x.titulo} <span class="selo ${x.estado}">${ROT[x.estado]}</span></h3>
+          ${x.html}
+        </section>`).join("")}
     </div>`;
 }
 
@@ -789,7 +486,7 @@ function renderGeradores() {
             <p><b>Entidade:</b> ${esc(g.npc.entidade)}</p>
             <p><b>Ecos:</b> ${Object.entries(g.npc.ecos).map(([e, v]) => `${EIXOS_NOMES[e]}: ${esc(v)}`).join(" · ")}</p>
             <p><b>Onde:</b> ${esc(g.npc.onde.join(", "))}</p>
-            <button class="btn" data-acao="guardar-npc">Guardar nos NPCs</button>
+            <button class="btn" data-acao="guardar-npc">Guardar NPC</button>
           </div>` : ""}
         <button class="btn primario" data-acao="gerar-missao">🎲 Gerar side quest${g.npc ? " com " + esc(g.npc.nome) : ""}</button>
         ${g.missao ? `
@@ -799,8 +496,7 @@ function renderGeradores() {
             <p><b>Complicação:</b> ${esc(g.missao.complicacao)}</p>
             <p><b>Revelação:</b> ${esc(g.missao.revelacao)}</p>
             <p><b>Recompensa:</b> ${esc(g.missao.recompensa)}</p>
-            <button class="btn" data-acao="guardar-missao">Transformar em missão</button>
-            <small class="ajuda">Cria um rascunho com o NPC (guardado antes, se for novo) para você escrever os textos.</small>
+            <button class="btn" data-acao="guardar-missao">Guardar e testar</button>
           </div>` : ""}
       </aside>
     </div>`;
@@ -961,120 +657,11 @@ document.addEventListener("click", (ev) => {
   if (!t) return;
   const d = t.dataset;
 
-  if (d.npc || d.missao) {
-    if (d.npc) npcAtual = d.npc;
-    else missaoAtual = d.missao;
-    render();
-    // no celular a lista fica em cima: desce até o formulário
-    if (innerWidth <= 900) $(".editor")?.scrollIntoView({ behavior: "smooth" });
-    return;
-  }
-  if (d.verMissao) {
-    missaoAtual = d.verMissao;
-    aba = "missoes";
-    return render();
-  }
-  if (d.apagarPergunta) {
-    mundo.perguntas.splice(+d.apagarPergunta, 1);
-    mudou();
-    return render();
-  }
-  const si = mundo.storylets.findIndex((s) => s.id === missaoAtual);
-  if (d.apagarOpcao) {
-    if (!confirm("Apagar esta opção?")) return;
-    mundo.storylets[si].opcoes.splice(+d.apagarOpcao, 1);
-    mudou();
-    return render();
-  }
-  if (d.moverOpcao) {
-    const ops = mundo.storylets[si].opcoes;
-    const i = +d.moverOpcao;
-    const j = i + +d.direcao;
-    if (j < 0 || j >= ops.length) return;
-    [ops[i], ops[j]] = [ops[j], ops[i]];
-    mudou();
-    return render();
-  }
-  if (d.novaProf) {
-    const p = { id: novoId("prof"), x: { nome: "", ponto: "" }, y: { nome: "", ponto: "" }, z: { nome: "", ponto: "" } };
-    p[eixoProfissoes].ponto = d.novaProf;
-    mundo.profissoes.push(p);
-    mudou();
-    return render();
-  }
-  if (d.apagarProf) {
-    const p = mundo.profissoes[+d.apagarProf];
-    if (!confirm(`Apagar “${p[eixoProfissoes].nome || "esta profissão"}” dos três eixos?`)) return;
-    mundo.profissoes.splice(+d.apagarProf, 1);
-    mudou();
-    return render();
-  }
   if (d.jogar) return jogar(d.jogar);
   if (d.escolha) return escolher(+d.escolha);
   if (d.resultado) return resolver(jogo.storylet.opcoes[jogo.opcao][d.resultado]);
 
   const acoes = {
-    "novo-ponto"() {
-      (mundo.pontos[eixoProfissoes] = mundo.pontos[eixoProfissoes] || []).push({ id: novoId("ponto"), nome: "Novo ponto de entrada", descricao: "" });
-    },
-    "nova-pergunta"() {
-      mundo.perguntas.push({ id: novoId("nota"), tema: "Minhas notas", pergunta: "", resposta: "", minha: true });
-    },
-    "novo-npc"() {
-      const id = novoId("npc");
-      mundo.npcs.push({ id, nome: "Novo NPC", eixo: "y", papel: "", desejo: "", medo: "", segredo: "", entidade: "", ecos: {}, onde: [], atitude: 0, falas: [] });
-      npcAtual = id;
-    },
-    "duplicar-npc"() {
-      const n = structuredClone(mundo.npcs.find((x) => x.id === npcAtual));
-      n.id = novoId(n.id.split("-")[0]);
-      n.nome += " (cópia)";
-      mundo.npcs.push(n);
-      npcAtual = n.id;
-    },
-    "apagar-npc"() {
-      if (!confirm("Apagar este NPC? As missões que usam ele continuam, mas sem o NPC.")) return false;
-      mundo.npcs = mundo.npcs.filter((x) => x.id !== npcAtual);
-      npcAtual = mundo.npcs[0]?.id || null;
-    },
-    "missao-para-npc"() {
-      const n = mundo.npcs.find((x) => x.id === npcAtual);
-      const id = novoId(`${n.eixo === "todos" ? "x" : n.eixo}-${n.id}`);
-      mundo.storylets.push({ id, titulo: `Missão de ${n.nome}`, eixo: n.eixo === "todos" ? "x" : n.eixo, tipo: "side", npc: n.id, onde: [...(n.onde || [])], quando: {}, peso: 1, texto: "{npc.nome}: “{npc.fala}”", opcoes: [] });
-      missaoAtual = id;
-      aba = "missoes";
-    },
-    "nova-missao"() {
-      const id = novoId("missao");
-      mundo.storylets.push({ id, titulo: "Nova missão", eixo: "y", tipo: "side", onde: [], quando: {}, peso: 1, texto: "", opcoes: [] });
-      missaoAtual = id;
-    },
-    "duplicar-missao"() {
-      const s = structuredClone(mundo.storylets[si]);
-      s.id = novoId(s.id.split("-").slice(0, 2).join("-"));
-      s.titulo += " (cópia)";
-      mundo.storylets.push(s);
-      missaoAtual = s.id;
-    },
-    "apagar-missao"() {
-      if (!confirm("Apagar esta missão?")) return false;
-      mundo.storylets.splice(si, 1);
-      missaoAtual = mundo.storylets[0]?.id || null;
-    },
-    "nova-opcao"() {
-      const s = mundo.storylets[si];
-      (s.opcoes = s.opcoes || []).push({ texto: "", palavras: [], resultado: { texto: "" } });
-    },
-    "testar-missao"() {
-      const s = mundo.storylets[si];
-      if (s.eixo && s.eixo !== "todos") teste.eixo = s.eixo;
-      if (s.onde && s.onde[0]) teste.lugar = s.onde[0];
-      jogar(s.id);
-      return false;
-    },
-    "ir-gerador"() {
-      aba = "geradores";
-    },
     "gerar-npc"() {
       gerado.npc = Motor.gerarNPC(mundo.tabelas, eixoGerador);
       gerado.missao = null;
@@ -1082,8 +669,6 @@ document.addEventListener("click", (ev) => {
     },
     "guardar-npc"() {
       if (!mundo.npcs.some((n) => n.id === gerado.npc.id)) mundo.npcs.push(gerado.npc);
-      npcAtual = gerado.npc.id;
-      aba = "npcs";
     },
     "gerar-missao"() {
       gerado.missao = Motor.gerarMissao(mundo.tabelas, eixoGerador, gerado.npc);
@@ -1093,8 +678,9 @@ document.addEventListener("click", (ev) => {
       if (gerado.npc && !mundo.npcs.some((n) => n.id === gerado.npc.id)) mundo.npcs.push(gerado.npc);
       const s = Motor.rascunho(gerado.missao, eixoGerador, gerado.npc);
       mundo.storylets.push(s);
-      missaoAtual = s.id;
-      aba = "missoes";
+      mudou();
+      jogar(s.id);
+      return false;
     },
     sortear() {
       const est = estadoDeTeste();
@@ -1133,35 +719,10 @@ document.addEventListener("click", (ev) => {
 // tipo da opção (sem teste / teste / convergência): reorganiza os resultados sem perder o texto
 document.addEventListener("change", (ev) => {
   const el = ev.target;
-  if (el.dataset.eixoProfissoes !== undefined) {
-    eixoProfissoes = el.value;
-    return render();
-  }
   if (el.dataset.eixoGerador !== undefined) {
     eixoGerador = el.value;
     return render();
   }
-  if (el.dataset.tipoOpcao === undefined) return;
-  const si = mundo.storylets.findIndex((s) => s.id === missaoAtual);
-  const op = mundo.storylets[si].opcoes[+el.dataset.tipoOpcao];
-  const antes = Motor.tipoDeTeste(op);
-  const novo = el.value;
-  delete op.situacao;
-  delete op.convergencia;
-  if (novo === "teste") op.situacao = "investigar";
-  if (novo === "convergencia") op.convergencia = 1;
-  if (novo === "nenhum" && antes !== "nenhum") {
-    op.resultado = op.sucesso || { texto: "" };
-    delete op.sucesso;
-    delete op.falha;
-  }
-  if (novo !== "nenhum" && antes === "nenhum") {
-    op.sucesso = op.resultado || { texto: "" };
-    op.falha = { texto: "" };
-    delete op.resultado;
-  }
-  mudou();
-  render();
-});
+  });
 
 carregar();
