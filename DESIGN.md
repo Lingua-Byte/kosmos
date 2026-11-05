@@ -134,6 +134,16 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
 - **Campos do Criador (proposta):** `aprenderY` (palavras de runa), `metade` (`{ frase, lado }`), `req.palavra`
   (escolha só para quem sabe a palavra). As frases partidas ficam numa lista única, apontadas pelo nome.
 - **Em aberto:** o que acontece se faltarem palavras na hora de juntar.
+- **Proposta do designer de mecânicas para o enigma (aguardando o autor):**
+  1. A palavra que falta aparece como ▢; o jogador escreve (o jogo ignora acento e maiúscula; o autor dá 1 a 3 respostas aceitas).
+  2. 3 tentativas; errar não custa nada (o enigma fica no Diário, sem relógio).
+  3. Modo fácil: depois das 3, aparecem 4 opções e o jogador tem 2 escolhas. Modo difícil: sem opções.
+  4. Falhou tudo: a palavra fica "a aprender" e abre uma **lição** (missão secundária de 3 telas, montada por modelo
+     com peças do autor: lugar, pessoa, onde a palavra aparece, pista). A lição sempre ensina a palavra.
+  5. Com a palavra aprendida, o enigma aparece resolvido. A recompensa é a mesma nos dois modos.
+  6. Fácil ou difícil: escolha do jogador na criação do personagem, trocável no menu.
+  - A programar: efeito "aprender palavra de runa", tela do enigma, campos do enigma no Criador, escolha fácil/difícil,
+    lista "onde a palavra aparece" no gerador. Para depois: o Z, a lição gerada durante a partida, a frase partida completa.
 
 ## 6. Em aberto
 
