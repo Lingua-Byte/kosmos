@@ -125,6 +125,9 @@ sentenças. **A Pedra é o cartório, não um altar.** Mentir diante dela é cri
   Ninguém sabe por que é "três e um" se a rede se puxa de dois em dois. A versão certa está na base da Pedra.
 - **Uma sentença** gravada na Pedra, apagada a raspas, ainda legível de lado, contra a luz.
 
+> **Mais sobre Yudur:** história do vale em três versões, governo, ano, lugares, nomes em runas, canções,
+> documentos do mundo e as trocas do que é religioso no jogo estão em `YUDUR.md` (Proposta).
+
 ### 2.8 Como escrever o Y (Tolkien, sem imitar)
 - Começar em casa: a lareira, o pão duro, o vizinho que deve. A estrada vem depois.
 - A paisagem tem peso: frio, distância, luz curta do inverno.
