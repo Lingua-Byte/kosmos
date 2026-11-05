@@ -53,6 +53,10 @@ vocabulário inicial por papel), para que cada Decifrar tenha o número certo de
 
 **D. Responder ao autor** como uma língua funciona, com exemplo, e propor regras novas em 2 ou 3 opções.
 
+**E. Frases importantes, junto com o guardião da lore.** Frase de missão principal, frase partida, frase da IA: você
+monta a escrita e a tradução, e ela **sempre** passa pelo `guardiao-da-lore` antes de ir ao autor (a sessão principal
+chama os dois). Ao entregar uma frase importante, diga o que ela afirma sobre a história, para o guardião conferir.
+
 ## 4. Quando você muda arquivos
 
 - Pode mudar **os arquivos das línguas** (`lingua.js`, `yudur.js`, léxicos) e **a escrita de símbolos e runas** nos textos

@@ -51,6 +51,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 
 ## Jeito de fazer
 - **Lore nova se faz com o autor, aos poucos:** perguntar o que ele já pensou e partir do texto dele; propor pouco de cada vez (uma ideia, duas ou três opções) e esperar a resposta. Nada de documentos grandes de lore inventada de uma vez.
+- **Frases importantes das línguas são feitas a dois:** o `linguista` monta a escrita e a tradução, e o `guardiao-da-lore` confere se a frase combina com a lore (e não responde nada em aberto). Só depois vão ao autor.
 - **Slow burn em toda missão:** começa na rotina; o estranho entra aos poucos e as pessoas tratam como incômodo do dia a dia ("foi ver a praça", "deve ser gás"), não como apocalipse. O que é pesado chega com o relógio ou com a investigação; sobrevivência total só perto do clímax. Nada de frase de efeito anunciando o perigo.
 - **Eixo X é sobrevivência**, não investigação: comida, abrigo, gente para proteger, chegar vivo ao fim da noite.
 - **Telas sem rolagem**, texto em pedaços (um parágrafo por vez, digitado, com "Continuar ▸"), no celular e no PC.
