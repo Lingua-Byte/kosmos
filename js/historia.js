@@ -59,13 +59,28 @@ const HISTORIA = {
     },
     {
       titulo: "A Domus e o buraco negro",
-      estado: "considerar",
+      estado: "decidido",
       html: `
+        <p><b>Confirmado pelo autor em 05/11/2026:</b> a Domus cruzou o horizonte; vista de fora, parece parada; a “estrela que observa” é luz, não um olho.</p>
         <ul>
           <li>A Domus, numa missão de exploração, <b>já atravessou o horizonte de um buraco negro</b> sem perceber. Num buraco negro supermassivo a borda é suave: não há solavanco, alarme nem nave despedaçada.</li>
           <li>Visto de fora, quem cai parece <b>congelar na borda para sempre</b>. A base da missão vê a Domus parada e sem resposta: daí ela “vagar sem contato” (detalhe secundário, que já vem explicado).</li>
           <li>Dentro do horizonte, <b>espaço e tempo trocam de papel</b>: o centro deixa de ser um lugar e vira um momento que não se pode evitar. <b>A Domus cair é a Domus avançar no tempo.</b></li>
           <li>A “estrela que observa” é a luz de fora chegando concentrada, com o disco brilhante em volta do centro escuro: parece um olho, sem ser um.</li>
+        </ul>`,
+    },
+    {
+      titulo: "A missão da Domus e o nó (ideias do autor)",
+      estado: "considerar",
+      html: `
+        <p>Ideias do autor em 05/11/2026, para desenvolver junto com ele. O objetivo da missão e o que a IA quer <b>seguem em aberto</b>.</p>
+        <ul>
+          <li><b>A IA da Domus entrou num loop temporal</b>, causado pelo nó do tempo, e já não consegue saber a origem da missão.</li>
+          <li><b>Dentro do jogo, a missão é ser guiado por um sinal estranho</b> que está codificando a criação da Domus. Os personagens podem interpretar o código como um sinal alienígena.</li>
+          <li>Depois, o mesmo código passa a ser <b>a rota para a Domus seguir até o Lime</b>. Isso precisa aparecer <b>aos poucos, em algumas missões do Eixo X</b>.</li>
+          <li><b>Para depois:</b> e se a IA estiver enviando os códigos para a <b>criação da Domus</b>? (A nave seria construída a partir de uma mensagem que ela mesma manda.)</li>
+          <li><b>O tempo:</b> os <b>26.000 anos</b> do Eixo Z seriam relatividade. De um lado (dentro da Domus) passam de <b>50 a 100 anos</b>; do outro, <b>26.000</b>.</li>
+          <li><b>Uma missão com a IA:</b> o jogador ajuda a IA a descobrir a ponta inicial do nó (o momento em que a Domus foi criada pela primeira vez) e segue a linha do tempo até o momento em que o jogo está. Escrever <b>junto com os agentes de lore e de mecânica</b>.</li>
         </ul>`,
     },
     {
