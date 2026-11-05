@@ -83,7 +83,7 @@
   "cenas": {
     "abertura": {
       "titulo": "Terça-feira à noite",
-      "texto": "Estação 9. Faltam vinte minutos para a troca de turno, e Frank Brennan está sentado no estribo do caminhão com um café que esfriou faz uma hora. Trinta anos de bombeiro. Dois para a aposentadoria.\n\nO Kowalski entra resmungando. “Mais um que não veio. Terceiro esta semana. A mulher dele saiu pra ver a tal da praça e ele foi atrás.” Pendura o casaco. “A cidade inteira resolveu tirar folga ao mesmo tempo.”\n\nO telefone da parede toca. É o Joe Kessler, seu antigo parceiro, aposentado desde 88. Não liga há dez anos.\n\n“Frank. Lembra da Delancey Street? O fogo de oitenta e sete?” Uma pausa comprida. “Esquece. Tô ficando velho. Liguei por besteira. E essas costas, como vão?”\n\nEle desliga antes que você responda.",
+      "texto": "Estação 9. Faltam vinte minutos para a troca de turno, e Frank Brennan está sentado no estribo do caminhão com um café que esfriou faz uma hora. Trinta anos de bombeiro. Dois para a aposentadoria.\n\nO Haskins entra resmungando. “Mais um que não veio. Terceiro esta semana. A mulher dele saiu pra ver a tal da praça e ele foi atrás.” Pendura o casaco. “A cidade inteira resolveu tirar folga ao mesmo tempo.”\n\nO telefone da parede toca. É o Joe Kessler, seu antigo parceiro, aposentado desde 88. Não liga há dez anos.\n\n“Frank. Lembra da Delancey Street? O fogo de oitenta e sete?” Uma pausa comprida. “Esquece. Tô ficando velho. Liguei por besteira. E essas costas, como vão?”\n\nEle desliga antes que você responda.",
       "variantes": [
         {
           "se": {

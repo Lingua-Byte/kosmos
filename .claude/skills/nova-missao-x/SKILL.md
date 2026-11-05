@@ -23,7 +23,7 @@ Siga na ordem. Pule só o que não se aplica e diga ao autor o que ficou pulado.
 5. **NPCs novos.** Para cada um, seguir a skill `novo-npc` (voz, fala breve, balbucio, retrato).
 6. **Escrita.** Pedir ao agente `editor-de-texto` para revisar as cenas e ao `guardiao-da-lore` para conferir
    a lore. Aplicar o que o autor aprovar.
-7. **Testar.** `node ferramentas/testar.js` sem nenhum ERRO. Se a missão for grande, pedir ao agente
+7. **Testar.** `node ferramentas/testar.js` sem nenhum ERRO, e `node ferramentas/continuidade.js` para atualizar o índice de continuidade. Se a missão for grande, pedir ao agente
    `testador` para jogá-la no navegador.
 8. **Avisar sobre o Criador.** Dizer ao autor, em uma frase, que no Criador ele deve abrir a missão a partir da
    versão do jogo antes de editar, para não sobrescrever com uma cópia antiga.
