@@ -142,6 +142,20 @@ O **resto** (secundárias, Travessias, fios pessoais) se mistura entre os eixos.
   vê de relance o outro lado.
 - É o lugar perfeito para a ideia do autor: **missões de outro eixo, com custo** (seção 4).
 
+**O que "linear" quer dizer aqui**
+- Linear é a **ordem da linha principal**, não a ausência de saltos. Os saltos existem e são o fim de cada parte:
+  Z0 → Prólogo X (o jogador cai no passado), X5 → Y1 (o trem), Y5 → Z1 (a câmara sob a Pedra).
+- O próximo eixo abre quando acaba a **linha principal** do eixo atual (o clímax). Não é preciso fazer todas as
+  secundárias: elas não trancam nada.
+- Depois do salto, o eixo de antes **não fica livre**. Volta-se a ele por Travessia, pagando o preço (seção 4).
+  Faz sentido na história, porque é o tempo que puxa o jogador para a frente, e não o jogador que escolhe.
+  Também dá um motivo para fazer as secundárias antes do salto.
+- Antes de o eixo abrir, ele só aparece em Vislumbres: saltos curtos e opcionais, que não mudam a ordem da linha
+  principal.
+- **Alternativa (para o autor pesar):** depois do salto, o eixo de antes continua livre, sem custo, como as regiões
+  de Fallout. É mais confortável para quem quer completar tudo, mas tira o peso do salto e o sentido das Travessias
+  para esse eixo.
+
 **O que fica para trás**
 - O ciclo X → Y → Z → X do `ATO_1.md` (uma missão de cada eixo, alternando). Vale como banco de ideias, não como
   ordem. As missões dele foram reaproveitadas na seção 5.
