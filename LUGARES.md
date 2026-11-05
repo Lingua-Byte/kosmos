@@ -1,5 +1,8 @@
 # KOSMOS — Lugares: Port Halden, Yudur e a Domus
 
+> **Rascunho do Claude, escrito sem a participação do autor.** Nada aqui vale como lore do jogo até o autor aprovar,
+> parte por parte. O que vale está no `CLAUDE.md` e no que está "Decidido" em `site/js/historia.js`.
+
 A lore de cada lugar do jogo, contada como os RPGs de referência contam: por quem mora lá.
 Estrutura das missões em `NARRATIVA.md`; personagens em `PERSONAGENS.md`.
 

@@ -12,7 +12,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 
 ## Onde está cada coisa
 - Ferramentas gratuitas, IA e mecânicas planejadas: `FERRAMENTAS.md`.
-- Bíblia narrativa (propostas para o autor confirmar): `NARRATIVA.md` (ordem dos eixos, Travessias entre eixos, arco das 17 missões principais), `PERSONAGENS.md` (os 9 e os NPCs), `LUGARES.md` (Port Halden, Yudur, Domus), `YUDUR.md` (o vale por dentro). O `ATO_1.md` antigo vale só como banco de ideias.
+- Bíblia narrativa (**rascunho do Claude, sem participação do autor: não vale até ele aprovar parte por parte**): `NARRATIVA.md` (ordem dos eixos, Travessias entre eixos, arco das 17 missões principais), `PERSONAGENS.md` (os 9 e os NPCs), `LUGARES.md` (Port Halden, Yudur, Domus), `YUDUR.md` (o vale por dentro). O `ATO_1.md` antigo vale só como banco de ideias.
 - Como escrever (técnicas de Fallout, TES e Resident Evil; o que soa como IA): `GUIA_ESCRITA.md`. O agente `editor-de-texto` segue esse guia.
 - **Agentes e skills** (`.claude/agents/`, `.claude/skills/`): `editor-de-texto`, `guardiao-da-lore`, `designer-de-mecanicas` (números, simulação e equilíbrio das regras), `testador`; skills `nova-missao-x`, `novo-npc`, `lore-nova`. Antes de enviar mudança em missão, rodar `node ferramentas/testar.js` (o robô `.github/workflows/testes.yml` roda a cada envio).
 - Índice de continuidade (o que o jogador já viu: NPCs, datas, horários, nomes): `LORE_CONTINUIDADE.md`, gerado por `node ferramentas/continuidade.js` (não editar à mão; o guardião da lore regrava).
@@ -39,6 +39,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Em aberto:** o objetivo da missão da Domus, o que a IA quer (avisar, chamar ou ambíguo), ancestrais ou ecos.
 
 ## Jeito de fazer
+- **Lore nova se faz com o autor, aos poucos:** perguntar o que ele já pensou e partir do texto dele; propor pouco de cada vez (uma ideia, duas ou três opções) e esperar a resposta. Nada de documentos grandes de lore inventada de uma vez.
 - **Slow burn em toda missão:** começa na rotina; o estranho entra aos poucos e as pessoas tratam como incômodo do dia a dia ("foi ver a praça", "deve ser gás"), não como apocalipse. O que é pesado chega com o relógio ou com a investigação; sobrevivência total só perto do clímax. Nada de frase de efeito anunciando o perigo.
 - **Eixo X é sobrevivência**, não investigação: comida, abrigo, gente para proteger, chegar vivo ao fim da noite.
 - **Telas sem rolagem**, texto em pedaços (um parágrafo por vez, digitado, com "Continuar ▸"), no celular e no PC.

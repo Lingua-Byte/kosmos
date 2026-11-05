@@ -1,5 +1,8 @@
 # Yudur por dentro (Eixo Y) — Proposta
 
+> **Rascunho do Claude, escrito sem a participação do autor.** Nada aqui vale como lore do jogo até o autor aprovar,
+> parte por parte. O que vale está no `CLAUDE.md` e no que está "Decidido" em `site/js/historia.js`.
+
 Lore nova do vale de Yudur, escrita pelo `editor-de-texto` e conferida pelo `guardiao-da-lore`.
 **Tudo aqui é Proposta**, para o autor confirmar. Complementa `LUGARES.md`, seção 2.
 As runas vêm de `site/js/yudur.js`; combinação que não existe no vocabulário está marcada **(novo)**.
