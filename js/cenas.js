@@ -539,89 +539,152 @@ const Cenas = (() => {
   }
 
   // ---------- Decifrar (o enigma de tradução) ----------
-  // cena.decifrar = { lingua: "x"|"y", palavra (id do símbolo no X, ou runas no Y), frase, traducao (com ▢),
-  //   respostas: [...], erradas: [...], modo: "facil"|"dificil", acertou: "cena:…", licao: "cena:…",
-  //   dissonancia (o salto da Lição), efeitos ao acertar (aprenderX, aprenderY, memoria, ...) }
-  // 3 tentativas escritas, que não custam nada. No fácil, depois delas: 4 opções e 2 escolhas.
-  // Falhou de vez: vai para a Lição (missão com salto no tempo), que traz Dissonância e ensina a palavra.
-  // Quem já sabe a palavra (aprendeu na Lição ou antes) vê a frase resolvida.
+  // cena.decifrar = { lingua: "x"|"y", modo: "facil"|"dificil", acertou: "cena:…", licao: "cena:…", dissonancia,
+  //   palavras: [{ escrita, sentido, id?, respostas?, erradas? }], memoria?, … (outros efeitos ao terminar) }
+  // A escrita aparece sempre inteira. A tradução se monta com o que o personagem sabe: palavra sem id (ligação) ou
+  // com id conhecido aparece traduzida; as outras viram ▢ e são decifradas uma por vez, cada uma com 3 tentativas
+  // que não custam nada. No fácil, depois delas, 4 opções e 2 chances. Acertar ensina a palavra.
+  // Falhou de vez numa palavra: Lição (missão com salto no tempo), que traz Dissonância.
+  // Abre numa tela própria, por cima da cena (painel "decifrar").
   const DECIFRAR = { tentativas: 3, opcoes: 4, escolhas: 2 };
-  const normal = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  const normal = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
   let avisoDecifrar = "";
+  let palavraEscolhida = null;
 
-  function sabeDecifrar(p, d) {
-    if (!d.palavra) return false;
-    if (d.lingua === "y") return (p.vocabY || []).includes(d.palavra);
-    return (p.linguas?.[d.lingua || "x"] || []).includes(d.palavra);
+  function sabeId(p, lingua, id) {
+    if (!id) return true;
+    if (lingua === "y") return (p.vocabY || []).includes(id);
+    return (p.linguas?.[lingua || "x"] || []).includes(id);
   }
   function estadoDecifrar(chave) {
     camp.decifrar = camp.decifrar || {};
-    return (camp.decifrar[chave] = camp.decifrar[chave] || { tent: 0, esc: 0, erradas: [] });
+    return (camp.decifrar[chave] = camp.decifrar[chave] || { palavras: {} });
   }
-  function opcoesDecifrar(d) {
-    const certa = [].concat(d.respostas || [])[0] || "";
-    const lista = [certa, ...(d.erradas || []).slice(0, DECIFRAR.opcoes - 1)];
-    // ordem fixa por missão (não muda a cada tela), mas a certa não fica sempre em primeiro
-    const giro = 1 + ([...String(d.frase || "")].reduce((s, c) => s + c.charCodeAt(0), 0) % (lista.length - 1 || 1));
-    return [...lista.slice(giro), ...lista.slice(0, giro)];
+  // estado de cada palavra: conhecida, resolvida, ou com tentativas
+  function aprenderPalavra(p, d, w) {
+    if (!w.id) return;
+    if (d.lingua === "y") p.vocabY = [...new Set([...(p.vocabY || []), w.id])];
+    else { p.linguas = p.linguas || { x: [], z: [] }; p.linguas[d.lingua || "x"] = [...new Set([...(p.linguas[d.lingua || "x"] || []), w.id])]; }
   }
-  function decifrarHtml(chave, d) {
+  function situacaoPalavras(chave, d) {
     const p = ativo();
     const e = estadoDecifrar(chave);
-    const certa = [].concat(d.respostas || [])[0] || "";
-    const lingua = { x: "Código Urbano", y: "Runas", z: "Interface" }[d.lingua || "x"];
-    const cabeca = `<p class="dec-frase"><span class="dec-lingua">${lingua}</span> ${esc(d.frase || "")}</p>`;
-    if (e.resolvido || sabeDecifrar(p, d)) {
-      return `<div class="decifrar">${cabeca}
-        <p class="dec-trad">${esc((d.traducao || "").replace("▢", certa))}</p>
-        <button class="btn-primario" data-acao="decifrar-ok">Continuar <b>▸</b></button></div>`;
+    // voltou da Lição: as palavras que faltavam foram aprendidas lá
+    if (e.pendente && !resultado) {
+      for (const i of e.pendente) {
+        const w = (d.palavras || [])[i];
+        if (!w) continue;
+        e.palavras[i] = { ...(e.palavras[i] || {}), ok: true };
+        aprenderPalavra(p, d, w);
+      }
+      fichaMudou(p, e.pendente.map((i) => d.palavras[i] && `Aprendeu na Lição: ${d.palavras[i].escrita} = ${d.palavras[i].sentido}`).filter(Boolean));
+      delete e.pendente;
+      salvar();
     }
-    const pips = Array.from({ length: DECIFRAR.tentativas }, (_, i) => `<i class="${i < e.tent ? "cheio" : ""}"></i>`).join("");
-    let corpo;
-    if (e.tent < DECIFRAR.tentativas) {
-      corpo = `<form class="dec-form" id="form-decifrar"><input id="texto-decifrar" placeholder="Que palavra falta?" autocomplete="off" autocapitalize="off">
-          <button class="btn-secundario">Tentar</button></form>
-        <p class="dec-tent">Tentativas <span class="pips">${pips}</span></p>`;
-    } else if (d.modo !== "dificil" && e.esc < DECIFRAR.escolhas) {
-      corpo = `<p class="dec-tent">Escolha (${DECIFRAR.escolhas - e.esc} ${DECIFRAR.escolhas - e.esc === 1 ? "chance" : "chances"}):</p>
-        <div class="chips dec-opcoes">${opcoesDecifrar(d).map((o) => `<button class="chip" data-decifrar-op="${esc(o)}" ${e.erradas.includes(o) ? "disabled" : ""}>${esc(o)}</button>`).join("")}</div>`;
-    } else {
-      corpo = `<p class="dec-tent">A frase não se fecha. Falta aprender a palavra.</p>
+    return (d.palavras || []).map((w, i) => {
+      const s = (e.palavras[i] = e.palavras[i] || { tent: 0, esc: 0, erradas: [] });
+      const sabe = sabeId(p, d.lingua, w.id) || s.ok;
+      const perdida = !sabe && s.tent >= DECIFRAR.tentativas && (d.modo === "dificil" || s.esc >= DECIFRAR.escolhas);
+      return { ...w, i, s, sabe, perdida };
+    });
+  }
+  function opcoesDe(w) {
+    const certa = [].concat(w.respostas || [w.sentido])[0] || "";
+    const lista = [certa, ...(w.erradas || []).slice(0, DECIFRAR.opcoes - 1)];
+    const giro = 1 + ([...String(w.escrita || "")].reduce((s, c) => s + c.charCodeAt(0), 0) % (lista.length - 1 || 1));
+    return [...lista.slice(giro), ...lista.slice(0, giro)];
+  }
+  // na cena: a escrita inteira e o botão que abre a tela do Decifrar
+  function decifrarHtml(chave, d) {
+    const ps = situacaoPalavras(chave, d);
+    const faltam = ps.filter((w) => !w.sabe).length;
+    return `<div class="decifrar dec-resumo">
+      <p class="dec-frase"><span class="dec-lingua">${{ x: "Código Urbano", y: "Runas", z: "Interface" }[d.lingua || "x"]}</span> ${ps.map((w) => esc(w.escrita)).join(" ")}</p>
+      <button class="btn-primario" data-painel="decifrar">${faltam ? `Decifrar <b>▸</b> <small>${faltam} ${faltam === 1 ? "palavra" : "palavras"}</small>` : "Ler <b>▸</b>"}</button>
+    </div>`;
+  }
+  // a tela própria
+  function decifrarPainelHtml() {
+    const cena = missao().cenas[camp.cena];
+    const d = cena && cena.decifrar;
+    if (!d) return "";
+    const ps = situacaoPalavras(camp.cena, d);
+    const faltam = ps.filter((w) => !w.sabe);
+    const perdida = ps.find((w) => w.perdida);
+    if (!faltam.some((w) => w.i === palavraEscolhida) || perdida) palavraEscolhida = (faltam.find((w) => !w.perdida) || {}).i ?? null;
+    let n = 0;
+    const numero = {};
+    ps.forEach((w) => { if (w.id) numero[w.i] = ++n; }); // número fixo por palavra (não muda quando outra é decifrada)
+    const traducao = ps.map((w) => (w.sabe ? `<span class="dec-sabe">${esc(w.sentido)}</span>`
+      : `<button class="dec-lacuna ${w.i === palavraEscolhida ? "escolhida" : ""}" data-dec-palavra="${w.i}" ${w.perdida ? "disabled" : ""}>▢${numero[w.i]}</button>`)).join(" ");
+    const escrita = ps.map((w) => `<span class="${w.sabe ? "" : w.i === palavraEscolhida ? "dec-alvo" : "dec-falta"}">${esc(w.escrita)}</span>`).join(" ");
+    let corpo = "";
+    if (perdida) {
+      corpo = `<p class="dec-tent">“${esc(perdida.escrita)}” não se abre. Falta aprender essa palavra.</p>
         <button class="btn-primario" data-acao="decifrar-licao">Lição <b>▸</b></button>`;
+    } else if (!faltam.length) {
+      corpo = `<button class="btn-primario" data-acao="decifrar-ok">Continuar <b>▸</b></button>`;
+    } else {
+      const w = ps[palavraEscolhida];
+      const pips = Array.from({ length: DECIFRAR.tentativas }, (_, k) => `<i class="${k < w.s.tent ? "cheio" : ""}"></i>`).join("");
+      corpo = `<p class="dec-tent">▢${numero[w.i]} = <b class="dec-alvo">${esc(w.escrita)}</b></p>` + (w.s.tent < DECIFRAR.tentativas
+        ? `<form class="dec-form" id="form-decifrar"><input id="texto-decifrar" placeholder="O que quer dizer?" autocomplete="off" autocapitalize="off">
+            <button class="btn-secundario">Tentar</button></form>
+           <p class="dec-tent">Tentativas <span class="pips">${pips}</span></p>`
+        : `<p class="dec-tent">Escolha (${DECIFRAR.escolhas - w.s.esc} ${DECIFRAR.escolhas - w.s.esc === 1 ? "chance" : "chances"}):</p>
+           <div class="chips dec-opcoes">${opcoesDe(w).map((o) => `<button class="chip" data-decifrar-op="${esc(o)}" ${w.s.erradas.includes(o) ? "disabled" : ""}>${esc(o)}</button>`).join("")}</div>`);
     }
     const aviso = avisoDecifrar;
     avisoDecifrar = "";
-    return `<div class="decifrar">${cabeca}<p class="dec-trad">${esc(d.traducao || "")}</p>${aviso ? `<p class="dec-aviso">${esc(aviso)}</p>` : ""}${corpo}</div>`;
+    return `<div class="cena-painel dec-painel">
+      <h3>Decifrar <button class="btn-texto" data-painel="">Fechar</button></h3>
+      <div class="decifrar">
+        <p class="dec-frase"><span class="dec-lingua">${{ x: "Código Urbano", y: "Runas", z: "Interface" }[d.lingua || "x"]}</span> ${escrita}</p>
+        <p class="dec-trad">${traducao}</p>
+        ${aviso ? `<p class="dec-aviso">${esc(aviso)}</p>` : ""}
+        ${corpo}
+      </div>
+      <p class="dica">${faltam.length ? "Toque num ▢ para escolher a palavra. Errar não custa nada." : "Você leu a frase inteira."}</p>
+    </div>`;
   }
   function tentarDecifrar(resposta, porOpcao) {
     const cena = missao().cenas[camp.cena];
     const d = cena && cena.decifrar;
-    if (!d) return;
-    const e = estadoDecifrar(camp.cena);
-    const ok = [].concat(d.respostas || []).some((r) => normal(r) === normal(resposta));
-    if (!normal(resposta)) return;
+    if (!d || palavraEscolhida == null || !normal(resposta)) return;
+    const w = d.palavras[palavraEscolhida];
+    const s = estadoDecifrar(camp.cena).palavras[palavraEscolhida];
+    const ok = [].concat(w.respostas || [w.sentido]).some((r) => normal(r) === normal(resposta));
     if (ok) {
-      e.resolvido = true;
-      salvar();
-      return render();
+      s.ok = true;
+      // acertar ensina a palavra (vale para as próximas frases e para o Tradutor)
+      if (w.id) {
+        const p = ativo();
+        aprenderPalavra(p, d, w);
+        fichaMudou(p, []); // a própria tradução mostra o que foi aprendido (sem aviso por cima da tela)
+      }
+      avisoDecifrar = "";
+    } else {
+      if (porOpcao) { s.esc++; s.erradas.push(resposta); } else s.tent++;
+      avisoDecifrar = `“${resposta}” não fecha a frase.`;
     }
-    if (porOpcao) { e.esc++; e.erradas.push(resposta); } else e.tent++;
-    avisoDecifrar = `“${resposta}” não fecha a frase.`;
     salvar();
     render();
   }
   function concluirDecifrar(licao) {
     const cena = missao().cenas[camp.cena];
     const d = cena.decifrar;
-    const certa = [].concat(d.respostas || [])[0] || "";
-    const { lingua, palavra, frase, traducao, respostas, erradas, modo, acertou, licao: irLicao, dissonancia, ...efeitos } = d;
+    const { lingua, palavras, modo, acertou, licao: irLicao, dissonancia, ...efeitos } = d;
+    painel = null;
     if (licao) {
+      const e = estadoDecifrar(camp.cena);
+      e.pendente = situacaoPalavras(camp.cena, d).filter((w) => w.perdida).map((w) => w.i);
+      salvar();
       return resolver({ id: "decifrar-licao" }, {
         texto: "Você olha para a frase até as letras perderem o sentido. A palavra está ali, em algum lugar, e você não alcança.",
         efeitos: { dissonancia: dissonancia ?? 1 }, ir: irLicao,
       }, false);
     }
-    resolver({ id: "decifrar" }, { texto: (traducao || "").replace("▢", certa), efeitos, ir: acertou }, false);
+    resolver({ id: "decifrar" }, { texto: (palavras || []).map((w) => w.sentido).join(" "), efeitos, ir: acertou }, false);
   }
 
   // ---------- Opções ----------
@@ -728,6 +791,7 @@ const Cenas = (() => {
         <p class="dica">${esc(m.marcoDica || `Com ${m.pistasParaMarco} pistas você pode seguir a multidão quando quiser. Com o relógio cheio, não há mais escolha.`)}</p>
       </div>`;
     }
+    if (painel === "decifrar") return decifrarPainelHtml();
     if (painel === "bolsa") return bolsaHtml();
     if (painel === "loja") return lojaHtml();
     const custo = custoViagem();
@@ -1207,6 +1271,7 @@ const Cenas = (() => {
     if (acao === "decifrar-ok") return concluirDecifrar(false);
     if (acao === "decifrar-licao") return concluirDecifrar(true);
     if (t.dataset.decifrarOp !== undefined) return tentarDecifrar(t.dataset.decifrarOp, true);
+    if (t.dataset.decPalavra !== undefined) { palavraEscolhida = +t.dataset.decPalavra; avisoDecifrar = ""; return render(); }
     if (acao === "escrever") {
       const f = document.getElementById("form-livre");
       if (f) { f.classList.remove("recolhido"); t.remove(); paginarOpcoes(); document.getElementById("texto-livre")?.focus(); }

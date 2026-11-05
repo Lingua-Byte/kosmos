@@ -749,7 +749,7 @@ $("#dg-missao-menu").addEventListener("click", () => {
       <h3>Publicar no jogo</h3>
       <div id="dg-publicar">${publicarHtml(m)}</div>
       <hr>` : ""}
-    <div class="linha-botoes"><button class="btn" data-m="nova">+ Nova missão em branco</button><button class="btn" data-m="treino">◇ Criar o treino (tutorial)</button></div>
+    <div class="linha-botoes"><button class="btn" data-m="nova">+ Nova missão em branco</button><button class="btn" data-m="treino">◇ Criar o treino (tutorial)</button><button class="btn" data-m="treino-decifrar">◇ Criar o treino de Decifrar</button></div>
     <details class="cr-secao"><summary>Personagens e tendências</summary>
       <p class="ajuda">Herói, anti-herói ou vilão: usado nas condições “só esta tendência”. O jogador não vê. Vale no jogo depois de publicar qualquer missão.</p>
       <div class="cr-tendencias">${Criador.PRONTOS_IDS.map((pid) => `<label class="campo"><span>${esc(Criador.nomePronto(pid))}</span><select data-tendencia="${pid}"><option value="">— (sem definir)</option>${Criador.TENDENCIAS.map((t) => `<option value="${t}" ${mundo.personagens?.tendencias?.[pid] === t ? "selected" : ""}>${Criador.NOME_TENDENCIA[t]}</option>`).join("")}</select></label>`).join("")}</div>
@@ -834,6 +834,24 @@ dlgMissao.addEventListener("click", (ev) => {
     dlgMissao.close();
     render();
     requestAnimationFrame(() => { renderLigacoes(); enquadrar(); });
+    return;
+  }
+  if (b.dataset.m === "treino-decifrar") {
+    // a missão de exemplo do Decifrar, publicada em site/missoes, vira um projeto aqui
+    fetch("missoes/treino-decifrar.json?t=" + Date.now()).then((r) => r.json()).then((jm) => {
+      const velho = mundo.missoes.find((x) => x.jogo?.id === "treino-decifrar");
+      if (velho && !confirm("Já existe o treino de Decifrar aqui. Criar de novo? (O antigo é substituído.)")) return;
+      if (velho) mundo.missoes = mundo.missoes.filter((x) => x !== velho);
+      const t = Criador.importar(jm);
+      t.jogo = { ...(t.jogo || {}), tutorial: true };
+      mundo.missoes.push(t);
+      escolherMissao(t.id);
+      selecao = { tipo: "no", id: t.nos[0].id };
+      mudou();
+      dlgMissao.close();
+      render();
+      requestAnimationFrame(() => { renderLigacoes(); enquadrar(); });
+    }).catch(() => alert("Não achei a missão de exemplo (missoes/treino-decifrar.json)."));
     return;
   }
   if (b.dataset.m === "nova") {
