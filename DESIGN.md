@@ -77,7 +77,7 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
 - A história principal é uma só. O que faz cada personagem ser o protagonista:
   a origem, o **fio pessoal** (uma linha no Diário que rende nos atos seguintes, como as missões
   de companheiro), as reações dos NPCs e o final próprio no epílogo.
-- Urbano pronto: `site/js/missoes/origens-x.js` (os 9 fios de Port Halden: o fogo da Delancey St.,
+- Urbano pronto: `site/js/missoes/origens-x.js` (os 9 fios de Port Halden: o fogo que ninguém vê,
   o parceiro que foi embora, a entrega para si mesmo, o menino do leito 9, a confissão do amanhã,
   a carta do Harold, os números que ninguém quis ouvir, a ligação da linha 3, o passageiro da Linha 9).
 

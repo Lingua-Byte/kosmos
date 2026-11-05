@@ -47,6 +47,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Eixo X, radiação (decidido em 05/11/2026):** o epicentro da radiação são as **casas dos personagens**. Em algum momento eles passam a ser procurados por isso (ligação possível com o Instituto de Física). A imagem da luz azul com uma espécie de acelerador fica **escondida no subsolo da Atlantic Tower**.
 - **Ordem de trabalho da lore:** primeiro o **Eixo Z**; o Y fica para depois.
 - **Domus (confirmado em 05/11/2026):** cruzou o horizonte do buraco negro; vista de fora, parece parada; a "estrela que observa" é luz. Ideias do autor sobre a missão, o loop da IA, o sinal e os 26.000 anos: aba História, "A missão da Domus e o nó".
+- **21h47 é a hora de bordo em que a Domus cruzou o horizonte.** Por isso tudo em Port Halden acontece às 21h47.
 - **Quem fala do Lime é a IA da Domus** (decidido). As mensagens e os códigos são dela.
 - **Em aberto:** o objetivo da missão da Domus, o que a IA quer (avisar, chamar ou ambíguo), ancestrais ou ecos.
 
@@ -54,6 +55,8 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Lore nova se faz com o autor, aos poucos:** perguntar o que ele já pensou e partir do texto dele; propor pouco de cada vez (uma ideia, duas ou três opções) e esperar a resposta. Nada de documentos grandes de lore inventada de uma vez.
 - **Frases importantes das línguas são feitas a dois:** o `linguista` monta a escrita e a tradução, e o `guardiao-da-lore` confere se a frase combina com a lore (e não responde nada em aberto). Só depois vão ao autor.
 - **Slow burn em toda missão:** começa na rotina; o estranho entra aos poucos e as pessoas tratam como incômodo do dia a dia ("foi ver a praça", "deve ser gás"), não como apocalipse. O que é pesado chega com o relógio ou com a investigação; sobrevivência total só perto do clímax. Nada de frase de efeito anunciando o perigo.
+- **Nada pode lembrar o Brasil, nem um pouco.** Tudo é americanizado (nomes, instituições, costumes, jeito de falar).
+- **Sem anos 80 por enquanto:** nenhuma data ou evento passado nos anos 80 (o incêndio da Delancey St. e o "1987" foram tirados).
 - **Eixo X é sobrevivência**, não investigação: comida, abrigo, gente para proteger, chegar vivo ao fim da noite.
 - **Telas sem rolagem**, texto em pedaços (um parágrafo por vez, digitado, com "Continuar ▸"), no celular e no PC.
 - **Menus intocados:** a galáxia animada fica nos menus; artes vão para dentro das missões, mapas e retratos.

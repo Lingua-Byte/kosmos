@@ -17,17 +17,17 @@ const ORIGENS_X = {
     desc: "O caminhão está lavado, as mangueiras enroladas, o turno quase acabando. Na parede, a placa de sempre: “EVERYONE GOES HOME.” Hoje ninguém da equipe voltou do último chamado.",
     abertura: `Frank Brennan está sentado no estribo do caminhão, na Estação 9, com um café que esfriou faz uma hora. Trinta anos de bombeiro. Dois para a aposentadoria.
 
-Às 21h47 o telefone da parede toca. É o Joe Kessler, o antigo parceiro, aposentado desde 1988. Ele não liga há dez anos.
+Às 21h47 o telefone da parede toca. É o Joe Kessler, o antigo parceiro, aposentado. Ele não liga há dez anos.
 
-“Frank. O fogo da Delancey Street. O de oitenta e sete. Ele voltou a queimar, Frank. Só que agora ninguém está vendo.”
+“Frank. Tem um prédio pegando fogo no Eastside, eu tô vendo da janela. Liguei pro 911 e disseram que não tem incêndio nenhum. Ele tá queimando, Frank. Só que ninguém está vendo.”
 
 A linha fica muda. O alarme da estação dispara sozinho: três toques curtos, um longo.`,
-    fio: { id: "fio-frank", nome: "O fogo da Delancey Street", prazo: "longa", nota: "Joe Kessler, o antigo parceiro, ligou depois de dez anos: o incêndio de 1987 “voltou a queimar”." },
+    fio: { id: "fio-frank", nome: "O fogo que ninguém vê", prazo: "longa", nota: "Joe Kessler, o antigo parceiro, ligou depois de dez anos: um prédio do Eastside está queimando e ninguém mais vê." },
     acoes: [
       {
-        id: "frank-livro", texto: "Procurar o incêndio de 87 no livro de ocorrências", palavras: ["livro", "ocorrenc", "delancey", "87", "incendio"], situacao: "investigar",
-        sucesso: { texto: "Página de 14 de março de 1987: “Delancey St., 21h47. Prédio vazio. Sem vítimas. Sem foco de origem.” Alguém escreveu a lápis, na margem: “as paredes estavam riscadas por dentro.” A letra é do Joe.", pista: "O incêndio da Delancey St. foi em 1987, às 21h47, num prédio de paredes riscadas.", efeitos: { marca: "delancey-87", quest: { id: "fio-frank", nome: "O fogo da Delancey Street", prazo: "longa", nota: "1987, 21h47, paredes riscadas por dentro. A letra na margem é do Joe." } } },
-        falha: { texto: "A página de março de 1987 foi arrancada. Sobrou só a beirada, com um pedaço de carimbo: CONTENÇÃO.", efeitos: { quest: { id: "fio-frank", nome: "O fogo da Delancey Street", prazo: "longa", nota: "A página de 1987 foi arrancada. Carimbo da Contenção." } } },
+        id: "frank-livro", texto: "Procurar o chamado do Eastside no livro de ocorrências", palavras: ["livro", "ocorrenc", "eastside", "chamado", "incendio"], situacao: "investigar",
+        sucesso: { texto: "Na página de hoje, numa letra que não é de ninguém da estação: “Eastside, 21h47. Prédio vazio. Sem vítimas. Sem foco de origem.” Embaixo, a lápis: “as paredes estavam riscadas por dentro.” A letra é do Joe. O Joe não pisa aqui há dez anos.", pista: "O livro de ocorrências tem um chamado no Eastside, às 21h47, com a letra do Joe: paredes riscadas por dentro.", efeitos: { marca: "fogo-eastside", quest: { id: "fio-frank", nome: "O fogo que ninguém vê", prazo: "longa", nota: "Um chamado no Eastside, 21h47, paredes riscadas por dentro. A letra no livro é do Joe." } } },
+        falha: { texto: "A página de hoje foi arrancada. Sobrou só a beirada, com um pedaço de carimbo: CONTENÇÃO.", efeitos: { quest: { id: "fio-frank", nome: "O fogo que ninguém vê", prazo: "longa", nota: "A página de hoje foi arrancada. Carimbo da Contenção." } } },
       },
       {
         id: "frank-equipar", comum: true, texto: "Vestir a capa de bombeiro e pegar o machado", palavras: ["capa", "machado", "equip", "vestir"],

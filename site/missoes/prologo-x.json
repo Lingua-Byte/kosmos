@@ -83,7 +83,7 @@
   "cenas": {
     "abertura": {
       "titulo": "Terça-feira à noite",
-      "texto": "Estação 9. Faltam vinte minutos para a troca de turno, e Frank Brennan está sentado no estribo do caminhão com um café que esfriou faz uma hora. Trinta anos de bombeiro. Dois para a aposentadoria.\n\nO Haskins entra resmungando. “Mais um que não veio. Terceiro esta semana. A mulher dele saiu pra ver a tal da praça e ele foi atrás.” Pendura o casaco. “A cidade inteira resolveu tirar folga ao mesmo tempo.”\n\nO telefone da parede toca. É o Joe Kessler, seu antigo parceiro, aposentado desde 88. Não liga há dez anos.\n\n“Frank. Lembra da Delancey Street? O fogo de oitenta e sete?” Uma pausa comprida. “Esquece. Tô ficando velho. Liguei por besteira. E essas costas, como vão?”\n\nEle desliga antes que você responda.",
+      "texto": "Estação 9. Faltam vinte minutos para a troca de turno, e Frank Brennan está sentado no estribo do caminhão com um café que esfriou faz uma hora. Trinta anos de bombeiro. Dois para a aposentadoria.\n\nO Haskins entra resmungando. “Mais um que não veio. Terceiro esta semana. A mulher dele saiu pra ver a tal da praça e ele foi atrás.” Pendura o casaco. “A cidade inteira resolveu tirar folga ao mesmo tempo.”\n\nO telefone da parede toca. É o Joe Kessler, seu antigo parceiro, aposentado. Não liga há dez anos.\n\n“Frank. Tem fumaça saindo de um prédio aqui no Eastside. Liguei pro 911 e a moça disse que não tem chamado nenhum.” Uma pausa comprida. “Esquece. Tô ficando velho. Deve ser churrasco de alguém. E essas costas, como vão?”\n\nEle desliga antes que você responda.",
       "variantes": [
         {
           "se": {
@@ -119,7 +119,7 @@
           "se": {
             "pronto": "eli-navarro"
           },
-          "texto": "Laboratório de radiação da universidade, terceira noite seguida. Eli Navarro dorme no sofá da sala dos bolsistas e vive de café da máquina.\n\nNo sábado, os sensores do telhado pegaram uma oscilação. Pequena. Provavelmente defeito. Ele mandou os dados para a diretoria pedindo verba para trocar o equipamento.\n\nA resposta chegou hoje, de um endereço que não é da universidade:\n\n“Apague os arquivos. Não fale com a imprensa. Obrigado pela colaboração. — C.”\n\nEle ri sozinho, meio sem graça. Depois copia tudo para um pendrive. Por garantia."
+          "texto": "Laboratório de radiação da universidade, terceira noite seguida. Eli Navarro dorme no sofá da sala dos alunos de doutorado e vive de café da máquina.\n\nNo sábado, os sensores do telhado pegaram uma oscilação. Pequena. Provavelmente defeito. Ele mandou os dados para a diretoria pedindo verba para trocar o equipamento.\n\nA resposta chegou hoje, de um endereço que não é da universidade:\n\n“Apague os arquivos. Não fale com a imprensa. Obrigado pela colaboração. — C.”\n\nEle ri sozinho, meio sem graça. Depois copia tudo para um pendrive. Por garantia."
         },
         {
           "se": {
@@ -155,9 +155,9 @@
                 "efeitos": {
                   "quest": {
                     "id": "fio-frank",
-                    "nome": "O fogo da Delancey Street",
+                    "nome": "O fogo que ninguém vê",
                     "prazo": "longa",
-                    "nota": "Joe Kessler, o antigo parceiro, ligou depois de dez anos, perguntou do incêndio de 1987 e desligou dizendo que era besteira."
+                    "nota": "Joe Kessler, o antigo parceiro, ligou depois de dez anos: viu fumaça num prédio do Eastside que ninguém mais vê. Depois disse que era besteira."
                   }
                 }
               },
@@ -741,12 +741,12 @@
       "acoes": [
         {
           "id": "frank-livro",
-          "texto": "Procurar o incêndio de 87 no livro de ocorrências",
+          "texto": "Procurar o chamado do Eastside no livro de ocorrências",
           "palavras": [
             "livro",
             "ocorrenc",
-            "delancey",
-            "87",
+            "eastside",
+            "chamado",
             "incendio"
           ],
           "se": {
@@ -754,26 +754,26 @@
           },
           "situacao": "investigar",
           "sucesso": {
-            "texto": "Página de 14 de março de 1987: “Delancey St., 21h47. Prédio vazio. Sem vítimas. Sem foco de origem.” Alguém escreveu a lápis, na margem: “as paredes estavam riscadas por dentro.” A letra é do Joe.",
+            "texto": "Na página de hoje, numa letra que não é de ninguém da estação: “Eastside, 21h47. Prédio vazio. Sem vítimas. Sem foco de origem.” Embaixo, a lápis: “as paredes estavam riscadas por dentro.” A letra é do Joe. O Joe não pisa aqui há dez anos.",
             "efeitos": {
-              "marca": "delancey-87",
+              "marca": "fogo-eastside",
               "quest": {
                 "id": "fio-frank",
-                "nome": "O fogo da Delancey Street",
+                "nome": "O fogo que ninguém vê",
                 "prazo": "longa",
-                "nota": "1987, 21h47, paredes riscadas por dentro. A letra na margem é do Joe."
+                "nota": "Um chamado no Eastside, 21h47, paredes riscadas por dentro. A letra no livro é do Joe."
               }
             },
-            "pista": "O incêndio da Delancey St. foi em 1987, às 21h47, num prédio de paredes riscadas."
+            "pista": "O livro de ocorrências tem um chamado no Eastside, às 21h47, com a letra do Joe: paredes riscadas por dentro."
           },
           "falha": {
-            "texto": "A página de março de 1987 foi arrancada. Sobrou só a beirada, com um pedaço de carimbo: CONTENÇÃO.",
+            "texto": "A página de hoje foi arrancada. Sobrou só a beirada, com um pedaço de carimbo: CONTENÇÃO.",
             "efeitos": {
               "quest": {
                 "id": "fio-frank",
-                "nome": "O fogo da Delancey Street",
+                "nome": "O fogo que ninguém vê",
                 "prazo": "longa",
-                "nota": "A página de 1987 foi arrancada. Carimbo da Contenção."
+                "nota": "A página de hoje foi arrancada. Carimbo da Contenção."
               }
             }
           }
@@ -2456,17 +2456,17 @@
           },
           "situacao": "perceber",
           "sucesso": {
-            "texto": "Você lê de cabeça para baixo enquanto ele atende o rádio: surtos parecidos em 1987. Mesma cidade, mesmo horário, 21h47. Carimbo: “ARQUIVADO — CONTENÇÃO”.\n\n“…entendido, central. Não, ninguém mexeu em nada.”",
+            "texto": "Você lê de cabeça para baixo enquanto ele atende o rádio: uma lista de endereços da cidade, cada um com 21:47 ao lado, alguns riscados. O último da lista é a Praça Central. Carimbo: “CONTENÇÃO”.\n\n“…entendido, central. Não, ninguém mexeu em nada.”",
             "efeitos": {
-              "marca": "arquivo-1987",
+              "marca": "arquivo-contencao",
               "quest": {
                 "id": "arquivo",
                 "nome": "O arquivo 21:47",
                 "prazo": "longa",
-                "nota": "Surtos em 1987, arquivados pela Contenção. Alguém já viu isso antes."
+                "nota": "A Contenção tem uma lista de endereços com 21:47. Alguém sabia disso antes."
               }
             },
-            "pista": "Houve surtos parecidos em 1987, às 21h47, arquivados pela Contenção."
+            "pista": "A Contenção tem uma lista de endereços marcados 21:47. O último é a Praça Central."
           },
           "falha": {
             "texto": "“Curiosidade é coisa perigosa numa noite dessas. Nome completo, por favor. Só para o relatório. Rotina.”\n\nEle anota o seu nome.",
@@ -2637,10 +2637,10 @@
           },
           "situacao": "medo",
           "sucesso": {
-            "texto": "Do outro lado, por um passo só, a estação está nova: azulejos limpos, cartaz de 1987, gente esperando o trem. No passo seguinte, tudo volta a ser ruína. No chão, onde você pisou, um bilhete de metrô novinho.",
+            "texto": "Do outro lado, por um passo só, a estação está nova: azulejos limpos, cartazes que você não reconhece, gente esperando o trem. No passo seguinte, tudo volta a ser ruína. No chão, onde você pisou, um bilhete de metrô novinho.",
             "efeitos": {
               "ressonancia": 1,
-              "memoria": "Uma estação de metrô nova, em 1987, cheia de gente esperando um trem que nunca chegou.",
+              "memoria": "Uma estação de metrô nova, de outro tempo, cheia de gente esperando um trem que nunca chegou.",
               "memoriaMin": 5,
               "quest": {
                 "id": "catraca",

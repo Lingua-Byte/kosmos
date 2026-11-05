@@ -613,9 +613,9 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         {
           id: "moura-pasta", npc: "moore", texto: "Ler a pasta esquecida na mesa do Moore", palavras: ["pasta", "ler", "arquivo", "mesa"], situacao: "perceber", se: { flag: "moura" },
           sucesso: {
-            texto: "Você lê de cabeça para baixo enquanto ele atende o rádio: surtos parecidos em 1987. Mesma cidade, mesmo horário, 21h47. Carimbo: “ARQUIVADO — CONTENÇÃO”.\n\n“…entendido, central. Não, ninguém mexeu em nada.”",
-            pista: "Houve surtos parecidos em 1987, às 21h47, arquivados pela Contenção.",
-            efeitos: { marca: "arquivo-1987", quest: { id: "arquivo", nome: "O arquivo 21:47", prazo: "longa", nota: "Surtos em 1987, arquivados pela Contenção. Alguém já viu isso antes." } },
+            texto: "Você lê de cabeça para baixo enquanto ele atende o rádio: uma lista de endereços da cidade, cada um com 21:47 ao lado, alguns riscados. O último da lista é a Praça Central. Carimbo: “CONTENÇÃO”.\n\n“…entendido, central. Não, ninguém mexeu em nada.”",
+            pista: "A Contenção tem uma lista de endereços marcados 21:47. O último é a Praça Central.",
+            efeitos: { marca: "arquivo-contencao", quest: { id: "arquivo", nome: "O arquivo 21:47", prazo: "longa", nota: "A Contenção tem uma lista de endereços com 21:47. Alguém sabia disso antes." } },
           },
           falha: {
             texto: "“Curiosidade é coisa perigosa numa noite dessas. Nome completo, por favor. Só para o relatório. Rotina.”\n\nEle anota o seu nome.",
@@ -667,8 +667,8 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         {
           id: "catraca-passar", texto: "Passar pela catraca logo atrás de quem não está ali", palavras: ["passar", "atraves", "seguir", "catraca"], situacao: "medo", se: { flag: "catraca" },
           sucesso: {
-            texto: "Do outro lado, por um passo só, a estação está nova: azulejos limpos, cartaz de 1987, gente esperando o trem. No passo seguinte, tudo volta a ser ruína. No chão, onde você pisou, um bilhete de metrô novinho.",
-            efeitos: { ressonancia: 1, memoria: "Uma estação de metrô nova, em 1987, cheia de gente esperando um trem que nunca chegou.", memoriaMin: 5, quest: { id: "catraca", nome: "A catraca", prazo: "curta", estado: "concluida" } },
+            texto: "Do outro lado, por um passo só, a estação está nova: azulejos limpos, cartazes que você não reconhece, gente esperando o trem. No passo seguinte, tudo volta a ser ruína. No chão, onde você pisou, um bilhete de metrô novinho.",
+            efeitos: { ressonancia: 1, memoria: "Uma estação de metrô nova, de outro tempo, cheia de gente esperando um trem que nunca chegou.", memoriaMin: 5, quest: { id: "catraca", nome: "A catraca", prazo: "curta", estado: "concluida" } },
           },
           falha: { texto: "A barra da catraca trava no seu quadril com força de mão. Você recua, e ela volta a girar sozinha, uma vez, como quem ri.", efeitos: { condicao: "ferido", dissonancia: 1, quest: { id: "catraca", nome: "A catraca", prazo: "curta", estado: "perdida" } } },
         },
