@@ -90,6 +90,16 @@ const HISTORIA = {
         </ul>`,
     },
     {
+      titulo: "A radiação em Port Halden",
+      estado: "decidido",
+      html: `
+        <ul>
+          <li><b>Decidido pelo autor:</b> o epicentro da radiação são as <b>casas dos personagens</b>. Em algum momento eles passam a ser procurados por isso (talvez pelo lado do Instituto de Física).</li>
+          <li>A <b>luz azul com uma espécie de acelerador</b> fica escondida no <b>subsolo da Atlantic Tower</b>.</li>
+          <li>Em aberto: como isso convive com a Praça Central, para onde a multidão caminha no Prólogo.</li>
+        </ul>`,
+    },
+    {
       titulo: "Por que Port Halden",
       estado: "considerar",
       html: `
