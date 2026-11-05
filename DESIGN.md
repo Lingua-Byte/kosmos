@@ -134,7 +134,8 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
 - **Campos do Criador (proposta):** `aprenderY` (palavras de runa), `metade` (`{ frase, lado }`), `req.palavra`
   (escolha só para quem sabe a palavra). As frases partidas ficam numa lista única, apontadas pelo nome.
 - **Em aberto:** o que acontece se faltarem palavras na hora de juntar.
-- **Proposta do designer de mecânicas para o enigma (aguardando o autor):**
+- **Nomes:** o enigma se chama **Decifrar**; a missão de quem falha de vez se chama **Lição**.
+- **Proposta do designer de mecânicas para o enigma (com as decisões do autor abaixo):**
   1. A palavra que falta aparece como ▢; o jogador escreve (o jogo ignora acento e maiúscula; o autor dá 1 a 3 respostas aceitas).
   2. 3 tentativas; errar não custa nada (o enigma fica no Diário, sem relógio).
   3. Modo fácil: depois das 3, aparecem 4 opções e o jogador tem 2 escolhas. Modo difícil: sem opções.
