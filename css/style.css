@@ -1922,3 +1922,20 @@ input, textarea, select, [contenteditable] { -webkit-user-select: text; user-sel
 .cena-corpo .cena-grupo:has(.membro:only-child) .membro { flex-wrap: nowrap; overflow: hidden; padding: 4px 10px; border-width: 1px; }
 .cena-corpo .cena-grupo:has(.membro:only-child) .membro > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.78rem; }
 @media (max-width: 600px) { #tela-cena .cena-topo { flex-wrap: nowrap; } #tela-cena .cena-topo .rotulo { display: none; } }
+/* Decifrar: o enigma de tradução */
+.decifrar { display: grid; gap: 8px; margin: 6px 0 10px; padding: 12px; border-radius: 10px; border: 1px solid var(--acento); background: rgba(0, 0, 0, 0.25); }
+.dec-frase { margin: 0; font-size: 1.25rem; letter-spacing: 0.05em; color: var(--acento); }
+.dec-lingua { display: block; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--texto-suave); }
+.dec-trad { margin: 0; font-style: italic; }
+.dec-aviso { margin: 0; color: var(--perigo); font-size: 0.9rem; }
+.dec-tent { margin: 0; font-size: 0.85rem; color: var(--texto-suave); display: flex; align-items: center; gap: 8px; }
+.dec-tent .pips i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--acento); margin-right: 3px; }
+.dec-tent .pips i.cheio { background: var(--acento); }
+.dec-form { display: flex; gap: 8px; }
+.dec-form input { flex: 1; min-width: 0; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--painel-borda); background: rgba(0, 0, 0, 0.35); color: var(--texto); font: inherit; }
+.dec-opcoes { margin: 0; }
+@media (max-width: 600px), (max-height: 820px) {
+  .decifrar { gap: 5px; padding: 8px 10px; margin: 4px 0 6px; }
+  .dec-frase { font-size: 1.1rem; }
+  .dec-opcoes .chip { padding: 5px 10px; }
+}

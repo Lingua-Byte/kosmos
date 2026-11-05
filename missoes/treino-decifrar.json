@@ -1,0 +1,72 @@
+{
+  "id": "treino-decifrar",
+  "eixo": "x",
+  "titulo": "Treino: Decifrar",
+  "resumo": "Uma frase riscada num muro, com uma palavra faltando. Tente decifrar; se não der, a Lição ensina, com um salto no tempo.",
+  "subtitulo": "Treino do autor",
+  "fase": "Treino",
+  "npcs": {},
+  "desbloqueio": {},
+  "tutorial": true,
+  "cenas": {
+    "muro": {
+      "titulo": "O muro da esquina",
+      "texto": "Na volta para casa, {nome} para na esquina. Alguém riscou o muro com giz, em letra reta, quase uma conta de escola.\n\nA maior parte {nome} já sabe ler. Falta uma palavra.",
+      "tutorial": "Treino: 3 tentativas grátis. No fácil, depois delas, 4 opções e 2 chances. Falhou de vez: Lição.",
+      "decifrar": {
+        "lingua": "x",
+        "palavra": "observar",
+        "frase": "∃ ψ(t) ⇒ ▢(S)",
+        "traducao": "Existe uma mente, agora, que ▢ a estrela.",
+        "respostas": [
+          "observa",
+          "observar",
+          "olha",
+          "vigia"
+        ],
+        "erradas": [
+          "apaga",
+          "teme",
+          "esquece"
+        ],
+        "modo": "facil",
+        "acertou": "cena:fim",
+        "licao": "cena:licao",
+        "dissonancia": 1,
+        "aprenderX": [
+          "observar"
+        ]
+      },
+      "opcoes": []
+    },
+    "licao": {
+      "titulo": "Lição",
+      "texto": "O giz escorrega dos dedos. Um frio que não é de inverno. Cheiro de cera de vela, pedra úmida.\n\nNuma parede de pedra, o mesmo traço do muro está gravado, ao lado de um olho desenhado. Alguém passou o dedo ali tantas vezes que a pedra ficou lisa.",
+      "tutorial": "Lição: o salto no tempo trouxe Dissonância. Aqui se aprende a palavra.",
+      "opcoes": [
+        {
+          "id": "licao-entender",
+          "texto": "Olhar o traço ao lado do olho",
+          "resultado": {
+            "texto": "O traço e o olho. Quem olha. Quem presta atenção. De volta à esquina, o giz ainda está no chão.",
+            "efeitos": {
+              "aprenderX": [
+                "observar"
+              ]
+            },
+            "ir": "cena:muro"
+          }
+        }
+      ]
+    },
+    "fim": {
+      "titulo": "Fim do treino",
+      "texto": "{nome} guarda a frase no bolso, de cabeça. Em casa, a luz da cozinha está acesa.",
+      "final": true,
+      "opcoes": []
+    }
+  },
+  "lugares": {},
+  "inicio": "muro",
+  "textoFinal": "Fim do treino de Decifrar. No Criador, troque o modo para \"difícil\" para ver a versão sem opções."
+}
