@@ -322,7 +322,7 @@
     },
     "borda": {
       "titulo": "A borda do furacão",
-      "texto": "Quanto mais perto, mais gente. Alguns balbuciam; outros olham sem piscar, de olhos arregalados. O ar tem gosto de metal, e o medidor de qualquer um, se tivesse um, estaria gritando.\n\nAqui o fenômeno age sobre você.",
+      "texto": "Fita amarela da polícia, e ninguém tomando conta dela. Um vendedor de cachorro-quente ainda tenta trabalhar e desiste quando percebe que ninguém compra.\n\nQuanto mais perto, mais gente parada, olhando para o mesmo ponto. Alguns mexem a boca sem som. O ar tem gosto de moeda, e suas mãos formigam.",
       "tutorial": "Teste de Convergência: quem passa RESSOA (aceita o fenômeno: ganha Ressonância); quem falha DISSOA (resiste no caos: ganha Dissonância). A exposição sobe de qualquer jeito. Cada marca muda o que você consegue fazer.",
       "opcoes": [
         {
@@ -800,7 +800,7 @@
         },
         {
           "id": "rosa-radio",
-          "texto": "Responder ao rádio que repete “quatro-doze”",
+          "texto": "Chamar a Central pelo rádio",
           "palavras": [
             "radio",
             "responder",
@@ -813,19 +813,19 @@
           },
           "situacao": "convencer",
           "sucesso": {
-            "texto": "“Aqui é a 4-12, identifique-se.” Silêncio. Depois, a voz do Dale, calma demais: “Rosa? Tá tudo bem. Vem ver. Daqui dá pra ver tudo.” Ao fundo, uma multidão respirando no mesmo ritmo.",
+            "texto": "“Central, aqui é a 4-12. O Pruitt saiu a pé, vou atrás.”\n\nA Central demora. “Negativo, 4-12. Ordem do capitão: ninguém vai para o centro. Se ele foi, ele volta.”\n\nAntes que você responda, o rádio da cintura do Dale entra no canal. Ao fundo, muita gente respirando junto. Depois, a voz dele, tranquila: “Rosa? Tá tudo bem. Vem ver. Daqui dá pra ver tudo.”",
             "efeitos": {
               "quest": {
                 "id": "fio-rosa",
                 "nome": "O parceiro que foi embora",
                 "prazo": "longa",
-                "nota": "Dale respondeu pelo rádio, do centro. Calmo demais."
+                "nota": "Dale respondeu pelo rádio, de algum lugar no centro: “Daqui dá pra ver tudo.”"
               }
             },
             "pista": "Pelo rádio, o parceiro da Rosa chama do centro: “Daqui dá pra ver tudo.”"
           },
           "falha": {
-            "texto": "A voz para de repetir. Começa a repetir outra coisa: o número do seu distintivo. Você desliga o rádio com a mão tremendo.",
+            "texto": "A Central não responde. No lugar dela, uma voz que você não conhece lê, devagar, o número do seu distintivo. Você desliga o rádio. Liga de novo. Só estática.",
             "efeitos": {
               "condicao": "abalado"
             }
@@ -959,7 +959,7 @@
         },
         {
           "id": "michael-terco",
-          "texto": "Examinar o terço riscado",
+          "texto": "Examinar o terço esquecido",
           "palavras": [
             "terco",
             "contas",
@@ -971,7 +971,7 @@
           },
           "situacao": "ler",
           "sucesso": {
-            "texto": "Cada conta tem um símbolo. Você reza o terço inteiro passando os dedos por eles, e no fim entende uma frase, como quem lembra de uma oração esquecida: ∃ ψ(t). Existe uma mente. Agora.",
+            "texto": "De perto, as contas não são lisas: cada uma tem um risco pequeno, feito à unha. Você reza o terço inteiro passando os dedos por eles e, no fim, entende uma frase, como quem lembra de uma oração esquecida: ∃ ψ(t). Existe uma mente. Agora.",
             "efeitos": {
               "aprenderX": [
                 "existir",
@@ -1002,7 +1002,7 @@
             "pronto": "michael-doyle"
           },
           "resultado": {
-            "texto": "Você puxa a corda. O sino toca, grave, por cima do porto inteiro. Duas pessoas param na calçada, piscam, como quem acorda, e entram na igreja sem saber por quê. Hoje, isso conta.",
+            "texto": "Você puxa a corda. O sino toca, grave, por cima do porto inteiro. Duas pessoas param na calçada, piscam e entram na igreja sem saber direito por quê. Uma delas pergunta se ainda dá tempo de se confessar.",
             "efeitos": {
               "ressonancia": 1,
               "condicao": "-abalado"
@@ -1023,7 +1023,7 @@
           },
           "situacao": "ler",
           "sucesso": {
-            "texto": "“Junie. Não vá à praça. Eu sei que você vai, porque você sempre vai aonde precisam de você. Então leve a maleta. E quando a música parar, não solte a mão de quem estiver do seu lado. Te vejo do outro lado. Do outro lado mesmo. — H.”",
+            "texto": "A data, no alto, é de amanhã.\n\n“Junie. Não vá à praça. Eu sei que você vai, porque você sempre vai aonde precisam de você. Então leve a maleta. E quando a música parar, não solte a mão de quem estiver do seu lado. Te vejo do outro lado. Do outro lado mesmo. — H.”",
             "efeitos": {
               "marca": "carta-harold",
               "quest": {
@@ -1036,7 +1036,7 @@
             "pista": "A carta do Harold avisa: quando a música parar, não soltar a mão de quem estiver ao lado."
           },
           "falha": {
-            "texto": "As linhas se mexem como se ele ainda estivesse escrevendo. Você dobra a carta e guarda no peito. Hoje, não.",
+            "texto": "Você lê a primeira palavra, “Junie”, e não consegue passar dela. Dobra a carta e guarda na bolsa. Mais tarde.",
             "efeitos": {
               "condicao": "abalado"
             }
@@ -1057,7 +1057,7 @@
             "pronto": "june-albright"
           },
           "resultado": {
-            "texto": "Ela segura sua mão com força. “June, querida, você viu? Eles nem terminaram o chá. Ninguém sai sem terminar o chá.” Você serve mais uma xícara para as duas. O chá ajuda as duas.",
+            "texto": "Ela segura sua mão com força. “June, querida, a Doris me deve vinte dólares desde o Natal. Se ela não voltar dessa praça, quem me paga?” Ela ri, e a risada sai torta. Você serve mais uma xícara para as duas.",
             "efeitos": {
               "condicao": [
                 "-abalado",
@@ -1224,7 +1224,7 @@
             "pronto": "ray-okafor"
           },
           "resultado": {
-            "texto": "A mais velha atende no segundo toque. “Pai? Tá tudo bem aqui. A gente trancou a porta, como você ensinou.” Você respira pela primeira vez em uma hora.",
+            "texto": "A mais velha atende no segundo toque. “Pai? Tá tudo bem. A gente trancou a porta, como você ensinou. A pequena quer saber se você vai trazer pão.” Você promete que vai.",
             "efeitos": {
               "condicao": "-abalado"
             }
@@ -1324,6 +1324,9 @@
             "efeitos": {
               "exposicao": 1
             }
+          },
+          "se": {
+            "relogioMin": 2
           }
         },
         {
@@ -1611,7 +1614,7 @@
             "semPronto": true
           },
           "resultado": {
-            "texto": "Você termina o que estava fazendo, salva tudo e bate o ponto. A hora extra de hoje vai entrar na conta: $ 95. Pelo menos isso continua funcionando.",
+            "texto": "Você termina o que estava fazendo, salva tudo e bate o ponto. A hora extra de hoje entra na conta: $ 95. O sistema de ponto, pelo menos, não foi ver a praça.",
             "efeitos": {
               "dinheiro": 95
             }
@@ -1631,7 +1634,7 @@
             "semPronto": true
           },
           "resultado": {
-            "texto": "A garrafa térmica ainda está morna. Café forte, meio amargo. Ajuda.",
+            "texto": "A garrafa térmica ainda está morna. Café forte, de quem fez para aguentar o turno inteiro.",
             "efeitos": {
               "condicao": "-cansaco"
             }
@@ -1652,7 +1655,7 @@
             "semPronto": true
           },
           "resultado": {
-            "texto": "Um sanduíche embrulhado, com um bilhete: “Não é seu, Gary.” Gary não vai voltar hoje.",
+            "texto": "Um sanduíche embrulhado, com um bilhete: “Não é seu, Gary.” Você não é o Gary.",
             "efeitos": {
               "pertence": {
                 "comida": 1
@@ -1702,7 +1705,7 @@
             "notic"
           ],
           "resultado": {
-            "texto": "A âncora do Canal 6 fala em “surtos de desorientação coletiva” no centro. A Defesa Civil garante: radiação “dentro do normal”. Ao fundo, fora de foco, dezenas de pessoas atravessam a rua no mesmo passo.",
+            "texto": "A âncora do Canal 6 fala em “surtos de desorientação coletiva” no centro e passa rápido para o beisebol. A Defesa Civil garante: radiação “dentro do normal”. No intervalo, um comercial de colchão.",
             "pista": "O telejornal fala em surtos coletivos e em radiação “dentro do normal”."
           }
         },
@@ -1719,7 +1722,7 @@
             "item": "comunicador"
           },
           "resultado": {
-            "texto": "Ninguém atende. No quinto toque, você percebe: o toque segue o ritmo das luzes. Três curtos, um longo.",
+            "texto": "Ninguém atende. Caixa postal cheia. Você tenta de novo e, dessa vez, presta atenção no toque: três curtos, um longo. Não lembrava de ser assim.",
             "efeitos": {
               "exposicao": 1
             },
@@ -1737,17 +1740,17 @@
           ],
           "situacao": "perceber",
           "sucesso": {
-            "texto": "Na calçada, um homem escreve no muro com giz, sem olhar para o que faz. Os traços são retos, quase uma equação: 𝒪(S).",
+            "texto": "Na calçada, o filho do zelador desenha no muro com giz. Não são bonecos: são traços retos, quase uma equação. 𝒪(S). A mãe aparece, dá uma bronca e leva o menino para dentro pela mão.",
             "efeitos": {
               "aprenderX": [
                 "observar",
                 "estrela"
               ]
             },
-            "pista": "Afetados escrevem símbolos sem olhar o que fazem: 𝒪(S)."
+            "pista": "Até criança desenha os mesmos símbolos sem saber o que são: 𝒪(S)."
           },
           "falha": {
-            "texto": "Alguém lá embaixo está parado, olhando para a sua janela. Quando você pisca, não está mais lá.",
+            "texto": "Na rua, o de sempre: o cachorro do 104 latindo, um carro tentando estacionar, um casal discutindo. Você fecha a cortina.",
             "efeitos": {
               "exposicao": 1
             }
@@ -1787,7 +1790,7 @@
           "comum": true,
           "tempo": 0,
           "resultado": {
-            "texto": "Meio bolo de carne e um resto de purê. Comida quente, no silêncio da cozinha. Por alguns minutos, tudo parece normal.",
+            "texto": "Meio bolo de carne e um resto de purê. Comida quente, no silêncio da cozinha.",
             "efeitos": {
               "condicao": "-fome"
             }
@@ -1868,7 +1871,7 @@
           "repetivel": true,
           "tempo": 0,
           "resultado": {
-            "texto": "O cheiro de café enche a cozinha. É o cheiro mais normal do mundo.",
+            "texto": "O cheiro de café enche a cozinha. Você toma em pé, olhando a louça da semana na pia.",
             "efeitos": {
               "condicao": "-cansaco"
             }
@@ -1887,7 +1890,7 @@
           "repetivel": true,
           "tempo": 1,
           "resultado": {
-            "texto": "Uma playlist antiga, fone no ouvido, olhos no teto. O mundo fica do tamanho da sala.",
+            "texto": "Uma playlist antiga, fone no ouvido, olhos no teto. Três músicas depois, você já nem lembra direito com o que estava preocupado.",
             "efeitos": {
               "condicao": "-abalado"
             }
@@ -1905,7 +1908,7 @@
           "comum": true,
           "tempo": 0,
           "resultado": {
-            "texto": "A reserva de emergência, dobrada com elástico: $ 80. Se não é uma emergência hoje, nada é.",
+            "texto": "A reserva de emergência, dobrada com elástico: $ 80. Você hesita. Depois pega tudo.",
             "efeitos": {
               "dinheiro": 80
             }
@@ -1964,7 +1967,7 @@
           "comum": true,
           "tempo": 0,
           "resultado": {
-            "texto": "Você confere a porta duas vezes, fecha as cortinas, passa a corrente. Não sabe bem do que está se protegendo. Mas ajuda.",
+            "texto": "Você confere a porta duas vezes, fecha as cortinas, passa a corrente. Do apartamento ao lado vem o mesmo barulho: o vizinho passando a corrente dele.",
             "efeitos": {
               "condicao": "-abalado"
             }
@@ -1986,7 +1989,7 @@
             "item": "comunicador"
           },
           "resultado": {
-            "texto": "Respondem com um áudio: está tudo bem, é a TV que exagera, vai dormir. Você quer acreditar.",
+            "texto": "Respondem com um áudio de dois minutos: está tudo bem, é a TV que exagera, sua tia mandou lembrança, vai dormir.",
             "efeitos": {
               "condicao": "-abalado"
             }
@@ -1994,7 +1997,7 @@
         },
         {
           "id": "radio-sintonizar",
-          "texto": "O rádio da cozinha ligou sozinho: ajustar a sintonia",
+          "texto": "No rádio da cozinha, uma estação pirata entrou por cima do jogo: ajustar a sintonia",
           "palavras": [
             "radio",
             "sinton",
@@ -2028,7 +2031,7 @@
         },
         {
           "id": "radio-gravar",
-          "texto": "O rádio da cozinha ligou sozinho: gravar a transmissão no celular",
+          "texto": "No rádio da cozinha, uma estação pirata entrou por cima do jogo: gravar a transmissão no celular",
           "palavras": [
             "grav",
             "celular",
@@ -2061,7 +2064,7 @@
         },
         {
           "id": "radio-desligar",
-          "texto": "O rádio da cozinha ligou sozinho: arrancar o fio da tomada",
+          "texto": "No rádio da cozinha, uma estação pirata entrou por cima do jogo: arrancar o fio da tomada",
           "palavras": [
             "deslig",
             "arranc",
@@ -2192,7 +2195,7 @@
           ],
           "situacao": "acalmar",
           "sucesso": {
-            "texto": "Ela respira fundo e conta: os pacientes da ala de isolamento saíram em fila, cantarolando a mesma melodia. “Ninguém abriu a porta. Ela só… estava aberta.”",
+            "texto": "Ela respira fundo. “Desculpa. É o terceiro dia. A gente interna, eles dormem, e de manhã a cama está vazia. Hoje foi a ala de isolamento inteira. Saíram em fila, cantarolando. Ninguém abriu a porta. Ela só… estava aberta.”",
             "pista": "Pacientes da ala de isolamento saíram em fila, cantarolando."
           },
           "falha": {
@@ -2234,6 +2237,9 @@
             "efeitos": {
               "convergencia": 1
             }
+          },
+          "se": {
+            "relogioMin": 4
           }
         },
         {
@@ -2388,7 +2394,7 @@
             "pista": "A polícia isola a Praça Central: quem entra não volta igual."
           },
           "falha": {
-            "texto": "Mandam você para casa. Na saída, o relógio da parede está parado nas 21h47.",
+            "texto": "Mandam você para casa e chamam o próximo da fila.",
             "efeitos": {
               "exposicao": 1
             }
@@ -2409,10 +2415,13 @@
             "pista": "No rádio da polícia, uma voz calma repete frases que não são de ninguém."
           },
           "falha": {
-            "texto": "Só estática. Mas a estática tem ritmo.",
+            "texto": "Só estática e uma viatura pedindo reforço para um engarrafamento.",
             "efeitos": {
               "exposicao": 1
             }
+          },
+          "se": {
+            "relogioMin": 4
           }
         },
         {
@@ -2484,7 +2493,7 @@
           "repetivel": true,
           "tempo": 0,
           "resultado": {
-            "texto": "Café de garrafa térmica em copo de plástico. Morno, doce demais. Serve.",
+            "texto": "Café de garrafa térmica em copo de plástico. Morno, doce demais. O escrivão avisa que é o terceiro bule da noite.",
             "efeitos": {
               "condicao": "-cansaco"
             }
@@ -2502,7 +2511,7 @@
           "comum": true,
           "tempo": 1,
           "resultado": {
-            "texto": "O sargento de plantão digita devagar, com dois dedos. Pergunta seu nome, endereço, o que aconteceu. Quando você termina, ele imprime a queixa, carimba e diz que alguém vai entrar em contato. Os dois sabem que ninguém vai.",
+            "texto": "O sargento de plantão digita devagar, com dois dedos. Pergunta seu nome, endereço, o que aconteceu. No fim, imprime a queixa, carimba e diz que alguém vai entrar em contato. Na bandeja ao lado, uma pilha de queixas iguais.",
             "efeitos": {
               "condicao": "-abalado"
             }
@@ -2514,7 +2523,7 @@
       "nome": "Estação Rua 9",
       "icone": "⊂",
       "descricao": {
-        "texto": "Abandonada há anos. A catraca gira sozinha, uma vez, quando você chega."
+        "texto": "Estação Rua 9, fechada desde uma reforma que nunca terminou. Cheiro de ferrugem, pichação velha, um morador de rua dormindo no papelão. A máquina de salgadinhos, sabe-se lá como, ainda tem luz."
       },
       "cidade": "metro",
       "caminho": "caminho-metro",
@@ -2546,6 +2555,9 @@
               "memoria": "Pedra fria, velas, alguém de capuz olhando de volta."
             },
             "pista": "Na Estação Rua 9, o ar ondula e mostra outro lugar: pedra, velas, alguém de capuz."
+          },
+          "se": {
+            "relogioMin": 5
           }
         },
         {
@@ -2574,11 +2586,14 @@
             "efeitos": {
               "exposicao": 2
             }
+          },
+          "se": {
+            "relogioMin": 5
           }
         },
         {
           "id": "catraca",
-          "texto": "Esperar a catraca girar de novo",
+          "texto": "Reparar na catraca, que acabou de girar sozinha",
           "palavras": [
             "catraca",
             "esperar",
@@ -2603,6 +2618,9 @@
             "efeitos": {
               "exposicao": 1
             }
+          },
+          "se": {
+            "relogioMin": 3
           }
         },
         {
@@ -2659,7 +2677,7 @@
           "repetivel": true,
           "tempo": 1,
           "resultado": {
-            "texto": "O banco de concreto é frio. Um gato aparece, cheira seus sapatos e vai embora. Suas pernas agradecem.",
+            "texto": "O banco de concreto é frio. Um gato aparece, cheira seus sapatos, decide que você não presta e vai embora.",
             "efeitos": {
               "condicao": "-cansaco"
             }
@@ -2816,6 +2834,9 @@
             "efeitos": {
               "exposicao": 1
             }
+          },
+          "se": {
+            "relogioMin": 3
           }
         },
         {
@@ -2832,7 +2853,7 @@
             "dinheiro": 2
           },
           "resultado": {
-            "texto": "Café ralo, açúcar demais, copinho que queima os dedos. Funciona.",
+            "texto": "Café ralo, açúcar demais, copinho que queima os dedos. A máquina devolve o troco errado, a seu favor.",
             "efeitos": {
               "dinheiro": -2,
               "condicao": "-cansaco"
@@ -2852,7 +2873,7 @@
           "repetivel": true,
           "tempo": 1,
           "resultado": {
-            "texto": "Silêncio de verdade, cheiro de papel. Você escreve tudo o que viu num guardanapo, em ordem. Ajuda a ver que você não está ficando louco.",
+            "texto": "Silêncio de verdade, cheiro de papel. Você escreve tudo o que viu num guardanapo, em ordem, com horário. Fica parecendo relatório de seguro.",
             "efeitos": {
               "condicao": "-abalado"
             }
@@ -3066,7 +3087,7 @@
           "repetivel": true,
           "tempo": 0,
           "resultado": {
-            "texto": "Água fria no rosto, papel-toalha áspero. No espelho, você ainda parece você.",
+            "texto": "Água fria no rosto, papel-toalha áspero. No espelho, alguém escreveu de batom um número de telefone e “me liga”.",
             "efeitos": {
               "condicao": "-abalado"
             }
