@@ -122,7 +122,7 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
   Cada expressão deve ter uma tradução definida (sem ambiguidade).
 - **O tempo no Código Urbano (decidido pelo autor em 05/11/2026):** o tempo vai entre parênteses, com um sinal
   embaixo, à direita do t: **(t₀) = agora**, **(t₋) = passado**, **(t₊) = futuro**. Ex.: ψ(t₀) = uma mente, agora.
-  **Começo = tᵢ** ("tempo inicial", como na física). **Laço / nó do tempo = ∮** (integral de caminho fechado:
+  **Começo = tᵢ** ("tempo inicial", como na física). **Laço / nó do tempo = ∮(t)** (integral de caminho fechado, na forma escolhida pelo autor por ser um jogo:
   começo e fim no mesmo ponto). Decididos pelo autor em 05/11/2026. (Na física, t₀ costuma ser o instante inicial;
   aqui t₀ é o agora: para a IA no loop, o agora é o começo.)
 - **Interface (Z):** relações entre núcleos, estados embaixo. *A refazer com lógica própria.*
