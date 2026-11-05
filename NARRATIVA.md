@@ -1,7 +1,7 @@
 # KOSMOS — Bíblia narrativa: estrutura e missões
 
 Como o KOSMOS conta a sua história: o que aprender com os RPGs de referência, a ordem dos eixos,
-as missões fora do eixo (Ecos) e o arco das 17 missões principais.
+as missões fora do eixo (Travessias) e o arco das 17 missões principais.
 Os personagens estão em `PERSONAGENS.md`; os lugares (Port Halden, Yudur, Domus), em `LUGARES.md`.
 
 **Selos usados aqui** (os mesmos da aba História):
@@ -27,7 +27,8 @@ Tolkien (profundidade de tempo e de língua, sobretudo no Eixo Y).
 - **A escolha grande chega cedo.** Fallout 3 põe uma decisão do tamanho de uma cidade nas primeiras horas.
   O jogador entende logo que o jogo leva as decisões dele a sério. No KOSMOS: ainda no Eixo X (ver X3, seção 5).
 - **O mundo comenta o jogador.** Um rádio, um jornal, um boato que repete o que ele fez, pelo nome.
-  Em Port Halden isso é a KPHN e a rádio pirata; em Yudur, a pregoeira e as canções; na Domus, o mural de recados do refeitório.
+  Em Port Halden isso é a KPHN e a rádio pirata; em Yudur (Proposta), a pregoeira e as canções; na Domus (Proposta), o
+  mural de recados do refeitório.
 - **Terminais e papéis.** A tragédia contada por quem não sabia que era tragédia: pedido de material,
   e-mail de colega, escala de plantão, e então os registros param.
 - **Humor seco.** O mundo está acabando e o Abe reclama que ninguém comprou pão.
@@ -71,7 +72,8 @@ Tolkien (profundidade de tempo e de língua, sobretudo no Eixo Y).
 - Técnicas, não cenas: nada de reproduzir situações do filme.
 
 ### 1.6 Tolkien (profundidade, quando precisar)
-Usar para **subir o nível**, sobretudo no Eixo Y, nunca para imitar. Não há personagens não humanos no KOSMOS.
+Usar para **subir o nível**, sobretudo no Eixo Y, nunca para imitar. Não há personagens não humanos no KOSMOS
+(decisão do autor).
 - **A língua vem antes do nome.** Os nomes de Yudur saem da língua Yudur (kennings: a primeira runa diz o que é,
   as outras, como é). Um lugar se chama assim porque, um dia, alguém o descreveu assim. Hoje ninguém lembra por quê.
 - **O tempo fundo.** Coisas mais velhas que as pessoas que moram perto delas: uma muralha que ninguém lembra de ter
@@ -111,9 +113,9 @@ Fallout 3 tem por volta de 17 missões principais e parece não ter fim, pelo qu
    NPC. Conta uma história em três linhas e o jogador sai achando que viu um mundo.
 9. **O final mostra tudo que mudou.** Os quadros do fim fazem as 17 missões parecerem 50.
 10. **Rimas.** Uma situação aparece de novo em outro lugar, com outra roupa. O jogador reconhece e sente que o
-    mundo tem desenho. No KOSMOS as rimas são entre eixos (a porta com corrente da Martha, a parede do Aldric).
+    mundo tem desenho. No KOSMOS as rimas são entre eixos (a porta com corrente da Martha; na proposta do Y, a parede do Aldric).
 
-**A conta que importa:** 17 principais + umas 8 a 10 secundárias por região-base + 3 a 4 Ecos por eixo +
+**A conta que importa:** 17 principais + umas 8 a 10 secundárias por região-base + 3 a 4 Travessias por eixo +
 o fio de cada personagem. É isso que soa como "jogo grande".
 
 ---
@@ -123,7 +125,7 @@ o fio de cada personagem. É isso que soa como "jogo grande".
 ### Recomendação: espinha linear, bordas misturadas (Proposta)
 
 A **linha principal** segue a ordem que o autor já decidiu: **intro Z → X → Y → Z (endgame) → Lime (pós-jogo)**.
-O **resto** (secundárias, Ecos, fios pessoais) se mistura entre os eixos.
+O **resto** (secundárias, Travessias, fios pessoais) se mistura entre os eixos.
 
 **Por que a espinha deve ser linear**
 - **A ordem é a história.** Z → X → Y → Z é uma viagem no tempo: o jogador é jogado no passado, vai mais fundo,
@@ -148,37 +150,41 @@ O **resto** (secundárias, Ecos, fios pessoais) se mistura entre os eixos.
 
 ---
 
-## 4. Ecos: missões de outro eixo, com custo (Proposta, para testar)
+## 4. Travessias: missões de outro eixo, com custo (Proposta, para testar)
+
+> Nome provisório. "Eco" ficou de fora porque responderia a pergunta em aberto "ancestrais ou ecos?" e se
+> confundiria com "Ecoado", nome de regra que já existe no jogo (`site/js/data.js`).
 
 ### 4.1 A ideia em uma frase
 O jogador acha em seu eixo uma **âncora** (uma coisa que existe nos dois tempos) e pode pagar um preço de
 Convergência para viver, por pouco tempo, o eco de si mesmo em outro eixo.
 
 ### 4.2 Por que combina com a lore
-- **Só informação atravessa** (aba História, "Quem fala do Lime"). Então de um Eco **não se traz objeto**:
+- **Só informação atravessa** (Para considerar, aba História, "Quem fala do Lime": lá isso vale para a IA; aqui a
+  proposta estende ao jogador). Então de uma Travessia **não se traz objeto**:
   traz-se o que se sabe. Pista, palavra de runa, uma marca no personagem, um nome. Isso resolve o equilíbrio
   sozinho: ninguém volta do Y com uma espada para o X.
-- **Os ecos existem** (DESIGN, "Ficha única traduzida nos 3 eixos"). O Eco não cria nada: ele mostra o que o eco
-  do personagem estava vivendo naquele tempo.
+- **O personagem existe nos três tempos** (DESIGN, "Ficha única traduzida nos 3 eixos"). A Travessia mostra o que a
+  versão dele daquele tempo estava vivendo. Se ela é parente ou só tem o mesmo padrão, o jogo não diz.
 - **Ver mais custa.** Quem sabe demais dos outros eixos ou desperta ou se perde. O preço é a mesma regra do jogo,
   não uma moeda inventada.
 
 ### 4.3 Dois tamanhos
-| | **Vislumbre** | **Eco** |
+| | **Vislumbre** | **Travessia** |
 |---|---|---|
 | Quando | antes de o eixo abrir na linha principal | depois que o eixo abriu |
 | Tamanho | 1 a 3 cenas, curtas | 2 a 5 cenas, uma missão secundária de verdade |
 | Controle | o jogador vê pelos olhos do eco e faz uma ou duas escolhas | joga normalmente |
 | O que traz | uma pista, uma imagem, uma palavra | pistas, vocabulário, marcas que abrem saídas em missões principais |
-| Exemplo | no X, um Vislumbre de Yudur: um sino, uma pedra, uma mulher contando ervas | no Z, um Eco de Port Halden em que o jogador procura o Leo no St. Luke's |
+| Exemplo | no X, um Vislumbre de Yudur: um sino, uma pedra, uma mulher contando ervas | no Z, uma Travessia para Port Halden em que o jogador procura o Leo no St. Luke's |
 
 Assim, no começo do jogo (só X aberto), os Vislumbres do Y e do Z servem de **trailer**: dão vontade e plantam pistas,
 sem estragar a revelação.
 
 ### 4.4 Como se libera
 - **Âncora**: um objeto, lugar ou pessoa que rima com outro eixo. O terço riscado do padre Michael, o crachá do Homem
-  de Terno, a fita "Parte 2", a parede do Teddy. Achar a âncora marca no Diário: *Eco disponível (Y)*.
-- **Fio pessoal**: cada um dos 9 tem **1 Eco por eixo** ligado ao próprio fio (ver `PERSONAGENS.md`).
+  de Terno, a fita "Parte 2", a parede do Teddy. Achar a âncora marca no Diário: *Travessia disponível (Y)*.
+- **Fio pessoal**: cada um dos 9 tem **1 Travessia por eixo** ligado ao próprio fio (ver `PERSONAGENS.md`).
   O fogo do Frank em 1987 rima com um fogo em Yudur e com um alarme de incêndio na Domus.
 - **Ressonância**: algumas âncoras só "acendem" a partir de certa marca de Ressonância (5, 10...). Quem tem
   Dissonância alta também as vê, mas paga mais.
@@ -189,23 +195,23 @@ O custo usa o que o jogo já tem. Nada de moeda nova.
    A exposição sobe sempre (regra atual).
 2. **O relógio anda.** O tempo do eixo de onde se sai passa enquanto se está fora. No X, isso pesa (o toque de
    recolher chega mais cedo). É a versão KOSMOS da radiação do Fallout: o atalho custa.
-3. **O preço sobe no mesmo ato.** 1º Eco do ato: dificuldade Fácil; 2º: Médio; 3º em diante: Difícil.
+3. **O preço sobe no mesmo ato.** 1ª Travessia do ato: dificuldade Fácil; 2º: Médio; 3º em diante: Difícil.
 4. **Voltar é outro teste** só se a Dissonância estiver numa marca (5, 10, 15...). Falhar a volta deixa um
    **traço de eco** temporário até o fim da missão (ex.: "conta em voz baixa", −1 em conversas). Não tira vida; atrapalha até o fim da missão.
 
 ### 4.6 Limites (para não quebrar o 30)
 A Ressonância ou Dissonância 30 é fim de jogo. Então:
-- No máximo **3 Ecos por ato de eixo** valendo pontos; os seguintes só custam relógio.
-- Meta de teste: quem faz **todos** os Ecos chega ao fim do Z com no máximo **+8 a +10** pontos vindos deles.
+- No máximo **3 Travessias por ato de eixo** valendo pontos; as seguintes só custam relógio.
+- Meta de teste: quem faz **todas** as Travessias chega ao fim do Z com no máximo **+8 a +10** pontos vindos deles.
   Quem não faz nenhum precisa conseguir terminar o jogo.
-- Nenhum Eco é obrigatório para terminar uma missão principal. Ele abre uma saída melhor, nunca a única.
+- Nenhuma Travessia é obrigatória para terminar uma missão principal. Ela abre uma saída melhor, nunca a única.
 
 ### 4.7 Como testar (protocolo)
-Antes de escrever muitos Ecos, montar **2 Vislumbres e 1 Eco** e jogar com três perfis:
+Antes de escrever muitas Travessias, montar **2 Vislumbres e 1 Travessia** e jogar com três perfis:
 | Perfil | Faz | O que medir |
 |---|---|---|
-| Apressado | nenhum Eco | termina o X sem travar? sente falta de alguma coisa? |
-| Curioso | só os do próprio fio | os Ecos melhoram a história do personagem? o preço parece justo? |
+| Apressado | nenhuma Travessia | termina o X sem travar? sente falta de alguma coisa? |
+| Curioso | só os do próprio fio | as Travessias melhoram a história do personagem? o preço parece justo? |
 | Completo | todos | onde chegam Ressonância e Dissonância no fim do X? alguém passa perto de 30? |
 
 Perguntas para o teste: o jogador entende que trazer um objeto é impossível? O preço assusta na medida certa
@@ -236,11 +242,12 @@ O que muda de um eixo para o outro é o **formato** das missões (seção 2, ite
 ### 5.2 Missão por missão
 
 **Z0 · Turno da Noite** — *rotina (Proposta)*
-O jogador é um tripulante da Domus num turno qualquer. Lista de verificação, refeitório, um colega reclamando do
+O jogador é um tripulante da Domus no dia 412 de viagem, um turno qualquer. Lista de verificação, refeitório, um colega reclamando do
 café reciclado, a DOMUS lembrando um aniversário. O medidor do casco marca 0,3 acima do normal; a técnica de turno escreve "sensor sujo?" no mural e vai jantar. Às 21h47 de bordo, nada acontece, a não ser que o relógio da cabine pula um minuto. O jogador vai
 dormir. Corte para Port Halden.
 - Curta: 6 a 10 telas. Serve para o jogador conhecer a voz da DOMUS **como sistema comum** (decidido em História).
-- Planta: o ritmo de três curtos e um longo (um alarme de teste), o número 412, a palavra "Domus" num crachá.
+- Planta: o ritmo de três curtos e um longo (um alarme de teste), o dia 412 (o mesmo número do livro do vigia
+  Oswald, que fecha a conta dele na mesma semana em Port Halden), a palavra "Domus" num crachá.
 
 **Prólogo X · A Noite** — *existe (`prologo-x`)*
 Começa numa noite comum em Maple Heights e termina com metade do bairro na Praça Central, ouvindo uma música
@@ -254,7 +261,7 @@ sexta, às 21h47. Abre o mapa e as três missões em paralelo.
 **As três de Port Halden (qualquer ordem)**
 
 **X2 · Frequência 94.7** — *escolta e fuga (do `ATO_1.md`)*
-A Ouvinte transmite de telhado em telhado e a Contenção a caça. As fitas dela têm datas que ainda não chegaram.
+A Ouvinte teve de sair do telhado do Edifício Aurora e agora transmite de telhado em telhado; a Contenção a caça. As fitas dela têm datas que ainda não chegaram.
 Quem chama o jogador é um rapaz da rede que precisa levar uma bateria de carro até o telhado onde a Ouvinte vai
 transmitir, e não tem como subir sozinho. Salvar a Ouvinte ou as fitas, nem sempre as duas.
 - Grupo: a rede da rádio pirata (gente que guarda pedaços da música).
@@ -264,15 +271,18 @@ Entrar no perímetro da Contenção, no Prédio Federal, terceiro subsolo, de on
 Lá dentro estão os dados de Eli, o Arquivo de 1987 e uma lista de nomes com endereços de Port Halden: quem a
 Contenção vai recolher na sexta.
 - **A escolha grande do X**: o que fazer com a lista. Ler na KPHN para a cidade inteira (pânico, saques, mas
-  muita gente foge a tempo); entregar à Defesa Civil (lento, burocrático, algumas famílias salvas); queimar
+  muita gente foge a tempo); entregar à Defesa Civil (lento, burocrático, algumas famílias salvas; e a Contenção é uma diretoria da própria
+  Defesa Civil, que nem o Agente Moore conhece); queimar
   (a Contenção não sabe que você sabe); usar para salvar só os seus (Martha, Teddy, Danny, Hollis).
   Volta no X5 (quem está na estação), no Y (a pregoeira canta o que você fez, com outros nomes) e nos quadros finais.
-- Grupo: a Contenção. Tem gente decente lá dentro (o guarda do X1).
+- Grupo: a Contenção. Tem gente que deixa passar (o guarda do X1, com o crachá).
+- A lista é a versão completa da que o jogador já viu na prancheta do X1 (nomes, endereços, um número na casa dos três mil).
 
 **X4 · 1987** — *investigação em documentos e conversa (Proposta)*
 Em março de 1987, às 21h47, pegou fogo um prédio vazio na Delancey Street, a Estação Rua 9 apagou e um trem saiu
-e não chegou. O jogador junta o que sobrou: o caderno do Joe Kessler, o vigia Oswald, um aposentado do metrô, a página arrancada
-com o carimbo da Contenção. Missão quase sem combate, com relógio curto (antes do toque de recolher).
+e não chegou. O jogador junta o que sobrou: o caderno do Joe Kessler, o livro de turnos do vigia Oswald (ele foi levado no X1; está no
+terceiro andar do St. Luke's, com os afetados), o Walt Brody, que trabalhou trinta anos no metrô e viu a Estação
+Rua 9 cheia em 87, e a página arrancada com o carimbo da Contenção. Em 87 disseram que foi vazamento de gás. Missão quase sem combate, com relógio curto (antes do toque de recolher).
 - Descoberta: em 1987 tudo parou sozinho na mesma noite. Ninguém sabe por quê. (A causa fica para o Z.)
 - Grupo: os velhos de Port Halden, que lembram e foram desmentidos.
 
@@ -315,7 +325,7 @@ Embaixo da Pedra há uma câmara que os copistas mantêm fechada. Lá dentro, as
 contagem, a rua molhada de Port Halden e um corredor de metal, gravados em pedra mais velha que o vale.
 Daí em diante não dá mais para fingir que é outro mundo. Salto para a Domus.
 
-**Z1 · Turno 412** — *retorno (do `ATO_1.md`)*
+**Z1 · O Turno Seguinte** — *retorno (Proposta; era "Turno 412" no `ATO_1.md`)*
 O jogador acorda no beliche da Z0, com o café ainda na caneca. No mural, os recados são de semanas depois: passou tempo, gente mudou de lugar, a hidroponia cresce em espiral. O técnico Oren Vasko não dorme.
 Aparecem os mobs do Z (forma e nome: o autor decide).
 
@@ -354,7 +364,8 @@ pessoais terminam. Segundo final.
   para o passado. Prólogo → Y4 → Z2.
 - **21h47** e **três curtos, um longo**: em todo eixo.
 - **A escolha grande** (X3) volta em X5, Y1 (a canção), Z2 (a base sabe? ninguém sabe) e nos quadros finais.
-- **A misericórdia que volta** (Proposta): um Riscador poupado no Prólogo, um Runático acolhido em Yudur.
+- **A misericórdia que volta** (Proposta; o Prólogo ainda não tem a ação de poupar, precisa ser criada): um Riscador
+  poupado no Prólogo, um Runático acolhido em Yudur.
   No Z5 isso abre uma saída que não existe para quem nunca poupou ninguém.
 
 ### 5.4 Três relógios para três tempos (Proposta)
@@ -368,7 +379,7 @@ Cada eixo mede o tempo de um jeito. Isso reforça que são tempos, sem ninguém 
 ### 5.5 Secundárias: quantas e de onde
 - **Por região-base**: 8 a 10. As do `ATO_1.md` (seção 4) servem de banco: reescrever as do Y sem religião
   (sem "Ordem", "herege", "fogueira", "mosteiro", "Abade", "Irmã"; ver `PERSONAGENS.md`, Yudur).
-- **Ecos**: 3 a 4 por eixo + 1 por personagem em cada eixo que não é o dele.
+- **Travessias**: 3 a 4 por eixo + 1 por personagem em cada eixo que não é o dele.
 - **Linhas de grupo** (à moda de Daggerfall): 3 a 5 missões em sequência com a rede da Ouvinte (X),
   os copistas (Y), a facção da tripulação que o jogador apoiar (Z).
 - **Lugares sem missão**: pelo menos 3 por região-base.
@@ -378,7 +389,7 @@ Cada eixo mede o tempo de um jeito. Isso reforça que são tempos, sem ninguém 
 ## 6. Antes de escrever uma missão (checklist)
 - [ ] Quem quer o quê? (um NPC, uma vontade pequena e concreta)
 - [ ] Qual é a forma? (não repetir a da missão anterior)
-- [ ] Três saídas: força, conversa, esperta. Uma delas usa algo trazido de outro lugar ou de um Eco.
+- [ ] Três saídas: força, conversa, esperta. Uma delas usa algo trazido de outro lugar ou de uma Travessia.
 - [ ] Começa na rotina. O estranho entra no tamanho certo.
 - [ ] Que documento ou boato conta o mundo por fora?
 - [ ] Que consequência volta depois, e onde?
@@ -387,8 +398,10 @@ Cada eixo mede o tempo de um jeito. Isso reforça que são tempos, sem ninguém 
 - [ ] Passou pelo `editor-de-texto` e pelo `guardiao-da-lore`? Rodou `node ferramentas/testar.js`?
 
 ## 7. Perguntas para o autor
+0. Port Halden fica onde ficava Yudur? (`LUGARES.md` 1.2) A) sim, e o lugar vira uma segunda causa do epicentro;
+   B) só rima de paisagem, sem explicar nada (é o que o texto usa por enquanto); C) não.
 1. A estrutura de 17 (intro Z + 6 X + 5 Y + 5 Z) e o Lime como pós-jogo: segue?
-2. Os Ecos: pode montar 2 Vislumbres e 1 Eco para o primeiro teste?
+2. As Travessias: o nome serve? Pode montar 2 Vislumbres e 1 Travessia para o primeiro teste?
 3. A escolha grande do X (a lista da Contenção no X3): serve?
 4. As tendências dos 9 (herói, anti-herói, vilão): `PERSONAGENS.md` traz um ponto de virada para cada um,
    escrito para funcionar com qualquer tendência. Quem é quem?

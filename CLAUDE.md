@@ -12,7 +12,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 
 ## Onde está cada coisa
 - Ferramentas gratuitas, IA e mecânicas planejadas: `FERRAMENTAS.md`.
-- Bíblia narrativa (propostas para o autor confirmar): `NARRATIVA.md` (ordem dos eixos, Ecos entre eixos, arco das 17 missões principais), `PERSONAGENS.md` (os 9 e os NPCs), `LUGARES.md` (Port Halden, Yudur, Domus). O `ATO_1.md` antigo vale só como banco de ideias.
+- Bíblia narrativa (propostas para o autor confirmar): `NARRATIVA.md` (ordem dos eixos, Travessias entre eixos, arco das 17 missões principais), `PERSONAGENS.md` (os 9 e os NPCs), `LUGARES.md` (Port Halden, Yudur, Domus). O `ATO_1.md` antigo vale só como banco de ideias.
 - Como escrever (técnicas de Fallout, TES e Resident Evil; o que soa como IA): `GUIA_ESCRITA.md`. O agente `editor-de-texto` segue esse guia.
 - **Agentes e skills** (`.claude/agents/`, `.claude/skills/`): `editor-de-texto`, `guardiao-da-lore`, `testador`; skills `nova-missao-x`, `novo-npc`, `lore-nova`. Antes de enviar mudança em missão, rodar `node ferramentas/testar.js` (o robô `.github/workflows/testes.yml` roda a cada envio).
 - Índice de continuidade (o que o jogador já viu: NPCs, datas, horários, nomes): `LORE_CONTINUIDADE.md`, gerado por `node ferramentas/continuidade.js` (não editar à mão; o guardião da lore regrava).
@@ -30,6 +30,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Riscadores (X) e Runáticos (Y) são mobs, nunca facção.** Ressonância e Dissonância são nomes de regra; no mundo quase ninguém usa essas palavras. O equivalente do Z é diferente (a definir pelo autor).
 - **Estrutura:** intro curta no Z (Domus) → Prólogo X (Port Halden) → Y e Z liberam depois; Z é o endgame; Lime é o post-game (com "segundo final").
 - **9 personagens prontos** (3 Tank, 3 Healer, 3 Support), cada um com origem no Prólogo X (`js/missoes/origens-x.js`) e fio pessoal no Diário. Têm tendência (herói, anti-herói, vilão), ainda não definida: não inventar, perguntar.
+- **Só humanos:** não há personagens não humanos no KOSMOS, em nenhum eixo.
 - **Eixo Y é outro tempo, não outro mundo.** Eles leem runas, a princípio só isso. Nada religioso (sem heresia, igreja ou deuses).
 - **Quem fala do Lime é a IA da Domus** (decidido). As mensagens e os códigos são dela.
 - **Em aberto:** o objetivo da missão da Domus, o que a IA quer (avisar, chamar ou ambíguo), ancestrais ou ecos.

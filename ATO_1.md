@@ -1,5 +1,8 @@
 # KOSMOS — Ato 1: Padrões
 
+> **Rascunho antigo.** Vale o `NARRATIVA.md`. A ordem (ciclo X → Y → Z), a religião no Y (Ordem, Abade, Irmã,
+> herege, mosteiro) e a ideia de "três mundos" abaixo estão superadas. Fica como banco de ideias.
+
 Plano das missões principais e secundárias do Ato 1 nos três mundos. É um rascunho para o autor
 cortar, mudar e acrescentar. Fase da lore: **Padrões**. Frases, músicas, símbolos e números começam
 a se repetir entre os mundos, mas ninguém sabe ainda que os mundos estão ligados (isso é o Ato 2).

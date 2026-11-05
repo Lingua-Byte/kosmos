@@ -122,6 +122,14 @@ const HISTORIA = {
         <p><b>O que ela quer</b> segue em aberto (veja as perguntas abaixo).</p>`,
     },
     {
+      titulo: "Por que 21h47",
+      estado: "considerar",
+      html: `
+        <p>21h47 é a hora de bordo em que a Domus cruzou a borda de fora do buraco negro. Ninguém percebeu: a DOMUS converte a hora de bordo para a hora da base, e nessa conta a hora da base vai ao infinito exatamente na borda. A conta tropeça e o relógio da cabine pula um minuto.</p>
+        <p>A IA marca as mensagens com o tempo de bordo dela. Por isso a mesma hora aparece em Port Halden e em Yudur.</p>
+        <p>Mais propostas para a história (ordem das 17 missões, Travessias entre eixos, personagens e lugares) estão em <b>NARRATIVA.md</b>, <b>PERSONAGENS.md</b> e <b>LUGARES.md</b>.</p>`,
+    },
+    {
       titulo: "O que é ciência e o que é ficção",
       estado: "considerar",
       html: `
