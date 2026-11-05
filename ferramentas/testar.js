@@ -93,6 +93,18 @@ function conferirMissao(id) {
       for (const chave of ["flag", "algum"]) [].concat(v[chave] || []).forEach((f) => flagsUsadas.push([f, cam]));
     if (k === "pista" && typeof v === "string" && !/\.falha\./.test(cam)) pistas++;
     if (k === "npc" && typeof v === "string" && !npcs[v]) erro(onde, `${cam} cita o NPC "${v}", que não está na lista de NPCs`);
+    // Decifrar: "acertou" e "licao" também levam a cenas; sem respostas, ninguém acerta
+    if (k === "decifrar" && v && typeof v === "object") {
+      if (!(v.respostas || []).length) erro(onde, `${cam} não tem respostas aceitas`);
+      if (v.modo !== "dificil" && (v.erradas || []).length < 3) aviso(onde, `${cam} está no modo fácil com menos de 3 opções erradas`);
+      for (const campo of ["acertou", "licao"]) {
+        const d = v[campo];
+        if (!d) { erro(onde, `${cam} não diz para onde vai (${campo})`); continue; }
+        const [tipo, alvo] = d.split(":");
+        if (tipo === "cena") { alvos.add(alvo); if (!cenas[alvo]) erro(onde, `${cam}.${campo} vai para a cena "${alvo}", que não existe`); }
+        else if (tipo === "lugar" && !lugares[alvo]) erro(onde, `${cam}.${campo} vai para o lugar "${alvo}", que não existe`);
+      }
+    }
     if (k === "ir" && typeof v === "string" && v) {
       const [tipo, alvo] = v.split(":");
       if (tipo === "cena") { alvos.add(alvo); if (!cenas[alvo]) erro(onde, `${cam} vai para a cena "${alvo}", que não existe`); }

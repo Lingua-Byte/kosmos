@@ -290,7 +290,7 @@ const Cenas = (() => {
         <div class="narracao">${paragrafos(texto(cena.texto, ctx))}</div>
         ${cena.tutorial ? `<p class="tutorial">${esc(cena.tutorial)}</p>` : ""}
         ${camp.ameaca !== null && cena.ameaca ? ameacaHtml(cena.ameaca) : ""}
-        ${cena.final ? finalHtml() : opcoesHtml(opcoesDaCena(cena), false)}`;
+        ${cena.final ? finalHtml() : cena.decifrar ? decifrarHtml(camp.cena, cena.decifrar) : opcoesHtml(opcoesDaCena(cena), false)}`;
     } else {
       const disponiveis = acoesDoLugar();
       corpo = `
@@ -307,7 +307,7 @@ const Cenas = (() => {
         </div>`;
     }
 
-    const livre = !viagem && !resultado && !(cena && (cena.final || camp.flags.pedirSom));
+    const livre = !viagem && !resultado && !(cena && (cena.final || cena.decifrar || camp.flags.pedirSom));
     $("#cena").innerHTML = `
       <header class="cena-topo">
         <span class="cena-onde"><b>${EIXOS[m.eixo].glifo}</b> ${esc(m.subtitulo)} · ${esc(nomeLugar)}</span>
@@ -370,7 +370,7 @@ const Cenas = (() => {
     document.getElementById("tela-cena")?.classList.remove("escolhendo");
     lidos = Math.min(Math.max(1, lidos), ps.length);
     ps.forEach((p, i) => (p.hidden = i !== lidos - 1)); // um pedaço de cada vez: só o atual fica na tela
-    const resto = [...corpo.querySelectorAll(".opcoes, .livre, .acoes-lugar, .pergunta-vez, .efeitos-resultado, .tutorial, .ameaca, .pendente, .livre-resposta, .cena-grupo, [data-acao='seguir']")];
+    const resto = [...corpo.querySelectorAll(".opcoes, .decifrar, .livre, .acoes-lugar, .pergunta-vez, .efeitos-resultado, .tutorial, .ameaca, .pendente, .livre-resposta, .cena-grupo, [data-acao='seguir']")];
     const falta = lidos < ps.length;
     const mais = document.createElement("button");
     mais.className = "ler-mais";
@@ -382,7 +382,7 @@ const Cenas = (() => {
       mais.hidden = !falta;
       resto.forEach((e) => (e.hidden = falta));
       // enquanto o jogador escolhe, a imagem do lugar encolhe para as escolhas caberem
-      document.getElementById("tela-cena")?.classList.toggle("escolhendo", !falta && !!corpo.querySelector(".opcoes .opcao"));
+      document.getElementById("tela-cena")?.classList.toggle("escolhendo", !falta && !!corpo.querySelector(".opcoes .opcao, .decifrar"));
       if (!falta) paginarOpcoes(chave);
     };
     const chaveP = `${chave}#${lidos}`;
@@ -536,6 +536,92 @@ const Cenas = (() => {
 
   function feita(a) {
     return camp.feitas.includes(a.grupo || a.id);
+  }
+
+  // ---------- Decifrar (o enigma de tradução) ----------
+  // cena.decifrar = { lingua: "x"|"y", palavra (id do símbolo no X, ou runas no Y), frase, traducao (com ▢),
+  //   respostas: [...], erradas: [...], modo: "facil"|"dificil", acertou: "cena:…", licao: "cena:…",
+  //   dissonancia (o salto da Lição), efeitos ao acertar (aprenderX, aprenderY, memoria, ...) }
+  // 3 tentativas escritas, que não custam nada. No fácil, depois delas: 4 opções e 2 escolhas.
+  // Falhou de vez: vai para a Lição (missão com salto no tempo), que traz Dissonância e ensina a palavra.
+  // Quem já sabe a palavra (aprendeu na Lição ou antes) vê a frase resolvida.
+  const DECIFRAR = { tentativas: 3, opcoes: 4, escolhas: 2 };
+  const normal = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  let avisoDecifrar = "";
+
+  function sabeDecifrar(p, d) {
+    if (!d.palavra) return false;
+    if (d.lingua === "y") return (p.vocabY || []).includes(d.palavra);
+    return (p.linguas?.[d.lingua || "x"] || []).includes(d.palavra);
+  }
+  function estadoDecifrar(chave) {
+    camp.decifrar = camp.decifrar || {};
+    return (camp.decifrar[chave] = camp.decifrar[chave] || { tent: 0, esc: 0, erradas: [] });
+  }
+  function opcoesDecifrar(d) {
+    const certa = [].concat(d.respostas || [])[0] || "";
+    const lista = [certa, ...(d.erradas || []).slice(0, DECIFRAR.opcoes - 1)];
+    // ordem fixa por missão (não muda a cada tela), mas a certa não fica sempre em primeiro
+    const giro = 1 + ([...String(d.frase || "")].reduce((s, c) => s + c.charCodeAt(0), 0) % (lista.length - 1 || 1));
+    return [...lista.slice(giro), ...lista.slice(0, giro)];
+  }
+  function decifrarHtml(chave, d) {
+    const p = ativo();
+    const e = estadoDecifrar(chave);
+    const certa = [].concat(d.respostas || [])[0] || "";
+    const lingua = { x: "Código Urbano", y: "Runas", z: "Interface" }[d.lingua || "x"];
+    const cabeca = `<p class="dec-frase"><span class="dec-lingua">${lingua}</span> ${esc(d.frase || "")}</p>`;
+    if (e.resolvido || sabeDecifrar(p, d)) {
+      return `<div class="decifrar">${cabeca}
+        <p class="dec-trad">${esc((d.traducao || "").replace("▢", certa))}</p>
+        <button class="btn-primario" data-acao="decifrar-ok">Continuar <b>▸</b></button></div>`;
+    }
+    const pips = Array.from({ length: DECIFRAR.tentativas }, (_, i) => `<i class="${i < e.tent ? "cheio" : ""}"></i>`).join("");
+    let corpo;
+    if (e.tent < DECIFRAR.tentativas) {
+      corpo = `<form class="dec-form" id="form-decifrar"><input id="texto-decifrar" placeholder="Que palavra falta?" autocomplete="off" autocapitalize="off">
+          <button class="btn-secundario">Tentar</button></form>
+        <p class="dec-tent">Tentativas <span class="pips">${pips}</span></p>`;
+    } else if (d.modo !== "dificil" && e.esc < DECIFRAR.escolhas) {
+      corpo = `<p class="dec-tent">Escolha (${DECIFRAR.escolhas - e.esc} ${DECIFRAR.escolhas - e.esc === 1 ? "chance" : "chances"}):</p>
+        <div class="chips dec-opcoes">${opcoesDecifrar(d).map((o) => `<button class="chip" data-decifrar-op="${esc(o)}" ${e.erradas.includes(o) ? "disabled" : ""}>${esc(o)}</button>`).join("")}</div>`;
+    } else {
+      corpo = `<p class="dec-tent">A frase não se fecha. Falta aprender a palavra.</p>
+        <button class="btn-primario" data-acao="decifrar-licao">Lição <b>▸</b></button>`;
+    }
+    const aviso = avisoDecifrar;
+    avisoDecifrar = "";
+    return `<div class="decifrar">${cabeca}<p class="dec-trad">${esc(d.traducao || "")}</p>${aviso ? `<p class="dec-aviso">${esc(aviso)}</p>` : ""}${corpo}</div>`;
+  }
+  function tentarDecifrar(resposta, porOpcao) {
+    const cena = missao().cenas[camp.cena];
+    const d = cena && cena.decifrar;
+    if (!d) return;
+    const e = estadoDecifrar(camp.cena);
+    const ok = [].concat(d.respostas || []).some((r) => normal(r) === normal(resposta));
+    if (!normal(resposta)) return;
+    if (ok) {
+      e.resolvido = true;
+      salvar();
+      return render();
+    }
+    if (porOpcao) { e.esc++; e.erradas.push(resposta); } else e.tent++;
+    avisoDecifrar = `“${resposta}” não fecha a frase.`;
+    salvar();
+    render();
+  }
+  function concluirDecifrar(licao) {
+    const cena = missao().cenas[camp.cena];
+    const d = cena.decifrar;
+    const certa = [].concat(d.respostas || [])[0] || "";
+    const { lingua, palavra, frase, traducao, respostas, erradas, modo, acertou, licao: irLicao, dissonancia, ...efeitos } = d;
+    if (licao) {
+      return resolver({ id: "decifrar-licao" }, {
+        texto: "Você olha para a frase até as letras perderem o sentido. A palavra está ali, em algum lugar, e você não alcança.",
+        efeitos: { dissonancia: dissonancia ?? 1 }, ir: irLicao,
+      }, false);
+    }
+    resolver({ id: "decifrar" }, { texto: (traducao || "").replace("▢", certa), efeitos, ir: acertou }, false);
   }
 
   // ---------- Opções ----------
@@ -864,6 +950,12 @@ const Cenas = (() => {
         linhas.push(`Aprendeu no Código Urbano: ${nomes.join(", ")}`);
       }
     }
+    if (efeitos.aprenderY) {
+      // palavras de runa (Yudur): ficam guardadas pelas runas de cada palavra
+      const novas = [].concat(efeitos.aprenderY).filter((r) => r && !(p.vocabY || []).includes(r));
+      p.vocabY = [...(p.vocabY || []), ...novas];
+      if (novas.length) linhas.push(`Aprendeu em runas: ${novas.join(" · ")}`);
+    }
     if (efeitos.memoria) {
       // Memórias Cruzadas só chegam com Ressonância suficiente
       if (p.ressonancia >= (efeitos.memoriaMin || 0)) {
@@ -1112,6 +1204,9 @@ const Cenas = (() => {
       lidos++;
       return render();
     }
+    if (acao === "decifrar-ok") return concluirDecifrar(false);
+    if (acao === "decifrar-licao") return concluirDecifrar(true);
+    if (t.dataset.decifrarOp !== undefined) return tentarDecifrar(t.dataset.decifrarOp, true);
     if (acao === "escrever") {
       const f = document.getElementById("form-livre");
       if (f) { f.classList.remove("recolhido"); t.remove(); paginarOpcoes(); document.getElementById("texto-livre")?.focus(); }
@@ -1185,6 +1280,10 @@ const Cenas = (() => {
   });
 
   document.addEventListener("submit", (ev) => {
+    if (ev.target.id === "form-decifrar") {
+      ev.preventDefault();
+      return tentarDecifrar($("#texto-decifrar").value, false);
+    }
     if (ev.target.id !== "form-livre") return;
     ev.preventDefault();
     interpretar($("#texto-livre").value);
