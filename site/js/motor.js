@@ -133,10 +133,15 @@ const Motor = (() => {
     const e = res.efeitos || {};
     const p = estado.p || (estado.p = {});
     const linhas = [];
+    // Ressonância e Dissonância ficam entre 0 e 30 (a Ressonância comum para no 29, como no jogo)
+    const tetos = typeof REGRAS !== "undefined" ? { ressonancia: REGRAS.ressonanciaTeto, dissonancia: REGRAS.ressonanciaMax } : {};
     const somar = (campo, nome) => {
       if (!+e[campo]) return;
-      p[campo] = Math.max(0, (p[campo] || 0) + +e[campo]);
-      linhas.push(`${+e[campo] > 0 ? "+" : ""}${e[campo]} ${nome}`);
+      const antes = p[campo] || 0;
+      let novo = Math.max(0, antes + +e[campo]);
+      if (tetos[campo] != null && +e[campo] > 0) novo = Math.max(antes, Math.min(tetos[campo], novo));
+      p[campo] = novo;
+      if (novo !== antes) linhas.push(`${novo > antes ? "+" : ""}${novo - antes} ${nome}`);
     };
     somar("ressonancia", "Ressonância");
     somar("dissonancia", "Dissonância");

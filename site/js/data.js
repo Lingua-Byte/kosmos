@@ -134,6 +134,10 @@ const REGRAS = {
   atributoMax: 10,
   exposicaoMax: 39,
   ressonanciaMax: 30,
+  ressonanciaTeto: 29, // ganhos comuns param aqui (marca Beira); o 30 só por escolha
+  convergenciaMinDados: 2, // o Teste de Convergência rola pelo menos 2 dados
+  alivioDormirPorMissao: 1, // dormir (ação que se repete) baixa a Dissonância 1 vez por missão
+  calmantePorMissao: 2, // calmantes baixam a Dissonância no máximo 2 vezes por missão (o abalo passa sempre)
   tracosMin: 2,
   tracosMax: 3,
   habilidades: 3,
@@ -163,7 +167,15 @@ const CONVERGENCIA = {
 
 // ---------- Habilidades e equipamentos ----------
 // Cada item existe nos três eixos com nomes diferentes (a ficha se "traduz").
-// usos: "passiva" (sempre vale), ou { cena: n } / { sessao: n } — renovam em "Nova cena" / "Nova sessão".
+// Habilidades: usos "passiva" (sempre vale) ou { cena: n } / { sessao: n }. Nas missões, "cena" volta a cada
+//   cena da história ou troca de lugar; "sessao" volta no começo de cada missão. (Não há mais botão para renovar.)
+// Equipamentos (itens): usos: n = quantos usos tem cada item. Cada uso gasto dá os dados dele num teste
+//   (o jogador escolhe gastar) ou faz a ação dele. Os usos ACABAM:
+//   · recarga: "bateria" → volta tudo com uma Bateria portátil / Óleo de lamparina / Célula de energia (pertence),
+//     ou numa ação de missão "recarrega os equipamentos" (tomada).
+//   · consumivel: true → ao zerar, o item some. Sem isso, o item fica, sem efeito, até recarregar ou achar outro.
+//   · Achar ou comprar outro do mesmo item enche os usos dele de novo (um de cada por personagem).
+//   Com o item zerado, as escolhas de missão que pedem o item ficam travadas (a lanterna apagada não ilumina).
 // dados: quantos dados extras dá nos testes dos atributos listados.
 // acao: efeito usado direto da ficha (reduzir exposição, dissonância…).
 
@@ -210,34 +222,34 @@ const HABILIDADES = [
 ];
 
 const EQUIPAMENTOS = [
-  { chave: "comunicador", peso: 1, usos: "passiva", tags: ["investigar", "social"], dados: 1,
+  { chave: "comunicador", peso: 1, usos: 6, recarga: "bateria", tags: ["investigar", "social"], dados: 1,
     efeito: "+1 dado para conseguir informação ou ajuda.",
     nomes: { x: "Smartphone", y: "Corvo Mensageiro", z: "Comunicador de Pulso" } },
-  { chave: "veiculo", peso: 3, usos: "passiva", tags: ["fuga"], dados: 1,
-    efeito: "+1 dado para fugir. Leva você longe.",
+  { chave: "veiculo", peso: 3, usos: 6, tags: ["fuga"], dados: 1,
+    efeito: "+1 dado para fugir. Com combustível, viajar não gasta tempo.",
     nomes: { x: "Carro", y: "Cavalo", z: "Módulo de Transporte" } },
-  { chave: "luz", peso: 1, usos: "passiva", tags: ["investigar", "perigo"], dados: 1,
+  { chave: "luz", peso: 1, usos: 5, recarga: "bateria", tags: ["investigar", "perigo"], dados: 1,
     efeito: "+1 dado para procurar e perceber no escuro.",
     nomes: { x: "Lanterna", y: "Tocha", z: "Holofote de Capacete" } },
-  { chave: "arma_leve", peso: 1, usos: { cena: 2 }, tags: ["combate"], dados: 1,
+  { chave: "arma_leve", peso: 1, usos: 4, tags: ["combate"], dados: 1,
     efeito: "+1 dado para lutar.",
     nomes: { x: "Pistola", y: "Adaga", z: "Pistola de Pulso" } },
-  { chave: "arma_pesada", peso: 2, usos: { cena: 1 }, tags: ["combate"], dados: 2,
+  { chave: "arma_pesada", peso: 2, usos: 3, tags: ["combate"], dados: 2,
     efeito: "+2 dados para lutar. Chama atenção.",
     nomes: { x: "Espingarda", y: "Espada Longa", z: "Rifle de Plasma" } },
-  { chave: "protecao", peso: 2, usos: "passiva", tags: ["proteger", "forca"], dados: 1,
+  { chave: "protecao", peso: 2, usos: 4, tags: ["proteger", "forca"], dados: 1,
     efeito: "+1 dado para proteger alguém e resistir a ferimentos.",
     nomes: { x: "Colete Balístico", y: "Cota de Malha", z: "Traje Pressurizado" } },
-  { chave: "kit_medico", peso: 1, usos: { sessao: 2 }, acao: { reduz: "exposicao", qtd: 1 },
+  { chave: "kit_medico", peso: 1, usos: 3, consumivel: true, acao: { reduz: "exposicao", qtd: 1 },
     efeito: "Remove 1 de exposição do eixo atual.",
     nomes: { x: "Kit de Primeiros Socorros", y: "Ervas e Ataduras", z: "Injetor Médico" } },
-  { chave: "detector", peso: 1, usos: "passiva", tags: ["convergencia", "perigo"], dados: 1,
+  { chave: "detector", peso: 1, usos: 4, recarga: "bateria", tags: ["convergencia", "perigo"], dados: 1,
     efeito: "+1 dado na Convergência e para sentir perigo: você sabe o que enfrenta.",
     nomes: { x: "Contador Geiger", y: "Pêndulo Rúnico", z: "Sensor de Campo Estelar" } },
-  { chave: "ferramentas", peso: 1, usos: "passiva", tags: ["conserto"], dados: 1,
+  { chave: "ferramentas", peso: 1, usos: 5, tags: ["conserto"], dados: 1,
     efeito: "+1 dado para abrir, consertar ou desmontar.",
     nomes: { x: "Kit de Ferramentas", y: "Gazuas", z: "Multiferramenta" } },
-  { chave: "objeto_pessoal", peso: 1, usos: { sessao: 1 }, acao: { reduz: "dissonancia", qtd: 1 },
+  { chave: "objeto_pessoal", peso: 1, usos: 3, acao: { reduz: "dissonancia", qtd: 1 },
     efeito: "Remove 1 de Dissonância: algo te lembra quem você é.",
     nomes: { x: "Foto da Família", y: "Relíquia de Casa", z: "Holograma de Casa" } },
 ];
@@ -272,21 +284,27 @@ const CHANCE_ROTULOS = [
 // ---------- Ressonância e Dissonância mudam o jogo ----------
 // Ao atingir cada marca, o efeito liga sozinho. dados: { atributo: +/- dados }.
 
+// Ressonância: cada marca é um ganho; o perigo só começa no 25. No 29 ela para: o 30 só vem por escolha, numa cena.
+// Dissonância: cada marca é um malefício, e piora aos poucos. (Proposta da NARRATIVA.md, seção 4.7, aplicada.)
+// dadosTags: { tag: +/- dados } nos testes daquele tipo de situação (ex.: social = convencer e acalmar).
+// rerrolar: "teste" → 1 vez por missão, rola de novo um teste comum que falhou.
+// sinaisDissonancia: "convergencia" → só os sinais ◉ do Teste de Convergência somam Dissonância.
 const RESSONANCIA_LIMIARES = [
   { em: 5, nome: "Percepção Cruzada", efeito: "+1 dado em testes de Mente.", dados: { mente: 1 } },
   { em: 10, nome: "Memória Cruzada", efeito: "Um eixo oculto se revela: você lembra de uma vida que não viveu.", revela: true },
-  { em: 15, nome: "Atração", efeito: "O fenômeno puxa você: Testes de Convergência pedem 2 sucessos.", convergenciaDif: 1 },
+  { em: 15, nome: "Pressentimento", efeito: "1 vez por missão, rola de novo um teste comum que falhou.", rerrolar: "teste" },
   { em: 20, nome: "Lucidez", efeito: "+1 dado em Mente e em Essência.", dados: { mente: 1, essencia: 1 } },
-  { em: 25, nome: "Desprendimento", efeito: "O corpo deixa de importar: −2 dados no Corpo.", dados: { corpo: -2 } },
+  { em: 25, nome: "Atração", efeito: "O fenômeno puxa você: Testes de Convergência pedem 2 sucessos. −1 dado no Corpo.", convergenciaDif: 1, dados: { corpo: -1 } },
+  { em: 29, nome: "Beira", efeito: "A Ressonância para aqui. Daqui em diante, só por escolha.", teto: true },
   { em: 30, nome: "Integração", efeito: "Você se torna Interface. Fim de jogo — mas não necessariamente morte.", fim: true },
 ];
 
 const DISSONANCIA_LIMIARES = [
-  { em: 5, nome: "Adrenalina", efeito: "+1 dado no Corpo.", dados: { corpo: 1 } },
+  { em: 5, nome: "Inquietação", efeito: "−1 dado para convencer e acalmar.", dadosTags: { social: -1 } },
   { em: 10, nome: "Fissura", efeito: "−1 dado em testes de Mente.", dados: { mente: -1 } },
   { em: 15, nome: "Paranoia", efeito: "Você não confia em ninguém: habilidades de conversa ficam bloqueadas.", bloqueia: "conversa" },
-  { em: 20, nome: "Perda de Controle", efeito: "Cada sinal ◉ rolado também marca +1 Dissonância.", sinaisDissonancia: true },
-  { em: 25, nome: "Fúria", efeito: "+1 dado no Corpo, −1 dado em Essência.", dados: { corpo: 1, essencia: -1 } },
+  { em: 20, nome: "Ruído", efeito: "−1 dado em Essência, inclusive na Convergência.", dados: { essencia: -1 } },
+  { em: 25, nome: "Perda de Controle", efeito: "Cada sinal ◉ do Teste de Convergência também marca +1 Dissonância.", sinaisDissonancia: "convergencia" },
   { em: 30, nome: "Colapso", efeito: "O personagem se perde no caos. Fim de jogo.", fim: true },
 ];
 
@@ -422,9 +440,9 @@ const PERTENCES = [
   { chave: "comida", nomes: { x: "Sanduíche", y: "Pão e queijo", z: "Ração de bordo" }, preco: { x: 8, y: 2, z: 12 }, tira: ["fome"], efeito: "Mata a fome." },
   { chave: "cafe", nomes: { x: "Café", y: "Chá de ervas", z: "Estimulante" }, preco: { x: 3, y: 1, z: 4 }, tira: ["cansaco"], efeito: "Espanta o cansaço por um tempo." },
   { chave: "remedio", nomes: { x: "Analgésico e curativos", y: "Unguento e ataduras", z: "Kit de sutura" }, preco: { x: 12, y: 3, z: 20 }, tira: ["ferido"], efeito: "Cuida de um ferimento." },
-  { chave: "calmante", nomes: { x: "Calmante", y: "Infusão de valeriana", z: "Sedativo leve" }, preco: { x: 18, y: 4, z: 30 }, tira: ["abalado"], dissonancia: -1, efeito: "Acalma: −1 Dissonância." },
+  { chave: "calmante", nomes: { x: "Calmante", y: "Infusão de valeriana", z: "Sedativo leve" }, preco: { x: 18, y: 4, z: 30 }, tira: ["abalado"], dissonancia: -1, efeito: "Acalma: −1 Dissonância (2× por missão)." },
   { chave: "bebida", nomes: { x: "Cerveja", y: "Hidromel", z: "Destilado da hidroponia" }, preco: { x: 5, y: 1, z: 10 }, tira: ["abalado"], poe: ["cansaco"], efeito: "Relaxa, mas cansa." },
-  { chave: "bateria", nomes: { x: "Bateria portátil", y: "Óleo de lamparina", z: "Célula de energia" }, preco: { x: 25, y: 2, z: 25 }, renovarItens: true, efeito: "Recarrega os equipamentos: usos voltam." },
+  { chave: "bateria", nomes: { x: "Bateria portátil", y: "Óleo de lamparina", z: "Célula de energia" }, preco: { x: 25, y: 2, z: 25 }, renovarItens: true, efeito: "Recarrega lanterna, celular e medidor." },
 ];
 
 const CONDICOES = {

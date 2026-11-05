@@ -158,8 +158,10 @@ const Cenas = (() => {
       id: "c" + Date.now().toString(36), missao: missaoId, personagens: [...selecionados], vez: 0, relogio: 0, pistas: [], feitas: [],
       lugar: m.lugarInicial, cena: m.inicio, flags: {}, rodada: 0, ameaca: null, fim: false,
     };
+    // começo de missão: as habilidades voltam (os itens não: os usos deles acabam)
     for (const p of grupo()) {
       Regras.renovar(p, "sessao");
+      p.jaJogou = true;
       Armazem.salvar(p);
     }
     if (temCidade()) conhecerLugares(Cidade.idDe(m, m.lugarInicial, grupo()[0]));
@@ -228,11 +230,12 @@ const Cenas = (() => {
     const linhas = avancarRelogio(custoViagem(destino));
     const daqui = camp.lugar;
     camp.lugar = destino;
+    renovarCena();
     if (temCidade()) linhas.push(...conhecerLugares(Cidade.idDe(m, destino, grupo()[0])));
     painel = null;
     salvar();
     const chegada = palcoAtual();
-    const temVeiculo = grupo().some((p) => p.itens.includes("veiculo"));
+    const temVeiculo = grupo().some((p) => Regras.funciona(p, "veiculo"));
     const caminho = m.caminho ? m.caminho(daqui, destino, temVeiculo) : null;
     viagem = { titulo: chegada.titulo, linhas };
     render();
@@ -485,8 +488,9 @@ const Cenas = (() => {
 
   function bloqueio(op, p) {
     const r = op.req || {};
-    if (r.item && !p.itens.includes(r.item)) return `requer ${Regras.equip(r.item).nomes[missao().eixo]}`;
-    if (r.semItem && p.itens.includes(r.semItem)) return "você tem um jeito melhor";
+    if (r.item && !Regras.funciona(p, r.item))
+      return p.itens.includes(r.item) ? `${Regras.equip(r.item).nomes[missao().eixo]} sem uso` : `requer ${Regras.equip(r.item).nomes[missao().eixo]}`;
+    if (r.semItem && Regras.funciona(p, r.semItem)) return "você tem um jeito melhor";
     if (r.hab && !p.habs.includes(r.hab)) return `requer ${Regras.hab(r.hab).nomes[missao().eixo]}`;
     if (r.res && p.ressonancia < r.res) return `requer Ressonância ${r.res}`;
     if (r.dis && p.dissonancia < r.dis) return `requer Dissonância ${r.dis}`;
@@ -515,7 +519,7 @@ const Cenas = (() => {
   function opcoesHtml(lista, doLugar) {
     const p = ativo();
     // opções travadas de "semItem" somem (são alternativas), as outras aparecem com o motivo
-    const visiveis = lista.filter((op) => !(op.req && op.req.semItem && p.itens.includes(op.req.semItem)));
+    const visiveis = lista.filter((op) => !(op.req && op.req.semItem && Regras.funciona(p, op.req.semItem)));
     if (!visiveis.length) return `<p class="sub">Não há mais nada a fazer aqui por enquanto.</p>`;
     return `<div class="opcoes">${visiveis.map((op) => {
       const motivo = bloqueio(op, p);
@@ -659,7 +663,7 @@ const Cenas = (() => {
       ${p.itens.length ? `<ul class="pertences">${p.itens.map((k) => {
         const it = Regras.equip(k);
         const resta = Regras.usosRestantes(p, k);
-        return `<li class="com-arte">${Vida.arte(k, e, it.nomes[e])}<span>${esc(it.nomes[e])}</span><small>${esc(it.efeito)} · ${esc(Regras.textoUsos(it))}${Number.isFinite(resta) ? ` · restam ${resta}` : ""}</small></li>`;
+        return `<li class="com-arte">${Vida.arte(k, e, it.nomes[e])}<span>${esc(it.nomes[e])} <b>${resta}/${it.usos}</b></span><small>${esc(it.efeito)}${resta ? "" : it.recarga ? " · sem carga" : " · sem uso"}</small></li>`;
       }).join("")}</ul>` : `<p class="sub">Nenhum equipamento.</p>`}
       <h4 class="diario-sub">Pertences</h4>
       ${itens.length ? `<ul class="pertences">${itens.map(([k, n]) => `
@@ -687,7 +691,7 @@ const Cenas = (() => {
   }
 
   function custoViagem(destino) {
-    const base = grupo().some((p) => p.itens.includes("veiculo")) ? 0 : 1;
+    const base = grupo().some((p) => Regras.funciona(p, "veiculo")) ? 0 : 1;
     // lugar que ninguém do grupo conhece: +1 para achar o caminho
     return base + (camp.flags.multidoes ? 1 : 0) + (destino && desconhecido(destino) ? 1 : 0); // ruas cheias: tudo demora mais
   }
@@ -765,19 +769,29 @@ const Cenas = (() => {
       const l = Vida.condicao(p, c);
       if (l) linhas.push(l);
     }
-    if (efeitos.renovarItens) for (const k of Object.keys(p.usos)) if (EQUIPAMENTOS.some((e) => e.chave === k)) delete p.usos[k];
+    if (efeitos.renovarItens) {
+      const feitos = Regras.recarregar(p);
+      if (feitos.length) linhas.push(`Recarregado: ${feitos.map((k) => Regras.equip(k).nomes[m.eixo]).join(", ")}`);
+    }
     if (efeitos.exposicao) {
       p.exposicao[m.eixo] = Math.max(0, Math.min(REGRAS.exposicaoMax, p.exposicao[m.eixo] + efeitos.exposicao));
       linhas.push(`${efeitos.exposicao > 0 ? "+" : ""}${efeitos.exposicao} ${exp}`);
     }
-    for (const [chave, nome] of [["ressonancia", "Ressonância"], ["dissonancia", "Dissonância"]]) {
-      if (!efeitos[chave]) continue;
-      p[chave] = Math.max(0, Math.min(REGRAS.ressonanciaMax, p[chave] + efeitos[chave]));
-      linhas.push(`${efeitos[chave] > 0 ? "+" : ""}${efeitos[chave]} ${nome}`);
+    // Dormir (e qualquer ação que se repete) baixa a Dissonância só 1 vez por missão
+    let disEfeito = +efeitos.dissonancia || 0;
+    if (disEfeito < 0 && op.repetivel && !Regras.alivio(p, "repetivel", REGRAS.alivioDormirPorMissao)) {
+      disEfeito = 0;
+      linhas.push("A Dissonância não baixa de novo: o descanso só alivia 1 vez por missão.");
     }
-    if (efeitos.item && !p.itens.includes(efeitos.item)) {
-      const erro = Regras.alternar(p, "item", efeitos.item);
-      linhas.push(erro ? `Sem espaço para ${Regras.equip(efeitos.item).nomes[m.eixo]}` : `Ganhou: ${Regras.equip(efeitos.item).nomes[m.eixo]}`);
+    for (const [chave, nome, n] of [["ressonancia", "Ressonância", +efeitos.ressonancia || 0], ["dissonancia", "Dissonância", disEfeito]]) {
+      if (!n) continue;
+      const mudou = chave === "ressonancia" ? Regras.mudarRes(p, n) : Regras.mudarDis(p, n);
+      if (mudou) linhas.push(`${mudou > 0 ? "+" : ""}${mudou} ${nome}`);
+    }
+    if (efeitos.item) {
+      const nomeItem = Regras.equip(efeitos.item).nomes[m.eixo];
+      const r = Regras.darItem(p, efeitos.item);
+      linhas.push(r.erro ? `Sem espaço para ${nomeItem}` : r.recarregou ? `${nomeItem}: usos cheios de novo (${Regras.cargas(p, efeitos.item)})` : `Ganhou: ${nomeItem} (${Regras.cargas(p, efeitos.item)} usos)`);
     }
     if (efeitos.aprenderX) {
       const novos = efeitos.aprenderX.filter((id) => !p.linguas.x.includes(id));
@@ -867,10 +881,19 @@ const Cenas = (() => {
     render();
   }
 
+  // Habilidades "por cena" voltam a cada cena da história e a cada troca de lugar
+  function renovarCena() {
+    for (const p of grupo()) {
+      Regras.renovar(p, "cena");
+      Armazem.salvar(p);
+    }
+  }
+
   function entrarCena(id) {
     const m = missao();
     const cena = m.cenas[id];
     camp.cena = id;
+    renovarCena();
     if (cena.ameaca && camp.ameaca === null) {
       camp.ameaca = cena.ameaca;
       camp.rodada = 0;
@@ -930,7 +953,7 @@ const Cenas = (() => {
     let melhor = null;
     let pontos = 0;
     lista.forEach((op, i) => {
-      if (bloqueio(op, p) || (op.req && op.req.semItem && p.itens.includes(op.req.semItem))) return;
+      if (bloqueio(op, p) || (op.req && op.req.semItem && Regras.funciona(p, op.req.semItem))) return;
       let s = 0;
       for (const raiz of op.palavras || []) {
         const e = raiz.endsWith("$");
