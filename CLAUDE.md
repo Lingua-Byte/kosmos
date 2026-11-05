@@ -32,7 +32,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **9 personagens prontos** (3 Tank, 3 Healer, 3 Support), cada um com origem no Prólogo X (`js/missoes/origens-x.js`) e fio pessoal no Diário. Têm tendência (herói, anti-herói, vilão), ainda não definida: não inventar, perguntar.
 - **Só humanos:** não há personagens não humanos no KOSMOS, em nenhum eixo.
 - **Eixo Y é outro tempo, não outro mundo.** Eles leem runas, a princípio só isso. Nada religioso (sem heresia, igreja ou deuses).
-- **Travessia** (missão em outro eixo): liberada tarde no jogo. Custa Ressonância, que vira Dissonância; é para isso que se ganha Ressonância nos dados. A partir de certo ponto de Ressonância, o jogador pode gastá-la para reduzir a Dissonância (Assentar). Detalhes em `NARRATIVA.md`, seção 4.
+- **Travessia** (missão em outro eixo): liberada tarde no jogo. Custa Ressonância, que vira Dissonância; é para isso que se ganha Ressonância nos dados. A partir de certo ponto de Ressonância, o jogador pode gastá-la para reduzir a Dissonância. Detalhes em `NARRATIVA.md`, seção 4.
 - **Quem fala do Lime é a IA da Domus** (decidido). As mensagens e os códigos são dela.
 - **Em aberto:** o objetivo da missão da Domus, o que a IA quer (avisar, chamar ou ambíguo), ancestrais ou ecos.
 

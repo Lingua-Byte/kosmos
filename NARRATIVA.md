@@ -230,26 +230,28 @@ que vira Dissonância, para viver por pouco tempo a vida da sua versão em outro
 própria versão de outro tempo. Atravessar à força gasta essa afinação, e o que sobra é ruído: as duas vidas
 misturadas sem ordem. É o mesmo caminho dos Riscadores e Runáticos, só que mais devagar e por escolha.
 
-### 4.7 Assentar: gastar Ressonância para baixar a Dissonância
+### 4.7 Gastar Ressonância para baixar a Dissonância (sem nome ainda)
 **Decidido pelo autor:** a partir de certo ponto de Ressonância, o jogador pode escolher gastar esses pontos para
 reduzir a Dissonância.
 
 **Proposta (para testar):**
-- **Nome:** *Assentar* (pôr as duas vidas no lugar). É nome de regra; no mundo ninguém usa a palavra.
+- **Nome:** ainda não tem. O autor não quer "Assentar".
+- **Em revisão:** o designer de mecânicas está repensando o que o jogador ganha ao guardar Ressonância e o que
+  perde ao acumular Dissonância. Os números abaixo podem mudar.
 - **A partir de:** Ressonância 20, a marca da **Lucidez**, que já existe no jogo. Só quem está lúcido consegue pôr
   ordem no que viveu. (Alternativa mais fácil: Ressonância 15.)
 - **Taxa:** 2 de Ressonância baixam 1 de Dissonância. Atravessar é 1 para 1 (seção 4.6). Assim, desfazer uma
   Travessia custa o dobro do que ela custou, e o jogador não fica indo e voltando de graça.
 - **Quando:** só num momento de descanso, entre missões ou num abrigo (no X, a casa ou o abrigo da noite; no Y, a
   lareira; no Z, a cabine). Nunca no meio de uma cena de perigo.
-- **Depois de gastar,** a Ressonância pode cair abaixo de 20. Aí o personagem perde a Lucidez e só volta a Assentar
+- **Depois de gastar,** a Ressonância pode cair abaixo de 20. Aí o personagem perde a Lucidez e só volta a fazer a troca
   quando subir de novo.
-- **Como aparece na tela:** *"Assentar: Ressonância 22 → 16 · Dissonância 14 → 11."* E uma linha de texto do
+- **Como aparece na tela:** *"Ressonância 22 → 16 · Dissonância 14 → 11."* E uma linha de texto do
   personagem, sem palavra de regra (Frank: "Sentou no estribo do caminhão até o café esfriar. Pela primeira vez
   na semana, era só café.").
 
 **A escolha que isso cria.** A Ressonância passa a ter três destinos, e cada um puxa para um lado:
-| Guardar | Atravessar | Assentar |
+| Guardar | Atravessar | Trocar por menos Dissonância |
 |---|---|---|
 | sobe até 30: Integração (vira Interface, fim de jogo) | gasta e a Dissonância sobe | gasta e a Dissonância desce |
 | ganha os efeitos das marcas (Lucidez em 20) | abre missões e pistas de outro eixo | protege o personagem, mas não rende história |
@@ -270,10 +272,10 @@ Antes de escrever muitas Travessias, montar **1 Travessia do Y para o X** e joga
 | Apressado | nenhuma Travessia | termina o Y sem travar? sente falta de alguma coisa? |
 | Curioso | só as do próprio fio | as Travessias melhoram a história do personagem? o preço parece justo? |
 | Completo | todas | onde chega a Dissonância no fim do Z? alguém passa perto de 30? |
-| Cauteloso | algumas, e Assenta sempre que pode | chega a 20 de Ressonância? Assentar sobra ou falta? |
+| Cauteloso | algumas, e troca Ressonância por menos Dissonância sempre que pode | chega a 20 de Ressonância? a troca sobra ou falta? |
 
 Perguntas para o teste: o jogador hesita antes de pagar, mas paga? Entende de onde vem a Ressonância que gasta?
-Entende que não pode trazer objetos? Quem chega a 20 prefere Assentar ou guardar?
+Entende que não pode trazer objetos? Quem chega a 20 prefere trocar ou guardar?
 
 Para o motor (quando for a hora): uma missão com `travessia: { eixo, ancora, custo }`, feita no Criador como
 qualquer outra. A missão publicada continua com o mesmo formato (`Criador.exportar` ↔ `MissoesDados.adaptar`).

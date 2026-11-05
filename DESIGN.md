@@ -101,7 +101,7 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
 - **Ressonância / Dissonância:** marcas a cada 5 pontos mudam os dados e as opções; 30 = fim de jogo.
 - **Travessia** (decisão do autor, 05/11/2026): missão em outro eixo, liberada tarde no jogo. Custa Ressonância, que
   vira Dissonância; é para isso que serve a Ressonância ganha nos dados.
-  A partir de certo ponto de Ressonância, o jogador também pode gastá-la para reduzir a Dissonância (Assentar).
+  A partir de certo ponto de Ressonância, o jogador também pode gastá-la para reduzir a Dissonância.
   Detalhes em `NARRATIVA.md`, seção 4.
 - **Teste de Convergência:** usa a Essência; passou → Ressonância, falhou → Dissonância; exposição sobe sempre.
 - **Runas como cartas** (Eixo Y): começam viradas; a classe e a Mente decidem quantas.
