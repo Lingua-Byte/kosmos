@@ -63,6 +63,7 @@ const Criador = (() => {
     ressonancia: ["Ressonância (+/−)", "num"], dissonancia: ["Dissonância (+/−)", "num"], convergencia: ["Teste de Convergência depois (intensidade)", "num"],
     ameaca: ["ameaça (+/−)", "num"], memoria: ["Memória Cruzada", "txt"], memoriaMin: ["memória só com Ressonância", "num"],
     aprenderX: ["aprende símbolos (Código Urbano)", "lista"], revela: ["lugar novo no mapa", "lista"], renovarItens: ["recarrega lanterna, celular e medidor", "bool"],
+    documento: ["documento de lore (vai para a Coleção; id de dados/documentos.json)", "txt"],
   };
   const CATALOGOS = { se: SE, req: REQ, ef: EF };
 

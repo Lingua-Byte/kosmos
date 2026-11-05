@@ -30,6 +30,7 @@ const Palco = (() => {
       img.className = "palco-midia";
       img.onload = () => {
         achados[id] = "img";
+        if (typeof Colecao !== "undefined") Colecao.arte(eixo, chave, titulo);
         alvo.replaceChildren(img);
         if (aoTerminar) aoTerminar();
       };
@@ -49,6 +50,7 @@ const Palco = (() => {
     };
     v.onloadeddata = () => {
       achados[id] = "video";
+      if (typeof Colecao !== "undefined") Colecao.arte(eixo, chave, titulo);
       alvo.replaceChildren(v);
       v.play().catch(() => {});
     };
