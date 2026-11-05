@@ -489,7 +489,7 @@ const Cenas = (() => {
   function bloqueio(op, p) {
     const r = op.req || {};
     if (r.item && !Regras.funciona(p, r.item))
-      return p.itens.includes(r.item) ? `${Regras.equip(r.item).nomes[missao().eixo]} sem uso` : `requer ${Regras.equip(r.item).nomes[missao().eixo]}`;
+      return p.itens.includes(r.item) ? `${Regras.equip(r.item).nomes[missao().eixo]} ${Regras.equip(r.item).recarga ? "sem carga" : "sem uso"}` : `requer ${Regras.equip(r.item).nomes[missao().eixo]}`;
     if (r.semItem && Regras.funciona(p, r.semItem)) return "você tem um jeito melhor";
     if (r.hab && !p.habs.includes(r.hab)) return `requer ${Regras.hab(r.hab).nomes[missao().eixo]}`;
     if (r.res && p.ressonancia < r.res) return `requer Ressonância ${r.res}`;
@@ -747,6 +747,14 @@ const Cenas = (() => {
     const linhas = [];
     const exp = EIXOS[m.eixo].exposicao.nome;
 
+    // Escolha que pede um equipamento gasta 1 uso dele (regra dos itens: todo item tem usos).
+    const itemPedido = op.req && op.req.item;
+    if (itemPedido && p.itens.includes(itemPedido)) {
+      const nomeItem = Regras.equip(itemPedido).nomes[m.eixo];
+      const fim = Regras.gastarItem(p, itemPedido);
+      linhas.push(fim === "acabou" ? `${nomeItem}: acabou.` : fim === "zerou" ? `${nomeItem}: ${Regras.equip(itemPedido).recarga ? "sem carga" : "sem uso"}.` : `${nomeItem}: −1 uso.`);
+    }
+
     if (doLugar) {
       if (!op.repetivel) camp.feitas.push(op.grupo || op.id);
       const tinha = [...(p.condicoes || [])];
@@ -779,7 +787,7 @@ const Cenas = (() => {
     }
     // Dormir (e qualquer ação que se repete) baixa a Dissonância só 1 vez por missão
     let disEfeito = +efeitos.dissonancia || 0;
-    if (disEfeito < 0 && op.repetivel && !Regras.alivio(p, "repetivel", REGRAS.alivioDormirPorMissao)) {
+    if (disEfeito < 0 && op.repetivel && (p.dissonancia || 0) > 0 && !Regras.alivio(p, "repetivel", REGRAS.alivioDormirPorMissao)) {
       disEfeito = 0;
       linhas.push("A Dissonância não baixa de novo: o descanso só alivia 1 vez por missão.");
     }
@@ -859,7 +867,7 @@ const Cenas = (() => {
       resultado = null;
       if (efeitos.convergencia) {
         const alvo = grupo().find((x) => x.id === quem);
-        Dados.abrirConvergencia(alvo, m.eixo, { intensidade: efeitos.convergencia, aoTerminar: () => ir_(ir) });
+        Dados.abrirConvergencia(alvo, m.eixo, { intensidade: efeitos.convergencia, podeAjudar: grupo().length > 1, aoTerminar: () => ir_(ir) });
       } else ir_(ir);
     };
     const t = texto(res.texto, contexto());

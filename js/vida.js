@@ -68,7 +68,7 @@ const Vida = (() => {
       if (l) linhas.push(l);
     }
     // o calmante sempre tira o abalo, mas só baixa a Dissonância REGRAS.calmantePorMissao vezes por missão
-    if (it.dissonancia < 0 && !Regras.alivio(p, chave, REGRAS.calmantePorMissao))
+    if (it.dissonancia < 0 && (p.dissonancia || 0) > 0 && !Regras.alivio(p, chave, REGRAS.calmantePorMissao))
       linhas.push(`A Dissonância não baixa mais com isso nesta missão (máximo ${REGRAS.calmantePorMissao}).`);
     else if (it.dissonancia) Regras.mudarDis(p, it.dissonancia);
     if (it.renovarItens) {
