@@ -31,6 +31,8 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Estrutura:** intro curta no Z (Domus) → Prólogo X (Port Halden) → Y e Z liberam depois; Z é o endgame; Lime é o post-game (com "segundo final").
 - **9 personagens prontos** (3 Tank, 3 Healer, 3 Support), cada um com origem no Prólogo X (`js/missoes/origens-x.js`) e fio pessoal no Diário. Têm tendência (herói, anti-herói, vilão), ainda não definida: não inventar, perguntar.
 - **Só humanos:** não há personagens não humanos no KOSMOS, em nenhum eixo.
+- **O Eixo Y é a fundação de Port Halden** (decidido em 05/11/2026). A IA mandou códigos cruzados para dois pontos do tempo por ambiguidade nos cálculos, causada pela geometria do anel; por isso existem o X e o Y.
+- **Linha do tempo:** de Port Halden (X) ao lançamento da Domus (Z), 50 a 100 anos (o mundo acha que o sinal é alienígena); do lançamento ao Lime, 26.000 anos, sem a tripulação saber.
 - **Eixo Y é outro tempo, não outro mundo.** Eles leem runas, a princípio só isso. Nada religioso (sem heresia, igreja ou deuses).
 - **Travessia** (missão em outro eixo): liberada tarde no jogo. Custa Ressonância, que vira Dissonância; é para isso que se ganha Ressonância nos dados. A partir de certo ponto de Ressonância, o jogador pode gastá-la para reduzir a Dissonância. Detalhes em `NARRATIVA.md`, seção 4.
 - **Itens:** todo item tem um número de usos, de consumível (1 uso por item) a vários usos. Dois tipos: os do personagem (cada um começa com o seu conjunto inicial) e os encontrados nas missões. Um ou outro item é exclusivo de um personagem; via de regra, os itens também se encontram jogando. A Foto da Família é um item.
