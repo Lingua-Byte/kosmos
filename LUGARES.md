@@ -16,7 +16,7 @@ Resident Evil).
 ## 1. Port Halden (Eixo X · o presente do jogador)
 
 ### 1.1 A cidade em poucas linhas
-Cidade portuária de hoje, média, cansada. Já foi rica com o porto; agora vive do hospital, da universidade e do
+Cidade portuária de hoje, de tamanho médio, que já viu dias melhores. Já foi rica com o porto; agora vive do hospital, da universidade e do
 que sobrou das Docas. Chove muito. Todo mundo conhece alguém que conhece o prefeito.
 O jogador vive lá uma semana: a noite do Prólogo, a manhã seguinte, até sexta, às 21h47.
 
@@ -45,20 +45,24 @@ O jogador vive lá uma semana: a noite do Prólogo, a manhã seguinte, até sext
 
 ### 1.4 Boatos (cada bairro tem os seus; metade é mentira)
 - "É gás. Vazou da obra do metrô." (Maple Heights)
-- "Quem vai pra praça fica em paz. Minha cunhada voltou sorrindo." (Docas)
+- "Minha cunhada mandou áudio da praça. Disse que nunca dormiu tão bem, em pé. Ela, que reclama até do travesseiro." (Docas)
 - "É show. Montaram palco ontem, eu vi o caminhão." (Midtown)
-- "É coisa do governo, igual a 87." (Eastside, dito por quem tinha dez anos em 87)
+- "Coisa do governo, igual em 87. Meu pai disse que foi curto-circuito e nunca mais pegou o metrô." (Eastside, dito por quem tinha dez anos em 87)
 - "A universidade sabia. O professor saiu de férias na segunda." (Universidade)
 
 ### 1.5 Documentos do mundo (ideias para escrever)
-- **Folheto da Defesa Civil**, otimista e cheio de itens numerados: "Mantenha a calma. Mantenha a água."
+- **Folheto da Defesa Civil**, otimista e sem recursos: "1. Mantenha a calma. 2. Guarde 4 litros de água por
+  pessoa, por dia. 3. Evite a região central até novo aviso. 4. A Prefeitura agradece a colaboração e confirma o
+  Festival de Outono no sábado."
 - **Coluna do jornal de 1987** sobre o curto-circuito da Rua 9, com uma errata no dia seguinte.
 - **Caderno de fiado do Abe**, com os nomes que pararam de pagar no mesmo dia de março de 1987.
 - **Escala de plantão da Estação 9**, com um nome riscado a cada dia.
-- **Mensagens no celular** de um parente: normal → "vou só dar uma olhada na praça" → símbolos.
-- **Cardápio do Café Halden** com o "especial de sexta" escrito à mão: 21h47 no lugar do preço.
-- **Guia turístico da prefeitura (anos 70)**, que fala das "pedras antigas da fundação da St. Brendan's, de origem
-  desconhecida".
+- **Mensagens no celular** de uma irmã: "chegou? mãe perguntou se vc vem domingo" → "5ª avenida parada, deve ser
+  o tal show" → "vou só dar uma olhada na praça, todo mundo tá indo. te mando foto" → "a foto nao carrega" → símbolos.
+- **Recado na porta do Café Halden**, à mão: "Sexta fechamos às 21h30. Ordem da Defesa Civil. Não adianta
+  reclamar comigo. — Bev"
+- **Guia turístico da prefeitura (anos 70):** "Não deixe de visitar as curiosas pedras da fundação da St. Brendan's,
+  que os historiadores locais acreditam ser mais antigas que a própria cidade! Estacionamento gratuito aos domingos."
 
 ---
 
@@ -98,20 +102,23 @@ sentenças. **A Pedra é o cartório, não um altar.** Mentir diante dela é cri
 - **Os marcos:** pedras em pé, de légua em légua, com runas que dizem a distância e a quem pertence a terra.
   Quem anda sem ler os marcos se perde. O Y3 é a primeira viagem do jogo por essa estrada.
 - **A Muralha Velha:** um muro de pedra no alto do vale, mais velho que tudo, sem porta. Os de Yudur dizem que
-  "sempre esteve". É de gente, não de outra raça: só que gente que ninguém lembra.
+  "sempre esteve". Foi feita por gente; ninguém lembra por quem.
 - **A torre do Desperto:** um farol abandonado na ponta do cabo.
 - **O vau:** o rio que se atravessa a pé no verão e mata no inverno.
 
 ### 2.6 Boatos
-- "A Pedra está falando porque alguém mentiu diante dela."
+- "Alguém mentiu diante da Pedra. Eu aposto no moleiro, que jurou que a mó era dele."
 - "Quem fica perto do Aldric começa a contar também."
-- "A Muralha Velha foi feita para prender, não para proteger."
-- "Os Runáticos estão gravando o mesmo desenho, todos. Meu primo viu."
+- "Meu avô dizia que a Muralha não tem porta porque quem fez não queria ninguém saindo. Meu avô também dizia que
+  peixe entende o que a gente fala, então."
+- "O primo da minha mulher viu três deles riscando a mesma coisa no casco de um barco. A mesma, igualzinha. Ele não
+  lê runa, mas jura."
 
 ### 2.7 Documentos do mundo
 - **Uma talha de dívida** com runas de mais: o devedor e um nome que ninguém conhece.
 - **O registro de um copista** (gravado em tábua de cera): rotina, depois a mesma runa repetida.
-- **Uma canção de trabalho** que todo mundo canta errado. A versão certa tem a contagem no refrão.
+- **Uma canção de trabalho** que todo mundo canta errado: "Três e um, puxa a rede, / três e um, que o mar é fundo".
+  Ninguém sabe por que é "três e um" se a rede se puxa de dois em dois. A versão certa está na base da Pedra.
 - **Uma sentença** gravada na Pedra, apagada a raspas, ainda legível de lado, contra a luz.
 
 ### 2.8 Como escrever o Y (Tolkien, sem imitar)
@@ -137,8 +144,8 @@ sentenças. **A Pedra é o cartório, não um altar.** Mentir diante dela é cri
 ### 3.2 A nave (Proposta)
 "Domus" é casa. A nave foi feita para muitos anos: há famílias a bordo (a criança da escola, do `ATO_1.md`).
 Cerca de quarenta pessoas.
-- **O Anel:** gira para dar peso. Cabines, refeitório, escola, enfermaria, hidroponia. Andar no Anel é sempre
-  subir uma ladeira que nunca acaba.
+- **O Anel:** gira para dar peso. Cabines, refeitório, escola, enfermaria, hidroponia. No Anel, o corredor sobe à frente
+  e atrás de quem anda, mas o chão sob os pés está sempre plano. Café servido de pé cai meio de lado na caneca.
 - **O Eixo:** o corredor central, sem peso. Ponte, comunicações, servidores da DOMUS. Corrimão em tudo.
 - **A Proa:** o observatório, virado para a frente, para onde a nave cai. Lacrado por ordem da Comandante (Z5).
 - **A Popa:** reator e propulsão. Quente, barulhenta, onde ninguém vai à toa.
@@ -155,10 +162,16 @@ Cerca de quarenta pessoas.
 ### 3.4 A ciência (Interestelar: a física cobra em gente)
 O que está na aba História segue valendo. Este documento acrescenta uma peça (Proposta, **especulativo com base real**):
 
-**A luz de fora chega toda junta.** Num buraco negro que gira, há dois horizontes. Depois do primeiro (que a Domus
-já cruzou sem perceber), quem cai em direção ao segundo recebe a luz do universo de fora cada vez mais
-concentrada e mais rápida: o futuro inteiro de fora chegando de uma vez. Isso está nas equações (os físicos chamam
-de instabilidade do horizonte interno). É a "estrela que observa": um brilho que cresce, que parece um olho e não é.
+**A luz de fora chega toda junta.** Um buraco negro que gira tem duas bordas, uma dentro da outra.
+- A de fora é o ponto sem volta. A Domus passou por ela às 21h47 da Z0 e ninguém sentiu: num buraco negro deste
+  tamanho, a borda não tem solavanco.
+- A de dentro é onde o giro "segura" a queda. Até lá, o relógio de bordo marca poucos dias. Nesse mesmo trecho,
+  lá fora, passa o futuro inteiro do universo.
+- Então tudo o que a base mandar, daqui até sempre, tem de caber nesses dias. É como ouvir cem anos de rádio numa
+  tarde: as mensagens vêm cada vez mais juntas, e a luz, cada vez mais forte. Isso está nas equações (os físicos
+  chamam de instabilidade do horizonte interno). Ninguém sabe se acontece assim de verdade.
+- No fim, as mensagens continuam chegando, mas tão espremidas que a antena não as lê mais: viram calor e radiação
+  no casco. Esse é o perigo do Z, e é a "estrela que observa", o brilho que cresce na frente da Proa.
 
 **O que isso faz com a tripulação (o relógio do Z):** as mensagens da base chegam cada vez mais rápido.
 | Fase | Mensagens da base | O que a tripulação lê |
@@ -166,11 +179,16 @@ de instabilidade do horizonte interno). É a "estrela que observa": um brilho qu
 | Z0 (intro) | uma por dia, com atraso normal | rotina: ajustes de rota, recados de família |
 | Z1 | algumas por hora | a base pergunta por que a Domus parou de responder |
 | Z2 | anos num minuto | a base desiste; a homenagem; netos que nunca conheceram ninguém a bordo |
-| Z5 | só luz | não há mais mensagem: só o brilho |
+| Z5 | as mensagens viram calor | a antena não lê mais nada; o casco esquenta |
 
-Assim a dilatação do tempo não é aula: é a tripulação lendo o próprio velório.
-- Visto de fora, a Domus parece parada na borda para sempre (Decidido, História). Por isso a base continua mandando.
-- Força de maré: num buraco negro enorme, a nave não se despedaça no começo. O perigo é outro.
+Assim a dilatação do tempo aparece sem aula: a tripulação lê, na ordem, a base desistir dela.
+- Visto de fora, a Domus parece parada na borda, cada vez mais apagada e avermelhada, sem nunca sumir de vez
+  (Decidido, História). Por isso a base não declara a nave perdida e continua mandando.
+- Força de maré: num buraco negro deste tamanho, ela é fraca demais para esticar a nave. O perigo é a luz que se
+  acumula (acima).
+- **Tamanho:** para a queda entre as duas bordas durar dias, e não segundos, o buraco negro precisa ser dos maiores
+  que existem, dezenas de bilhões de vezes a massa do Sol. No do centro da nossa galáxia, a mesma queda duraria
+  cerca de um minuto (ordem de grandeza).
 
 **Como explicar sem aula:**
 - Quem explica tem pressa e precisa convencer alguém de alguma coisa agora.
@@ -181,18 +199,21 @@ Assim a dilatação do tempo não é aula: é a tripulação lendo o próprio ve
 
 ### 3.5 Boatos de bordo
 - "A Comandante sabe para onde a gente vai e não conta."
-- "A DOMUS errou a rota. Máquina também erra."
-- "As plantas da hidroponia estão escrevendo."
-- "O alarme de teste tocou fora de hora ontem. Três curtos, um longo."
+- "A DOMUS errou a rota. O Vasko achou três erros de arredondamento no programa da hidroponia. Imagina na navegação."
+- "O Vasko diz que as folhas estão crescendo em letra. O Vasko não dorme faz uma semana, então."
+- "O alarme de teste tocou na terça. Teste é quinta. Abri tíquete e me mandaram ler o manual."
 
 ### 3.6 Documentos do mundo
 - **Tíquetes de manutenção** (à moda dos terminais de Fallout): "Ruído no casco, setor 4. Prioridade baixa." →
   "Mesmo ruído. Ritmo regular." → "Favor não abrir mais tíquetes sobre o ruído."
 - **Registro de bordo apagado**, recuperável aos pedaços.
-- **Mensagens de família** da base, cada vez mais velhas: a mesma pessoa escrevendo aos 30, aos 50, aos 80.
+- **Mensagens de família** da base, cada vez mais velhas. Aos 30: "Pai, o Theo perdeu o primeiro dente. Guardei numa
+  caixinha de fósforo pra você ver." Aos 50: "O Theo casou. Achou a caixinha na mudança e não deixou eu jogar fora."
+  Aos 80: "Não sei se isso ainda chega. A base mudou de nome duas vezes. A caixinha está comigo."
 - **A lista de verificação da DOMUS**, item a item, com um item novo que ninguém escreveu.
 
 ### 3.7 A hora 21h47 (Proposta)
-21h47 é a hora de bordo em que a Domus cruzou o primeiro horizonte. Ninguém percebeu na hora: só um minuto pulado
-no relógio da cabine (a Z0). A IA marca suas mensagens com o tempo de bordo dela. Por isso o mesmo horário aparece
-em Port Halden e em Yudur.
+21h47 é a hora de bordo em que a Domus cruzou a borda de fora. Ninguém percebeu. A DOMUS ajusta a hora de bordo
+convertendo-a para a hora da base, e na fórmula que ela usa a hora da base vai ao infinito exatamente na borda.
+Às 21h47 a conta tropeça e o relógio da cabine pula um minuto (a Z0). A IA marca suas mensagens com o tempo de bordo
+dela. Por isso o mesmo horário aparece em Port Halden e em Yudur.

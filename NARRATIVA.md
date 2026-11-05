@@ -29,7 +29,7 @@ Tolkien (profundidade de tempo e de língua, sobretudo no Eixo Y).
 - **O mundo comenta o jogador.** Um rádio, um jornal, um boato que repete o que ele fez, pelo nome.
   Em Port Halden isso é a KPHN e a rádio pirata; em Yudur, a pregoeira e as canções; na Domus, o mural de recados do refeitório.
 - **Terminais e papéis.** A tragédia contada por quem não sabia que era tragédia: pedido de material,
-  e-mail de colega, escala de plantão. Depois, o silêncio.
+  e-mail de colega, escala de plantão, e então os registros param.
 - **Humor seco.** O mundo está acabando e o Abe reclama que ninguém comprou pão.
 - **Finais em quadros.** No fim, uma tela por lugar e por pessoa importante: o que aconteceu com Maple Heights,
   com a Martha, com o Danny. É o que faz o jogador sentir que mexeu no mundo inteiro.
@@ -93,10 +93,10 @@ Usar para **subir o nível**, sobretudo no Eixo Y, nunca para imitar. Não há p
 
 ## 2. Por que 17 missões parecem um jogo enorme
 
-Fallout 3 tem por volta de 17 missões principais e parece não ter fim. Não é o número: é o que as missões fazem.
+Fallout 3 tem por volta de 17 missões principais e parece não ter fim, pelo que cada missão faz.
 
 1. **A principal é um guia de viagem.** Cada missão manda o jogador para uma região nova e o obriga a atravessar
-   outras. No caminho, ele tropeça em pessoas com problemas. A principal é o fio; o mundo é o colar.
+   outras. No caminho, ele tropeça em pessoas com problemas.
 2. **Cada missão tem outra forma.** Uma é escolta, outra é infiltração, outra é só conversa, outra é cerco,
    outra é viagem, outra prende o jogador num lugar estranho com regras próprias. Nenhuma se parece com a anterior.
 3. **Cidades-base cheias.** Um lugar com dez pessoas, cada uma com uma vontade, rende cinco missões secundárias
@@ -190,9 +190,8 @@ O custo usa o que o jogo já tem. Nada de moeda nova.
 2. **O relógio anda.** O tempo do eixo de onde se sai passa enquanto se está fora. No X, isso pesa (o toque de
    recolher chega mais cedo). É a versão KOSMOS da radiação do Fallout: o atalho custa.
 3. **O preço sobe no mesmo ato.** 1º Eco do ato: dificuldade Fácil; 2º: Médio; 3º em diante: Difícil.
-   Quem faz todos, faz com medo.
 4. **Voltar é outro teste** só se a Dissonância estiver numa marca (5, 10, 15...). Falhar a volta deixa um
-   **traço de eco** temporário até o fim da missão (ex.: "conta em voz baixa", −1 em conversas). Não mata, incomoda.
+   **traço de eco** temporário até o fim da missão (ex.: "conta em voz baixa", −1 em conversas). Não tira vida; atrapalha até o fim da missão.
 
 ### 4.6 Limites (para não quebrar o 30)
 A Ressonância ou Dissonância 30 é fim de jogo. Então:
@@ -238,24 +237,26 @@ O que muda de um eixo para o outro é o **formato** das missões (seção 2, ite
 
 **Z0 · Turno da Noite** — *rotina (Proposta)*
 O jogador é um tripulante da Domus num turno qualquer. Lista de verificação, refeitório, um colega reclamando do
-café reciclado, a DOMUS lembrando um aniversário. Uma leitura de instrumento fora do lugar, que alguém anota e
-ninguém resolve. Às 21h47 de bordo, nada acontece, a não ser que o relógio da cabine pula um minuto. O jogador vai
+café reciclado, a DOMUS lembrando um aniversário. O medidor do casco marca 0,3 acima do normal; a técnica de turno escreve "sensor sujo?" no mural e vai jantar. Às 21h47 de bordo, nada acontece, a não ser que o relógio da cabine pula um minuto. O jogador vai
 dormir. Corte para Port Halden.
 - Curta: 6 a 10 telas. Serve para o jogador conhecer a voz da DOMUS **como sistema comum** (decidido em História).
 - Planta: o ritmo de três curtos e um longo (um alarme de teste), o número 412, a palavra "Domus" num crachá.
 
 **Prólogo X · A Noite** — *existe (`prologo-x`)*
-A noite em que a cidade enlouquece. Termina na Praça Central, na música, no salto.
+Começa numa noite comum em Maple Heights e termina com metade do bairro na Praça Central, ouvindo uma música
+que ninguém sabe de onde vem. Dali, o salto.
 
 **X1 · A Manhã Seguinte** — *existe (`x1-manha`)*
-Sobreviver ao dia cercado pela Contenção. Paga os fios do prólogo. Descobre a Contagem do Teddy: termina na
+Maple Heights acorda com a cerca da Contenção no fim da rua, sem luz, e com o Abe sem ter o que vender além de
+água. Paga os fios do prólogo. Descobre a Contagem do Teddy: termina na
 sexta, às 21h47. Abre o mapa e as três missões em paralelo.
 
 **As três de Port Halden (qualquer ordem)**
 
 **X2 · Frequência 94.7** — *escolta e fuga (do `ATO_1.md`)*
 A Ouvinte transmite de telhado em telhado e a Contenção a caça. As fitas dela têm datas que ainda não chegaram.
-Salvar a Ouvinte ou as fitas, nem sempre as duas.
+Quem chama o jogador é um rapaz da rede que precisa levar uma bateria de carro até o telhado onde a Ouvinte vai
+transmitir, e não tem como subir sozinho. Salvar a Ouvinte ou as fitas, nem sempre as duas.
 - Grupo: a rede da rádio pirata (gente que guarda pedaços da música).
 
 **X3 · A Cerca** — *infiltração e a escolha grande (Proposta)*
@@ -269,19 +270,20 @@ Contenção vai recolher na sexta.
 - Grupo: a Contenção. Tem gente decente lá dentro (o guarda do X1).
 
 **X4 · 1987** — *investigação em documentos e conversa (Proposta)*
-A primeira vez. O fogo da Delancey Street, o apagão da Estação Rua 9, o trem que nunca chegou. Tudo às 21h47.
-O jogador junta o que sobrou: o caderno do Joe Kessler, o vigia Oswald, um aposentado do metrô, a página arrancada
+Em março de 1987, às 21h47, pegou fogo um prédio vazio na Delancey Street, a Estação Rua 9 apagou e um trem saiu
+e não chegou. O jogador junta o que sobrou: o caderno do Joe Kessler, o vigia Oswald, um aposentado do metrô, a página arrancada
 com o carimbo da Contenção. Missão quase sem combate, com relógio curto (antes do toque de recolher).
-- Descoberta: em 1987 a coisa parou sozinha. Ninguém sabe por quê. (A causa fica para o Z.)
+- Descoberta: em 1987 tudo parou sozinho na mesma noite. Ninguém sabe por quê. (A causa fica para o Z.)
 - Grupo: os velhos de Port Halden, que lembram e foram desmentidos.
 
 **X5 · Estação Rua 9** — *sobrevivência total (do `ATO_1.md`)*
 Sexta, 21h47. A Contagem chega a zero. O trem de 1987 chega. A Contenção quer fechar a estação com gente dentro.
-Aqui, e só aqui, o X vira sobrevivência de verdade: sair vivo com quem der. Dentro do trem, pela janela, outro tempo.
+Aqui, e só aqui, o X vira sobrevivência de verdade: sair vivo com quem der. Pela janela do trem passa uma encosta com neve e uma paliçada de madeira.
 Salto para o Y. A partir daqui a linha principal está em Yudur.
 
 **Y1 · Três Batidas e Uma Longa** — *perseguição (do `ATO_1.md`, sem religião)*
-O jogador acorda no meio da ação: o sino toca, a guarda do vale corre atrás dele, e ele não sabe por quê.
+O jogador acorda na pele do eco, numa manhã de tarefa: buscar água, acertar uma talha com o vizinho. No meio da
+conta, o sino toca, e a guarda vem na direção dele. Ele não sabe por quê.
 O eco dele foi visto tocando a Pedra da Lei de noite, e a Pedra amanheceu com runas que ninguém gravou.
 Primeiras runas. Provar que não foi ele, ou fugir.
 - O sino toca três batidas rápidas e uma longa. O jogador reconhece; o eco dele, não.
@@ -295,52 +297,55 @@ que em Yudur é a pena para quem traz desgraça). Proteger, entregar ao copista 
 - Rima com a porta com corrente da Martha.
 
 **Y3 · A Estrada dos Marcos** — *viagem (Proposta)*
-A primeira viagem de verdade do jogo. Seguir a estrada de pedras marcadas para fora do vale, até a torre do
+O Theodric paga o jogador para copiar as runas da torre antes de o inverno fechar a estrada. É a primeira viagem
+de verdade do jogo: Seguir a estrada de pedras marcadas para fora do vale, até a torre do
 Desperto, com Runáticos nos caminhos e o inverno chegando. A paisagem trabalha: o frio, a comida que acaba,
 o vau que subiu. No caminho, a Muralha Velha, que ninguém de Yudur lembra quem levantou.
-- O Desperto fala por enigmas porque vê demais (é lúcido, inofensivo, isolado: regra do DESIGN).
+- O Desperto é lúcido, inofensivo e isolado (regra do DESIGN). Fala simples e erra os tempos: pergunta quanto vai
+  custar o pão no ano que vem como quem pergunta do ano passado.
 
 **Y4 · O Registro do Amanhã** — *cerco e comunidade (Proposta)*
 A Pedra da Lei, onde os copistas gravam nascimentos, dívidas e mortes, amanhece com nomes de mortos que ainda
-estão vivos, com a data da lua seguinte. Yudur se divide: os que querem apagar a Pedra, os que querem obedecer a
-ela, os que querem fugir. Runáticos rondam a paliçada. Proteger o vale durante as noites até a data.
+estão vivos, com a data da lua seguinte. Yudur se divide, e cada lado tem rosto: o moleiro quer raspar a Pedra, a guarda quer
+obedecer a ela, a Mabel quer fugir com o irmão. Runáticos rondam a paliçada. Proteger o vale durante as noites até a data.
 - Rima com a carta do Harold e a confissão do amanhã: em todo tempo, chegam registros do futuro.
 
 **Y5 · A Câmara sob a Pedra** — *descida (do `ATO_1.md`, "A Cripta da Tabula", refeito)*
 Embaixo da Pedra há uma câmara que os copistas mantêm fechada. Lá dentro, as runas se reorganizam e mostram a
-contagem, a rua molhada de Port Halden e um corredor de metal. O jogador entende, pela primeira vez sem dúvida,
-que não está em outro mundo: está em outro **tempo**. Salto para a Domus.
+contagem, a rua molhada de Port Halden e um corredor de metal, gravados em pedra mais velha que o vale.
+Daí em diante não dá mais para fingir que é outro mundo. Salto para a Domus.
 
 **Z1 · Turno 412** — *retorno (do `ATO_1.md`)*
-De volta à Domus, onde tudo começou. Mas o jogador agora sabe de Port Halden e de Yudur. A nave não está como ele
-deixou: passou tempo, gente mudou de lugar, a hidroponia cresce em espiral. O técnico Oren Vasko não dorme.
+O jogador acorda no beliche da Z0, com o café ainda na caneca. No mural, os recados são de semanas depois: passou tempo, gente mudou de lugar, a hidroponia cresce em espiral. O técnico Oren Vasko não dorme.
 Aparecem os mobs do Z (forma e nome: o autor decide).
 
 **As três da Domus (qualquer ordem)**
 
 **Z2 · Os Pacotes da Base** — *o preço do tempo (Proposta)*
 As mensagens da base, que chegavam uma por dia, começam a chegar mais rápido. Dez por hora. Depois anos de
-transmissões num minuto. O jogador lê, na ordem, a base desistir da Domus, a homenagem aos mortos que ainda
-estão vivos, o mundo de fora seguindo sem eles. A Comandante Arasaki manda apagar. A operadora de comunicações
-guarda. É a missão Interestelar do jogo: a física cobrando em gente. Ciência: ver `LUGARES.md`, Domus.
+transmissões num minuto. O jogador lê, na ordem, a base desistir da Domus, a placa que a base inaugura com os quarenta nomes da
+tripulação, o mundo de fora seguindo sem eles. A Comandante Arasaki manda apagar. A operadora de comunicações
+guarda, porque uma das mensagens é da mãe dela. Ciência: ver `LUGARES.md`, Domus.
 
 **Z3 · A Contagem da DOMUS** — *investigar ou obedecer (do `ATO_1.md`)*
-A IA faz uma contagem que ninguém programou e responde com educação que "está dentro dos parâmetros". A tripulação
-se divide entre a Comandante e quem quer abrir os registros. Conversa, pressão, motim pequeno. O jogador fica com
+A IA faz uma contagem que ninguém programou, responde que "está dentro dos parâmetros" e se oferece para imprimir
+os parâmetros. A tripulação se divide entre a Comandante e quem quer abrir os registros. Termina num motim pequeno:
+seis pessoas trancadas na ponte, discutindo quem vai buscar a janta. O jogador fica com
 a DOMUS frente a frente, num terminal, e ela é **gentil e literal**.
 
 **Z4 · O Casco** — *atividade fora da nave (Proposta)*
-Algo bate no casco, três curtos e um longo. Sair em traje, preso a um cabo, e ver com os próprios olhos o céu que
-a tripulação só via por instrumento: a luz de fora chegando toda junta. A missão mais silenciosa do jogo.
+O ruído dos tíquetes do setor 4 volta, três curtos e um longo, e agora ninguém pode fingir que é o casco
+esfriando. Sair em traje, preso a um cabo, e ver com os próprios olhos o céu que
+a tripulação só via por instrumento: a luz de fora chegando toda junta.
 - Rima com o telhado do Edifício Aurora (o pacote do Marcus) e com o vau de Yudur (atravessar o que não se deve).
 
 **Z5 · O Horizonte** — *clímax e primeiro final*
-O observatório lacrado. A estrela que observa, que não observa nada (é luz, não olho). A decisão sobre a Domus.
+O observatório lacrado. A estrela que observa: o brilho da luz de fora, bem na frente da Proa. A decisão sobre a Domus.
 **Primeiro final**, com quadros de Port Halden, Yudur e Domus pelo que o jogador fez nos três tempos.
 O que exatamente se decide depende do que a IA quer (Em aberto). Por isso Z5 fica para o fim da escrita.
 
 **Pós-jogo · O Lime** (2 missões + segundo final)
-O tempo vira lugar. A origem (0,0,0). Gente de épocas diferentes lado a lado. A IA, que durou até ali. Os fios
+No Lime, os tempos viram lugares lado a lado, na origem (0,0,0). Gente de épocas diferentes lado a lado. A IA, que durou até ali. Os fios
 pessoais terminam. Segundo final.
 
 ### 5.3 Fios que atravessam as 17

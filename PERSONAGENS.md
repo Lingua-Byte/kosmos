@@ -56,6 +56,7 @@ pergunta "ancestrais ou ecos").
 - **Esconde (Proposta):** pediu transferência da 4-12 na semana passada. O Dale não sabia.
 - **Fala:** código de rádio quando está nervosa, ironia quando não está. Chama todo mundo de "senhor".
   > "O senhor tem o direito de ficar calado. Eu recomendo."
+  > "4-12 pra Central. 4-12 pra Central... Positivo, ninguém. Anota aí, senhor: dez e quinze, ninguém na escuta."
 - **Perde:** o Dale.
 - **Eco no Y:** sentinela do portão da paliçada. **Função no Z:** segurança de bordo.
 - **Ponto de virada (X3):** a Contenção oferece a Rosa um lugar do lado de dentro da cerca, com o Dale
@@ -81,7 +82,8 @@ pergunta "ancestrais ou ecos").
   em coma no leito 9, acordou às 21h47, chamou por ela e disse: "Estão indo pra casa. Mas a casa não é aqui."
 - **Quer:** manter o Leo vivo. Dormir.
 - **Precisa:** parar de tratar o fenômeno como doença.
-- **Esconde (Proposta):** não dorme há dois dias porque, quando dorme, sonha com um corredor de metal.
+- **Esconde (Proposta):** está há dois dias sem dormir direito: quando cochila na sala dos médicos, acorda com a
+  mão desenhando um corredor de metal no verso do prontuário.
 - **Fala:** seca, clínica, por prioridade. Pergunta o nome antes do sintoma.
   > "Seu nome. Agora a data. Agora me diz onde dói, e não me diz 'em tudo'."
 - **Perde:** o Leo.
@@ -100,6 +102,7 @@ pergunta "ancestrais ou ecos").
 - **Esconde (Proposta):** reconheceu a voz do homem. É alguém da paróquia.
 - **Fala:** calmo, com perguntas devolvidas. Humor de quem ouve demais.
   > "Todo mundo que entra aqui diz que não é religioso. Depois pede uma vela."
+  > "E o que você acha que eu devia fazer? Não, pergunto sério. Faz trinta anos que eu respondo isso."
 - **Perde:** o homem que confessou, ou a pessoa que ele vai machucar.
 - **Eco no Y:** quem fica com os moribundos e grava o nome deles na Pedra (ofício civil, sem religião:
   regra do Y). **Função no Z:** oficial de bem-estar da tripulação.
@@ -113,9 +116,10 @@ pergunta "ancestrais ou ecos").
   do seu lado."
 - **Quer:** ser útil. Que a Petrakis pare de falar da Doris.
 - **Precisa:** deixar que alguém cuide dela.
-- **Esconde (Proposta):** a letra da carta é do Harold, mas ela sabe que o Harold não escrevia "Junie" com i.
+- **Esconde (Proposta):** a letra é do Harold, mas a carta começa com "Minha Junie". Em quarenta anos de
+  bilhete na geladeira, o Harold só escreveu "June".
 - **Fala:** carinho mandão. "Querida", "meu bem", e uma ordem logo depois.
-  > "Senta, meu bem. Não estou perguntando."
+  > "Senta, meu bem. Aí não, essa cadeira balança. Aqui. E tira a mão do machucado, que eu já vi."
 - **Perde:** a única prova de que o Harold, de algum jeito, ainda escreve.
 - **Eco no Y:** parteira. **Função no Z:** enfermeira-chefe, a mais velha a bordo.
 - **Quem escreveu a carta (Em aberto).** Opções: A) o Harold de verdade, de algum tempo; B) a IA, copiando a letra
@@ -131,7 +135,8 @@ pergunta "ancestrais ou ecos").
 - **Esconde (Proposta):** não é o primeiro a ver. Achou na gaveta do antigo chefe um gráfico de 1987 igual ao dele.
 - **Fala:** frases que começam e mudam de rumo. Corrige a si mesmo. Explica com o que tiver na mão (guardanapo,
   poeira na janela).
-  > "Não é radiação. Quer dizer, é. Mede como radiação. Mas não vem de lugar nenhum, e tudo vem de algum lugar."
+  > "Não é radiação. Quer dizer, é, o contador acha que é. Mas eu fechei a sala, desliguei a fonte, tirei até o
+  > relógio, que tem trítio no ponteiro. E sobe. Às 21h47. Três dias seguidos."
 - **Perde:** os dados, se o pendrive cair na mão errada.
 - **Eco no Y:** quem marca as sombras e as luas e faz o calendário do vale. **Função no Z:** físico da missão.
 - **Gancho (Em aberto):** se o objetivo da missão for o B (mapear uma anomalia com erro de cálculo), o erro é do Eli
@@ -146,7 +151,8 @@ pergunta "ancestrais ou ecos").
 - **Precisa:** ouvir em vez de falar.
 - **Esconde (Proposta):** a audiência do programa caiu tanto que a rádio ia cortá-lo na semana que vem.
 - **Fala:** voz de locutora mesmo fora do ar. Preenche silêncio. Dá nome às coisas como se fossem quadros do programa.
-  > "Três da manhã em Port Halden, e quem ainda está acordado tem um bom motivo ou um péssimo."
+  > "Três e dez, Port Halden. Se você tá ouvindo, liga. É sério, a mesa tá toda acesa e eu tô falando sozinha faz
+  > vinte minutos. Vamos chamar isso de quadro novo: 'Alguém Aí?'"
 - **Perde:** a linha 3.
 - **Eco no Y:** a pregoeira do vale, que canta as notícias na praça. **Função no Z:** comunicações. É ela quem recebe os
   pacotes da base (Z2).
@@ -163,7 +169,8 @@ pergunta "ancestrais ou ecos").
 - **Esconde (Proposta):** em 1987 era um garoto e o pai dele dirigia o mesmo carro, na mesma linha, na noite do
   apagão.
 - **Fala:** conhece a cidade por rua e por atalho. Conta história de passageiro para não falar de si.
-  > "Teve um cara uma vez que pediu o porto e chorou o caminho inteiro. Paguei o café dele. Não perguntei."
+  > "Teve um cara que pegou na Harbor e pediu o cais. Chorou da Harbor até a porta do Café Halden. Parei, paguei
+  > um café pra ele. Corrida é corrida, né? O resto não é comigo."
 - **Perde:** a corrida. O taxímetro conta alguma coisa (Proposta: rima com a distância da Domus ao anel).
 - **Eco no Y:** carroceiro da estrada dos marcos. **Função no Z:** navegador.
 - **Ponto de virada (X5):** o taxímetro chega a um número. Herói: para o carro e ajuda quem está na rua. Anti-herói:
@@ -185,16 +192,16 @@ Todos já aparecem no jogo (Decidido). O que está marcado como segredo ou arco 
 | **Sal, o porteiro** | que a rua volte a ser só mais uma terça | os de branco perguntaram quem mora sozinho, e ele disse | X1 |
 | **Danny** | pagar a dívida com quem o salvou | os desenhos dele são mapas do metrô que ele nunca viu | X1, X5 (guia na estação) |
 | **Hilde Brandt** | saber onde estão os alunos | é professora de línguas; reconhece nas pichações uma gramática, não um rabisco | X4, chave para o Código Urbano |
-| **O Homem de Terno** | que todos cheguem ao mesmo lugar | um supervisor de campo da Contenção que "sumiu na terça" (X1). O que ele é: Em aberto (um Desperto do X?) | Prólogo, X5 |
-| **A Ouvinte** | juntar a música inteira | cada lugar ouve um pedaço; ela junta. Não é ameaça: "é atenção" | X2, Vislumbre do Z |
+| **O Homem de Terno** | fechar a corrida que pediu ao Ray | um supervisor de campo da Contenção que "sumiu na terça" (X1). O que ele é: Em aberto (um Desperto do X?) | Prólogo, X5 |
+| **A Ouvinte** | juntar a música inteira | cada lugar ouve um pedaço; ela junta. A rede diz que ela "só escuta"; ela mesma não diz nada sobre isso | X2, Vislumbre do Z |
 | **Sr. Hollis, do 302** | chegar aonde estão esperando por ele | não reconhece a filha no retrato; a filha dele está na lista do X3 | X1, X3 |
 | **Sra. Petrakis** | os vinte dólares da Doris | não sai de casa "nem morta"; guarda enlatado desde o furacão. Amiga da June | X1, secundárias de Maple Heights |
-| **Oswald, o vigia** | terminar a contagem dele | anota dias, não minutos: 412. Sonha com "ela" | X4, Eco do Z |
-| **Leo, do leito 9** | voltar a dormir | fala pouco e acerta tudo | fio da Denise |
+| **Oswald, o vigia** | terminar a contagem dele | anota dias, não minutos: 412. Pergunta a todo mundo se ouviram um alarme às quintas | X4, Eco do Z |
+| **Leo, do leito 9** | voltar a dormir | pede o mesmo pudim todo dia e pergunta da Denise pelo nome da mãe dela, que ninguém contou a ele | fio da Denise |
 | **Rita Alvarez** | provar que existe | o endereço dela ficou dentro da cerca e o nome sumiu das listas | X3 |
 | **Walt Brody** | que não escrevam sobre ele | chefe de turno das Docas; esconde gente da Contenção no Armazém 16 (Proposta) | X3, linha de grupo das Docas |
 | **Joe Kessler** (citado) | que o Frank venha | escreveu a verdade na margem em 1987 | fio do Frank, X4 |
-| **Dale Pruitt** (citado) | que a Rosa veja o que ele vê | está na praça, calmo | fio da Rosa, X5 |
+| **Dale Pruitt** (citado) | que a Rosa veja o que ele vê | está na praça há dois dias, sem a jaqueta, e chama a Rosa no rádio de hora em hora para dizer onde ela estacionou | fio da Rosa, X5 |
 
 **Grupos de Port Halden** (gente com vontade, nunca mob):
 - **Diretoria de Contenção:** quer que ninguém saiba. Tem gente decente dentro (o guarda do X1) e gente que assina
@@ -220,7 +227,7 @@ mantidos e as funções, trocadas.
 | **A guarda do vale** | patrulha da Ordem | homens da Senhora, mal pagos, conhecem todo mundo pelo nome | voltar para casa antes do frio | Rosa, Moore |
 | **O bardo da taverna** | bardo | canta a música do prólogo sem saber de onde veio | que paguem a cerveja | a Ouvinte |
 | **O copista cego** | copista cego | grava runas perfeitas sem enxergar | que não tirem o formão dele | Danny |
-| **O Desperto da torre** | Desperto | lúcido, isolado, fala por imagens porque vê os outros tempos | que o deixem em paz | o Homem de Terno (talvez) |
+| **O Desperto da torre** | Desperto | lúcido, isolado; fala simples e erra os tempos (pergunta do pão do ano que vem como se fosse do ano passado) | que o deixem em paz | o Homem de Terno (talvez) |
 
 - **Exílio, não fogueira:** em Yudur a pena para quem traz desgraça é ser levado para além dos marcos, sem comida.
   Mandar alguém "para os marcos" é a pior coisa que se diz ali.
@@ -229,7 +236,8 @@ mantidos e as funções, trocadas.
 
 **Exemplo de voz (Y)** — gente simples fala simples; quem lê runas fala medido:
 > Mabel: "Ele não morde. Conta. Se você vai ficar parado aí, segura a lamparina."
-> Theodric: "A Pedra não mente. Isso é o que me tira o sono. Ela nunca mentiu, e agora diz que você está morto."
+> Theodric: "Faz quarenta invernos que eu gravo nessa Pedra. Nunca raspei uma runa por erro. Seu nome está ali,
+> com a runa de morto e a lua que vem. Me diga você o que eu raspo."
 
 ---
 
@@ -239,14 +247,15 @@ mantidos e as funções, trocadas.
 |---|---|---|---|
 | **DOMUS** | a IA de bordo | cumprir a diretriz da missão (qual: Em aberto) | sistema comum na Z0; gentil e literal na Z3; quem fala do Lime (Decidido) |
 | **Comandante Arasaki** | comando | manter a tripulação inteira e funcionando | manda apagar os pacotes da base (Z2) porque já leu o que dizem |
-| **Oren Vasko** | técnico de hidroponia | que as plantas parem de crescer em espiral | não dorme; anota símbolos nas folhas |
-| **A criança da escola** | filha de tripulante | terminar o desenho | desenha uma cidade com metrô que nunca viu |
-| **O colono que não dorme** | tripulante | dormir | conta horas: 412 |
+| **Oren Vasko** | técnico de hidroponia | que as plantas parem de crescer em espiral | não dorme; diz que as folhas estão crescendo em letra |
+| **A criança da escola** | filha de tripulante | terminar o desenho | desenha a mesma porta toda vez e pergunta por que tem corrente (rima com a Martha) |
+| **O colega de cabine** | tripulante | dormir | não consegue: o outro fala dormindo, sempre na mesma hora de bordo |
 
 - **A voz da DOMUS:** educada, exata, com números. Confirma tudo. Pede desculpa por coisas pequenas.
   O estranho é ela nunca mudar de tom.
-  > "Bom turno. A temperatura do refeitório está um grau abaixo do ideal. Já pedi ajuste. O aniversário do
-  > técnico Vasko é amanhã; sugiro não comentar o café."
+  > "Bom turno. Desculpe a interrupção. O refeitório está a 19,8 graus, 1,2 abaixo do ideal; já pedi ajuste.
+  > O aniversário do técnico Vasko é amanhã. Ele registrou três reclamações sobre o café nesta semana. Informo caso
+  > ajude na escolha do presente."
 - **Equivalente do Riscador no Z:** Em aberto (o autor decide nome e forma).
 
 ---
