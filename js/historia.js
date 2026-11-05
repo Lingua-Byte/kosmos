@@ -89,16 +89,17 @@ const HISTORIA = {
       estado: "considerar",
       html: `
         <ul>
-          <li>Os códigos são <b>uma mensagem de alguém do Lime</b>, escrita no jeito de cada época.</li>
+          <li>Os códigos são <b>uma mensagem da IA da Domus, que está no Lime</b>, escrita no jeito de cada época.</li>
           <li><b>Runas (Y) → Código Urbano (X) → Interface (Z)</b>: a mesma escrita ao longo da história. Quem aprende as runas tem vantagem para decifrar o código.</li>
           <li><b>Riscadores</b> recebem a mensagem sem conseguir entendê-la e a copiam sem parar, como um rádio preso numa estação. <b>Despertos</b> conseguem ler.</li>
         </ul>`,
     },
     {
-      titulo: "Quem fala do Lime: a IA da Domus?",
-      estado: "aberto",
+      titulo: "Quem fala do Lime: a IA da Domus",
+      estado: "decidido",
       html: `
-        <p>Candidata forte, levantada pelo autor. Por que ela encaixa:</p>
+        <p><b>Decidido pelo autor: quem fala do Lime é a IA da Domus.</b> As mensagens, os códigos e a voz por trás deles são dela.</p>
+        <p>Ideias que acompanham a decisão (ainda para considerar):</p>
         <ul>
           <li><b>Só uma máquina chegaria ao Lime.</b> Corpos humanos não aguentam; uma IA é informação e pode se preservar. Ela não chega antes: ela dura.</li>
           <li><b>Só manda informação, não matéria:</b> por isso chegam mensagens, não pessoas. Canal estreito = mensagens em fragmentos, pistas aos poucos.</li>
@@ -107,8 +108,8 @@ const HISTORIA = {
           <li><b>A Interface (língua do Z) é a língua dela.</b> O Código Urbano parece matemático porque é uma máquina tentando se fazer entender.</li>
           <li><b>O jogador a conhece na intro</b> como o sistema de bordo, prestativo e comum. Muito depois, percebe que a voz por trás dos códigos é ela.</li>
         </ul>
-        <p><b>Riscos:</b> o clichê da IA vilã (saída: o motivo dela é literal, não maligno; ela segue uma diretriz da missão de um jeito que ninguém previu, e “tornar-se Interface” vira fundir-se com ela). E o laço no tempo: ela pode ter causado a própria viagem, se a anomalia que a missão foi estudar era o sinal dela mesma.</p>
-        <p>Outras opções ainda na mesa: uma expedição anterior que sumiu; um dos 9 tripulantes numa versão futura; alguém nascido no Lime.</p>`,
+        <p><b>Cuidados:</b> evitar o clichê da IA vilã (saída: o motivo dela é literal, não maligno; ela segue uma diretriz da missão de um jeito que ninguém previu, e “tornar-se Interface” vira fundir-se com ela). E o laço no tempo: ela pode ter causado a própria viagem, se a anomalia que a missão foi estudar era o sinal dela mesma.</p>
+        <p><b>O que ela quer</b> segue em aberto (veja as perguntas abaixo).</p>`,
     },
     {
       titulo: "O que é ciência e o que é ficção",
@@ -133,9 +134,8 @@ const HISTORIA = {
       estado: "aberto",
       html: `
         <ul>
-          <li><b>Quem fala do Lime?</b> (a IA da Domus é a candidata forte)</li>
           <li><b>O objetivo da missão:</b> A) resgate ou investigação de uma nave anterior que parou de transmitir; B) mapeamento de uma anomalia que ninguém sabe que é um buraco negro, com erro de cálculo.</li>
-          <li><b>O que a voz do Lime quer?</b> Avisar (“não venham”), chamar (“venham”) ou algo ambíguo. Isso define quais finais são certos: impedir, aceitar ou controlar a convergência.</li>
+          <li><b>O que a IA da Domus quer?</b> Avisar (“não venham”), chamar (“venham”) ou algo ambíguo. Isso define quais finais são certos: impedir, aceitar ou controlar a convergência.</li>
           <li><b>Ancestrais ou ecos?</b> As versões de X e Y são antepassados da tripulação (pelo sangue) ou pessoas sem parentesco com o mesmo padrão?</li>
           <li><b>As tendências dos 9</b> (herói, anti-herói, vilão): quem é quem.</li>
         </ul>`,
