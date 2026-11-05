@@ -11,6 +11,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - Se a junção der conflito, o robô falha: resolva na próxima sessão e avise o autor em uma frase simples, sem termos técnicos.
 
 ## Onde está cada coisa
+- Ferramentas gratuitas, IA e mecânicas planejadas: `FERRAMENTAS.md`.
 - Visão geral do jogo: `DESIGN.md` (ainda diz "três mundos": vale o que está abaixo).
 - Lore completa, com selos Decidido / Para considerar / Em aberto: `site/js/historia.js`, que aparece na aba **História** da Oficina (`site/oficina.html`). Lore nova: atualizar esse arquivo.
 - Missões: feitas no Criador (`site/diagramas.html` + `js/criador.js`), não em `js/missoes/*.js`. "Publicar no jogo" grava `site/missoes/<id>.json` + `indice.json`; a missão publicada substitui a do código com o mesmo id. Mudanças no motor mantêm o formato do Criador (`Criador.exportar` ↔ `MissoesDados.adaptar`). A Mesa é single player.
