@@ -34,6 +34,8 @@ const Criador = (() => {
     tendencia: () => TENDENCIAS.map((t) => [t, NOME_TENDENCIA[t]]),
     eixo: () => [["x", "∃ Urbano"], ["y", "ᛉ Medieval"], ["z", "◉ Espacial"]],
     prazo: () => [["curta", "curta"], ["media", "média"], ["longa", "longa"]],
+    modoDecifrar: () => [["facil", "fácil (com opções)"], ["dificil", "difícil (sem opções)"]],
+    linguaDecifrar: () => [["x", "Código Urbano (X)"], ["y", "Runas (Y)"]],
     estado: () => [["", "aberta"], ["concluida", "concluída"], ["perdida", "perdida"]],
     cidade: () => (typeof CIDADE_X !== "undefined" ? Object.entries(CIDADE_X.lugares).map(([k, l]) => [k, l.nome]) : []),
   };
@@ -211,6 +213,20 @@ const Criador = (() => {
         ${campoTxt("Explicação para o jogador (tutorial)", "d.tutorial", d.tutorial)}
         <div class="cr-duas">${campoNum("Ameaça (perigo com rodadas)", "d.ameaca", d.ameaca)}
           <label class="cr-check"><input type="checkbox" data-p="d.musica" data-k="bool" ${d.musica ? "checked" : ""}> toca a música do rádio</label></div>
+        ${secao("Decifrar (enigma de tradução)", `
+          <p class="ajuda">Preencha a frase para esta cena virar um enigma no lugar das escolhas. 3 tentativas não custam nada; no fácil, depois delas, 4 opções e 2 chances; quem falha de vez vai para a Lição (com salto no tempo).</p>
+          <div class="cr-duas"><label class="campo"><span>Língua</span>${entrada("sel:linguaDecifrar", "d.decifrar.lingua", d.decifrar?.lingua)}</label>
+            <label class="campo"><span>Modo</span>${entrada("sel:modoDecifrar", "d.decifrar.modo", d.decifrar?.modo)}</label></div>
+          ${campoTxt("Frase escrita (▢ no lugar da palavra)", "d.decifrar.frase", d.decifrar?.frase, "∃ ψ(t) ⇒ ▢(S)")}
+          ${campoTxt("Tradução (▢ no lugar da palavra)", "d.decifrar.traducao", d.decifrar?.traducao, "Existe uma mente, agora, que ▢ a estrela.")}
+          <label class="campo"><span>Respostas aceitas (a primeira é a que aparece)</span>${entrada("lista", "d.decifrar.respostas", d.decifrar?.respostas)}</label>
+          <label class="campo"><span>3 opções erradas (modo fácil)</span>${entrada("lista", "d.decifrar.erradas", d.decifrar?.erradas)}</label>
+          ${campoTxt("Palavra (quem já sabe vê resolvido: id do símbolo no X ou as runas no Y)", "d.decifrar.palavra", d.decifrar?.palavra)}
+          <div class="cr-duas">${campoTxt("Ao acertar, vai para (cena:id)", "d.decifrar.acertou", d.decifrar?.acertou, "cena:fim")}
+            ${campoTxt("Lição (cena:id)", "d.decifrar.licao", d.decifrar?.licao, "cena:licao")}</div>
+          <div class="cr-duas">${campoNum("Dissonância do salto da Lição", "d.decifrar.dissonancia", d.decifrar?.dissonancia)}
+            <label class="campo"><span>Ao acertar, aprende (Código Urbano)</span>${entrada("lista", "d.decifrar.aprenderX", d.decifrar?.aprenderX)}</label></div>
+          ${campoTxt("Memória Cruzada ao acertar (opcional)", "d.decifrar.memoria", d.decifrar?.memoria)}`)}
         ${t === "final" || d.final ? secao("Final da missão", `
           <label class="cr-check"><input type="checkbox" data-p="d.final" data-k="bool" ${d.final ? "checked" : ""}> esta cena encerra a missão</label>
           <label class="campo"><span>Revela o mundo</span>${entrada("sel:eixo", "d.revela", d.revela)}</label>
@@ -453,7 +469,7 @@ const Criador = (() => {
       }
       const n = add("cena:" + c, tipo, cena.titulo || c, X0 + i * PASSO, 0, limpar({
         chave: c, ...t, tutorial: cena.tutorial, ameaca: cena.ameaca, musica: cena.musica, final: cena.final,
-        revela: cena.revela, memoria: cena.memoria, marca: cena.marca, imagem: cena.imagem,
+        revela: cena.revela, memoria: cena.memoria, marca: cena.marca, imagem: cena.imagem, decifrar: cena.decifrar,
         textoFinal: cena.final ? jm.textoFinal || (jm.id === "prologo-x" ? "Fim do prólogo. O Eixo Y foi revelado na ficha de quem jogou." : "") : undefined,
       }));
       (cena.opcoes || []).forEach((op, k) => escolha(op, n.x, 200 + k * 190, n.id));
@@ -551,7 +567,7 @@ const Criador = (() => {
     const jm = { id: m.jogo?.id || m.id, eixo: m.eixo, titulo: m.titulo, resumo: m.resumo, ...limpar({ subtitulo: m.jogo?.subtitulo, fase: m.jogo?.fase, faseTag: m.jogo?.faseTag, npcs: m.jogo?.npcs, anterior: m.jogo?.anterior || undefined, proxima: m.jogo?.proxima || undefined, desbloqueio: m.jogo?.desbloqueio, tutorial: m.jogo?.tutorial }), ...(m.jogo?.avancado || {}), cenas: {}, lugares: {} };
     for (const n of m.nos.filter((x) => ["entrada", "cena", "final"].includes(x.tipo) && x.d)) {
       const d = n.d;
-      jm.cenas[d.chave] = limpar({ titulo: n.titulo, texto: d.texto, variantes: d.variantes, acrescimos: d.acrescimos, tutorial: d.tutorial, ameaca: d.ameaca, musica: d.musica, final: d.final, revela: d.revela, memoria: d.memoria, marca: d.marca, imagem: d.imagem, opcoes: escolhasDe(n.id).map(opcao) });
+      jm.cenas[d.chave] = limpar({ titulo: n.titulo, texto: d.texto, variantes: d.variantes, acrescimos: d.acrescimos, tutorial: d.tutorial, ameaca: d.ameaca, musica: d.musica, final: d.final, revela: d.revela, memoria: d.memoria, marca: d.marca, imagem: d.imagem, decifrar: d.decifrar?.frase ? d.decifrar : undefined, opcoes: escolhasDe(n.id).map(opcao) });
       if (n.tipo === "entrada" && !jm.inicio) jm.inicio = d.chave;
       if (d.final && d.textoFinal) jm.textoFinal = d.textoFinal;
     }
@@ -686,7 +702,7 @@ const Criador = (() => {
     for (const n of cenas) {
       if (!String(n.d.texto || "").trim() && !(n.d.variantes || []).length) avisos.push(`A cena ${nome(n)} está sem texto.`);
       const filhos = m.ligacoes.filter((l) => l.de === n.id && no(l.para)?.tipo === "escolha");
-      if (!filhos.length && !n.d.final && !m.ligacoes.some((l) => l.de === n.id && no(l.para)?.tipo === "lugar"))
+      if (!filhos.length && !n.d.final && !n.d.decifrar?.frase && !m.ligacoes.some((l) => l.de === n.id && no(l.para)?.tipo === "lugar"))
         avisos.push(`A cena ${nome(n)} não tem escolhas: o jogador fica preso nela.`);
     }
     for (const e of m.nos.filter((x) => x.tipo === "escolha" && x.d)) {
