@@ -1939,3 +1939,7 @@ input, textarea, select, [contenteditable] { -webkit-user-select: text; user-sel
   .dec-frase { font-size: 1.1rem; }
   .dec-opcoes .chip { padding: 5px 10px; }
 }
+.palpites { display: grid; gap: 4px; margin-top: 8px; }
+.palpite { display: flex; align-items: center; gap: 8px; }
+.palpite b { min-width: 2.5em; text-align: center; color: var(--acento); }
+.palpite input { flex: 1; min-width: 0; padding: 5px 10px; border-radius: 8px; border: 1px dashed var(--painel-borda); background: rgba(0, 0, 0, 0.3); color: var(--texto); font: inherit; font-style: italic; }
