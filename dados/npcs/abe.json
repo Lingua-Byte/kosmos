@@ -1,0 +1,335 @@
+{
+  "id": "abe",
+  "nome": "Abe",
+  "lugar": "Conveniência do Abe, Maple Heights",
+  "retrato": "imagens/npcs/npc-abe.webp",
+  "ficha": {
+    "quer": "Manter a loja aberta, como sempre. Não admitir que está com medo.",
+    "sabe": "O que os clientes contam, o que acabou do estoque, quem passou na porta, o bairro de Maple Heights.",
+    "esconde": "O sobrinho, Nate, foi ver a praça ontem e não voltou para buscar o carro. (PROPOSTA: o autor aprova ou troca.)",
+    "fala": "Seco, rápido, humor de balcão. Chama todo mundo de 'filho'. Responde pergunta séria com piada, até não conseguir mais.",
+    "nunca": "Não sabe nada sobre o fenômeno, outros eixos, a Domus ou o Lime. Não usa as palavras Ressonância ou Dissonância."
+  },
+  "fases": {
+    "cedo": 0,
+    "meio": 6,
+    "tarde": 12
+  },
+  "topicos": [
+    {
+      "id": "saudacao",
+      "exemplos": [
+        "oi",
+        "olá",
+        "boa noite",
+        "e aí, Abe",
+        "tudo bem?",
+        "como vai?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Boa noite. Se veio atrás de água, chegou tarde. Se veio atrás de cigarro, chegou na hora."
+        ],
+        "meio": [
+          "Boa noite. Entra e encosta a porta, que o ar-condicionado tá pago até o fim do mês."
+        ],
+        "tarde": [
+          "Entra logo. Encosta a porta. Não, não tranca. Loja aberta é loja aberta."
+        ]
+      }
+    },
+    {
+      "id": "quem",
+      "exemplos": [
+        "quem é você?",
+        "qual o seu nome?",
+        "há quanto tempo você tem a loja?",
+        "me fala de você",
+        "você é o dono?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Abe. Quarenta anos atrás deste balcão. Vi o bairro trocar de prefeito sete vezes e de pizzaria umas vinte. A loja ficou."
+        ]
+      }
+    },
+    {
+      "id": "estoque",
+      "exemplos": [
+        "tem água?",
+        "acabou a água?",
+        "o que o pessoal está comprando?",
+        "como está o estoque?",
+        "o que acabou?",
+        "tem pilha?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Água e pilha. Desde domingo é só isso que sai. Pão ninguém quer. Fim do mundo sem sanduíche, vai entender."
+        ],
+        "meio": [
+          "Água acabou às oito. Pilha, às nove. Agora estão levando refrigerante, pra ter qualquer coisa líquida em casa. Daqui a pouco levam o óleo de cozinha."
+        ],
+        "tarde": [
+          "Não sobrou nada que se beba, filho. Tem enlatado. Tem biscoito. Tem eu, e eu não tô à venda."
+        ]
+      }
+    },
+    {
+      "id": "comprar",
+      "exemplos": [
+        "quero comprar uma coisa",
+        "quanto custa?",
+        "o que você vende?",
+        "me vende um enlatado",
+        "qual o preço?",
+        "vocês vendem salgadinho?",
+        "tem biscoito?",
+        "tem alguma coisa pra comer?",
+        "tem cigarro?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Enlatado a três, biscoito a dois, cigarro você sabe quanto é. Dinheiro vivo. A maquininha eu desliguei: hoje não confio em nada que pisca."
+        ]
+      }
+    },
+    {
+      "id": "fiado",
+      "exemplos": [
+        "não tenho dinheiro",
+        "pode vender fiado?",
+        "anota pra mim?",
+        "me dá de graça?",
+        "pago amanhã"
+      ],
+      "respostas": {
+        "cedo": [
+          "Fiado eu parei em noventa e quatro. Mas se você repor aquelas prateleiras ali, a gente conversa."
+        ],
+        "tarde": [
+          "Leva. Pode levar. Eu anoto no caderno, você anota na cabeça."
+        ]
+      }
+    },
+    {
+      "id": "praca",
+      "exemplos": [
+        "o que está acontecendo na praça?",
+        "você foi à praça?",
+        "o que tem no centro?",
+        "Praça Central",
+        "por que todo mundo vai pra praça?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Meu sobrinho foi ver ontem. Disse que é bonito, que todo mundo fica quietinho, em paz. Bonito pra mim é conta paga. Eu fico aqui."
+        ],
+        "meio": [
+          "O Nate não voltou pra buscar o carro. Deixou na minha vaga. Ele sempre volta pra buscar o carro."
+        ],
+        "tarde": [
+          "Não vou lá. E não me pergunta de novo."
+        ]
+      }
+    },
+    {
+      "id": "pessoas",
+      "exemplos": [
+        "por que as pessoas estão andando para o centro?",
+        "você viu essa gente andando?",
+        "as pessoas estão estranhas",
+        "e essa multidão?",
+        "por que ninguém fala nada?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Gente indo pro centro. Show, protesto, liquidação, sei lá. Ninguém entra pra comprar nada no caminho, isso eu sei."
+        ],
+        "meio": [
+          "Passou mais gente pela minha porta hoje do que no Natal inteiro. Nenhum entrou. Nem pra perguntar onde fica o banheiro."
+        ],
+        "tarde": [
+          "Não olha muito pra eles. Eu não olho. Eles não fazem nada se você não fica no caminho."
+        ]
+      }
+    },
+    {
+      "id": "explicacao",
+      "exemplos": [
+        "é vazamento de gás?",
+        "é radiação?",
+        "o que o governo diz?",
+        "e a Defesa Civil?",
+        "o que você acha que é isso?",
+        "o que a TV está falando?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Na TV dizem que é estresse. Estresse eu tenho há quarenta anos e nunca saí andando pra praça por causa dele."
+        ],
+        "meio": [
+          "Um sujeito da Defesa Civil passou de manhã. Comprou três maços e pagou com nota nova. Não disse nada. Mas comprou três maços."
+        ]
+      }
+    },
+    {
+      "id": "radio",
+      "exemplos": [
+        "que música é essa?",
+        "o que está tocando no rádio?",
+        "você ouviu a música?",
+        "esse rádio aí",
+        "desliga o rádio"
+      ],
+      "respostas": {
+        "cedo": [
+          "Esse rádio só pega jogo e pregação. Hoje à tarde pegou uma música que eu não conheço. Mudei de estação. Ela foi junto."
+        ],
+        "tarde": [
+          "Tirei o rádio da tomada. Tô ouvindo assim mesmo, baixinho, de algum lugar. Deve ser do vizinho."
+        ]
+      }
+    },
+    {
+      "id": "riscos",
+      "exemplos": [
+        "quem riscou a sua porta?",
+        "o que são esses símbolos?",
+        "pichação",
+        "e esses riscos na parede?",
+        "você viu os riscadores?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Pichação? Moleque do bairro. Eu passo tinta, eles riscam de novo. Isso é Port Halden desde sempre."
+        ],
+        "meio": [
+          "Riscaram minha porta de aço. Três traços curtos, um comprido. Passei tinta às sete. Às oito tava lá de novo, igualzinho."
+        ],
+        "tarde": [
+          "Parei de passar tinta. Acabou a tinta. A vontade acabou antes."
+        ]
+      }
+    },
+    {
+      "id": "medo",
+      "exemplos": [
+        "por que você não fecha a loja?",
+        "você está com medo?",
+        "não é perigoso ficar aberto?",
+        "vai fechar hoje?",
+        "você não vai pra casa?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Fechar por quê? Fechei uma vez, no enterro da minha mãe. Fora isso, seis da manhã, todo santo dia."
+        ],
+        "meio": [
+          "Medo é pra quem tem tempo. Eu tenho estoque pra contar."
+        ],
+        "tarde": [
+          "Se eu fechar essa porta, filho, aí acabou mesmo. Enquanto a luz tá acesa, é só uma terça-feira."
+        ]
+      }
+    },
+    {
+      "id": "ajudar",
+      "exemplos": [
+        "posso ajudar?",
+        "precisa de ajuda?",
+        "tem trabalho pra mim?",
+        "quer ajuda com as prateleiras?",
+        "posso trabalhar aqui hoje?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Pode. Enlatado na frente, papel higiênico lá atrás, que hoje ninguém sabe o que é prioridade. Pago em dinheiro e biscoito."
+        ]
+      }
+    },
+    {
+      "id": "familia",
+      "exemplos": [
+        "você tem família?",
+        "quem é Nate?",
+        "e o seu sobrinho?",
+        "você mora sozinho?",
+        "tem filhos?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Tenho um sobrinho, o Nate. Trinta anos e ainda pede dinheiro pro tio. Bom menino. Burro, mas bom."
+        ],
+        "meio": [
+          "O Nate não atende. Deve estar sem bateria. Ele sempre fica sem bateria."
+        ],
+        "tarde": [
+          "Se você vir um rapaz alto, de jaqueta vermelha, fala que o tio tá com o carro dele. Só isso. Fala só isso."
+        ]
+      }
+    },
+    {
+      "id": "conselho",
+      "exemplos": [
+        "o que eu faço?",
+        "onde posso me esconder?",
+        "algum conselho?",
+        "pra onde eu vou?",
+        "como eu me protejo?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Vai pra casa, janta, dorme. Amanhã a TV inventa outro nome pra isso."
+        ],
+        "tarde": [
+          "Fica longe do centro. Tranca a porta. E leva água, se achar. Aqui não tem."
+        ]
+      }
+    },
+    {
+      "id": "tchau",
+      "exemplos": [
+        "tchau",
+        "até mais",
+        "valeu, Abe",
+        "obrigado",
+        "vou indo"
+      ],
+      "respostas": {
+        "cedo": [
+          "Vai com Deus. E encosta a porta ao sair. Encosta, não tranca."
+        ]
+      }
+    },
+    {
+      "id": "fora",
+      "exemplos": [
+        "o que é o fenômeno?",
+        "existem outros mundos?",
+        "o que é o Lime?",
+        "o que é a Domus?",
+        "quem está causando isso?",
+        "o que é ressonância?",
+        "você acredita em outras dimensões?",
+        "isso é coisa de outro mundo?",
+        "é o fim do mundo?"
+      ],
+      "respostas": {
+        "cedo": [
+          "Filho, eu vendo cigarro e enlatado. Pergunta difícil, faz pro padre da St. Brendan's. Ele tem mais tempo que eu."
+        ]
+      }
+    }
+  ],
+  "naoSei": [
+    "Hã? Fala de novo, que esse rádio não deixa ninguém pensar.",
+    "Disso eu não sei. Sei preço de enlatado.",
+    "Quarenta anos de balcão e ninguém nunca me perguntou isso. Próxima.",
+    "Não entendi. E na minha idade isso não melhora."
+  ],
+  "repetido": [
+    "Já te disse. Minha memória é velha, mas não é tanto.",
+    "Mesma pergunta, mesma resposta. Aqui não tem promoção."
+  ]
+}
