@@ -87,6 +87,8 @@ const X_EXTRAS = [
   { s: "t₀", nome: "agora", tipo: "tempo" },
   { s: "t₋", nome: "passado", tipo: "tempo" },
   { s: "t₊", nome: "futuro", tipo: "tempo" },
+  { s: "tᵢ", nome: "começo", tipo: "tempo", id: "x-comeco" }, // tempo inicial, como na física
+  { s: "∮(t)", nome: "laço do tempo", tipo: "operador", id: "x-laco" }, // integral fechada: o tempo que volta ao ponto de partida
   { s: "∫", nome: "acumular (integral)", tipo: "operador" },
   { s: "∑", nome: "conjunto de todos (soma)", tipo: "operador" },
   { s: "∀", nome: "para todo / sempre", tipo: "operador" },
@@ -213,9 +215,11 @@ const CONCEITOS = [
   K("sempre", "Tempo", ["sempre", "etern", "infinit"], { n: "momento", mod: "muito" }, { x: "∀t" }),
   K("dia", "Tempo", ["dia$", "dias$", "manha$", "amanhec"], { n: "momento", r: "conter", a: "luz" }),
   K("noite", "Tempo", ["noite", "madrugad"], { n: "momento", r: "conter", a: "escuridao" }),
-  K("ciclo", "Tempo", ["ano$", "anos$", "ciclo"], { n: "momento", r: "lembrar" }),
+  K("ciclo", "Tempo", ["ano$", "anos$"], { n: "momento", r: "lembrar" }),
+  // laço / nó do tempo: no X, a integral fechada ∮(t) (decidido pelo autor); "nó" é tratado à parte em analisar()
+  K("laco", "Tempo", ["ciclo", "laco$", "lacos$", "loop", "loops$"], { n: "caminho", r: "lembrar", a: "momento" }, { x: "∮(t)" }),
   K("fim", "Tempo", ["fim$", "final", "termin", "acab"], { n: "momento", e: "colapso" }),
-  K("inicio", "Tempo", ["inicio", "comec", "origem"], { n: "momento", r: "emergir" }),
+  K("inicio", "Tempo", ["inicio", "comec", "origem"], { n: "momento", r: "emergir" }, { x: "tᵢ", tipo: "tempo" }),
 
   // Objetos
   K("objeto", "Objetos", ["objeto", "coisa", "item"], { n: "objeto" }),
@@ -326,7 +330,7 @@ const ROTULOS = {
   multidao: "Multidão", medico: "Médico / curandeiro", soldado: "Soldado / guerreiro", sacerdote: "Sacerdote / monge",
   lider: "Líder / rei", tripulacao: "Tripulação", cabeca: "Cabeça", olho: "Olho", mao: "Mão", coracao: "Coração",
   memoria: "Memória", prisao: "Prisão", doente: "Doente", doenca: "Doença / ferida", ceu: "Céu / espaço", agua: "Água", escuridao: "Escuridão",
-  musica: "Música", silencio: "Silêncio", inicio: "Início", metro: "Metrô / túnel", noticia: "Notícia / mensagem",
+  musica: "Música", silencio: "Silêncio", inicio: "Começo", laco: "Laço do tempo", metro: "Metrô / túnel", noticia: "Notícia / mensagem",
   esperanca: "Esperança", solidao: "Solidão", confianca: "Confiança", desconfianca: "Desconfiança",
   possivel: "Possível", necessario: "Necessário", instavel: "Instável", integracao: "Integração",
   ciclo: "Ciclo / ano", tela: "Tela / televisão", telefone: "Telefone / rádio", vela: "Vela / tocha",
@@ -406,9 +410,9 @@ const Lingua = (() => {
   // X: um símbolo só (ou com índice: t₀, ℝ³) dispensa parênteses; o resto vai entre parênteses
   const simples = (s) => {
     const a = Array.from(s);
-    if (a.length <= 1 || (a.length === 2 && /[₀₊³ⁿ⁺⁰]/.test(a[1]))) return true;
-    // operador de prefixo sobre algo simples: Δλ, ¬β, √x
-    if (/^[Δ¬√∄∀]/.test(s)) return simples(a.slice(1).join(""));
+    if (a.length <= 1 || (a.length === 2 && /[₀₋₊ᵢ³ⁿ⁺⁰]/.test(a[1]))) return true;
+    // operador de prefixo sobre algo simples: Δλ, ¬β, √x, ∮(t)
+    if (/^[Δ¬√∄∀∮]/.test(s)) return simples(a.slice(1).join(""));
     // um único grupo entre parênteses, com ou sem expoente: (ψσ)ⁿ
     if (s.startsWith("(")) {
       let nivel = 0;
@@ -456,7 +460,7 @@ const Lingua = (() => {
       // núcleos juntos = produto: ψσ (mente·corpo)
       let core = nucleos.map((n) => {
         const s = escreverRef(n, lang);
-        return nucleos.length > 1 && !/^[\p{L}\p{N}₀₊³]+$/u.test(s) ? `(${s})` : s;
+        return nucleos.length > 1 && !/^[\p{L}\p{N}₀₋₊³]+$/u.test(s) ? `(${s})` : s;
       }).join("");
       if (f.neg && core) core = modoX(core, "nao");
       if (f.mod && core) core = modoX(core, f.mod);
@@ -700,6 +704,9 @@ const Lingua = (() => {
         // "tornou-se", "ajustou-se": o pronome colado não muda o conceito
         const original = bruta.includes("-") ? bruta.split("-")[0] || bruta : bruta;
         const n = norm(original);
+        // "nó" (laço) perde o acento e viraria a ligação "no": é pego antes, pela grafia
+        if (idiomaFrase === "pt" && !buscador && /^nó$/i.test(original))
+          return pecas.push({ tipo: "nucleo", conceito: conceitoPorId.get("laco"), palavra: original });
         // a ligação do idioma vem primeiro: o "no" do português não é o "no" do inglês
         if (ligacao.has(n)) return pecas.push({ tipo: "ligacao", palavra: original });
         for (const [mod, lados] of Object.entries(MODIFICADORES)) {
@@ -717,6 +724,11 @@ const Lingua = (() => {
         const nome = /^\p{Lu}/u.test(original);
         pecas.push({ tipo: nome ? "nome" : "sem-conceito", palavra: original });
       });
+    }
+    // "laço do tempo", "nó do tempo": o tempo já está dentro do ∮(t), não se escreve de novo
+    for (let i = pecas.length - 3; i >= 0; i--) {
+      const [a, b, c] = pecas.slice(i, i + 3);
+      if (a.conceito?.id === "laco" && b.tipo === "ligacao" && c.conceito?.id === "tempo") pecas.splice(i + 1, 2);
     }
     return pecas;
   }
@@ -839,7 +851,7 @@ const Lingua = (() => {
       if (id === "muito" && lang === "y") continue;
       lista.push({ s: r[lang], nome: r.nome, tipo: r.tipo, id });
     }
-    if (lang === "x") X_EXTRAS.forEach((t) => lista.push({ s: t.s, nome: t.nome, tipo: t.tipo, id: "x-" + t.nome }));
+    if (lang === "x") X_EXTRAS.forEach((t) => lista.push({ s: t.s, nome: t.nome, tipo: t.tipo, id: t.id || "x-" + t.nome }));
     lista.push({ s: lang === "x" ? "⟨𝔸𝔹ℂ⟩" : "⟨⠁⠃⠉⟩", nome: "alfabeto de nomeação", tipo: "nomes", id: "nomes" });
     return lista;
   }
