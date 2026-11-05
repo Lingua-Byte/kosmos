@@ -633,7 +633,7 @@ function abrirFicha(p, recemCriada = false) {
 
 function glifoEstado(p, id) {
   const ex = p.exposicao[id];
-  if (id === "x") return `∃ ψ(t) ⇒ 𝒪(S) → ${ex > 0 ? "Δ" : "⌀"}`;
+  if (id === "x") return `∃ ψ(t₀) ⇒ 𝒪(S) → ${ex > 0 ? "Δ" : "⌀"}`;
   if (id === "y") return paraRunas(p.nome);
   const estado = ex >= REGRAS.exposicaoMax ? "⊚" : ex > EIXOS.z.exposicao.limite ? "≈" : ex > 0 ? "↑" : "~";
   return `◌ ⟜ ◉ | ${estado}`;

@@ -120,7 +120,7 @@ No banco do confessionário ficou um terço. As contas estão riscadas com símb
     acoes: [
       {
         id: "michael-terco", texto: "Examinar o terço riscado", palavras: ["terco", "contas", "simbol", "examin"], situacao: "ler",
-        sucesso: { texto: "Cada conta tem um símbolo. Você reza o terço inteiro passando os dedos por eles, e no fim entende uma frase, como quem lembra de uma oração esquecida: ∃ ψ(t). Existe uma mente. Agora.", pista: "No terço deixado no confessionário: ∃ ψ(t), “existe uma mente, agora”.", efeitos: { aprenderX: ["existir", "mente", "x-agora"], marca: "terco-riscado" } },
+        sucesso: { texto: "Cada conta tem um símbolo. Você reza o terço inteiro passando os dedos por eles, e no fim entende uma frase, como quem lembra de uma oração esquecida: ∃ ψ(t₀). Existe uma mente. Agora.", pista: "No terço deixado no confessionário: ∃ ψ(t₀), “existe uma mente, agora”.", efeitos: { aprenderX: ["existir", "mente", "x-agora"], marca: "terco-riscado" } },
         falha: { texto: "As contas esquentam entre os seus dedos, uma a uma, como se alguém do outro lado estivesse rezando junto. Você larga o terço no banco.", efeitos: { dissonancia: 1 } },
       },
       {
