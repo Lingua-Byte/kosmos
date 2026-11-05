@@ -32,7 +32,8 @@ Tipo de fantasia: **baixa** (o que mudaria com outro tipo está no fim da seçã
 
 - **No que as três concordam sem perceber:** ninguém pôs a Pedra ali, e ela é mais velha do que todo mundo.
 - **No que discordam:** se a base já tinha runas. A Casa diz que a Pedra estava lisa; a Regra diz que não.
-- **O que dá para conferir no jogo:** a base da Pedra tem linhas de sal bem acima de onde o mar chega hoje. O pescador
+- **O que dá para conferir no jogo:** a base da Pedra tem furinhos de bicho do mar bem acima de onde o mar chega hoje (como as colunas romanas de
+  Pozzuoli, na Itália, furadas por moluscos quando o chão afundou e depois subiu). O pescador
   mente e, sem saber, acerta numa coisa: o mar já foi mais alto (tempo de geologia, explicação científica).
 
 ---
@@ -55,7 +56,7 @@ Tipo de fantasia: **baixa** (o que mudaria com outro tipo está no fim da seçã
 
 | | |
 |---|---|
-| **Quantos** | cinco: o mestre (Theodric), dois jornaleiros, o copista cego (Odo) e um aprendiz |
+| **Quantos** | cinco: o mestre (Theodric), dois oficiais copistas, o copista cego (Odo) e um aprendiz |
 | **Como se entra** | por volta dos dez invernos. O teste é olhar uma talha uma vez e repetir os cortes de memória. Depois, anos só na cera. A primeira coisa gravada em pedra é o próprio nome. |
 | **A marca** | cada copista tem um sinal pequeno que põe depois de cada gravação. Runa sem marca não foi gravada por ninguém (gancho da Y1). |
 | **O que gravam** | nascimento, casamento, morte, dívida, divisa de terra e sentença. Sempre com duas testemunhas falando diante da Pedra. |
@@ -70,7 +71,7 @@ Tipo de fantasia: **baixa** (o que mudaria com outro tipo está no fim da seçã
 - **As penas, da mais leve à pior:** pagar em talha; trabalhar no celeiro; perder uma divisa (raspam o nome da terra);
   ser **gravado mentiroso** (ᚨᚾᛞ, "palavra sem luz", ao lado do nome, para sempre); e o **exílio**.
 - **Mentir diante da Pedra é crime.** A pena é a runa de mentiroso.
-- **O exílio:** a guarda leva a pessoa até o Último Marco, com o que ela conseguir carregar nas mãos. O nome continua na
+- **O exílio:** a guarda leva a pessoa até o terceiro marco da estrada e ela segue sozinha até o Último Marco, com o que ela conseguir carregar nas mãos. O nome continua na
   Pedra, mas **não é dito na noite mais longa**. É o mesmo que ser esquecido de pé.
 
 ---
@@ -82,7 +83,7 @@ se faz nelas (lua da lã, lua das redes, lua dos nabos, lua do gelo). Quem marca
 
 | Estação | Runas | Trabalho | O que se ouve |
 |---|---|---|---|
-| Primavera | ᛃᛒ | tosquia, conserto de redes, plantio de cevada. **Andar os marcos:** a guarda e um copista percorrem as divisas, e as crianças encostam a testa em cada marco para gravar na memória | "Tua divisa andou dois passos no inverno, Bram." |
+| Primavera | ᛃᛒ | tosquia, conserto de redes, plantio de cevada. **Andar os marcos:** a guarda e um copista percorrem os marcos de divisa do vale (não os 19 da estrada), e as crianças encostam a testa em cada marco para gravar na memória | "Tua divisa andou dois passos no inverno, Bram." |
 | Verão | ᛃᛋ | pesca, peixe seco, sal. O vau fica raso, as carroças pegam a estrada dos marcos, troca com outras aldeias | "Se não secar agora, é peixe podre no inverno." |
 | Outono | ᛃᛇ | colheita, nabos, matança do porco, cerveja. **O dia das metades:** todas as talhas são encaixadas na praça e as contas, acertadas | a briga mais barulhenta do ano |
 | Inverno | ᛃᛁ | lã, carpintaria, conserto de barcos, o celeiro aberto. Os copistas passam a cera para a pedra | "Fecha a porta, que lenha custa." |
@@ -100,14 +101,14 @@ se faz nelas (lua da lã, lua das redes, lua dos nabos, lua do gelo). Quem marca
 Cada pessoa tem um nome de boca, que todo mundo usa, e um **nome de Pedra**, uma kenning gravada ao nascer. O nome de
 Pedra só é dito em voz alta em três momentos: no nascimento, no casamento e na primeira noite mais longa depois da morte.
 
-**Nascimento.** A parteira (o ofício da June no Y) é a testemunha. Se a criança passa dos primeiros nove dias, o copista
+**Nascimento.** A parteira (o ofício da June no Y) e alguém da família são as testemunhas. Se a criança passa dos primeiros nove dias, o copista
 grava o nome de boca, letra por letra, e o nome de Pedra com ᛫ (pequeno) no fim. **O ᛫ é raspado** no casamento ou aos
 dezesseis invernos, o que vier primeiro. É o único raspar que não precisa de sentença.
 
 **Casamento.** Uma talha partida ao meio, uma metade para cada um, e o laço gravado na Pedra (ᚷᛗᛗ, "laço de dois
 humanos"). Cada um diz em voz alta o nome de Pedra do outro. Separar é encaixar as metades diante da Pedra e queimar a talha.
 
-**Morte.** Quem fica com o moribundo (o ofício do Michael no Y) é a testemunha. O copista grava ᛇ (teixo) ao lado do
+**Morte.** Quem fica com o moribundo (o ofício do Michael no Y) e alguém da casa são as testemunhas. O copista grava ᛇ (teixo) ao lado do
 nome. As talhas do morto são encaixadas e queimadas: a dívida morre com ele, a não ser que a família assuma. Assumir é
 questão de honra, e o motivo da metade das brigas de herança. O enterro é no campo dos teixos, atrás da paliçada.
 
@@ -118,7 +119,7 @@ questão de honra, e o motivo da metade das brigas de herança. O enterro é no 
 | Lugar | Como é | Quem está lá | O que quer | Boato |
 |---|---|---|---|---|
 | **A Pedra da Lei*** (praça) | bloco cinzento mais alto que um homem, quatro faces gravadas e a base com runas que ninguém lê | Theodric de dia, crianças, a pregoeira | Theodric quer silêncio para terminar a gravação do inverno | "Quem encosta a orelha ouve o mar. Todo mundo encostou, todo mundo ouviu. O mar fica a cem passos." |
-| **A Casa Fria** (troca o "mosteiro") | abóbada de pedra encostada na Pedra, sem lareira (fogo derrete a cera e queima as tábuas). Velas em pratos com água, copistas de capuz de lã | Godwin, Odo, o aprendiz Wynn | Odo quer que ninguém tire o formão dele. Godwin quer receber em cera, e cera boa. | "O Odo grava melhor no escuro. Os outros apagam a vela para ver se aprendem." |
+| **A Casa Fria** (troca o "mosteiro") | abóbada de pedra encostada na Pedra, sem lareira (fogo derrete a cera e queima as tábuas). Velas em pratos com água, copistas de capuz de lã | Godwin, Odo, o aprendiz Penda | Odo quer que ninguém tire o formão dele. Godwin quer receber em cera, e cera boa. | "O Odo grava melhor no escuro. Os outros apagam a vela para ver se aprendem." |
 | **O Celeiro** | a casa grande da Senhora, com alicerce de pedra mais largo do que o celeiro que está em cima | a Senhora, o despenseiro, dois guardas | chegar à primavera com grão | "Embaixo do celeiro tem um porão maior que o celeiro." |
 | **A paliçada e o sino** | troncos apontados, um portão, a guarita e o sino numa armação de madeira | Edda, Bertil, Ulf, o sineiro | Ulf quer que acreditem que ele não tocou | "O sino tocou de noite, três e um. O Ulf jura que estava dormindo. O Ulf sempre jura isso." |
 | **A casa da Leofa** (taverna) | um salão só, banco comprido, cerveja rala, mel quando tem | Leofa, o bardo, Cuthred | que o bardo pague o que deve de cerveja | "O bardo canta umas que ninguém ensinou. Diz que sonhou. Sonhou com a letra inteira?" |
@@ -152,17 +153,17 @@ questão de honra, e o motivo da metade das brigas de herança. O enterro é no 
 | Theodric | mestre-copista | ᚲᛁ | brasa (fogo parado) |
 | Gisla | a Senhora do Vale (nome a confirmar) | ᛉᛃ **(novo)** | a que cobre a colheita |
 | Odo | o copista cego | ᛞᛞ | luz (muito dia). Ganhou o nome antes de cegar. Ele mesmo acha graça |
-| Godwin | jornaleiro copista | ᛁᚨ | escrever (fixar a palavra). O pai também era copista |
-| Wynn | aprendiz de copista | ᛜᛞ᛫ | novo (semente do dia), ainda com o ᛫ |
+| Godwin | oficial copista | ᛁᚨ | escrever (fixar a palavra). O pai também era copista |
+| Penda | aprendiz de copista | ᛜᛞ᛫ | novo (semente do dia), ainda com o ᛫ |
 | Bram | moleiro | ᚠᚢ **(novo)** | riqueza forte. Os pais tinham esperança |
 | Wenna | a do forno | ᛃᚲ | pão (colheita no fogo) |
 | Edda | guarda velha | ᛉᛏ | escudo (proteção contra a lança) |
 | Bertil | guarda novo, lento | ᛖᛞ | rápido (movimento de luz). O vale ri |
 | Ulf | sineiro | ᛁᛃ | esperar (tempo parado). Foi um parto de dois dias |
 | Leofa | dona da taverna | ᚹᛒ | mel (alegria da vida) |
-| Ebba | moça que nunca saiu do vale | ᛚᛟ | lago (água que fica) |
+| Hild | moça que nunca saiu do vale | ᛚᛟ | lago (água que fica) |
 | Cuthred | pescador | ᛚᚡ | névoa (água no vento). Nasceu num dia de nevoeiro |
-| Herric | genioso | ᚺᚡ | tempestade. Ganhou ᚺ porque o pai estava bêbado no dia |
+| Herric | genioso | ᚺᚡ | tempestade. A mãe deixou o pai escolher, e o pai estava bêbado |
 | Aelfa | filha que veio depois de três perdidos | ᛋᛜ | esperança (estrela-semente) |
 | Dunn | lavrador | ᛟᚢ | chão (terra forte) |
 | Merra | viúva de pescador afogado | ᛚᛚ | mar (muita água). Hoje ela odeia o nome |
@@ -229,13 +230,13 @@ que a canção para no quatro.
 *Leitura letra por letra:* A-B-E. No vale não existe ninguém com esse nome. (Rima com o caderno de fiado do Abe.
 Opcional: pergunta 3.)
 
-**2. Tábua de cera de Godwin, jornaleiro** (só raspa e reescreve, nunca apaga tudo)
+**2. Tábua de cera de Godwin, oficial copista** (só raspa e reescreve, nunca apaga tudo)
 > **Lua dos nabos, dia 2.** Passei a limpo as onze talhas do moleiro. O Bram jura que a metade dele tem um corte a menos.
 > A dele tem um a mais. Que se acerte com a Wenna.
 > **Dia 3.** Frio. Theodric não deixa nem brasa no pé da mesa. Cera dura feito sola. A Leofa troca cera nova se eu gravar
 > o nome do marido dela maior. Não pode. Não troco.
-> **Dia 5.** Mexeram na minha tábua dos mortos. Tem ᛁᛁᛁ ᛁ no pé dela, três riscos curtos e um comprido. O Wynn diz que
-> não foi. O Wynn mente mal, e dessa vez não mentiu.
+> **Dia 5.** Mexeram na minha tábua dos mortos. Tem ᛁᛁᛁ ᛁ no pé dela, três riscos curtos e um comprido. O Penda diz que
+> não foi. O Penda mente mal, e dessa vez não mentiu.
 > **Dia 6.** Alisei. De manhã estava de novo, nas três tábuas. Dormi na Casa pra pegar o engraçadinho. Ninguém entrou.
 > Acordei com o estilete na mão. Devo ter dormido fazendo a conta do Dunn.
 > **Dia 8.** O Odo passou a mão e disse que o comprido saiu torto. Como ele sabe que é comprido
@@ -278,11 +279,12 @@ raspou a própria sentença ("Nunca raspei uma runa por erro"). Pergunta 4.
 **Runáticos.** O povo diz "os da unha", porque riscam até com a unha. Os copistas dizem "gravador sem marca". Ninguém usa
 "Runático" (é nome de regra).
 
-Como a reação muda ao longo do jogo:
+Como a reação mudou nos últimos invernos (o jogador chega com o vale entre a segunda e a terceira fase; parte dos
+Runáticos da estrada vem de outras aldeias):
 1. **Primeiro é crime.** Gravar sem ser copista estraga o registro. A pessoa vai para diante da Pedra, como o Hrolf.
    "Quem riscou o meu barco? Paga a tábua."
-2. **Depois é doença.** "Febre de risco." Amarram as mãos, a curandeira e barbeira (o ofício da Denise no Y) faz sangria,
-   e a família esconde. É o galpão da Mabel.
+2. **Depois é doença.** "Febre de risco", e a "febre de conta", como a do Aldric. Amarram as mãos, a curandeira e
+   barbeira (o ofício da Denise no Y) faz sangria, e a família esconde, como a Mabel.
 3. **Depois é medo.** Quando o vale não dá conta, vem o exílio. Por isso há Runáticos na estrada dos marcos: são exilados
    que não pararam. A estrada fica perigosa por uma decisão do próprio vale.
 - **O que dizem:** "Vai, que ele só risca." "Se riscar a porta, raspa e passa sebo." "Não deixa a criança olhar muito."
@@ -292,7 +294,7 @@ Como a reação muda ao longo do jogo:
 **Despertos.** O povo diz "erra-ano"; o vale diz "o da torre".
 - Tratado como um tio esquisito. Deixam pão na porta, as crianças desafiam umas às outras a ir até lá, e os adultos
   ameaçam: "Continua assim que vai morar na Vela."
-- Fala do Desperto, para o carroceiro: "Você é o filho do Dunn? Diz pra ele que a cevada do ano que vem estava cara. Ele
+- Fala do Desperto, para o Bertil: "Você é o filho do Dunn? Diz pra ele que a cevada do ano que vem estava cara. Ele
   não acreditou da outra vez."
 - Ninguém tem medo dele. Theodric paga para copiar as runas da torre (Y3) porque o Desperto lê, mas ninguém mais entende
   o que ele lê.
@@ -304,15 +306,15 @@ Como a reação muda ao longo do jogo:
 | Onde | Texto atual | Proposta |
 |---|---|---|
 | `site/missoes/prologo-x.json`, salto | "Em algum lugar do mosteiro, alguém está cantando a melodia da Rádio Pirata. Com outra letra, e a mesma voz." | "Do outro lado da parede de pedra, alguém está cantando a melodia da Rádio Pirata. Com outra letra, e a mesma voz." |
-| A imagem do salto (manter) | teto de pedra, velas, capuz, sino | É a **Casa Fria**: abóbada de pedra, velas em prato com água, capuz de lã de copista e o sino da paliçada. "Três e um" não é toque conhecido em Yudur (incêndio: muitas batidas seguidas; assembleia: dois e dois; morte: uma longa). Por isso o eco não reconhece. |
+| A imagem do salto (manter) | teto de pedra, velas, capuz, sino | É a **Casa Fria**: abóbada de pedra, velas em prato com água, capuz de lã de copista e o sino da paliçada. Nenhum toque de sino é "três e um" (incêndio: muitas batidas seguidas; assembleia: dois e dois; morte: uma longa). O vale só conhece isso da canção da rede, e ninguém liga uma coisa à outra. Por isso a pessoa do salto não reconhece o toque. |
 | `site/js/data.js`, lema do Y | "Muitos acreditam que a Tabula foi enviada pelos deuses." | "Ninguém lembra quem pôs a Pedra ali. Tudo o que o vale não pode esquecer está gravado nela." |
-| `data.js`, descrição do Y | "Fantasia sombria, horror religioso e investigação rúnica. O fenômeno é lido como magia, heresia ou linguagem proibida." | "Fantasia baixa, inverno e investigação rúnica. O fenômeno é lido como crime, doença ou registro falso: runa que ninguém gravou." |
+| `data.js`, descrição do Y | "Fantasia sombria, horror religioso e investigação rúnica. O fenômeno é lido como magia, heresia ou linguagem proibida." | "Inverno, comunidade e investigação rúnica. O fenômeno é lido como crime, doença ou registro falso: runa que ninguém gravou." |
 | `data.js`, Paladino | "Cura, protege e conjura. Fé e lâmina na mesma mão." | "Cura, protege e não deixa ninguém para trás. Agulha e lâmina na mesma mão." |
 | `data.js`, Oráculo Rúnico | "Lê e traça runas. Treinado no Mosteiro de Yudur." | "Lê e traça runas. Aprendeu na Casa Fria, com os copistas da Pedra." |
 | `data.js`, ponto "mosteiro" | "Mosteiro de Yudur: Onde se guarda a Tábula. Monges, copistas, noviços e o Abade Theodric." | "Casa Fria: ao pé da Pedra da Lei, sem lareira. Copistas, aprendizes e o mestre-copista Theodric." (o id pode continuar "mosteiro" no código) |
 | `data.js`, ponto "castelo" | "Castelo do senhor: A corte de um nobre de Yudur…" | "O Celeiro: a casa grande da Senhora do Vale. Guardas, despenseiro, criados." |
-| `data.js`, ofícios do ponto mosteiro | Curandeiro(a) do mosteiro · Irmão(ã) enfermeiro(a) · Confessor(a) · Mestre-escola do mosteiro · Noviço(a) · Monge ou monja · Iluminador(a) de manuscritos | Curandeiro(a) do vale · Quem fica com os doentes · Testemunha da Pedra · Mestre de aprendizes da Casa Fria · Aprendiz de copista · Jornaleiro(a) copista · Fazedor(a) de tábuas de cera |
-| `site/js/yudur.js`, vocabulário inicial do Support | inclui ᛟᚨᛗ mosteiro, ᛗᚨ monge, ᛋᚨ deus | ᛏᚨ lei, ᚨᛁᚷ carta, ᛟᚨᛁ (a Casa Fria) |
+| `data.js`, ofícios do ponto mosteiro | Curandeiro(a) do mosteiro · Irmão(ã) enfermeiro(a) · Confessor(a) · Mestre-escola do mosteiro · Noviço(a) · Monge ou monja · Iluminador(a) de manuscritos | Curandeiro(a) do vale · Quem fica com os doentes · Testemunha da Pedra · Mestre de aprendizes da Casa Fria · Aprendiz de copista · Fazedor(a) de tábuas de cera (o ofício "Copista" fica como está) |
+| `site/js/yudur.js`, vocabulário inicial do Support | inclui ᛟᚨᛗ mosteiro, ᛗᚨ monge, ᛋᚨ deus | ᛏᚨ lei, ᚨᛁᚷ carta, ᛏᚨᛈ julgamento |
 | `yudur.js`, vocabulário inicial do Healer | inclui ᛋᚨ deus, ᚨᛋ oração, ᚨᛒ bênção | ᚢᚹ saúde, ᛚᛇ veneno, ᛒᛜ planta |
 
 As palavras religiosas de `yudur.js` (templo, deus, heresia…) podem ficar no dicionário, para traduzir textos do X e do
@@ -328,8 +330,17 @@ documentos continuam iguais.
 
 ---
 
-## 10. Perguntas para o autor
+## 10. Achados do guardião fora deste arquivo (aguardando o autor)
+- `yudur.js` explica ᛇ como "morte e renascimento, fronteira entre mundos" e ᚨ como "palavra, voz, divino": puxam para
+  o religioso, e "mundos" briga com a regra dos eixos. Sugestão: ᛇ "morte, fim, fronteira"; ᚨ "palavra, voz".
+- O Support começa sabendo ᛈᚨ "profecia" (cara de vidência).
+- `data.js` tem "Castelo do senhor" (escudeiros, nobre) e "Oficinas das guildas": não cabem numa aldeia de 300 pessoas.
+
+## 11. Perguntas para o autor
 1. O nome que a pessoa de capuz diz no salto pode ser o **nome de Pedra**? Não decide eco nem ancestral, mas dá sentido ao salto.
 2. Paladino e Mana: só trocar a descrição, ou trocar também o nome da classe e do atributo?
 3. Nomes de Port Halden podem aparecer escritos no Y fora da Y4, como o "ABE" da talha? Ou isso fica guardado para a Y4?
 4. Theodric raspou a sentença do primeiro "gravador" há quarenta invernos. Pode ser esse o segredo dele?
+5. O Hrolf de quarenta invernos atrás pode ser o "1987 do Y" (o fenômeno já tocou o vale antes)? Ou foi só um louco, ou
+   fica em dúvida para o jogador?
+6. O tipo de fantasia do Y: baixa, alta ou mistura? Isso decide a descrição do Y no jogo, o Paladino e o atributo Mana.

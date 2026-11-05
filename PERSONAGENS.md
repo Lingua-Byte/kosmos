@@ -108,7 +108,7 @@ pergunta "ancestrais ou ecos").
   > "Todo mundo que entra aqui diz que não é religioso. Depois pede uma vela."
   > "E o que você acha que eu devia fazer? Não, pergunto sério. Faz trinta anos que eu respondo isso."
 - **Perde:** o homem que confessou, ou a pessoa que ele vai machucar.
-- **No Y:** quem fica com os moribundos e grava o nome deles na Pedra (ofício civil, sem religião:
+- **No Y:** quem fica com os moribundos e testemunha a morte diante da Pedra (ofício civil, sem religião:
   regra do Y). **Função no Z:** oficial de bem-estar da tripulação.
 - **Ponto de virada:** a sexta, 21h47. Herói: quebra o segredo para impedir. Anti-herói: impede sozinho, sem contar
   a ninguém, e paga por isso. Vilão: guarda o segredo e deixa acontecer, porque é a regra.
