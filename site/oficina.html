@@ -11,14 +11,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Exo+2:wght@400;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/oficina.css?v=5">
+  <link rel="stylesheet" href="css/oficina.css?v=6">
 </head>
 <body>
   <header class="topo">
     <div>
       <a href="index.html" class="btn-texto voltar-jogo">‹ Voltar ao jogo</a>
       <h1>Oficina do Autor</h1>
-      <p class="sub">Tudo o que você escreve aqui vira NPCs, missões e storylets do KOSMOS.</p>
+      <p class="sub">A história do KOSMOS, os geradores e o teste das missões.</p>
     </div>
     <div class="topo-acoes">
       <a href="diagramas.html" class="btn">◇ Diagramas de missão</a>
@@ -30,10 +30,7 @@
   </header>
 
   <nav class="abas" role="tablist">
-    <button role="tab" data-aba="perguntas">Perguntas</button>
-    <button role="tab" data-aba="profissoes">Profissões</button>
-    <button role="tab" data-aba="npcs">NPCs</button>
-    <button role="tab" data-aba="missoes">Missões</button>
+    <button role="tab" data-aba="historia">História</button>
     <button role="tab" data-aba="geradores">Geradores</button>
     <button role="tab" data-aba="testar">Testar</button>
   </nav>
@@ -45,7 +42,8 @@
   <script src="js/data.js?v=26"></script>
   <script src="js/motor.js?v=1"></script>
   <script src="js/nuvem.js?v=3"></script>
-  <script src="js/oficina.js?v=4"></script>
+  <script src="js/historia.js?v=2"></script>
+  <script src="js/oficina.js?v=5"></script>
   <script>
     // app instalável (Android e PC): funciona sem internet e se atualiza sozinho (sw.js)
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});

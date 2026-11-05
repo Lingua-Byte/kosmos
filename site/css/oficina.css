@@ -184,3 +184,16 @@ summary { cursor: pointer; color: var(--suave); font-size: 0.85rem; margin-botto
 @media (max-width: 900px) {
   .prof { grid-template-columns: 1fr; }
 }
+
+/* ---------- História (só leitura) ---------- */
+.historia { max-width: 860px; }
+.secao-historia p, .secao-historia li { line-height: 1.6; }
+.secao-historia ul { padding-left: 20px; margin: 6px 0; }
+.secao-historia .tabela { margin: 8px 0; }
+.selo { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px; font-size: 0.7rem; letter-spacing: 0.04em; text-transform: none; vertical-align: middle; border: 1px solid currentColor; }
+.selo.decidido { color: var(--verde); }
+.selo.considerar { color: var(--azul); }
+.selo.aberto { color: var(--sepia); }
+.secao-historia .nivel-real { color: var(--verde); }
+.secao-historia .nivel-esp { color: var(--azul); }
+.secao-historia .nivel-fic { color: var(--sepia); }
