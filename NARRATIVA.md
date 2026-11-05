@@ -150,8 +150,8 @@ O **resto** (secundárias, Travessias, fios pessoais) se mistura entre os eixos.
 - Depois do salto, o eixo de antes **não fica livre**. Volta-se a ele por Travessia, pagando o preço (seção 4).
   Faz sentido na história, porque é o tempo que puxa o jogador para a frente, e não o jogador que escolhe.
   Também dá um motivo para fazer as secundárias antes do salto.
-- Antes de o eixo abrir, ele só aparece em Vislumbres: saltos curtos e opcionais, que não mudam a ordem da linha
-  principal.
+- Antes de o eixo abrir, ele só aparece em Vislumbres: cenas curtas escritas na própria missão, que não mudam a
+  ordem da linha principal. A Travessia só é liberada tarde (seção 4).
 - **Alternativa (para o autor pesar):** depois do salto, o eixo de antes continua livre, sem custo, como as regiões
   de Fallout. É mais confortável para quem quer completar tudo, mas tira o peso do salto e o sentido das Travessias
   para esse eixo.
@@ -164,14 +164,14 @@ O **resto** (secundárias, Travessias, fios pessoais) se mistura entre os eixos.
 
 ---
 
-## 4. Travessias: missões de outro eixo, com custo (Proposta, para testar)
+## 4. Travessias: missões de outro eixo, com custo (aprovada pelo autor; os detalhes são para testar)
 
 > Nome provisório. "Eco" ficou de fora porque responderia a pergunta em aberto "ancestrais ou ecos?" e se
 > confundiria com "Ecoado", nome de regra que já existe no jogo (`site/js/data.js`).
 
 ### 4.1 A ideia em uma frase
-O jogador acha em seu eixo uma **âncora** (uma coisa que existe nos dois tempos) e pode pagar um preço de
-Convergência para viver, por pouco tempo, o eco de si mesmo em outro eixo.
+O jogador acha em seu eixo uma **âncora** (uma coisa que existe nos dois tempos) e pode gastar Ressonância,
+que vira Dissonância, para viver por pouco tempo a vida da sua versão em outro eixo.
 
 ### 4.2 Por que combina com a lore
 - **Só informação atravessa** (Para considerar, aba História, "Quem fala do Lime": lá isso vale para a IA; aqui a
@@ -180,59 +180,76 @@ Convergência para viver, por pouco tempo, o eco de si mesmo em outro eixo.
   sozinho: ninguém volta do Y com uma espada para o X.
 - **O personagem existe nos três tempos** (DESIGN, "Ficha única traduzida nos 3 eixos"). A Travessia mostra o que a
   versão dele daquele tempo estava vivendo. Se ela é parente ou só tem o mesmo padrão, o jogo não diz.
-- **Ver mais custa.** Quem sabe demais dos outros eixos ou desperta ou se perde. O preço é a mesma regra do jogo,
-  não uma moeda inventada.
+- **Ver mais custa.** Quem sabe demais dos outros eixos ou desperta ou se perde. O preço é a Ressonância do
+  próprio personagem, não uma moeda inventada.
 
-### 4.3 Dois tamanhos
-| | **Vislumbre** | **Travessia** |
-|---|---|---|
-| Quando | antes de o eixo abrir na linha principal | depois que o eixo abriu |
-| Tamanho | 1 a 3 cenas, curtas | 2 a 5 cenas, uma missão secundária de verdade |
-| Controle | o jogador vê pelos olhos do eco e faz uma ou duas escolhas | joga normalmente |
-| O que traz | uma pista, uma imagem, uma palavra | pistas, vocabulário, marcas que abrem saídas em missões principais |
-| Exemplo | no X, um Vislumbre de Yudur: um sino, uma pedra, uma mulher contando ervas | no Z, uma Travessia para Port Halden em que o jogador procura o Leo no St. Luke's |
+### 4.3 Decisões do autor (Decidido)
+- **A Travessia é liberada tarde no jogo.** Não existe no começo.
+- **O preço é Ressonância, que vira Dissonância.** Quem atravessa gasta pontos de Ressonância, e os pontos gastos
+  passam para a Dissonância.
+- **Isso explica para que serve ganhar Ressonância nos dados.** A Ressonância que vem dos Testes de Convergência
+  é o que se gasta para atravessar. Cada Travessia empurra o personagem para o lado da loucura.
 
-Assim, no começo do jogo (só X aberto), os Vislumbres do Y e do Z servem de **trailer**: dão vontade e plantam pistas,
-sem estragar a revelação.
+### 4.4 Quando se libera (Proposta)
+- **No Eixo Y, depois do primeiro salto grande (X5 → Y1).** O jogador acabou de ser arrastado de um tempo para
+  outro sem querer. É a hora de aprender a fazer isso por vontade própria.
+- **Por personagem, a partir da Memória Cruzada (Ressonância 10).** A regra já existe: na Ressonância 10, um eixo
+  oculto se revela na ficha. Só quem "lembra de uma vida que não viveu" consegue voltar a ela. A memória fica na ficha,
+  mesmo que a Ressonância caia depois de pagar.
+- **Destinos:** só os eixos que a linha principal já abriu. No Y, só se atravessa para o X (é o jeito de voltar a
+  Port Halden). No Z, para o X e o Y.
+- **Antes disso, só Vislumbres.** São cenas curtas e escritas na própria missão (1 a 3 telas, como o salto do
+  Prólogo). O jogador não escolhe quando acontecem, não paga nada e não controla a cena. Servem de trailer e plantam
+  pistas. Não são Travessia.
 
-### 4.4 Como se libera
+### 4.5 Âncoras
 - **Âncora**: um objeto, lugar ou pessoa que rima com outro eixo. O terço riscado do padre Michael, o crachá do Homem
-  de Terno, a fita "Parte 2", a parede do Teddy. Achar a âncora marca no Diário: *Travessia disponível (Y)*.
-- **Fio pessoal**: cada um dos 9 tem **1 Travessia por eixo** ligado ao próprio fio (ver `PERSONAGENS.md`).
+  de Terno, a fita "Parte 2", a parede do Teddy. Achar a âncora marca no Diário: *Travessia disponível (X)*.
+- **Fio pessoal**: cada um dos 9 tem **1 Travessia por eixo** ligada ao próprio fio (ver `PERSONAGENS.md`).
   O fogo do Frank em 1987 rima com um fogo em Yudur e com um alarme de incêndio na Domus.
-- **Ressonância**: algumas âncoras só "acendem" a partir de certa marca de Ressonância (5, 10...). Quem tem
-  Dissonância alta também as vê, mas paga mais.
+- Tamanho: 2 a 5 cenas, uma missão secundária de verdade, jogada normalmente.
 
-### 4.5 O preço
-O custo usa o que o jogo já tem. Nada de moeda nova.
-1. **Entrar é um Teste de Convergência** (Essência). Passou: +1 Ressonância. Falhou: +1 Dissonância.
-   A exposição sobe sempre (regra atual).
-2. **O relógio anda.** O tempo do eixo de onde se sai passa enquanto se está fora. No X, isso pesa (o toque de
-   recolher chega mais cedo). É a versão KOSMOS da radiação do Fallout: o atalho custa.
-3. **O preço sobe no mesmo ato.** 1ª Travessia do ato: dificuldade Fácil; 2º: Médio; 3º em diante: Difícil.
-4. **Voltar é outro teste** só se a Dissonância estiver numa marca (5, 10, 15...). Falhar a volta deixa um
-   **traço de eco** temporário até o fim da missão (ex.: "conta em voz baixa", −1 em conversas). Não tira vida; atrapalha até o fim da missão.
+### 4.6 O preço, em números (Proposta, para testar)
+| | Custo |
+|---|---|
+| Travessia curta (2 ou 3 cenas) | 2 de Ressonância → +2 de Dissonância |
+| Travessia longa (4 ou 5 cenas) | 3 de Ressonância → +3 de Dissonância |
+| Cada Travessia a mais no mesmo eixo | +1 no custo |
 
-### 4.6 Limites (para não quebrar o 30)
-A Ressonância ou Dissonância 30 é fim de jogo. Então:
-- No máximo **3 Travessias por ato de eixo** valendo pontos; as seguintes só custam relógio.
-- Meta de teste: quem faz **todas** as Travessias chega ao fim do Z com no máximo **+8 a +10** pontos vindos deles.
-  Quem não faz nenhum precisa conseguir terminar o jogo.
+- **Sem Ressonância suficiente, não se atravessa.** A âncora fica no Diário, esperando.
+- **O relógio anda.** O tempo do eixo de onde se sai passa enquanto se está fora.
+- **As marcas pesam dos dois lados.** Gastar pode fazer a Ressonância cair abaixo de uma marca (perde o efeito dela) e
+  a Dissonância passar de uma marca (ganha o efeito ruim). O jogo mostra isso antes de o jogador confirmar:
+  *"Atravessar: Ressonância 12 → 9 · Dissonância 4 → 7."*
+- **Volta com marca:** se a Dissonância cruzar uma marca (5, 10, 15...) na Travessia, o personagem volta com um traço
+  temporário até o fim da missão (ex.: "conta em voz baixa", −1 em conversas). Não tira vida; atrapalha.
+- **O ciclo:** ganhar Ressonância nos testes → gastar na Travessia → a Dissonância sobe → o personagem precisa voltar
+  a ganhar Ressonância para atravessar de novo, já mais perto da loucura.
+
+**Por que a Ressonância vira Dissonância (Proposta, para a lore):** a Ressonância é o personagem afinado com a
+própria versão de outro tempo. Atravessar à força gasta essa afinação, e o que sobra é ruído: as duas vidas
+misturadas sem ordem. É o mesmo caminho dos Riscadores e Runáticos, só que mais devagar e por escolha.
+
+### 4.7 Limites (para não chegar a 30 sem querer)
+Dissonância 30 é fim de jogo.
+- Quem faz **todas** as Travessias deve terminar o Z com a Dissonância alta, mas abaixo de 30 se jogar com cuidado.
+  Quem não faz nenhuma precisa conseguir terminar o jogo.
 - Nenhuma Travessia é obrigatória para terminar uma missão principal. Ela abre uma saída melhor, nunca a única.
+- O que se traz de volta é só conhecimento (pistas, palavras de runa, marcas), nunca objeto.
 
-### 4.7 Como testar (protocolo)
-Antes de escrever muitas Travessias, montar **2 Vislumbres e 1 Travessia** e jogar com três perfis:
+### 4.8 Como testar
+Antes de escrever muitas Travessias, montar **1 Travessia do Y para o X** e jogar com três perfis:
 | Perfil | Faz | O que medir |
 |---|---|---|
-| Apressado | nenhuma Travessia | termina o X sem travar? sente falta de alguma coisa? |
-| Curioso | só os do próprio fio | as Travessias melhoram a história do personagem? o preço parece justo? |
-| Completo | todos | onde chegam Ressonância e Dissonância no fim do X? alguém passa perto de 30? |
+| Apressado | nenhuma Travessia | termina o Y sem travar? sente falta de alguma coisa? |
+| Curioso | só as do próprio fio | as Travessias melhoram a história do personagem? o preço parece justo? |
+| Completo | todas | onde chega a Dissonância no fim do Z? alguém passa perto de 30? |
 
-Perguntas para o teste: o jogador entende que trazer um objeto é impossível? O preço assusta na medida certa
-(hesita, mas paga)? O relógio andando incomoda ou só irrita?
+Perguntas para o teste: o jogador hesita antes de pagar, mas paga? Entende de onde vem a Ressonância que gasta?
+Entende que não pode trazer objetos?
 
-Para o motor (quando for a hora): uma missão com `eco: { eixo, ancora, tamanho }`, feita no Criador como qualquer
-outra. A missão publicada continua com o mesmo formato (`Criador.exportar` ↔ `MissoesDados.adaptar`).
+Para o motor (quando for a hora): uma missão com `travessia: { eixo, ancora, custo }`, feita no Criador como
+qualquer outra. A missão publicada continua com o mesmo formato (`Criador.exportar` ↔ `MissoesDados.adaptar`).
 
 ---
 
@@ -415,7 +432,8 @@ Cada eixo mede o tempo de um jeito. Isso reforça que são tempos, sem ninguém 
 0. Port Halden fica onde ficava Yudur? (`LUGARES.md` 1.2) A) sim, e o lugar vira uma segunda causa do epicentro;
    B) só rima de paisagem, sem explicar nada (é o que o texto usa por enquanto); C) não.
 1. A estrutura de 17 (intro Z + 6 X + 5 Y + 5 Z) e o Lime como pós-jogo: segue?
-2. As Travessias: o nome serve? Pode montar 2 Vislumbres e 1 Travessia para o primeiro teste?
+2. As Travessias: o nome serve? Liberar no Y, a partir da Memória Cruzada (Ressonância 10), serve? Pode montar
+   1 Travessia do Y para o X para o primeiro teste?
 3. A escolha grande do X (a lista da Contenção no X3): serve?
 4. As tendências dos 9 (herói, anti-herói, vilão): `PERSONAGENS.md` traz um ponto de virada para cada um,
    escrito para funcionar com qualquer tendência. Quem é quem?
