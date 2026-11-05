@@ -70,7 +70,7 @@ const CIDADE_X = {
     // Eastside
     "estacao-9": { nome: "Estação 9 dos Bombeiros", bairro: "eastside", x: 72, y: 74, icone: "♨" },
     viaduto: { nome: "Viaduto Leste", bairro: "eastside", x: 88, y: 75, icone: "≋" },
-    delancey: { nome: "Delancey Street", bairro: "eastside", x: 88, y: 85, icone: "▣", segredo: true },
+    "predio-eastside": { nome: "Prédio do Eastside", bairro: "eastside", x: 88, y: 85, icone: "▣", segredo: true },
   },
 };
 
@@ -92,7 +92,7 @@ const PONTO_CIDADE_X = {
 // O que cada personagem pronto já conhece da cidade antes de começar
 const CONHECE_X = {
   todos: ["casa"],
-  "frank-brennan": ["estacao-9", "viaduto", "delancey", "st-lukes", "abe", "delegacia-9"],
+  "frank-brennan": ["estacao-9", "viaduto", "predio-eastside", "st-lukes", "abe", "delegacia-9"],
   "rosa-delgado": ["distrito-4", "delegacia-9", "harbor", "ginasio", "atlantico", "galeria"],
   "marcus-bell": ["harbor", "aurora", "hollister", "galeria", "abe", "drogaria", "kphn", "atlantico"],
   "denise-carter": ["st-lukes-ps", "st-lukes", "drogaria", "comunitario"],
