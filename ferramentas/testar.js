@@ -157,7 +157,7 @@ async function navegador() {
   const base = `http://127.0.0.1:${s.address().port}`;
   const nav = await chromium.launch();
   try {
-    for (const pagina of ["index.html", "oficina.html", "diagramas.html"]) {
+    for (const pagina of ["index.html", "oficina.html", "diagramas.html", "teste-abe.html"]) {
       const p = await nav.newPage();
       p.on("pageerror", (e) => erro(pagina, `erro de JavaScript: ${e.message}`));
       await p.goto(`${base}/${pagina}`, { waitUntil: "load" });
