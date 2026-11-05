@@ -33,6 +33,8 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Só humanos:** não há personagens não humanos no KOSMOS, em nenhum eixo.
 - **Eixo Y é outro tempo, não outro mundo.** Eles leem runas, a princípio só isso. Nada religioso (sem heresia, igreja ou deuses).
 - **Travessia** (missão em outro eixo): liberada tarde no jogo. Custa Ressonância, que vira Dissonância; é para isso que se ganha Ressonância nos dados. A partir de certo ponto de Ressonância, o jogador pode gastá-la para reduzir a Dissonância. Detalhes em `NARRATIVA.md`, seção 4.
+- **Itens:** todo item tem um número de usos, de consumível (1 uso por item) a vários usos. Dois tipos: os do personagem (cada um começa com o seu conjunto inicial) e os encontrados nas missões. Um ou outro item é exclusivo de um personagem; via de regra, os itens também se encontram jogando. A Foto da Família é um item.
+- **O designer de mecânicas pode mudar os dados e equilibrar o jogo** (números, marcas, itens, regras). História e lore continuam do autor.
 - **Quem fala do Lime é a IA da Domus** (decidido). As mensagens e os códigos são dela.
 - **Em aberto:** o objetivo da missão da Domus, o que a IA quer (avisar, chamar ou ambíguo), ancestrais ou ecos.
 
