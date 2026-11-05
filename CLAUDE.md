@@ -25,11 +25,14 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Riscadores (X) e Runáticos (Y) são mobs, nunca facção.** Ressonância e Dissonância são nomes de regra; no mundo quase ninguém usa essas palavras. O equivalente do Z é diferente (a definir pelo autor).
 - **Estrutura:** intro curta no Z (Domus) → Prólogo X (Port Halden) → Y e Z liberam depois; Z é o endgame; Lime é o post-game (com "segundo final").
 - **9 personagens prontos** (3 Tank, 3 Healer, 3 Support), cada um com origem no Prólogo X (`js/missoes/origens-x.js`) e fio pessoal no Diário. Têm tendência (herói, anti-herói, vilão), ainda não definida: não inventar, perguntar.
-- **Eixo Y é outro tempo, não outro mundo.** Eles leem runas, a princípio só isso. Nada religioso (sem heresia, igreja ou deuses).
+- **Eixo Y é outro tempo, não outro mundo.** Eles leem runas, a princípio só isso. Nada religioso (sem heresia, igreja ou deuses). **Mesmo chão:** o Y acontece onde um dia vai existir Port Halden.
+- **21h47 é a hora de bordo em que a Domus cruzou o horizonte.** Por isso tudo em Port Halden acontece às 21h47.
 - **Quem fala do Lime é a IA da Domus** (decidido). As mensagens e os códigos são dela.
 - **Em aberto:** o objetivo da missão da Domus, o que a IA quer (avisar, chamar ou ambíguo), ancestrais ou ecos.
 
 ## Jeito de fazer
+- **Nada pode lembrar o Brasil, nem um pouco.** Tudo é americanizado (nomes, instituições, costumes, jeito de falar).
+- **Sem anos 80 por enquanto:** nenhuma data ou evento passado nos anos 80 (o incêndio da Delancey St. e o "1987" foram tirados).
 - **Eixo X é sobrevivência**, não investigação: comida, abrigo, gente para proteger, chegar vivo ao fim da noite.
 - **Telas sem rolagem**, texto em pedaços (um parágrafo por vez, digitado, com "Continuar ▸"), no celular e no PC.
 - **Menus intocados:** a galáxia animada fica nos menus; artes vão para dentro das missões, mapas e retratos.
