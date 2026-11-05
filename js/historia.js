@@ -80,6 +80,8 @@ const HISTORIA = {
           <li>Depois, o mesmo código passa a ser <b>a rota para a Domus seguir até o Lime</b>. Isso precisa aparecer <b>aos poucos, em algumas missões do Eixo X</b>.</li>
           <li><b>Para depois:</b> e se a IA estiver enviando os códigos para a <b>criação da Domus</b>? (A nave seria construída a partir de uma mensagem que ela mesma manda.)</li>
           <li><b>O tempo:</b> os <b>26.000 anos</b> vêm de uma sugestão antiga do Claude (não ficou salva): 26.000 anos-luz é a distância real da Terra até <b>Sagitário A*</b>, o buraco negro do centro da galáxia. A ideia do autor: é relatividade. Dentro da Domus passam de <b>50 a 100 anos</b>; lá fora, <b>26.000</b> (paradoxo dos gêmeos: viajando a 99,9993% da velocidade da luz, 26.000 anos-luz cabem em 100 anos de bordo). Em aberto: se o buraco negro é mesmo Sagitário A*.</li>
+          <li><b>Por que o Y existe (ideia do autor):</b> por ambiguidade nos cálculos, a IA enviou <b>códigos cruzados para dois pontos do tempo</b>. Um é Port Halden (X); o outro é o Y. Falta fechar por que o Y é necessário, na história e nas regras.</li>
+          <li><b>A linha do tempo (a confirmar com o autor):</b> de Port Halden ao lançamento da Domus passam de 50 a 100 anos; o mundo acha que o sinal é alienígena. Do lançamento até o Lime passam 26.000 anos, sem que a tripulação saiba.</li>
           <li><b>Uma missão com a IA:</b> o jogador ajuda a IA a descobrir a ponta inicial do nó (o momento em que a Domus foi criada pela primeira vez) e segue a linha do tempo até o momento em que o jogo está. Escrever <b>junto com os agentes de lore e de mecânica</b>.</li>
         </ul>`,
     },
