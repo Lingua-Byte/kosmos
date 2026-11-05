@@ -143,8 +143,9 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
   5. Com a palavra aprendida, o enigma aparece resolvido. A recompensa é a mesma nos dois modos.
   6. Fácil ou difícil: decidido por missão (ver abaixo).
   - **Decidido pelo autor:** a lição que ensina a palavra é ótima. Quando o jogador não consegue completar a frase de
-    jeito nenhum, nem com as dicas, há **penalidade de Dissonância**, e ela vem do jeito natural do jogo: a lição é uma
-    **missão com Travessia** (aprender a palavra no outro tempo custa Ressonância, que vira Dissonância).
+    jeito nenhum, nem com as dicas, há **penalidade de Dissonância**, e ela vem do jeito natural do jogo: abre uma **missão
+    secundária (a lição) que necessariamente envolve um salto no tempo**, e o salto traz a Dissonância.
+    (A confirmar: vale mesmo antes de a Travessia ser liberada, sem pagar Ressonância.)
   - **Decidido pelo autor:** fácil ou difícil é **aberto em cada missão** (o autor marca no Criador, enigma por enigma).
     Na lição, quem ensina é **uma pessoa ou um objeto sorteado das listas** do gerador.
   - A programar: efeito "aprender palavra de runa", tela do enigma, campos do enigma no Criador, escolha fácil/difícil,
