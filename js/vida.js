@@ -67,8 +67,14 @@ const Vida = (() => {
       const l = condicao(p, c);
       if (l) linhas.push(l);
     }
-    if (it.dissonancia) p.dissonancia = Math.max(0, p.dissonancia + it.dissonancia);
-    if (it.renovarItens) for (const k of Object.keys(p.usos)) if (EQUIPAMENTOS.some((e) => e.chave === k)) delete p.usos[k];
+    // o calmante sempre tira o abalo, mas só baixa a Dissonância REGRAS.calmantePorMissao vezes por missão
+    if (it.dissonancia < 0 && !Regras.alivio(p, chave, REGRAS.calmantePorMissao))
+      linhas.push(`A Dissonância não baixa mais com isso nesta missão (máximo ${REGRAS.calmantePorMissao}).`);
+    else if (it.dissonancia) Regras.mudarDis(p, it.dissonancia);
+    if (it.renovarItens) {
+      const feitos = Regras.recarregar(p);
+      linhas.push(feitos.length ? `Recarregado: ${feitos.map((k) => Regras.equip(k).nomes[eixo]).join(", ")}` : "Nada para recarregar.");
+    }
     return linhas;
   }
 
@@ -88,7 +94,9 @@ const Vida = (() => {
     garantir(p);
     if (p.dinheiro[eixo] < preco(oferta, eixo)) return "dinheiro não dá";
     if (oferta.pertence && naBolsa(p) >= BOLSA_MAX) return "bolsa cheia";
-    if (oferta.equip && p.itens.includes(oferta.equip)) return "você já tem";
+    // quem já tem o item pode comprar outro para encher os usos; com o item cheio, não precisa
+    if (oferta.equip && p.itens.includes(oferta.equip) && Regras.cargas(p, oferta.equip) >= Regras.equip(oferta.equip).usos) return "você já tem";
+    if (oferta.equip && p.itens.includes(oferta.equip)) return "";
     if (oferta.equip && Regras.carga(p) + Regras.equip(oferta.equip).peso > Regras.cargaMax(p)) return "carga cheia";
     return "";
   }
@@ -98,8 +106,8 @@ const Vida = (() => {
     if (motivo) return { erro: motivo };
     mudarDinheiro(p, eixo, -preco(oferta, eixo));
     if (oferta.pertence) ganhar(p, oferta.pertence);
-    else Regras.alternar(p, "item", oferta.equip);
-    return { linha: `Comprou: ${nomeOferta(oferta, eixo)} (−${dinheiroTexto(eixo, preco(oferta, eixo))})` };
+    else Regras.darItem(p, oferta.equip);
+    return { linha: `Comprou: ${nomeOferta(oferta, eixo)} (−${dinheiroTexto(eixo, preco(oferta, eixo))})${oferta.equip ? ` · ${Regras.cargas(p, oferta.equip)} usos` : ""}` };
   }
 
   // Arte de cada item (equipamento ou pertence) em cada eixo: imagens/itens/<chave>-<eixo>.webp.

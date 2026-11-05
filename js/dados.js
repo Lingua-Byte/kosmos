@@ -5,7 +5,8 @@ const Dados = (() => {
   const dialogo = $("#dialogo-dados");
   const corpo = $("#dados-corpo");
   // { p, eixo, tipo: "teste" | "estudo" | "convergencia", atributo, dificuldade, intensidade,
-  //   recursos: Set de chaves usadas, ajuda, resultado, aplicados }
+  //   recursos: Set de chaves usadas, ajuda, resultado, aplicados,
+  //   ensaio: rolagem da ficha, fora de missão (não gasta nada e não marca nada) }
   let contexto = null;
 
   function rolarParada(n) {
@@ -36,6 +37,7 @@ const Dados = (() => {
     const partes = [{ fonte: "atributo", dados: p.atributos[atributo] + DADOS.dadosExtras }];
     for (const m of Regras.modificadores(p, atributo)) partes.push(m);
     for (const m of Regras.modTracos(p, tags)) partes.push(m);
+    for (const m of Regras.modMarcasTags(p, tags)) partes.push(m);
     for (const { it, passiva, livre } of recursosDaSituacao(p, tags)) {
       if ((passiva && livre) || recursos.has(it.chave)) partes.push({ fonte: it.nomes[eixo], dados: it.dados });
     }
@@ -45,14 +47,23 @@ const Dados = (() => {
 
   const somaDados = (partes) => Math.max(1, partes.reduce((s, x) => s + x.dados, 0));
 
+  // O Teste de Convergência rola pelo menos REGRAS.convergenciaMinDados dados (ninguém fica sem chance)
+  function comMinimo(partes, tipo) {
+    const soma = partes.reduce((s, x) => s + x.dados, 0);
+    if (tipo === "convergencia" && soma < REGRAS.convergenciaMinDados)
+      partes.push({ fonte: "mínimo da Convergência", dados: REGRAS.convergenciaMinDados - soma });
+    return partes;
+  }
+
   function composicao() {
-    const { p, eixo, atributo, tags, recursos, ajuda } = contexto;
-    return composicaoPara(p, eixo, atributo, tags, recursos, ajuda);
+    const { p, eixo, atributo, tags, recursos, ajuda, tipo } = contexto;
+    return comMinimo(composicaoPara(p, eixo, atributo, tags, recursos, ajuda), tipo);
   }
 
   function quantidade() {
     return somaDados(composicao());
   }
+
 
   function chanceHtml(n, k, nome) {
     const c = Regras.chance(n, k);
@@ -67,6 +78,7 @@ const Dados = (() => {
     contexto = {
       recursos: new Set(), ajuda: false, resultado: null, aplicados: null,
       aoTerminar: opts.aoTerminar || null, podeAjudar: opts.podeAjudar !== false, avisado: false,
+      ensaio: Boolean(opts.ensaio), repetido: false,
       ...dados,
     };
     render();
@@ -146,7 +158,8 @@ const Dados = (() => {
       <header class="dados-topo">
         <h2>${titulos[tipo]}</h2>
         <p class="sub">${esc(p.nome)} · ${e.glifo} ${e.mundo} · ${attr.nome} ${p.atributos[atributo]}</p>
-        ${tipo === "convergencia" ? `<p class="sub">Passou: + Ressonância. Falhou: + Dissonância. ${e.exposicao.nome} sobe sempre. Precisa de ${dificuldade} sucesso${dificuldade > 1 ? "s" : ""}.</p>` : ""}
+        ${contexto.ensaio ? `<p class="sub">Ensaio na ficha: nada é gasto nem marcado. Valendo, só nas missões.</p>` : ""}
+        ${tipo === "convergencia" && !contexto.ensaio ? `<p class="sub">Passou: + Ressonância. Falhou: + Dissonância. ${e.exposicao.nome} sobe sempre. Precisa de ${dificuldade} sucesso${dificuldade > 1 ? "s" : ""}.</p>` : ""}
         ${tipo === "estudo" ? `<p class="sub">Precisa de ${dificuldade} sucessos. Passou: ganha uma carta de runa para virar. Uma tentativa por cena.</p>` : ""}
       </header>
 
@@ -162,7 +175,7 @@ const Dados = (() => {
           <div class="chips">${recursos.map(({ it, livre }) => {
             const sel = contexto.recursos.has(it.chave);
             const resta = Regras.usosRestantes(p, it.chave);
-            const usos = it.usos === "passiva" ? "passiva" : `${resta} uso${resta === 1 ? "" : "s"}`;
+            const usos = it.usos === "passiva" ? "passiva" : resta > 0 ? `${resta} uso${resta === 1 ? "" : "s"}` : "sem uso";
             return `<button class="chip ${sel ? "escolhida" : ""}" data-recurso="${it.chave}" ${!livre || resultado ? "disabled" : ""}>
               ${esc(it.nomes[eixo])} +${it.dados} <small>${Regras.bloqueado(p, it.chave) ? "bloqueada" : usos}</small></button>`;
           }).join("")}</div>
@@ -207,11 +220,13 @@ const Dados = (() => {
     if (aplicados.exp) linhas.push(`+${aplicados.exp} ${e.exposicao.nome}`);
     if (aplicados.carta) linhas.push("+1 carta de runa para virar");
     const sinais = resultado.sinais
-      ? `<p class="sinais">${resultado.sinais} ${resultado.sinais > 1 ? "sinais" : "sinal"} ◉ da Entidade: cada um marca +1 de ${e.exposicao.nome}${Regras.sinaisDaoDissonancia(p) ? " e +1 Dissonância (Perda de Controle)" : ""}.</p>`
+      ? `<p class="sinais">${resultado.sinais} ${resultado.sinais > 1 ? "sinais" : "sinal"} ◉: cada um marca +1 de ${e.exposicao.nome}${Regras.sinaisDaoDissonancia(p, tipo) ? " e +1 Dissonância (Perda de Controle)" : ""}${contexto.ensaio ? " (no ensaio, nada é marcado)" : ""}.</p>`
       : "";
-    const ancora = tipo === "convergencia"
+    const ancora = tipo === "convergencia" && !contexto.ensaio
       ? p.habs.map(Regras.hab).find((h) => h.rerrolar === "convergencia" && Regras.usosRestantes(p, h.chave) > 0)
       : null;
+    // Pressentimento (Ressonância 15): 1 vez por missão, rola de novo um teste comum que falhou
+    const pressente = tipo === "teste" && !resultado.passou && !contexto.ensaio && !contexto.repetido && Regras.podePressentir(p);
 
     const veredito = {
       teste: resultado.passou ? "Sucesso" : "Falha",
@@ -225,6 +240,7 @@ const Dados = (() => {
       ${sinais}
       ${linhas.length ? `<p class="aplicado-lista">Marcado na ficha: <b>${linhas.join(" · ")}</b></p>` : ""}
       ${ancora ? `<button class="btn-secundario" data-ancora="${ancora.chave}">${esc(ancora.nomes[eixo])}: rolar de novo</button>` : ""}
+      ${pressente ? `<button class="btn-secundario" data-ancora="pressentimento">Pressentimento: rolar de novo (1 vez por missão)</button>` : ""}
       ${tipo === "convergencia" ? `<p class="presagio">“${esc(fraseAleatoria())}”</p>` : ""}`;
   }
 
@@ -237,9 +253,11 @@ const Dados = (() => {
     const final = rolarParada(n);
     corpo.querySelectorAll("[data-rolar-agora]").forEach((b) => (b.disabled = true));
 
-    // Usar um recurso gasta o uso na hora da rolagem
-    for (const c of recursos) if (Regras.item(c).usos !== "passiva") Regras.consumir(p, c);
-    if (tipo === "estudo") Regras.consumir(p, "estudo");
+    // Usar um recurso gasta o uso na hora da rolagem (no ensaio e ao rolar de novo, não gasta outra vez)
+    if (!contexto.ensaio && !contexto.repetido) {
+      for (const c of recursos) if (Regras.item(c).usos !== "passiva") Regras.consumir(p, c);
+      if (tipo === "estudo") Regras.consumir(p, "estudo");
+    }
 
     let quadros = reduzirMovimento ? 0 : 10;
     const girar = () => {
@@ -270,11 +288,16 @@ const Dados = (() => {
     }
     if (tipo === "estudo" && resultado.passou) a.carta = 1;
     a.exp += resultado.sinais;
-    if (Regras.sinaisDaoDissonancia(p)) a.dis += resultado.sinais;
+    if (Regras.sinaisDaoDissonancia(p, tipo)) a.dis += resultado.sinais;
+    // ensaio (rolagem da ficha fora de missão): mostra o resultado, mas nada muda
+    if (contexto.ensaio) {
+      contexto.aplicados = { res: 0, dis: 0, exp: 0, carta: 0 };
+      return;
+    }
 
     const antes = { res: p.ressonancia, dis: p.dissonancia, exp: p.exposicao[eixo] };
-    p.ressonancia = somar(p.ressonancia, a.res, REGRAS.ressonanciaMax);
-    p.dissonancia = somar(p.dissonancia, a.dis, REGRAS.ressonanciaMax);
+    Regras.mudarRes(p, a.res);
+    Regras.mudarDis(p, a.dis);
     p.exposicao[eixo] = somar(p.exposicao[eixo], a.exp, REGRAS.exposicaoMax);
     p.cartasRunas += a.carta;
     // guarda o quanto realmente subiu (respeitando os máximos)
@@ -296,6 +319,7 @@ const Dados = (() => {
     p.rolagens.unshift({
       quando: new Date().toISOString(),
       tipo,
+      ensaio: contexto.ensaio || undefined,
       eixo,
       atributo,
       situacao: contexto.situacao ? contexto.situacao.nome : undefined,
@@ -324,10 +348,12 @@ const Dados = (() => {
     } else if (t.hasAttribute("data-ajuda")) contexto.ajuda = !contexto.ajuda;
     else if (t.hasAttribute("data-rolar-agora")) return rolar();
     else if (t.dataset.ancora) {
+      // Âncora (Convergência) ou Pressentimento (teste comum): desfaz o resultado e rola de novo,
+      // com os mesmos dados (os usos de item já gastos não são cobrados de novo)
       Regras.consumir(contexto.p, t.dataset.ancora);
       desfazer();
       contexto.resultado = null;
-      contexto.recursos = new Set();
+      contexto.repetido = true;
       render();
       return rolar();
     } else if (t.hasAttribute("data-fechar")) return dialogo.close();
@@ -355,7 +381,7 @@ const Dados = (() => {
         return `<li class="${r.passou ? "passou" : "falhou"}">
           <span class="h-nome">${e.glifo} ${nome}</span>
           <span class="h-dados">${r.dados.map((d) => (d === DADOS.sinal ? "◉" : d)).join(" ")}</span>
-          <b>${veredito}</b>
+          <b>${veredito}${r.ensaio ? " <small>(ensaio)</small>" : ""}</b>
           <time>${hora}</time>
         </li>`;
       })
