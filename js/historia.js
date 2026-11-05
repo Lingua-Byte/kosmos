@@ -36,6 +36,16 @@ const HISTORIA = {
         <p>A ordem das letras não é cronológica: elas dizem a <b>posição em relação ao buraco negro</b>, não a ordem no tempo.</p>`,
     },
     {
+      titulo: "O Eixo Y é outro tempo, não outro mundo",
+      estado: "decidido",
+      html: `
+        <ul>
+          <li>O Y é o <b>passado</b> da mesma realidade, não um mundo de fantasia à parte.</li>
+          <li>As pessoas do Y <b>leem runas</b>. A princípio, é isso.</li>
+          <li><b>Nada religioso:</b> sem heresia, sem igreja, sem deuses explicando o fenômeno.</li>
+        </ul>`,
+    },
+    {
       titulo: "A Domus e o buraco negro",
       estado: "considerar",
       html: `
@@ -63,7 +73,7 @@ const HISTORIA = {
         <ul>
           <li>Quanto mais a Domus cai, mais o tempo se dobra, e o passado começa a sentir.</li>
           <li><b>Em X:</b> radiação sem origem, surtos, gente caminhando para o epicentro. É energia do futuro chegando a uma época que só sabe medi-la como radiação.</li>
-          <li><b>Em Y:</b> a mesma energia, lida como magia ou heresia.</li>
+          <li><b>Em Y:</b> a mesma energia, aparecendo nas runas que eles leem.</li>
           <li><b>Em Z:</b> a estrela que observa.</li>
         </ul>`,
     },
