@@ -123,6 +123,18 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
 - **Interface (Z):** relações entre núcleos, estados embaixo. *A refazer com lógica própria.*
 - Qualquer palavra real tem tradução; nomes e palavras sem sentido no mundo são escritos letra a letra.
 
+### Tradução: como funciona no jogo (decidido em 05/11/2026; detalhes em proposta)
+- **Decidido pelo autor:** a tradução é **chave** sempre e **enigma** só em momentos marcados (como a frase partida).
+  Juntar uma frase partida dá a **Memória Cruzada** e, dependendo do caso, também as **palavras que faltavam**.
+- **Como se aprende (proposta):** no X, vendo o símbolo no mundo (já existe: efeito `aprenderX`); no Y, letras pelas
+  cartas de runa e pelo estudo (já existe), palavras ouvindo alguém ler ou achando uma inscrição (falta: `aprenderY`);
+  no Z, pelos terminais da Domus (a definir).
+- **A frase partida (proposta):** metade em cálculo achada no X e metade em runas achada no Y vão para o Diário
+  (palavras desconhecidas aparecem como ▢); com as duas, aparece **Juntar**; uma metade ajuda a ler a outra (é aí o enigma).
+- **Campos do Criador (proposta):** `aprenderY` (palavras de runa), `metade` (`{ frase, lado }`), `req.palavra`
+  (escolha só para quem sabe a palavra). As frases partidas ficam numa lista única, apontadas pelo nome.
+- **Em aberto:** o que acontece se faltarem palavras na hora de juntar.
+
 ## 6. Em aberto
 
 - Tipo de fantasia do Eixo Y (low, high ou mistura): fica em aberto por enquanto.
