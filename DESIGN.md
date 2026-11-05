@@ -143,6 +143,10 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
   - **Poucas frases:** frases próprias das missões principais e secundárias, e uma série à parte para as geradas por modelo.
   - No Tradutor, o jogador pode **anotar o próprio palpite** para o que não sabe (feito; o jogo não corrige).
   - Uma "página para confirmar" (ligar símbolos a desenhos): ainda sem decisão.
+- **A frase e a missão (decidido pelo autor):** nas missões principais, a frase do Decifrar está ligada diretamente à
+  missão do salto (título, tema); ela dá o ponto de partida, e a missão seguinte dá a continuidade.
+- **Falar com a IA (ideia do autor, endgame):** o jogador precisa se comunicar com a IA da Domus nessas línguas, escrevendo.
+  As línguas deixam de ser só para ler. (O Tradutor já tem o modo "Português → símbolos", que pode servir de base.)
 - **Nomes:** o enigma se chama **Decifrar**; a missão de quem falha de vez se chama **Lição**.
 - **Proposta do designer de mecânicas para o enigma (com as decisões do autor abaixo):**
   1. A palavra que falta aparece como ▢; o jogador escreve (o jogo ignora acento e maiúscula; o autor dá 1 a 3 respostas aceitas).
