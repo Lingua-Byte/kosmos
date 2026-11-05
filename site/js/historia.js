@@ -79,7 +79,7 @@ const HISTORIA = {
           <li><b>Dentro do jogo, a missão é ser guiado por um sinal estranho</b> que está codificando a criação da Domus. Os personagens podem interpretar o código como um sinal alienígena.</li>
           <li>Depois, o mesmo código passa a ser <b>a rota para a Domus seguir até o Lime</b>. Isso precisa aparecer <b>aos poucos, em algumas missões do Eixo X</b>.</li>
           <li><b>Para depois:</b> e se a IA estiver enviando os códigos para a <b>criação da Domus</b>? (A nave seria construída a partir de uma mensagem que ela mesma manda.)</li>
-          <li><b>O tempo:</b> os <b>26.000 anos</b> do Eixo Z seriam relatividade. De um lado (dentro da Domus) passam de <b>50 a 100 anos</b>; do outro, <b>26.000</b>.</li>
+          <li><b>O tempo:</b> os <b>26.000 anos</b> vêm de uma sugestão antiga do Claude (não ficou salva): 26.000 anos-luz é a distância real da Terra até <b>Sagitário A*</b>, o buraco negro do centro da galáxia. A ideia do autor: é relatividade. Dentro da Domus passam de <b>50 a 100 anos</b>; lá fora, <b>26.000</b> (paradoxo dos gêmeos: viajando a 99,9993% da velocidade da luz, 26.000 anos-luz cabem em 100 anos de bordo). Em aberto: se o buraco negro é mesmo Sagitário A*.</li>
           <li><b>Uma missão com a IA:</b> o jogador ajuda a IA a descobrir a ponta inicial do nó (o momento em que a Domus foi criada pela primeira vez) e segue a linha do tempo até o momento em que o jogo está. Escrever <b>junto com os agentes de lore e de mecânica</b>.</li>
         </ul>`,
     },
