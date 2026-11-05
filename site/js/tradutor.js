@@ -194,13 +194,18 @@ const Tradutor = (() => {
       return;
     }
     const pedacos = Lingua.decodificar(texto, eixo, p).filter((x) => !x.sintaxe);
-    const lido = pedacos.map((x) => (x.conhecido === false ? "?" : x.leitura)).join(" · ");
+    // palpite do jogador para o que ainda não sabe (ideia do Chants of Sennaar): fica na ficha, o jogo não corrige
+    const palpites = (p.palpites && p.palpites[eixo]) || {};
+    const lido = pedacos.map((x) => (x.conhecido === false ? (palpites[x.s] ? `${palpites[x.s]}?` : "?") : x.leitura)).join(" · ");
     saida.innerHTML = `<div class="leitura-texto">${esc(lido)}</div>`;
     textoParaCopiar = lido;
     const foneticaY = eixo === "y" ? pedacos.map((x) => (x.letras !== undefined ? (x.conhecido === false ? "?" : x.letras.split("/")[0] || "?") : "")).join("") : "";
     leitura.innerHTML = `
       <div class="glosa">${pedacos.map((x) => `<span class="${x.conhecido === false ? "glosa-oculta" : ""}"><b>${esc(x.s)}</b> <i>${x.conhecido === false ? "desconhecido" : esc(x.leitura)}</i></span>`).join("")}</div>
-      ${foneticaY ? `<p class="sub">Lido como letras: <b>${esc(foneticaY)}</b></p>` : ""}`;
+      ${foneticaY ? `<p class="sub">Lido como letras: <b>${esc(foneticaY)}</b></p>` : ""}
+      ${p.id && pedacos.some((x) => x.conhecido === false) ? `<div class="palpites"><p class="sub">Seu palpite (só para você; o jogo não corrige):</p>
+        ${[...new Set(pedacos.filter((x) => x.conhecido === false).map((x) => x.s))].map((s) => `<label class="palpite"><b>${esc(s)}</b>
+          <input data-palpite="${esc(s)}" value="${esc(palpites[s] || "")}" placeholder="o que você acha que é" autocomplete="off"></label>`).join("")}</div>` : ""}`;
   }
 
   function simbolosConhecidos(p) {
@@ -397,6 +402,20 @@ const Tradutor = (() => {
     const p = leitor();
     if (estado.modo === "codificar") renderCodificar(p);
     else renderDecodificar(p);
+  });
+
+  // palpite: guarda ao sair do campo (sem redesenhar enquanto o jogador escreve)
+  leitura.addEventListener("change", (ev) => {
+    const campo = ev.target.closest("[data-palpite]");
+    if (!campo) return;
+    const p = leitor();
+    if (!p.id) return;
+    p.palpites = p.palpites || {};
+    const porEixo = (p.palpites[estado.eixo] = p.palpites[estado.eixo] || {});
+    const v = campo.value.trim();
+    if (v) porEixo[campo.dataset.palpite] = v; else delete porEixo[campo.dataset.palpite];
+    Armazem.salvar(p);
+    renderDecodificar(p);
   });
 
   $("#dic-busca").addEventListener("input", (ev) => {

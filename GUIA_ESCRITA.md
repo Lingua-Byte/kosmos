@@ -89,6 +89,14 @@ O agente **editor de texto** (`.claude/agents/editor-de-texto.md`) segue este gu
 
 ---
 
+## 3.1 Palavras novas das línguas (lição do Chants of Sennaar)
+
+- **A primeira vez que uma palavra de Código Urbano ou de runa aparece, ela vem junto de uma pista concreta:** um objeto,
+  um gesto, uma situação que mostre o sentido (o traço gravado ao lado de um olho desenhado). Sem explicação em texto.
+- **A escrita nunca fica escondida.** O jogador vê a frase inteira; só a tradução vai se completando com o que ele sabe.
+- **Poucas frases, muito usadas:** frases próprias das missões principais e secundárias, e uma série à parte para as
+  missões geradas por modelo.
+
 ## 4. O que soa como IA (cortar sempre)
 
 - Frase de efeito no fim do parágrafo ("Se houver amanhã.", "Ajuda.", "Por via das dúvidas."). No máximo uma por cena.
