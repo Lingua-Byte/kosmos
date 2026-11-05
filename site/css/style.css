@@ -1943,3 +1943,13 @@ input, textarea, select, [contenteditable] { -webkit-user-select: text; user-sel
 .palpite { display: flex; align-items: center; gap: 8px; }
 .palpite b { min-width: 2.5em; text-align: center; color: var(--acento); }
 .palpite input { flex: 1; min-width: 0; padding: 5px 10px; border-radius: 8px; border: 1px dashed var(--painel-borda); background: rgba(0, 0, 0, 0.3); color: var(--texto); font: inherit; font-style: italic; }
+.dec-resumo { grid-template-columns: 1fr; }
+.dec-painel .decifrar { margin-top: 10px; }
+.dec-trad .dec-sabe { font-style: normal; }
+.dec-lacuna { font: inherit; font-style: normal; padding: 1px 8px; margin: 2px 0; border-radius: 6px; border: 1px dashed var(--acento); background: transparent; color: var(--acento); cursor: pointer; }
+.dec-lacuna.escolhida { border-style: solid; background: color-mix(in srgb, var(--acento) 18%, transparent); }
+.dec-lacuna:disabled { border-color: var(--perigo); color: var(--perigo); }
+.dec-frase .dec-falta { opacity: 0.75; }
+.dec-alvo { color: var(--texto); text-decoration: underline; text-decoration-color: var(--acento); text-underline-offset: 4px; }
+.dec-painel .dec-frase { font-size: 1.6rem; }
+.dec-painel .dec-trad { font-size: 1.1rem; line-height: 1.8; }

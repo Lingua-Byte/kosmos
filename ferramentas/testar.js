@@ -95,8 +95,11 @@ function conferirMissao(id) {
     if (k === "npc" && typeof v === "string" && !npcs[v]) erro(onde, `${cam} cita o NPC "${v}", que não está na lista de NPCs`);
     // Decifrar: "acertou" e "licao" também levam a cenas; sem respostas, ninguém acerta
     if (k === "decifrar" && v && typeof v === "object") {
-      if (!(v.respostas || []).length) erro(onde, `${cam} não tem respostas aceitas`);
-      if (v.modo !== "dificil" && (v.erradas || []).length < 3) aviso(onde, `${cam} está no modo fácil com menos de 3 opções erradas`);
+      if (!(v.palavras || []).length) erro(onde, `${cam} não tem palavras`);
+      (v.palavras || []).forEach((w, i) => {
+        if (!w.escrita || !w.sentido) erro(onde, `${cam}.palavras[${i}] está sem escrita ou sem tradução`);
+        if (w.id && v.modo !== "dificil" && (w.erradas || []).length < 3) aviso(onde, `${cam}.palavras[${i}] está no modo fácil com menos de 3 opções erradas`);
+      });
       for (const campo of ["acertou", "licao"]) {
         const d = v[campo];
         if (!d) { erro(onde, `${cam} não diz para onde vai (${campo})`); continue; }

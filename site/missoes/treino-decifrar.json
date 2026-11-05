@@ -11,49 +11,98 @@
   "cenas": {
     "muro": {
       "titulo": "O muro da esquina",
-      "texto": "Na volta para casa, {nome} para na esquina. Alguém riscou o muro com giz, em letra reta, quase uma conta de escola.\n\nA maior parte {nome} já sabe ler. Falta uma palavra.",
-      "tutorial": "Treino: 3 tentativas grátis. No fácil, depois delas, 4 opções e 2 chances. Falhou de vez: Lição.",
+      "texto": "Na volta para casa, {nome} para na esquina. Alguém riscou o muro com giz, em letra reta, quase uma conta de escola.\n\nA frase está inteira ali. O que {nome} ainda não sabe ler fica em branco.",
+      "tutorial": "Treino: a tradução se monta com as palavras que o personagem já sabe. As outras viram ▢. Cada uma tem 3 tentativas grátis; no fácil, depois, 4 opções e 2 chances. Falhou de vez: Lição.",
       "decifrar": {
         "lingua": "x",
-        "palavra": "observar",
-        "frase": "∃ ψ(t) ⇒ ▢(S)",
-        "traducao": "Existe uma mente, agora, que ▢ a estrela.",
-        "respostas": [
-          "observa",
-          "observar",
-          "olha",
-          "vigia"
-        ],
-        "erradas": [
-          "apaga",
-          "teme",
-          "esquece"
-        ],
         "modo": "facil",
         "acertou": "cena:fim",
         "licao": "cena:licao",
         "dissonancia": 1,
-        "aprenderX": [
-          "observar"
+        "palavras": [
+          {
+            "escrita": "∃",
+            "sentido": "Existe",
+            "id": "existir",
+            "respostas": [
+              "existe",
+              "existir",
+              "ha",
+              "tem"
+            ],
+            "erradas": [
+              "nada",
+              "nunca",
+              "falta"
+            ]
+          },
+          {
+            "escrita": "ψ(t)",
+            "sentido": "uma mente, agora,",
+            "id": "mente",
+            "respostas": [
+              "mente",
+              "uma mente",
+              "pensamento",
+              "alguem"
+            ],
+            "erradas": [
+              "pedra",
+              "agua",
+              "rua"
+            ]
+          },
+          {
+            "escrita": "⇒",
+            "sentido": "que"
+          },
+          {
+            "escrita": "𝒪",
+            "sentido": "observa",
+            "id": "observar",
+            "respostas": [
+              "observa",
+              "observar",
+              "olha",
+              "vigia"
+            ],
+            "erradas": [
+              "apaga",
+              "teme",
+              "esquece"
+            ]
+          },
+          {
+            "escrita": "(S)",
+            "sentido": "a estrela.",
+            "id": "estrela",
+            "respostas": [
+              "estrela",
+              "a estrela",
+              "sol",
+              "o sol"
+            ],
+            "erradas": [
+              "porta",
+              "casa",
+              "chuva"
+            ]
+          }
         ]
       },
       "opcoes": []
     },
     "licao": {
       "titulo": "Lição",
-      "texto": "O giz escorrega dos dedos. Um frio que não é de inverno. Cheiro de cera de vela, pedra úmida.\n\nNuma parede de pedra, o mesmo traço do muro está gravado, ao lado de um olho desenhado. Alguém passou o dedo ali tantas vezes que a pedra ficou lisa.",
-      "tutorial": "Lição: o salto no tempo trouxe Dissonância. Aqui se aprende a palavra.",
+      "texto": "O giz escorrega dos dedos. Um frio que não é de inverno. Cheiro de cera de vela, pedra úmida.\n\nNuma parede de pedra, o mesmo sinal do muro está gravado, ao lado de um desenho que mostra o que ele quer dizer. Alguém passou o dedo ali tantas vezes que a pedra ficou lisa.",
+      "tutorial": "Lição: o salto no tempo trouxe Dissonância. Ao voltar, a palavra que faltava está aprendida.",
       "opcoes": [
         {
           "id": "licao-entender",
-          "texto": "Olhar o traço ao lado do olho",
+          "texto": "Olhar o sinal ao lado do desenho",
           "resultado": {
-            "texto": "O traço e o olho. Quem olha. Quem presta atenção. De volta à esquina, o giz ainda está no chão.",
-            "efeitos": {
-              "aprenderX": [
-                "observar"
-              ]
-            },
+            "texto": "O sinal e o desenho, lado a lado. De volta à esquina, o giz ainda está no chão, e a palavra que faltava agora faz sentido.",
+            "efeitos": {},
             "ir": "cena:muro"
           }
         }
@@ -68,5 +117,5 @@
   },
   "lugares": {},
   "inicio": "muro",
-  "textoFinal": "Fim do treino de Decifrar. No Criador, troque o modo para \"difícil\" para ver a versão sem opções."
+  "textoFinal": "Fim do treino de Decifrar. Jogue de novo com outro personagem: quem sabe mais palavras decifra menos."
 }
