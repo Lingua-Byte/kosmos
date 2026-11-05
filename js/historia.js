@@ -89,6 +89,7 @@ const HISTORIA = {
           <li><b>Para quem está no Lime, tudo acontece num instante (decidido pelo autor).</b> Vistos pela IA, o passado do Y que leva à fundação de Port Halden e o presente do X, em que o <b>Instituto de Física recebe os códigos</b>, acontecem ao mesmo tempo. (Quem recebe primeiro no Instituto: talvez o Eli Navarro, a ver depois.)</li>
           <li><b>Yudur já existia (decidido pelo autor).</b> O que o jogo mostra no Y são os acontecimentos que vão levar à fundação da cidade.</li>
           <li><b>A linha do tempo (confirmada pelo autor):</b> de Port Halden (X) ao lançamento da Domus (Z) passam de <b>50 a 100 anos</b>; o mundo acha que o sinal é alienígena. Do lançamento até o Lime passam <b>26.000 anos</b>, sem que a tripulação saiba.</li>
+          <li><b>Falar com a IA (ideia do autor):</b> no endgame, o jogador precisa se comunicar com a IA da Domus nas línguas do jogo, escrevendo, e não só lendo.</li>
           <li><b>Uma missão com a IA:</b> o jogador ajuda a IA a descobrir a ponta inicial do nó (o momento em que a Domus foi criada pela primeira vez) e segue a linha do tempo até o momento em que o jogo está. Escrever <b>junto com os agentes de lore e de mecânica</b>.</li>
         </ul>`,
     },
