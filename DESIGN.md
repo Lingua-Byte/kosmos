@@ -120,6 +120,8 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
   → transforma-se em · ∑ conjunto/soma`.
   Exemplo: `∀ p ∈ PESSOAS : DOENTE(p) ⇒ ACOLHE(HOSPITAL, p)` = "toda pessoa doente é acolhida pelo hospital".
   Cada expressão deve ter uma tradução definida (sem ambiguidade).
+- **O tempo no Código Urbano (decidido pelo autor em 05/11/2026):** o tempo vai entre parênteses, com um sinal
+  embaixo, à direita do t: **(t₀) = agora**, **(t₋) = passado**, **(t₊) = futuro**. Ex.: ψ(t₀) = uma mente, agora.
 - **Interface (Z):** relações entre núcleos, estados embaixo. *A refazer com lógica própria.*
 - Qualquer palavra real tem tradução; nomes e palavras sem sentido no mundo são escritos letra a letra.
 

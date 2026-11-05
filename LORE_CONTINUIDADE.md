@@ -4,7 +4,7 @@
 > É o que o jogador **já viu** nos textos do jogo, não a lore oficial. O que vale como regra está no
 > `CLAUDE.md` e em `site/js/historia.js`. Usado pelo agente `guardiao-da-lore`.
 
-Fontes: missão prologo-x, missão treino-vozes, missão x1-manha (código), origens do Prólogo X (código; a missão publicada vale por cima), mapa de Port Halden.
+Fontes: missão prologo-x, missão treino-vozes, missão treino-decifrar, missão x1-manha (código), origens do Prólogo X (código; a missão publicada vale por cima), mapa de Port Halden.
 
 ## NPCs
 - **Dra. Helen Vance** (`helen`) — missão prologo-x, missão x1-manha (código)
@@ -80,9 +80,9 @@ Fontes: missão prologo-x, missão treino-vozes, missão x1-manha (código), ori
 
 ## Símbolos das línguas usados no texto
 - **∃** (12×): missão prologo-x · cenas.meio.texto; missão prologo-x · lugares.trabalho.acoes[8].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[8].sucesso.pista; …
-- **ψ(t)** (7×): missão prologo-x · lugares.trabalho.acoes[8].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[8].sucesso.pista; missão prologo-x · lugares.trabalho.acoes[18].sucesso.texto; …
+- **ψ(t₀)** (7×): missão prologo-x · lugares.trabalho.acoes[8].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[8].sucesso.pista; missão prologo-x · lugares.trabalho.acoes[18].sucesso.texto; …
 - **𝒪(S)** (2×): missão prologo-x · lugares.casa.acoes[2].sucesso.texto; missão prologo-x · lugares.casa.acoes[2].sucesso.pista
-- **ψ(t) ⇒ 𝒪(S)** (2×): missão prologo-x · cenas.meio.texto; missão prologo-x · lugares.trabalho.acoes[27].sucesso.texto
+- **ψ(t₀) ⇒ 𝒪(S)** (2×): missão prologo-x · cenas.meio.texto; missão prologo-x · lugares.trabalho.acoes[27].sucesso.texto
 - **¬∃** (1×): missão prologo-x · lugares.viaduto.acoes[0].sucesso.texto
 
 ## Mapa de Port Halden
@@ -136,6 +136,7 @@ Fontes: missão prologo-x, missão treino-vozes, missão x1-manha (código), ori
 - **Carter** (2×): missão prologo-x · cenas.abertura.variantes[2].texto; origens do Prólogo X (código; a missão publicada vale por cima) · denise-carter.abertura
 - **Dale Pruitt** (2×): missão prologo-x · cenas.abertura.variantes[0].texto; origens do Prólogo X (código; a missão publicada vale por cima) · rosa-delgado.abertura
 - **Delancey St** (2×): missão prologo-x · lugares.trabalho.acoes[0].sucesso.pista; origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.acoes[0].sucesso.pista
+- **Dissonância** (2×): missão prologo-x · cenas.borda.tutorial; missão treino-decifrar · cenas.licao.tutorial
 - **Doris** (2×): missão prologo-x · cenas.abertura.variantes[4].texto; missão prologo-x · lugares.trabalho.acoes[11].resultado.texto
 - **Edifício Aurora. Prazo** (2×): missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[2].efeitos.quest.nota; origens do Prólogo X (código; a missão publicada vale por cima) · marcus-bell.fio.nota
 - **Eli** (2×): missão prologo-x · lugares.trabalho.acoes[12].sucesso.pista; origens do Prólogo X (código; a missão publicada vale por cima) · eli-navarro.acoes[0].sucesso.pista

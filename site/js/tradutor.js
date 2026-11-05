@@ -7,7 +7,7 @@ const Tradutor = (() => {
     eixo: "x",
     modo: "codificar",
     texto: "Existe uma mente no agora observando a estrela, gerando mudança.",
-    simbolos: { x: "∃ ψ(t) ⇒ 𝒪(S) → Δ", y: "ᛋ ᛞ ᛗᚢ", z: "◉ ⟜ ⟡ | ↑" },
+    simbolos: { x: "∃ ψ(t₀) ⇒ 𝒪(S) → Δ", y: "ᛋ ᛞ ᛗᚢ", z: "◉ ⟜ ⟡ | ↑" },
     forma: "linear",
     escritaY: "sagrada",
     leitorId: null,

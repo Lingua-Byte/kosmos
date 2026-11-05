@@ -84,8 +84,8 @@ const RAIZES = {
 
 // Símbolos exclusivos do Código Urbano: tempo e operadores matemáticos
 const X_EXTRAS = [
-  { s: "t", nome: "agora", tipo: "tempo" },
-  { s: "t₀", nome: "passado", tipo: "tempo" },
+  { s: "t₀", nome: "agora", tipo: "tempo" },
+  { s: "t₋", nome: "passado", tipo: "tempo" },
   { s: "t₊", nome: "futuro", tipo: "tempo" },
   { s: "∫", nome: "acumular (integral)", tipo: "operador" },
   { s: "∑", nome: "conjunto de todos (soma)", tipo: "operador" },
@@ -206,8 +206,8 @@ const CONCEITOS = [
 
   // Tempo
   K("tempo", "Tempo", ["tempo", "hora", "instante", "momento"], { n: "momento" }),
-  K("agora", "Tempo", ["agora", "presente$", "hoje"], { n: "momento", e: "ativo" }, { x: "t", tipo: "tempo" }),
-  K("passado", "Tempo", ["passad", "antes$", "ontem", "antig"], { n: "momento", e: "latente" }, { x: "t₀", tipo: "tempo" }),
+  K("agora", "Tempo", ["agora", "presente$", "hoje"], { n: "momento", e: "ativo" }, { x: "t₀", tipo: "tempo" }),
+  K("passado", "Tempo", ["passad", "antes$", "ontem", "antig"], { n: "momento", e: "latente" }, { x: "t₋", tipo: "tempo" }),
   K("futuro", "Tempo", ["futur", "depois$", "amanha", "proxim"], { n: "momento", r: "aproximar" }, { x: "t₊", tipo: "tempo" }),
   K("nunca", "Tempo", ["nunca", "jamais"], { n: "momento", neg: true }, { x: "∄t", tipo: "tempo" }),
   K("sempre", "Tempo", ["sempre", "etern", "infinit"], { n: "momento", mod: "muito" }, { x: "∀t" }),
@@ -792,7 +792,7 @@ const Lingua = (() => {
       }
 
       if (lang === "x") {
-        // tempo se prende ao conceito anterior: ψ(t)
+        // tempo se prende ao conceito anterior: ψ(t₀) agora, ψ(t₋) passado, ψ(t₊) futuro
         if (p.tipo === "tempo" && ultimo() && !ultimo().quebra && !ultimo().sintaxe && !ultimo().tempo) {
           ultimo().escrita += `(${escrita})`;
           ultimo().tempo = true;
