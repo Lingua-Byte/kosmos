@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>KOSMOS · Conversa com o Abe (teste)</title>
+  <meta name="theme-color" content="#03050e">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fundo: #03050e; --texto: #ece6d8; --suave: #a9a4b8; --x: #b6f36a; --borda: rgba(182, 243, 106, 0.28);
+      --painel: rgba(8, 14, 12, 0.85);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      background: radial-gradient(ellipse at 50% 0%, #0d1a10 0%, var(--fundo) 70%);
+      color: var(--texto); font-family: "Cormorant Garamond", Georgia, serif; font-size: 19px; line-height: 1.45;
+      height: 100dvh; overflow: hidden; display: flex; justify-content: center;
+    }
+    main { width: 100%; max-width: 760px; height: 100%; display: flex; flex-direction: column; gap: 10px; padding: 14px 16px 16px; }
+    header { display: flex; align-items: center; gap: 12px; }
+    header img { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; border: 1px solid var(--borda); background: #111; }
+    h1 { font-family: Cinzel, serif; font-size: 20px; margin: 0; color: var(--x); letter-spacing: 0.04em; }
+    .sub { font-size: 15px; color: var(--suave); margin: 0; }
+    .fala { flex: 1; min-height: 0; overflow: hidden; background: var(--painel); border: 1px solid var(--borda); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+    .voce { color: var(--suave); font-style: italic; margin: 0; }
+    .abe { margin: 0; font-size: 21px; }
+    .abe b { color: var(--x); font-family: Cinzel, serif; font-size: 15px; letter-spacing: 0.05em; display: block; margin-bottom: 2px; }
+    .entendi { margin-top: auto; font-family: "Share Tech Mono", monospace; font-size: 13px; color: var(--suave); }
+    form { display: flex; gap: 8px; }
+    input[type=text] { flex: 1; min-width: 0; font: inherit; font-size: 18px; color: var(--texto); background: #070b09; border: 1px solid var(--borda); border-radius: 10px; padding: 10px 12px; }
+    button { font-family: Cinzel, serif; font-size: 15px; color: #0a0f08; background: var(--x); border: 0; border-radius: 10px; padding: 10px 14px; cursor: pointer; }
+    .chips { display: flex; gap: 6px; flex-wrap: nowrap; overflow: hidden; }
+    .chips button { background: transparent; color: var(--x); border: 1px solid var(--borda); font-family: inherit; font-size: 15px; padding: 5px 10px; white-space: nowrap; }
+    .controles { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 15px; color: var(--suave); }
+    .controles label { display: flex; align-items: center; gap: 8px; }
+    input[type=range] { accent-color: var(--x); width: 140px; }
+    #estado { font-family: "Share Tech Mono", monospace; font-size: 13px; }
+    .baixar { background: transparent; color: var(--x); border: 1px solid var(--borda); font-size: 13px; padding: 4px 10px; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <img src="imagens/npcs/npc-abe.webp" alt="Abe">
+      <div>
+        <h1>Conversa com o Abe</h1>
+        <p class="sub">Teste de conversa livre · Conveniência do Abe, Maple Heights</p>
+      </div>
+    </header>
+
+    <section class="fala" aria-live="polite">
+      <p class="voce" id="voce"></p>
+      <p class="abe"><b>ABE</b><span id="resposta"></span></p>
+      <div class="entendi" id="entendi" hidden></div>
+    </section>
+
+    <div class="chips" id="chips"></div>
+    <form id="form" autocomplete="off">
+      <input type="text" id="pergunta" placeholder="Escreva o que você diz ao Abe…" maxlength="160">
+      <button type="submit">Falar</button>
+    </form>
+
+    <div class="controles">
+      <label>Hora da noite <input type="range" id="relogio" min="0" max="16" value="0"> <span id="fase">cedo</span></label>
+      <label><input type="checkbox" id="mostrar"> mostrar o que o jogo entendeu</label>
+      <span id="estado">entendedor: só palavras-chave</span>
+      <button class="baixar" id="baixar" type="button">Ligar o entendedor (~120 MB)</button>
+    </div>
+  </main>
+
+  <script>
+    // o balbucio do jogo usa as opções de som; aqui, vozes sempre ligadas
+    const Opcoes = { get: () => ({ ligadas: true, volume: 70 }), mudar() {} };
+  </script>
+  <script src="js/vozes.js"></script>
+  <script src="js/conversa-npc.js"></script>
+  <script>
+    (async () => {
+      const $ = (id) => document.getElementById(id);
+      const ficha = await (await fetch("dados/npcs/abe.json")).json();
+      await ConversaNPC.preparar(ficha);
+      const memoria = {};
+      let escrevendo = 0;
+      const relogio = () => +$("relogio").value;
+
+      const SUGESTOES = ["Tem água?", "O que tá acontecendo na praça?", "Por que você não fecha?", "Quem riscou sua porta?", "Você tem família?"];
+      $("chips").innerHTML = SUGESTOES.map((s) => `<button type="button">${s}</button>`).join("");
+      $("chips").onclick = (e) => { if (e.target.tagName === "BUTTON") falar(e.target.textContent); };
+
+      // o texto aparece letra por letra, com a fala breve e o balbucio do Abe
+      // comVoz = false na saudação inicial: o navegador só deixa tocar som depois que a pessoa toca na tela
+      function escrever(texto, comVoz = true) {
+        const vez = ++escrevendo;
+        Vozes.encerrar();
+        if (comVoz) Vozes.comecar("abe", vez);
+        $("resposta").textContent = "";
+        let i = 0;
+        const passo = () => {
+          if (vez !== escrevendo) return;
+          $("resposta").textContent = texto.slice(0, ++i);
+          if (comVoz && /[a-zà-ú]/i.test(texto[i - 1])) Vozes.silaba("abe");
+          if (i < texto.length) setTimeout(passo, ".,?!".includes(texto[i - 1]) ? 180 : 28);
+        };
+        passo();
+      }
+
+      async function falar(pergunta) {
+        pergunta = pergunta.trim();
+        if (!pergunta) return;
+        $("voce").textContent = `Você: “${pergunta}”`;
+        $("pergunta").value = "";
+        const r = await ConversaNPC.entender(ficha, pergunta);
+        escrever(ConversaNPC.responder(ficha, r.topico, relogio(), memoria));
+        $("entendi").textContent = r.topico
+          ? `entendi: assunto "${r.topico.id}" · ${Math.round(r.confianca * 100)}% · pelo ${r.como} · fase ${ConversaNPC.fase(ficha, relogio())}`
+          : `não entendi (resposta de "não sei") · fase ${ConversaNPC.fase(ficha, relogio())}`;
+      }
+
+      $("form").onsubmit = (e) => { e.preventDefault(); falar($("pergunta").value); };
+      $("relogio").oninput = () => ($("fase").textContent = ConversaNPC.fase(ficha, relogio()));
+      $("mostrar").onchange = () => ($("entendi").hidden = !$("mostrar").checked);
+      $("baixar").onclick = async () => {
+        $("baixar").hidden = true;
+        $("estado").textContent = "entendedor: baixando…";
+        await ConversaNPC.carregarEntendedor((p) => ($("estado").textContent = `entendedor: baixando ${p}%`));
+        if (ConversaNPC.estado() === "pronto") {
+          $("estado").textContent = "entendedor: preparando o Abe…";
+          await ConversaNPC.preparar(ficha);
+          $("estado").textContent = "entendedor: ligado ✓";
+        } else $("estado").textContent = "entendedor: não carregou (seguindo com palavras-chave)";
+      };
+
+      escrever("Boa noite. Pode falar, que o balcão escuta.", false);
+    })();
+  </script>
+</body>
+</html>
