@@ -214,7 +214,7 @@ que vira Dissonância, para viver por pouco tempo a vida da sua versão em outro
 |---|---|
 | Travessia curta (2 ou 3 cenas) | 2 de Ressonância → +2 de Dissonância |
 | Travessia longa (4 ou 5 cenas) | 3 de Ressonância → +3 de Dissonância |
-| Cada Travessia a mais no mesmo eixo | +1 no custo |
+| A partir da 3ª Travessia no mesmo eixo | +1 no custo (ajuste do designer, seção 4.7) |
 
 - **Sem Ressonância suficiente, não se atravessa.** A âncora fica no Diário, esperando.
 - **O relógio anda.** O tempo do eixo de onde se sai passa enquanto se está fora.
@@ -230,33 +230,86 @@ que vira Dissonância, para viver por pouco tempo a vida da sua versão em outro
 própria versão de outro tempo. Atravessar à força gasta essa afinação, e o que sobra é ruído: as duas vidas
 misturadas sem ordem. É o mesmo caminho dos Riscadores e Runáticos, só que mais devagar e por escolha.
 
-### 4.7 Gastar Ressonância para baixar a Dissonância (sem nome ainda)
-**Decidido pelo autor:** a partir de certo ponto de Ressonância, o jogador pode escolher gastar esses pontos para
-reduzir a Dissonância.
+### 4.7 Ressonância e Dissonância: o que ganham e o que custam (Proposta do designer de mecânicas)
+**Decidido pelo autor:** a partir de certo ponto de Ressonância, o jogador pode gastá-la para baixar a Dissonância.
+Guardar Ressonância precisa dar um benefício claro, e acumular Dissonância, um malefício claro.
+A troca ainda **não tem nome** (opções do designer: *Aquietar*, *Recolher-se*, *Firmar*; nenhuma adotada).
 
-**Proposta (para testar):**
-- **Nome:** ainda não tem. O autor não quer "Assentar".
-- **Em revisão:** o designer de mecânicas está repensando o que o jogador ganha ao guardar Ressonância e o que
-  perde ao acumular Dissonância. Os números abaixo podem mudar.
-- **A partir de:** Ressonância 20, a marca da **Lucidez**, que já existe no jogo. Só quem está lúcido consegue pôr
-  ordem no que viveu. (Alternativa mais fácil: Ressonância 15.)
-- **Taxa:** 2 de Ressonância baixam 1 de Dissonância. Atravessar é 1 para 1 (seção 4.6). Assim, desfazer uma
-  Travessia custa o dobro do que ela custou, e o jogador não fica indo e voltando de graça.
-- **Quando:** só num momento de descanso, entre missões ou num abrigo (no X, a casa ou o abrigo da noite; no Y, a
-  lareira; no Z, a cabine). Nunca no meio de uma cena de perigo.
-- **Depois de gastar,** a Ressonância pode cair abaixo de 20. Aí o personagem perde a Lucidez e só volta a fazer a troca
-  quando subir de novo.
-- **Como aparece na tela:** *"Ressonância 22 → 16 · Dissonância 14 → 11."* E uma linha de texto do
-  personagem, sem palavra de regra (Frank: "Sentou no estribo do caminhão até o café esfriar. Pela primeira vez
-  na semana, era só café.").
+**O problema das marcas de hoje** (`site/js/data.js`):
+- A Ressonância 15 (Atração) castiga quem guarda. A Tess fica sem saída: com 1 dado, ela não consegue os 2 sucessos.
+- A Dissonância 5 (Adrenalina) dá um dado a mais no Corpo. Ninguém quer baixar o que ajuda.
+- A Dissonância 20 (Perda de Controle) vira bola de neve: depois dela, o Colapso é quase certo.
+- Nada impede chegar a 30 por acidente. O Padre Michael chega à Integração em 8 de cada 10 partidas.
 
-**A escolha que isso cria.** A Ressonância passa a ter três destinos, e cada um puxa para um lado:
-| Guardar | Atravessar | Trocar por menos Dissonância |
+**Marcas propostas: Ressonância** (cada marca é um ganho; o perigo só começa no 25)
+| Marca | Nome | Efeito |
 |---|---|---|
-| sobe até 30: Integração (vira Interface, fim de jogo) | gasta e a Dissonância sobe | gasta e a Dissonância desce |
-| ganha os efeitos das marcas (Lucidez em 20) | abre missões e pistas de outro eixo | protege o personagem, mas não rende história |
+| 5 | Percepção Cruzada | +1 dado em Mente (como hoje) |
+| 10 | Memória Cruzada | revela um eixo; libera a Travessia (como hoje, mais a Travessia) |
+| 15 | Pressentimento (novo) | 1 vez por missão, rola de novo um teste comum que falhou; libera a troca |
+| 20 | Lucidez | +1 dado em Mente e em Essência (como hoje) |
+| 25 | Atração (veio do 15) | a Convergência pede 2 sucessos; −1 dado no Corpo (era −2) |
+| 29 | Beira (novo) | a Ressonância para aqui; o 30 só vem por escolha, numa cena |
+| 30 | Integração | fim de jogo (como hoje) |
 
-O jogador nunca está tranquilo: guardar demais leva à Integração, gastar demais leva ao Colapso.
+**Marcas propostas: Dissonância** (cada marca é um malefício, e piora aos poucos)
+| Marca | Nome | Efeito |
+|---|---|---|
+| 5 | Inquietação (no lugar da Adrenalina) | −1 dado para convencer e acalmar |
+| 10 | Fissura | −1 dado em Mente (como hoje) |
+| 15 | Paranoia | habilidades de conversa bloqueadas (como hoje) |
+| 20 | Ruído (novo) | −1 dado em Essência, inclusive na Convergência |
+| 25 | Perda de Controle (veio do 20, mais branda) | cada ◉ só no Teste de Convergência soma +1 |
+| 30 | Colapso | fim de jogo (como hoje) |
+
+**A troca**
+- A partir da Ressonância **15**. Gastam-se 2 de Ressonância para baixar 1 de Dissonância.
+- No máximo 3 de Dissonância por descanso, e só em descanso.
+- Por que a partir de 15, e não de 20: quem mais precisa da troca (Frank, Rosa e Eli) raramente chega a 20 sem gastar
+  antes. E no 15 a escolha dói, porque trocar pode custar o Pressentimento.
+
+**A Travessia, ajustada**
+- Liberada depois do Y1, com Ressonância 10. Curta custa 2, longa custa 3.
+- O custo sobe +1 só a partir da 3ª Travessia no mesmo eixo.
+- São 7 no total: 4 para o X e 3 para o Y.
+- Ninguém atravessa se a Dissonância ficar em 20 ou mais depois de pagar. Na tela: "A âncora não responde."
+- O Teste de Convergência rola no mínimo 2 dados (resolve a Tess).
+
+**Exemplo, passo a passo.** O Ray está numa lareira, entre o Y2 e o Y3, com **Ressonância 17 e Dissonância 11**.
+Tem o Pressentimento (15) e sofre de Inquietação (5) e Fissura (10). Achou uma âncora: uma Travessia curta para Port
+Halden, que custa 2.
+1. **Guardar.** Mantém o Pressentimento e se aproxima da Lucidez (20). Segue com −1 em conversa e −1 em Mente.
+2. **Atravessar.** Fica com Ressonância 15 e Dissonância 13. Ganha uma pista para o X5 e mantém o Pressentimento, mas
+   fica a 2 pontos da Paranoia.
+3. **Trocar.** Gasta 4 de Ressonância e baixa 2 de Dissonância: fica com 13 e 9. Perde o Pressentimento, sai da
+   Fissura, volta a pensar direito. Não ganha história.
+No Y3 ele falha numa Convergência de intensidade 2 (+2 de Dissonância). Quem trocou volta a 11, e a Fissura volta.
+Quem atravessou vai a 15 e perde as conversas. Cada caminho tem um preço, e o jogador o vê antes de pagar.
+
+**A simulação** (4.000 partidas por personagem e por perfil, nas 17 missões; as missões do X2 em diante ainda não
+existem, então as Convergências delas são supostas)
+| Cenário | Chega a 10 no começo do Y | Colapso: apressado / curioso / completo / cauteloso | Integração sem querer |
+|---|---|---|---|
+| Regras de hoje, com os números antigos desta seção | 86% | 39% / 71% / 98% / 35% | 14% (Michael 84%) |
+| Marcas novas, troca a partir de 15 e Travessia ajustada | 89% | 2% / 7% / 18% / 0% | 0% |
+| O mesmo, mais −3 de Dissonância a cada salto entre eixos | 89% | 0% / 2% / 8% / 0% | 0% |
+
+**Quanto cada missão deve dar (guia para o Criador)**
+- X2 e X3: 1 Convergência obrigatória de intensidade 2, mais 1 opcional de 1.
+- X4: 1 obrigatória de 1, mais 1 opcional de 2.
+- X5: 2 obrigatórias (1 e 2), mais 1 opcional de 2.
+- Y2 a Y4: 1 obrigatória de 1, mais 1 opcional de 2. Y5: 2 obrigatórias (1 e 3).
+- Z1 a Z4: 1 obrigatória de 2, mais 1 opcional de 2 ou 3. Z5: 2 obrigatórias (2 e 3).
+- Fora da Convergência, no máximo 1 ou 2 opções por missão com "+1 de Dissonância se falhar". O Prólogo tem 14.
+
+**Furos que o designer achou no jogo de hoje** (não corrigidos, aguardando o autor)
+1. Na ficha, o botão de Teste de Convergência pode ser rolado à vontade, e clicar na barra marca Ressonância. Com a
+   Travessia pagando em Ressonância, isso quebra o jogo. Correção: desligar os dois durante uma missão (só na Mesa).
+2. "Dormir" pode ser repetido (até −7 de Dissonância numa missão) e a Foto da Família recarrega a cada "Nova
+   sessão". Correção: dormir baixa 1 vez por missão; a Foto recarrega só no começo da missão.
+3. O motor não segura a Ressonância e a Dissonância em 30.
+4. Os calmantes do Y (4 moedas por −1 de Dissonância) competem com a troca. Pôr um limite.
+5. Para o guardião da lore: a tela de dados fala em "sinal ◉ da Entidade" (`dados.js`), e o KOSMOS não tem entidade.
 
 ### 4.8 Limites (para não chegar a 30 sem querer)
 Ressonância 30 (Integração) e Dissonância 30 (Colapso) são fim de jogo.
