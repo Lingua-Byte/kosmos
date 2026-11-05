@@ -79,3 +79,6 @@ atributos que mudam o diálogo), TES antes de Morrowind (aprender usando, peso e
 3. **A simulação**: o que você supôs e o que deu.
 4. **Riscos**, do mais grave ao menos grave, cada um com a correção.
 5. **No máximo três perguntas** para o autor, com opções (A, B, C) e o que cada uma muda.
+
+## Registro das mecânicas
+`MECANICAS.md` guarda o que já existe no jogo, o que está proposto e o que o autor decidiu (com data). Leia antes de propor algo e, quando o autor aprovar, deixe pronto o texto para a seção "Decidido" desse arquivo.

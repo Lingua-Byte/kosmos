@@ -1,0 +1,57 @@
+{
+  "escala-estacao-9": {
+    "titulo": "Escala da semana",
+    "autor": "Mural da Estação 9 do Corpo de Bombeiros",
+    "eixo": "x",
+    "texto": [
+      "ESCALA — SEMANA 11. Turno B, das 19h às 7h: Brennan, Haskins, Ortiz, Lee, Novak, Walsh.",
+      "Ortiz está riscado a caneta. Ao lado, a lápis: “atestado?”",
+      "Lee está riscado. Embaixo: “Ligou dizendo que ia levar a mãe para ver a praça. Volta amanhã.”",
+      "Walsh está riscado. Sem anotação.",
+      "No rodapé, na letra do capitão: “Pessoal, quem faltar sem avisar de novo vai direto para a escala do Natal. Isso não é ameaça. É planejamento.”"
+    ]
+  },
+  "aviso-sindico": {
+    "titulo": "Aviso na portaria",
+    "autor": "A Administração do prédio",
+    "eixo": "x",
+    "texto": [
+      "AVISO AOS MORADORES. Pela terceira vez esta semana o portão foi encontrado aberto de madrugada. Peço que NINGUÉM saia à noite deixando o portão só encostado.",
+      "Peço também ao morador do 4º andar que pare de riscar a parede da escada. Já passei massa duas vezes. A massa é paga pelo condomínio. Ou seja, por você.",
+      "Quem quiser ir “ver a praça”, que vá. Mas feche o portão.",
+      "— A Administração"
+    ]
+  },
+  "bilhete-gary": {
+    "titulo": "Bilhetes na geladeira",
+    "autor": "Copa do 14º andar",
+    "eixo": "x",
+    "texto": [
+      "Num post-it amarelo, em cima de um sanduíche embrulhado: “NÃO É SEU, GARY.”",
+      "Colado embaixo, outra letra: “Gary, sério. É o terceiro esta semana.”",
+      "Embaixo de todos, a caneta azul, letra tremida: “não fui eu. eu nem estava aqui ontem. — G.”"
+    ]
+  },
+  "panfleto-defesa-civil": {
+    "titulo": "Orientações à população",
+    "autor": "Panfleto da Defesa Civil de Port Halden",
+    "eixo": "x",
+    "texto": [
+      "Diante dos casos de desorientação registrados nos últimos dias, a Defesa Civil informa que a situação está sob controle.",
+      "1. Evite aglomerações na região central. 2. Mantenha-se hidratado. 3. Se um familiar apresentar desorientação, NÃO tente impedi-lo à força: acompanhe-o até uma unidade de saúde.",
+      "4. Os níveis de radiação estão dentro do normal. 5. Pânico é contagioso. Fique em casa, cidadão.",
+      "No rodapé, em letra miúda: “Revisão 2.”"
+    ]
+  },
+  "livro-ponto-oswald": {
+    "titulo": "Livro de ponto do vigia",
+    "autor": "Oswald, vigia noturno da Atlantic Tower",
+    "eixo": "x",
+    "texto": [
+      "“Turno noturno. Sem ocorrências. — Oswald.” A mesma linha, na mesma letra, página depois de página. Ninguém assinou a troca de turno.",
+      "Dia 388: “Barulho no 14º andar. Era o ar-condicionado. Sem ocorrências.”",
+      "Dia 401: “Contagem: faltam 11.”",
+      "A última linha não tem assinatura. Só o número 0412 e, ao lado, desenhado com cuidado, o casco de uma nave."
+    ]
+  }
+}

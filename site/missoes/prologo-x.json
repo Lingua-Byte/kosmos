@@ -794,7 +794,8 @@
           "resultado": {
             "texto": "Capa, capacete, o machado no ombro. Trinta anos de profissão, e a mão ainda vai sozinha nas fivelas.",
             "efeitos": {
-              "condicao": "-abalado"
+              "condicao": "-abalado",
+              "documento": "escala-estacao-9"
             }
           }
         },
@@ -1659,7 +1660,8 @@
             "efeitos": {
               "pertence": {
                 "comida": 1
-              }
+              },
+              "documento": "bilhete-gary"
             }
           }
         },
@@ -1969,7 +1971,8 @@
           "resultado": {
             "texto": "Você confere a porta duas vezes, fecha as cortinas, passa a corrente. Do apartamento ao lado vem o mesmo barulho: o vizinho passando a corrente dele.",
             "efeitos": {
-              "condicao": "-abalado"
+              "condicao": "-abalado",
+              "documento": "aviso-sindico"
             }
           }
         },
@@ -2513,7 +2516,8 @@
           "resultado": {
             "texto": "O sargento de plantão digita devagar, com dois dedos. Pergunta seu nome, endereço, o que aconteceu. No fim, imprime a queixa, carimba e diz que alguém vai entrar em contato. Na bandeja ao lado, uma pilha de queixas iguais.",
             "efeitos": {
-              "condicao": "-abalado"
+              "condicao": "-abalado",
+              "documento": "panfleto-defesa-civil"
             }
           }
         }
@@ -3063,7 +3067,8 @@
                 "nome": "O vigia que não sai do posto",
                 "prazo": "longa",
                 "nota": "412 dias sem sair. Desenhou uma nave no livro."
-              }
+              },
+              "documento": "livro-ponto-oswald"
             },
             "pista": "O vigia do Atlântico não sai do posto há 412 dias."
           },
