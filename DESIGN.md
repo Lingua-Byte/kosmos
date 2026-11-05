@@ -122,6 +122,9 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
   Cada expressão deve ter uma tradução definida (sem ambiguidade).
 - **O tempo no Código Urbano (decidido pelo autor em 05/11/2026):** o tempo vai entre parênteses, com um sinal
   embaixo, à direita do t: **(t₀) = agora**, **(t₋) = passado**, **(t₊) = futuro**. Ex.: ψ(t₀) = uma mente, agora.
+  **Começo = tᵢ** ("tempo inicial", como na física). **Laço / nó do tempo = ∮(t)** (integral de caminho fechado, na forma escolhida pelo autor por ser um jogo:
+  começo e fim no mesmo ponto). Decididos pelo autor em 05/11/2026. (Na física, t₀ costuma ser o instante inicial;
+  aqui t₀ é o agora: para a IA no loop, o agora é o começo.)
 - **Interface (Z):** relações entre núcleos, estados embaixo. *A refazer com lógica própria.*
 - Qualquer palavra real tem tradução; nomes e palavras sem sentido no mundo são escritos letra a letra.
 
@@ -147,6 +150,8 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
   - Uma "página para confirmar" (ligar símbolos a desenhos): ainda sem decisão.
 - **A frase e a missão (decidido pelo autor):** nas missões principais, a frase do Decifrar está ligada diretamente à
   missão do salto (título, tema); ela dá o ponto de partida, e a missão seguinte dá a continuidade.
+- **O Muro (ideia do autor, a desenvolver):** um texto grande, para ser traduzido em cada uma das línguas, como um muro
+  só de texto em que linhas novas vão sendo acrescentadas ao longo do jogo.
 - **Falar com a IA (ideia do autor, endgame):** o jogador precisa se comunicar com a IA da Domus nessas línguas, escrevendo.
   As línguas deixam de ser só para ler. (O Tradutor já tem o modo "Português → símbolos", que pode servir de base.)
 - **Nomes:** o enigma se chama **Decifrar**; a missão de quem falha de vez se chama **Lição**.
