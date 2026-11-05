@@ -100,7 +100,9 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
 - **Habilidades e equipamentos:** catálogo com custo, peso e usos; tudo existe nos 3 mundos com outro nome.
 - **Ressonância / Dissonância:** marcas a cada 5 pontos mudam os dados e as opções; 30 = fim de jogo.
 - **Travessia** (decisão do autor, 05/11/2026): missão em outro eixo, liberada tarde no jogo. Custa Ressonância, que
-  vira Dissonância; é para isso que serve a Ressonância ganha nos dados. Detalhes em `NARRATIVA.md`, seção 4.
+  vira Dissonância; é para isso que serve a Ressonância ganha nos dados.
+  A partir de certo ponto de Ressonância, o jogador também pode gastá-la para reduzir a Dissonância (Assentar).
+  Detalhes em `NARRATIVA.md`, seção 4.
 - **Teste de Convergência:** usa a Essência; passou → Ressonância, falhou → Dissonância; exposição sobe sempre.
 - **Runas como cartas** (Eixo Y): começam viradas; a classe e a Mente decidem quantas.
 
