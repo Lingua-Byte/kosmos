@@ -134,6 +134,15 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
 - **Campos do Criador (proposta):** `aprenderY` (palavras de runa), `metade` (`{ frase, lado }`), `req.palavra`
   (escolha só para quem sabe a palavra). As frases partidas ficam numa lista única, apontadas pelo nome.
 - **Em aberto:** o que acontece se faltarem palavras na hora de juntar.
+- **Decidido pelo autor (lições do Chants of Sennaar):**
+  - O jogador **vai aprendendo palavras** (Código Urbano ou runas) e, à medida que aprende, **traduz com as que já tem**.
+    A escrita (runas ou cálculo) **nunca fica escondida**; só a tradução se completa. Pouco vocabulário: decifra mais;
+    muito vocabulário: decifra menos ou nada.
+  - O Decifrar abre numa **tela própria**, só para isso, naquele momento da missão.
+  - O jogo **necessariamente** envolve o jogador conseguir traduzir as frases (a ponte entre as línguas vem mais adiante).
+  - **Poucas frases:** frases próprias das missões principais e secundárias, e uma série à parte para as geradas por modelo.
+  - No Tradutor, o jogador pode **anotar o próprio palpite** para o que não sabe (feito; o jogo não corrige).
+  - Uma "página para confirmar" (ligar símbolos a desenhos): ainda sem decisão.
 - **Nomes:** o enigma se chama **Decifrar**; a missão de quem falha de vez se chama **Lição**.
 - **Proposta do designer de mecânicas para o enigma (com as decisões do autor abaixo):**
   1. A palavra que falta aparece como ▢; o jogador escreve (o jogo ignora acento e maiúscula; o autor dá 1 a 3 respostas aceitas).
