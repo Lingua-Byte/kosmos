@@ -12,7 +12,8 @@
 __pycache__/
 
 # Configurações locais
-/.claude/
+/.claude/*
+!/.claude/agents/
 
 # Arquivo de sistema do Windows
 desktop.ini
