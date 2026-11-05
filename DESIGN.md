@@ -22,7 +22,7 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
 |---|---|---|---|
 | Estética | mundo na **atualidade**; interface no tema verde original (concreto, fluorescente, radiação) | fantasia, tipo em aberto (low, high ou mistura) | interface **azul holográfica**; **cassette futurism só nos gadgets e nas telas deles** |
 | Gênero | **sobrevivência** (uma noite em que a cidade enlouquece) | | |
-| O fenômeno aparece como | radiação anômala, surtos | runas, magia, heresia | estrela que observa |
+| O fenômeno aparece como | radiação anômala, surtos | runas (nada religioso) | estrela que observa |
 | Afetados | Ecoados / Despertos | Runáticos | Interfaces |
 | Perdidos sem volta (mobs) | **Riscadores** | **Runáticos** | a definir |
 | Lúcidos (veem os outros eixos) | a definir | **Despertos** | a definir |
