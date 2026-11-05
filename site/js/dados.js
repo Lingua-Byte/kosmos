@@ -159,18 +159,18 @@ const Dados = (() => {
         <h2>${titulos[tipo]}</h2>
         <p class="sub">${esc(p.nome)} · ${e.glifo} ${e.mundo} · ${attr.nome} ${p.atributos[atributo]}</p>
         ${contexto.ensaio ? `<p class="sub">Ensaio na ficha: nada é gasto nem marcado. Valendo, só nas missões.</p>` : ""}
-        ${tipo === "convergencia" && !contexto.ensaio ? `<p class="sub">Passou: + Ressonância. Falhou: + Dissonância. ${e.exposicao.nome} sobe sempre. Precisa de ${dificuldade} sucesso${dificuldade > 1 ? "s" : ""}.</p>` : ""}
+        ${tipo === "convergencia" && !contexto.ensaio && !resultado ? `<p class="sub">Passou: + Ressonância. Falhou: + Dissonância. ${e.exposicao.nome} sobe sempre. Precisa de ${dificuldade} sucesso${dificuldade > 1 ? "s" : ""}.</p>` : ""}
         ${tipo === "estudo" ? `<p class="sub">Precisa de ${dificuldade} sucessos. Passou: ganha uma carta de runa para virar. Uma tentativa por cena.</p>` : ""}
       </header>
 
-      ${tipo === "convergencia" ? `
+      ${tipo === "convergencia" && !resultado ? `
         <div class="dados-opcao"><span>Intensidade da exposição</span>
           <div class="chips">${Object.entries(CONVERGENCIA.intensidades).map(([k, nome]) =>
             `<button class="chip ${contexto.intensidade === +k ? "escolhida" : ""}" data-intensidade="${k}" ${travado || (contexto.intensidadeFixa && contexto.intensidade !== +k) ? "disabled" : ""}>${nome} (${k})</button>`).join("")}</div>
         </div>` : ""}
-      <p class="dificuldade-jogo">Precisa de <b>${dificuldade} sucesso${dificuldade > 1 ? "s" : ""}</b> ${resultado ? "" : chanceHtml(n, dificuldade, p.nome)}</p>
+      ${resultado ? "" : `<p class="dificuldade-jogo">Precisa de <b>${dificuldade} sucesso${dificuldade > 1 ? "s" : ""}</b> ${chanceHtml(n, dificuldade, p.nome)}</p>`}
 
-      ${recursos.length ? `
+      ${recursos.length && !resultado ? `
         <div class="dados-opcao"><span>Gastar um uso para ajudar?</span>
           <div class="chips">${recursos.map(({ it, livre }) => {
             const sel = contexto.recursos.has(it.chave);
@@ -181,7 +181,7 @@ const Dados = (() => {
           }).join("")}</div>
         </div>` : ""}
 
-      ${contexto.podeAjudar ? `<div class="dados-opcao"><span>Grupo</span>
+      ${contexto.podeAjudar && !resultado ? `<div class="dados-opcao"><span>Grupo</span>
         <div class="chips"><button class="chip ${contexto.ajuda ? "escolhida" : ""}" data-ajuda ${travado}>Aliado ajuda +1</button></div>
       </div>` : ""}
 
