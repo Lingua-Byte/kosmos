@@ -57,10 +57,10 @@ const Criador = (() => {
     atitude: ["atitude do NPC (ex.: abe:1, moore:-2)", "pares"],
     flag: ["marca o acontecimento (flag)", "lista"], tirarFlag: ["desfaz o acontecimento", "lista"], marca: ["marca no personagem (vai para as próximas)", "lista"],
     quest: ["linha no Diário", "quest"], dinheiro: ["dinheiro (+/−)", "num"], pertence: ["ganha pertences", "pares"], consumir: ["gasta o pertence", "sel:pertence"],
-    item: ["ganha equipamento", "sel:equip"], condicao: ["condição", "sel:condicao"], exposicao: ["exposição (+/−)", "num"],
+    item: ["ganha equipamento (se já tem, enche os usos)", "sel:equip"], condicao: ["condição", "sel:condicao"], exposicao: ["exposição (+/−)", "num"],
     ressonancia: ["Ressonância (+/−)", "num"], dissonancia: ["Dissonância (+/−)", "num"], convergencia: ["Teste de Convergência depois (intensidade)", "num"],
     ameaca: ["ameaça (+/−)", "num"], memoria: ["Memória Cruzada", "txt"], memoriaMin: ["memória só com Ressonância", "num"],
-    aprenderX: ["aprende símbolos (Código Urbano)", "lista"], revela: ["lugar novo no mapa", "lista"], renovarItens: ["recarrega os equipamentos", "bool"],
+    aprenderX: ["aprende símbolos (Código Urbano)", "lista"], revela: ["lugar novo no mapa", "lista"], renovarItens: ["recarrega lanterna, celular e medidor", "bool"],
   };
   const CATALOGOS = { se: SE, req: REQ, ef: EF };
 

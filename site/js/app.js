@@ -76,6 +76,7 @@ function novoPersonagem() {
     atributos: { corpo: 0, mente: 0, essencia: 0 },
     habs: [],
     itens: [],
+    cargas: {}, // usos que restam em cada item (os usos acabam; ver EQUIPAMENTOS em data.js)
     usos: {},
     runas: [],
     cartasRunas: 0,
@@ -653,8 +654,9 @@ function recursosHtml(p, tipo, eixo) {
       <button class="btn-secundario" data-acao="editar-fim">Pronto</button></div>`;
   }
   const chaves = ehHab ? p.habs : p.itens;
-  // personagem pronto: as habilidades são dele e não se trocam (RPG linear, cada um com o seu kit)
-  const fixas = ehHab && !!p.pronto;
+  // personagem pronto: as habilidades são dele e não se trocam (RPG linear, cada um com o seu kit).
+  // O equipamento só se ajusta antes da primeira missão; depois, itens se acham e se compram jogando.
+  const fixas = ehHab ? !!p.pronto : Regras.equipamentoFixo(p);
   const resumo = ehHab
     ? (fixas ? "do personagem" : `${Regras.pontosGastos(p)}/${LIMITES.pontosHabilidade} pts`)
     : `carga ${Regras.carga(p)}/${Regras.cargaMax(p)}`;
@@ -663,7 +665,7 @@ function recursosHtml(p, tipo, eixo) {
     const bloq = Regras.bloqueado(p, c);
     let usos = "";
     if (it.usos !== "passiva") {
-      const max = it.usos.cena || it.usos.sessao;
+      const max = Regras.usoMax(it);
       const resta = Regras.usosRestantes(p, c);
       usos = `<span class="pips" title="${Regras.textoUsos(it)}">${Array.from({ length: max }, (_, i) => `<i class="${i < resta ? "cheio" : ""}"></i>`).join("")}</span>`;
     }
@@ -673,7 +675,7 @@ function recursosHtml(p, tipo, eixo) {
     return `<li class="${bloq ? "bloqueado" : ""} ${ehHab ? "" : "com-arte"}">
       ${ehHab ? "" : Vida.arte(c, eixo, it.nomes[eixo])}
       <div><strong>${esc(it.nomes[eixo])}</strong> ${usos} ${bloq ? `<em class="tag-bloqueio">bloqueada</em>` : ""}
-        <span class="item-efeito">${esc(it.efeito)} <i>${Regras.textoUsos(it)}</i></span></div>
+        <span class="item-efeito">${esc(it.efeito)} <i>${ehHab ? Regras.textoUsos(it) : it.recarga ? "bateria" : it.consumivel ? "acaba" : ""}</i></span></div>
       ${usar}
     </li>`;
   });
@@ -790,13 +792,13 @@ function renderFicha(recemCriada = false) {
     <div class="aba-conteudo">${renderEixo(p, abaAtual)}</div>
     <section class="convergencia" data-sub="convergencia">
       <h3>Convergência</h3>
-      <p class="sub">Passou no teste: + Ressonância. Falhou: + Dissonância.</p>
-      <button class="btn-secundario btn-convergencia" data-acao="convergencia">◉ Teste de Convergência · ${Regras.dificuldadeConvergencia(p)} sucesso${Regras.dificuldadeConvergencia(p) > 1 ? "s" : ""}</button>
+      <p class="sub">Passou no teste: + Ressonância. Falhou: + Dissonância. Só vale nas missões.</p>
+      <button class="btn-secundario btn-convergencia" data-acao="convergencia">◉ Ensaiar a Convergência · ${Regras.dificuldadeConvergencia(p)} sucesso${Regras.dificuldadeConvergencia(p) > 1 ? "s" : ""}</button>
       <div class="atributo"><div class="atributo-nome"><strong>Ressonância</strong><span>alinhamento com a Convergência</span></div>
-        ${trilha(REGRAS.ressonanciaMax, p.ressonancia, "res", { classe: "trilha-longa trilha-res" })}
+        ${trilha(REGRAS.ressonanciaMax, p.ressonancia, "res", { classe: "trilha-longa trilha-res", somenteLeitura: true })}
         ${marcasHtml(RESSONANCIA_LIMIARES, p.ressonancia)}</div>
       <div class="atributo"><div class="atributo-nome"><strong>Dissonância</strong><span>resistência caótica ao fenômeno</span></div>
-        ${trilha(REGRAS.ressonanciaMax, p.dissonancia, "dis", { classe: "trilha-longa trilha-dis" })}
+        ${trilha(REGRAS.ressonanciaMax, p.dissonancia, "dis", { classe: "trilha-longa trilha-dis", somenteLeitura: true })}
         ${marcasHtml(DISSONANCIA_LIMIARES, p.dissonancia)}</div>
     </section>
     <section data-sub="linguas">
@@ -819,10 +821,7 @@ function renderFicha(recemCriada = false) {
     </section>
     <section data-sub="mapa">${mapaFichaHtml(p)}</section>
     <section data-sub="rolagens">
-      <div class="mesa-barra">
-        <button class="btn-texto" data-acao="nova-cena" title="Renova usos por cena">↻ Nova cena</button>
-        <button class="btn-texto" data-acao="nova-sessao" title="Renova todos os usos">↻ Nova sessão</button>
-      </div>
+      <p class="dica">Na ficha, rolar é ensaio. Habilidades voltam a cada cena ou missão; itens, só recarregando ou achando outro.</p>
       <div class="bloco"><h3>Rolagens recentes</h3>${Dados.historicoHtml(p)}</div>
       <footer class="ficha-rodape">
         <button class="btn-texto perigo" data-acao="excluir">Excluir personagem</button>
@@ -915,33 +914,34 @@ $("#ficha").addEventListener("click", (ev) => {
   } else if (t.dataset.usar) {
     const it = Regras.item(t.dataset.usar);
     if (Regras.usosRestantes(p, it.chave) <= 0) return;
-    Regras.consumir(p, it.chave);
+    const fim = Regras.consumir(p, it.chave);
     const { reduz, qtd } = it.acao;
     if (reduz === "exposicao") p.exposicao[abaAtual] = Math.max(0, p.exposicao[abaAtual] - qtd);
+    else if (reduz === "dissonancia") Regras.mudarDis(p, -qtd);
     else p[reduz] = Math.max(0, p[reduz] - qtd);
-    fichaMudou(p, [`${it.nomes[abaAtual]}: ${it.efeito}`]);
+    const avisos = [`${it.nomes[abaAtual]}: ${it.efeito}`];
+    if (fim === "acabou") avisos.push(`${it.nomes[abaAtual]} acabou.`);
+    else if (fim === "zerou") avisos.push(`${it.nomes[abaAtual]}: sem usos.`);
+    fichaMudou(p, avisos);
   } else if (t.dataset.valor) {
     const [tipo, k] = t.closest("[data-trilha]").dataset.trilha.split(":");
     const clicado = +t.dataset.valor;
-    // Marcar é livre; apagar só por regra (habilidade, item)
+    // Marcar exposição é livre; apagar só por regra (habilidade, item).
+    // Ressonância e Dissonância só mudam jogando (as barras delas são só leitura).
     if (tipo === "exp") p.exposicao[k] = Math.max(p.exposicao[k], clicado);
-    else if (tipo === "res") p.ressonancia = Math.max(p.ressonancia, clicado);
-    else if (tipo === "dis") p.dissonancia = Math.max(p.dissonancia, clicado);
     fichaMudou(p);
   } else if (t.dataset.rolar) {
-    Dados.abrirTeste(p, abaAtual, t.dataset.rolar);
+    // na ficha, rolar é ensaio: mostra a chance e os dados, sem gastar nem marcar nada
+    Dados.abrirTeste(p, abaAtual, t.dataset.rolar, { ensaio: true, podeAjudar: false });
   } else if (t.dataset.acao === "convergencia") {
-    Dados.abrirConvergencia(p, p.revelados[abaAtual] ? abaAtual : p.origem);
+    Dados.abrirConvergencia(p, p.revelados[abaAtual] ? abaAtual : p.origem, { ensaio: true, podeAjudar: false });
   } else if (t.dataset.acao === "dicionario") {
     Tradutor.abrir(abaAtual, "dicionario");
   } else if (t.dataset.acao === "estudar") {
     Dados.abrirTeste(p, "y", "mente", { estudo: true });
-  } else if (t.dataset.acao === "nova-cena" || t.dataset.acao === "nova-sessao") {
-    const periodo = t.dataset.acao === "nova-cena" ? "cena" : "sessao";
-    Regras.renovar(p, periodo);
-    fichaMudou(p, [periodo === "cena" ? "Nova cena: usos por cena renovados." : "Nova sessão: todos os usos renovados."]);
   } else if (t.dataset.acao === "editar") {
     if (t.dataset.tipo === "hab" && fichaAtual.pronto) return; // habilidades fixas
+    if (t.dataset.tipo === "item" && Regras.equipamentoFixo(fichaAtual)) return; // itens: só antes da 1ª missão
     editando = t.dataset.tipo;
     renderFicha();
   } else if (t.dataset.acao === "editar-fim") {

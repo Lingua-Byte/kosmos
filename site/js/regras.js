@@ -26,6 +26,7 @@ const Regras = (() => {
     const i = lista.indexOf(chave);
     if (i >= 0) {
       lista.splice(i, 1);
+      if (tipo === "item" && p.cargas) delete p.cargas[chave];
       return "";
     }
     if (tipo === "hab" && pontosGastos(p) + hab(chave).custo > LIMITES.pontosHabilidade)
@@ -33,37 +34,151 @@ const Regras = (() => {
     if (tipo === "item" && carga(p) + equip(chave).peso > cargaMax(p))
       return "Carga cheia. Mais Corpo = mais carga.";
     lista.push(chave);
+    if (tipo === "item") (p.cargas = p.cargas || {})[chave] = equip(chave).usos;
     return "";
   }
 
-  // ---------- Usos ----------
+  // ---------- Itens: cada um tem usos, e os usos acabam ----------
+  // p.itens: as chaves dos equipamentos (como sempre) · p.cargas: { chave: usos que restam }.
+
+  // Fichas antigas não tinham cargas: cada item começa cheio. Os usos antigos de equipamento (por cena/sessão) saem.
+  function garantirCargas(p) {
+    if (!p.itens) p.itens = [];
+    if (!p.cargas || typeof p.cargas !== "object") p.cargas = {};
+    p.itens = p.itens.filter((c, i) => equip(c) && p.itens.indexOf(c) === i);
+    for (const c of p.itens) if (!(c in p.cargas)) p.cargas[c] = equip(c).usos;
+    for (const c of Object.keys(p.cargas)) if (!p.itens.includes(c)) delete p.cargas[c];
+    for (const c of Object.keys(p.usos || {})) if (equip(c)) delete p.usos[c];
+    return p.cargas;
+  }
+
+  function cargas(p, chave) {
+    return garantirCargas(p)[chave] || 0;
+  }
+
+  // O item está com o personagem e ainda tem uso? (a lanterna apagada não ilumina a escada)
+  function funciona(p, chave) {
+    return (p.itens || []).includes(chave) && cargas(p, chave) > 0;
+  }
+
+  // Gasta usos de um item. O consumível que zera some; o resto fica, sem efeito, até recarregar ou achar outro.
+  function gastarItem(p, chave, n = 1) {
+    garantirCargas(p);
+    if (!p.itens.includes(chave)) return "";
+    p.cargas[chave] = Math.max(0, p.cargas[chave] - n);
+    if (p.cargas[chave] > 0) return "";
+    if (equip(chave).consumivel) {
+      p.itens = p.itens.filter((x) => x !== chave);
+      delete p.cargas[chave];
+      return "acabou";
+    }
+    return "zerou";
+  }
+
+  // Ganhar um item (achado numa missão ou comprado). Quem já tem um enche os usos dele.
+  // Devolve { erro } | { recarregou: true } | {}
+  function darItem(p, chave) {
+    const e = equip(chave);
+    if (!e) return { erro: "item desconhecido" };
+    garantirCargas(p);
+    if (p.itens.includes(chave)) {
+      p.cargas[chave] = e.usos;
+      return { recarregou: true };
+    }
+    if (carga(p) + e.peso > cargaMax(p)) return { erro: "carga cheia" };
+    p.itens.push(chave);
+    p.cargas[chave] = e.usos;
+    return {};
+  }
+
+  // Bateria, óleo, célula de energia ou uma tomada: enche os itens que recarregam. Devolve as chaves recarregadas.
+  function recarregar(p) {
+    garantirCargas(p);
+    const feitos = [];
+    for (const c of p.itens) {
+      const e = equip(c);
+      if (e.recarga === "bateria" && p.cargas[c] < e.usos) {
+        p.cargas[c] = e.usos;
+        feitos.push(c);
+      }
+    }
+    return feitos;
+  }
+
+  // Equipamento pode ser trocado na ficha só antes da primeira missão (e nunca nos personagens prontos)
+  function equipamentoFixo(p) {
+    const emMissao = typeof Cenas !== "undefined" && p.id && Cenas.emAndamento(p.id);
+    return Boolean(p.pronto || p.jaJogou || (p.concluidas || []).length || emMissao);
+  }
+
+  // ---------- Usos de habilidades (e do que se renova por missão) ----------
+  // Os que não são habilidade nem item: o estudo de runa (por cena) e o Pressentimento (Ressonância 15, por missão)
+  const ESPECIAIS = {
+    estudo: () => ({ usos: RUNAS_CARTAS.estudo.usos }),
+    pressentimento: () => ({ usos: { sessao: 1 } }),
+  };
+  const comUsos = (chave) => (ESPECIAIS[chave] ? ESPECIAIS[chave]() : item(chave));
 
   function usoMax(it) {
+    if (!it) return 0;
     if (it.usos === "passiva") return Infinity;
+    if (typeof it.usos === "number") return it.usos;
     return it.usos.cena || it.usos.sessao;
   }
 
   function usosRestantes(p, chave) {
-    const it = chave === "estudo" ? { usos: RUNAS_CARTAS.estudo.usos } : item(chave);
-    return usoMax(it) - (p.usos[chave] || 0);
+    if (equip(chave)) return cargas(p, chave);
+    return usoMax(comUsos(chave)) - ((p.usos || {})[chave] || 0);
   }
 
   function consumir(p, chave) {
+    if (equip(chave)) return gastarItem(p, chave);
+    p.usos = p.usos || {};
     p.usos[chave] = (p.usos[chave] || 0) + 1;
+    return "";
   }
 
-  // "cena" renova só o que é por cena; "sessao" renova tudo
+  // "cena" renova o que é por cena (numa missão: cada cena da história ou troca de lugar);
+  // "sessao" renova tudo o que é das habilidades (no começo de cada missão). Itens não se renovam aqui.
   function renovar(p, periodo) {
+    p.usos = p.usos || {};
     for (const chave of Object.keys(p.usos)) {
-      const it = chave === "estudo" ? { usos: RUNAS_CARTAS.estudo.usos } : item(chave);
-      if (periodo === "sessao" || (it && it.usos.cena)) delete p.usos[chave];
+      if (equip(chave)) continue;
+      const it = comUsos(chave);
+      if (periodo === "sessao" || (it && it.usos && it.usos.cena)) delete p.usos[chave];
     }
   }
 
   function textoUsos(it) {
     if (it.usos === "passiva") return "passiva";
+    if (typeof it.usos === "number")
+      return `${it.usos} uso${it.usos > 1 ? "s" : ""}${it.recarga ? " · bateria" : it.consumivel ? " · acaba" : ""}`;
     if (it.usos.cena) return `${it.usos.cena}× por cena`;
-    return `${it.usos.sessao}× por sessão`;
+    return `${it.usos.sessao}× por missão`;
+  }
+
+  // Alívios de Dissonância com limite por missão (dormir, calmante). Devolve true se ainda vale, e conta.
+  function alivio(p, fonte, max) {
+    p.usos = p.usos || {};
+    const k = "alivio:" + fonte;
+    if ((p.usos[k] || 0) >= max) return false;
+    p.usos[k] = (p.usos[k] || 0) + 1;
+    return true;
+  }
+
+  // Muda Ressonância e Dissonância respeitando os limites (0 a 30; a Ressonância comum para no 29).
+  // Devolve quanto mudou de verdade.
+  function mudarRes(p, n) {
+    const antes = p.ressonancia || 0;
+    if (n > 0) p.ressonancia = Math.max(antes, Math.min(REGRAS.ressonanciaTeto, antes + n));
+    else p.ressonancia = Math.max(0, antes + n);
+    return p.ressonancia - antes;
+  }
+
+  function mudarDis(p, n) {
+    const antes = p.dissonancia || 0;
+    p.dissonancia = Math.max(0, Math.min(REGRAS.ressonanciaMax, antes + n));
+    return p.dissonancia - antes;
   }
 
   // ---------- Ressonância e Dissonância ----------
@@ -94,8 +209,25 @@ const Regras = (() => {
     return CONVERGENCIA.dificuldade + limiaresAtivos(p).reduce((s, l) => s + (l.convergenciaDif || 0), 0);
   }
 
-  function sinaisDaoDissonancia(p) {
-    return limiaresAtivos(p).some((l) => l.sinaisDissonancia);
+  // Marcas que mexem num tipo de situação (ex.: Inquietação, −1 para convencer e acalmar)
+  function modMarcasTags(p, tags) {
+    const mods = [];
+    for (const l of limiaresAtivos(p)) {
+      if (!l.dadosTags) continue;
+      const n = Object.entries(l.dadosTags).filter(([tag]) => tags.includes(tag)).reduce((s, [, v]) => s + v, 0);
+      if (n) mods.push({ fonte: l.nome, dados: n, trilha: l.trilha });
+    }
+    return mods;
+  }
+
+  // Os sinais ◉ deste tipo de teste também marcam Dissonância? (Perda de Controle: só na Convergência)
+  function sinaisDaoDissonancia(p, tipo) {
+    return limiaresAtivos(p).some((l) => l.sinaisDissonancia === true || (l.sinaisDissonancia && l.sinaisDissonancia === tipo));
+  }
+
+  // Pressentimento (Ressonância 15): ainda pode rolar de novo um teste comum nesta missão?
+  function podePressentir(p) {
+    return limiaresAtivos(p).some((l) => l.rerrolar === "teste") && usosRestantes(p, "pressentimento") > 0;
   }
 
   function fimDeJogo(p) {
@@ -209,7 +341,11 @@ const Regras = (() => {
     if (!p.dinheiro) p.dinheiro = { ...DINHEIRO_INICIAL };
     if (!p.pertences) p.pertences = {};
     if (!p.condicoes) p.condicoes = [];
-    if (p.habs) return p;
+    if (!p.usos) p.usos = {};
+    if (p.habs) {
+      garantirCargas(p);
+      return p;
+    }
     p.habs = [];
     p.itens = [];
     p.usos = {};
@@ -223,14 +359,16 @@ const Regras = (() => {
     // Antes as runas eram escolhidas livremente; agora a Mente decide e as cartas começam viradas
     p.cartasRunas = RUNAS_CARTAS.iniciais(p.atributos.mente);
     p.runas = [];
+    garantirCargas(p);
     return p;
   }
 
   return {
     hab, equip, item,
     pontosGastos, carga, cargaMax, alternar,
-    usosRestantes, consumir, renovar, textoUsos,
-    limiaresAtivos, bloqueado, modificadores, dificuldadeConvergencia, sinaisDaoDissonancia, fimDeJogo, aplicarLimiares,
+    garantirCargas, cargas, funciona, gastarItem, darItem, recarregar, equipamentoFixo,
+    usoMax, usosRestantes, consumir, renovar, textoUsos, alivio, mudarRes, mudarDis,
+    limiaresAtivos, bloqueado, modificadores, modMarcasTags, dificuldadeConvergencia, sinaisDaoDissonancia, podePressentir, fimDeJogo, aplicarLimiares,
     modTracos, chance, rotuloChance, sugestoes,
     cartasViradas, virarRuna, podeAprenderRuna, aplicarAlfabetoDaClasse,
     migrar,
