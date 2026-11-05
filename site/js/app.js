@@ -660,6 +660,20 @@ function recursosHtml(p, tipo, eixo) {
   const resumo = ehHab
     ? (fixas ? "do personagem" : `${Regras.pontosGastos(p)}/${LIMITES.pontosHabilidade} pts`)
     : `carga ${Regras.carga(p)}/${Regras.cargaMax(p)}`;
+  if (!ehHab && chaves.length) {
+    const grade = Vida.grade(chaves.map((c) => {
+      const it = Regras.item(c);
+      const resta = Regras.usosRestantes(p, c);
+      const bloq = Regras.bloqueado(p, c);
+      return { chave: c, eixo, nome: it.nomes[eixo], badge: `${resta}/${Regras.usoMax(it)}`, apagado: !resta || bloq,
+        efeito: `${it.efeito}${it.recarga ? " · recarrega com bateria" : it.consumivel ? " · acaba" : ""}${bloq ? " · bloqueado" : ""}`,
+        botao: it.acao ? `<button class="btn-rolar" data-usar="${c}" ${resta <= 0 || bloq ? "disabled" : ""}>Usar</button>` : "" };
+    }));
+    return `<div class="bloco">
+      <h3>${titulo} <small>${resumo}</small> ${fixas ? "" : `<button class="btn-texto ajustar" data-acao="editar" data-tipo="${tipo}">Ajustar</button>`}</h3>
+      ${grade}
+    </div>`;
+  }
   const linhas = chaves.map((c) => {
     const it = Regras.item(c);
     const bloq = Regras.bloqueado(p, c);
@@ -873,9 +887,8 @@ function vidaHtml(p, eixo) {
   const itens = Object.entries(p.pertences);
   return `<div class="bloco vida"><h3>Dinheiro e pertences</h3>
     <p class="carteira"><strong>${esc(Vida.dinheiroTexto(eixo, p.dinheiro[eixo]))}</strong> <span class="sub">· bolsa ${Vida.naBolsa(p)}/${BOLSA_MAX}</span></p>
-    ${itens.length ? `<ul class="pertences">${itens.map(([k, n]) => `
-      <li class="com-arte">${Vida.arte(k, eixo, Vida.nome(k, eixo))}<span>${esc(Vida.nome(k, eixo))}${n > 1 ? ` <b>×${n}</b>` : ""}</span><small>${esc(Vida.pertence(k).efeito)}</small>
-        <button class="btn-rolar" data-usar-pertence="${k}">Usar</button></li>`).join("")}</ul>` : `<p class="sub">Nada na bolsa.</p>`}
+    ${itens.length ? Vida.grade(itens.map(([k, n]) => ({ chave: k, eixo, nome: Vida.nome(k, eixo), badge: n > 1 ? `×${n}` : "",
+      efeito: Vida.pertence(k).efeito, botao: `<button class="btn-rolar" data-usar-pertence="${k}">Usar</button>` }))) : `<p class="sub">Nada na bolsa.</p>`}
     ${p.condicoes.length ? `<p class="condicoes">${p.condicoes.map((c) => `<span class="condicao" title="Resolve com: ${esc(CONDICOES[c].resolve)}">${esc(CONDICOES[c].nome)}</span>`).join("")}</p>` : ""}
   </div>`;
 }

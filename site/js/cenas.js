@@ -302,6 +302,7 @@ const Cenas = (() => {
         <div class="acoes-lugar">
           ${lugar.loja ? `<button class="btn-secundario" data-painel="loja">Comprar aqui</button>` : ""}
           <button class="btn-secundario" data-painel="mapa">Ir para outro lugar</button>
+          <button class="btn-secundario" data-acao="escrever" title="Escrever o que o personagem faz">✎ Escrever</button>
           ${camp.pistas.length >= m.pistasParaMarco ? `<button class="btn-primario" data-acao="chamado">${esc(m.marcoTexto || `Seguir a multidão até a ${m.centroMapa ? m.centroMapa.nome : "Praça Central"}`)}</button>` : ""}
         </div>`;
     }
@@ -312,8 +313,8 @@ const Cenas = (() => {
         <span class="cena-onde"><b>${EIXOS[m.eixo].glifo}</b> ${esc(m.subtitulo)} · ${esc(nomeLugar)}</span>
         <span class="relogio" title="Relógio de Convergência">${Array.from({ length: m.relogioMax }, (_, i) => `<i class="${i < camp.relogio ? "cheio" : ""}"></i>`).join("")}</span>
         <span class="tag">${esc(m.faseTag || `Fase 1 · ${m.fase}`)}</span>
-        <button class="btn-texto narrador-ligar" data-acao="saves">⛃ Salvar</button>
-        <button class="btn-texto narrador-ligar" data-acao="opcoes">⚙ Opções</button>
+        <button class="btn-texto narrador-ligar" data-acao="saves" title="Salvar">⛃<span class="rotulo"> Salvar</span></button>
+        <button class="btn-texto narrador-ligar" data-acao="opcoes" title="Opções">⚙<span class="rotulo"> Opções</span></button>
       </header>
       <main class="cena-corpo" id="cena-corpo">
         ${corpo}
@@ -366,6 +367,7 @@ const Cenas = (() => {
     if (!corpo || viagem) return;
     const ps = [...corpo.querySelectorAll(".narracao p")];
     if (!ps.length) return;
+    document.getElementById("tela-cena")?.classList.remove("escolhendo");
     lidos = Math.min(Math.max(1, lidos), ps.length);
     ps.forEach((p, i) => (p.hidden = i !== lidos - 1)); // um pedaço de cada vez: só o atual fica na tela
     const resto = [...corpo.querySelectorAll(".opcoes, .livre, .acoes-lugar, .pergunta-vez, .efeitos-resultado, .tutorial, .ameaca, .pendente, .livre-resposta, .cena-grupo, [data-acao='seguir']")];
@@ -379,6 +381,9 @@ const Cenas = (() => {
       digitando = null;
       mais.hidden = !falta;
       resto.forEach((e) => (e.hidden = falta));
+      // enquanto o jogador escolhe, a imagem do lugar encolhe para as escolhas caberem
+      document.getElementById("tela-cena")?.classList.toggle("escolhendo", !falta && !!corpo.querySelector(".opcoes .opcao"));
+      if (!falta) paginarOpcoes(chave);
     };
     const chaveP = `${chave}#${lidos}`;
     if (chaveP === digitadoChave || reduzirMovimento) return fim();
@@ -387,6 +392,55 @@ const Cenas = (() => {
     resto.forEach((e) => (e.hidden = true));
     digitar(ps[lidos - 1], fim);
   }
+
+  // Telas sem rolagem: quando as escolhas não cabem, elas viram páginas ("Mais escolhas ▸").
+  let paginaOps = 0, chavePagina = null, tamanhoPagina = 0, alturaVista = 0;
+  // quando a área do texto muda de tamanho (o palco encolhe, a janela gira), refaz as páginas
+  const observador = typeof ResizeObserver !== "undefined" ? new ResizeObserver((es) => {
+    const h = Math.round(es[0].contentRect.height);
+    if (h !== alturaVista) { alturaVista = h; paginarOpcoes(); }
+  }) : null;
+  let observado = null;
+  function paginarOpcoes(chave) {
+    const corpo = document.getElementById("cena-corpo");
+    if (!corpo) return;
+    if (observador && observado !== corpo) { if (observado) observador.unobserve(observado); observador.observe(corpo); observado = corpo; alturaVista = corpo.clientHeight; }
+    corpo.querySelectorAll(".mais-opcoes").forEach((b) => b.remove());
+    const lista = [...corpo.querySelectorAll(".opcoes")].find((l) => l.querySelectorAll(":scope > .opcao").length > 2);
+    if (!lista || lista.hidden) return;
+    const ops = [...lista.querySelectorAll(":scope > .opcao")];
+    if (chave !== undefined && chave !== chavePagina) { chavePagina = chave; paginaOps = 0; }
+    ops.forEach((o) => (o.hidden = false));
+    const cabe = () => corpo.scrollHeight <= corpo.clientHeight + 1;
+    if (cabe()) { tamanhoPagina = ops.length; return; }
+    const botao = document.createElement("button");
+    botao.className = "btn-secundario mais-opcoes";
+    botao.dataset.acao = "mais-opcoes";
+    const barra = corpo.querySelector(".acoes-lugar");
+    if (barra && !barra.hidden) barra.prepend(botao); else lista.after(botao);
+    botao.textContent = "Mais escolhas ▸";
+    let n = ops.length;
+    while (n > 1) {
+      n--;
+      ops.forEach((o, i) => (o.hidden = i >= n));
+      if (cabe()) break;
+    }
+    tamanhoPagina = n;
+    aplicarPagina();
+  }
+  function aplicarPagina() {
+    const corpo = document.getElementById("cena-corpo");
+    const botao = corpo && corpo.querySelector(".mais-opcoes");
+    if (!botao) return;
+    const lista = [...corpo.querySelectorAll(".opcoes")].find((l) => l.querySelectorAll(":scope > .opcao").length > 2);
+    if (!lista) return;
+    const ops = [...lista.querySelectorAll(":scope > .opcao")];
+    const paginas = Math.ceil(ops.length / tamanhoPagina);
+    paginaOps = ((paginaOps % paginas) + paginas) % paginas;
+    ops.forEach((o, i) => (o.hidden = Math.floor(i / tamanhoPagina) !== paginaOps));
+    botao.innerHTML = `Mais escolhas <b>▸</b> <small>${paginaOps + 1}/${paginas}</small>`;
+  }
+  window.addEventListener("resize", () => { if (document.querySelector("#cena-corpo .opcoes")) paginarOpcoes(); });
 
   // escreve o parágrafo letra a letra, com o tique leve a cada poucas letras
   // Fala de personagem (entre aspas): em vez do tique, a voz dele, como nos RPGs antigos
@@ -568,7 +622,7 @@ const Cenas = (() => {
           <button class="btn-primario" data-acao="confirmar">Fazer isso</button>
           <button class="btn-texto" data-acao="cancelar">Não era isso</button></div>` : ""}
       ${mensagemLivre ? `<p class="livre-resposta">${esc(mensagemLivre)}</p>` : ""}
-      <form class="livre" id="form-livre">
+      <form class="livre ${camp.lugar && !(camp.cena) && !resultado && !mensagemLivre && !pendente ? "recolhido" : ""}" id="form-livre">
         <input id="texto-livre" placeholder="Ou escreva o que ${esc(ativo().nome)} faz…" autocomplete="off">
         <button class="btn-secundario">Agir</button>
       </form>`;
@@ -660,15 +714,16 @@ const Cenas = (() => {
       <h3>Bolsa de ${esc(p.nome)} <button class="btn-texto" data-painel="">Fechar</button></h3>
       <p class="carteira"><strong>${esc(Vida.dinheiroTexto(e, p.dinheiro[e]))}</strong> <span class="sub">· bolsa ${Vida.naBolsa(p)}/${BOLSA_MAX}</span></p>
       <h4 class="diario-sub">Equipamento <small>carga ${Regras.carga(p)}/${Regras.cargaMax(p)}</small></h4>
-      ${p.itens.length ? `<ul class="pertences">${p.itens.map((k) => {
+      ${p.itens.length ? Vida.grade(p.itens.map((k) => {
         const it = Regras.equip(k);
         const resta = Regras.usosRestantes(p, k);
-        return `<li class="com-arte">${Vida.arte(k, e, it.nomes[e])}<span>${esc(it.nomes[e])} <b>${resta}/${it.usos}</b></span><small>${esc(it.efeito)}${resta ? "" : it.recarga ? " · sem carga" : " · sem uso"}</small></li>`;
-      }).join("")}</ul>` : `<p class="sub">Nenhum equipamento.</p>`}
+        return { chave: k, eixo: e, nome: it.nomes[e], badge: `${resta}/${it.usos}`, apagado: !resta,
+          efeito: `${it.efeito}${resta ? "" : it.recarga ? " · sem carga" : " · sem uso"}` };
+      })) : `<p class="sub">Nenhum equipamento.</p>`}
       <h4 class="diario-sub">Pertences</h4>
-      ${itens.length ? `<ul class="pertences">${itens.map(([k, n]) => `
-        <li class="com-arte">${Vida.arte(k, e, Vida.nome(k, e))}<span>${esc(Vida.nome(k, e))}${n > 1 ? ` <b>×${n}</b>` : ""}</span><small>${esc(Vida.pertence(k).efeito)}</small>
-          <button class="btn-secundario" data-usar-pertence="${k}">Usar</button></li>`).join("")}</ul>` : `<p class="sub">Nada na bolsa. Compre em lojas ou procure pelos lugares.</p>`}
+      ${itens.length ? Vida.grade(itens.map(([k, n]) => ({ chave: k, eixo: e, nome: Vida.nome(k, e), badge: n > 1 ? `×${n}` : "",
+        efeito: Vida.pertence(k).efeito, botao: `<button class="btn-secundario" data-usar-pertence="${k}">Usar</button>` })))
+        : `<p class="sub">Nada na bolsa. Compre em lojas ou procure pelos lugares.</p>`}
       ${p.condicoes.length ? `<p class="condicoes">${p.condicoes.map((c) => `<span class="condicao">${esc(CONDICOES[c].nome)} · resolve com ${esc(CONDICOES[c].resolve)}</span>`).join("")}</p>` : `<p class="sub">Sem fome, sem cansaço, sem ferimentos.</p>`}
     </div>`;
   }
@@ -1056,6 +1111,15 @@ const Cenas = (() => {
       if (digitando) return digitando.terminar();
       lidos++;
       return render();
+    }
+    if (acao === "escrever") {
+      const f = document.getElementById("form-livre");
+      if (f) { f.classList.remove("recolhido"); t.remove(); paginarOpcoes(); document.getElementById("texto-livre")?.focus(); }
+      return;
+    }
+    if (acao === "mais-opcoes") {
+      paginaOps++;
+      return aplicarPagina();
     }
     if (acao === "chamado") return entrarCena("chamado");
     if (acao === "opcoes") return Opcoes.abrir();

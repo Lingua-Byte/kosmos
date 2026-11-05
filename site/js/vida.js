@@ -117,5 +117,33 @@ const Vida = (() => {
     return `<span class="arte-item" aria-hidden="true"><b>${inicial}</b><img src="imagens/itens/${chave}-${eixo}.webp" alt="" loading="lazy" onerror="this.remove()"></span>`;
   }
 
-  return { arte, garantir, pertence, nome, dinheiroTexto, naBolsa, tem, ganhar, tirar, mudarDinheiro, condicao, usar, preco, nomeOferta, podeComprar, comprar };
+  // Grade de itens (inventário): quadradinhos com arte, nome e usos; tocar mostra o efeito e o botão.
+  // Cabe na tela sem rolar. entradas: [{ chave, eixo, nome, badge, efeito, botao, apagado }]
+  let selecionado = null;
+  function grade(entradas) {
+    if (!entradas.length) return "";
+    const sel = entradas.some((x) => x.chave === selecionado) ? selecionado : null;
+    return `<div class="grade-itens">${entradas.map((x) => `
+      <button type="button" class="tile ${x.apagado ? "apagado" : ""} ${x.chave === sel ? "escolhido" : ""}" data-tile="${esc(x.chave)}" aria-expanded="${x.chave === sel}">
+        ${arte(x.chave, x.eixo, x.nome)}<span class="tile-nome">${esc(x.nome)}</span>${x.badge ? `<b class="tile-badge">${x.badge}</b>` : ""}
+      </button>`).join("")}</div>
+      ${entradas.map((x) => `<div class="tile-info" data-info="${esc(x.chave)}" ${x.chave === sel ? "" : "hidden"}>
+        <span><strong>${esc(x.nome)}</strong> ${esc(x.efeito || "")}</span>${x.botao || ""}</div>`).join("")}`;
+  }
+  document.addEventListener("click", (ev) => {
+    const t = ev.target.closest("[data-tile]");
+    if (!t) return;
+    const raiz = t.closest(".bloco, .cena-painel") || document;
+    const chave = t.dataset.tile;
+    const abrir = selecionado !== chave || t.getAttribute("aria-expanded") !== "true";
+    selecionado = abrir ? chave : null;
+    raiz.querySelectorAll("[data-tile]").forEach((b) => {
+      const sim = abrir && b.dataset.tile === chave;
+      b.classList.toggle("escolhido", sim);
+      b.setAttribute("aria-expanded", String(sim));
+    });
+    raiz.querySelectorAll("[data-info]").forEach((d) => (d.hidden = !(abrir && d.dataset.info === chave)));
+  });
+
+  return { arte, grade, garantir, pertence, nome, dinheiroTexto, naBolsa, tem, ganhar, tirar, mudarDinheiro, condicao, usar, preco, nomeOferta, podeComprar, comprar };
 })();
