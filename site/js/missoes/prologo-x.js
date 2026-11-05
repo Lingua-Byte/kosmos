@@ -230,7 +230,7 @@ Aqui o fenômeno age sobre você.`,
       titulo: "O meio da multidão",
       texto: `Agora é difícil andar. Os afetados estão ombro a ombro, de frente para o centro da praça. Ninguém te empurra. Ninguém te vê.
 
-Alguém, perto de você, escreve no chão com o dedo, sem parar: ∃ ψ(t) ⇒ 𝒪(S).`,
+Alguém, perto de você, escreve no chão com o dedo, sem parar: ∃ ψ(t₀) ⇒ 𝒪(S).`,
       opcoes: [
         {
           texto: "Abrir caminho à força", palavras: ["forc", "empurr", "abrir caminho"], situacao: "forcar",
@@ -331,12 +331,12 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         {
           id: "vidro", texto: "Examinar o que o homem escreveu no vidro", palavras: ["vidro", "simbol", "escrit", "examin", "ler"], situacao: "ler",
           sucesso: {
-            texto: "Os traços são quase matemática: ∃ ψ(t). Você não sabe como, mas entende: existe uma mente — agora. Como alguém se apresentando.",
-            pista: "No vidro: ∃ ψ(t), “existe uma mente, agora”.", efeitos: { aprenderX: ["existir", "mente", "x-agora"] },
+            texto: "Os traços são quase matemática: ∃ ψ(t₀). Você não sabe como, mas entende: existe uma mente — agora. Como alguém se apresentando.",
+            pista: "No vidro: ∃ ψ(t₀), “existe uma mente, agora”.", efeitos: { aprenderX: ["existir", "mente", "x-agora"] },
           },
           falha: {
             texto: "Os traços parecem se mexer quando você não olha direto. Uma dor fina atrás dos olhos.",
-            pista: "No vidro, um símbolo: ∃ ψ(t). Você não conseguiu ler.", efeitos: { dissonancia: 1 },
+            pista: "No vidro, um símbolo: ∃ ψ(t₀). Você não conseguiu ler.", efeitos: { dissonancia: 1 },
           },
         },
         {
@@ -380,7 +380,7 @@ Você abre os olhos sob um teto de pedra. Alguém de capuz se inclina sobre voc�
         },
         {
           id: "telas", texto: "Olhar o que ficou aberto nas telas dos colegas", palavras: ["tela", "monitor", "colegas", "computador"], situacao: "ler", se: { ponto: "escritorio" },
-          sucesso: { texto: "Planilhas, e-mails, um jogo de paciência. E, em todas as telas, o mesmo documento novo, sem título, cheio de símbolos digitados em linha reta: ∃ ψ(t) ⇒ 𝒪(S).", pista: "Nas telas do escritório, todos digitaram os mesmos símbolos antes de sair.", efeitos: { aprenderX: ["existir", "mente", "observar"] } },
+          sucesso: { texto: "Planilhas, e-mails, um jogo de paciência. E, em todas as telas, o mesmo documento novo, sem título, cheio de símbolos digitados em linha reta: ∃ ψ(t₀) ⇒ 𝒪(S).", pista: "Nas telas do escritório, todos digitaram os mesmos símbolos antes de sair.", efeitos: { aprenderX: ["existir", "mente", "observar"] } },
           falha: { texto: "Você lê a mesma linha três vezes e não entende nenhuma. Seu reflexo no monitor apagado parece ler mais rápido que você.", efeitos: { dissonancia: 1 } },
         },
         {

@@ -347,7 +347,7 @@
     },
     "meio": {
       "titulo": "O meio da multidão",
-      "texto": "Agora é difícil andar. Os afetados estão ombro a ombro, de frente para o centro da praça. Ninguém te empurra. Ninguém te vê.\n\nAlguém, perto de você, escreve no chão com o dedo, sem parar: ∃ ψ(t) ⇒ 𝒪(S).",
+      "texto": "Agora é difícil andar. Os afetados estão ombro a ombro, de frente para o centro da praça. Ninguém te empurra. Ninguém te vê.\n\nAlguém, perto de você, escreve no chão com o dedo, sem parar: ∃ ψ(t₀) ⇒ 𝒪(S).",
       "opcoes": [
         {
           "texto": "Abrir caminho à força",
@@ -971,7 +971,7 @@
           },
           "situacao": "ler",
           "sucesso": {
-            "texto": "De perto, as contas não são lisas: cada uma tem um risco pequeno, feito à unha. Você reza o terço inteiro passando os dedos por eles e, no fim, entende uma frase, como quem lembra de uma oração esquecida: ∃ ψ(t). Existe uma mente. Agora.",
+            "texto": "De perto, as contas não são lisas: cada uma tem um risco pequeno, feito à unha. Você reza o terço inteiro passando os dedos por eles e, no fim, entende uma frase, como quem lembra de uma oração esquecida: ∃ ψ(t₀). Existe uma mente. Agora.",
             "efeitos": {
               "aprenderX": [
                 "existir",
@@ -980,7 +980,7 @@
               ],
               "marca": "terco-riscado"
             },
-            "pista": "No terço deixado no confessionário: ∃ ψ(t), “existe uma mente, agora”."
+            "pista": "No terço deixado no confessionário: ∃ ψ(t₀), “existe uma mente, agora”."
           },
           "falha": {
             "texto": "As contas esquentam entre os seus dedos, uma a uma, como se alguém do outro lado estivesse rezando junto. Você larga o terço no banco.",
@@ -1242,7 +1242,7 @@
           ],
           "situacao": "ler",
           "sucesso": {
-            "texto": "Os traços são quase matemática: ∃ ψ(t). Você não sabe como, mas entende: existe uma mente — agora. Como alguém se apresentando.",
+            "texto": "Os traços são quase matemática: ∃ ψ(t₀). Você não sabe como, mas entende: existe uma mente — agora. Como alguém se apresentando.",
             "efeitos": {
               "aprenderX": [
                 "existir",
@@ -1250,14 +1250,14 @@
                 "x-agora"
               ]
             },
-            "pista": "No vidro: ∃ ψ(t), “existe uma mente, agora”."
+            "pista": "No vidro: ∃ ψ(t₀), “existe uma mente, agora”."
           },
           "falha": {
             "texto": "Os traços parecem se mexer quando você não olha direto. Uma dor fina atrás dos olhos.",
             "efeitos": {
               "dissonancia": 1
             },
-            "pista": "No vidro, um símbolo: ∃ ψ(t). Você não conseguiu ler."
+            "pista": "No vidro, um símbolo: ∃ ψ(t₀). Você não conseguiu ler."
           }
         },
         {
@@ -1460,7 +1460,7 @@
           },
           "situacao": "ler",
           "sucesso": {
-            "texto": "Planilhas, e-mails, um jogo de paciência. E, em todas as telas, o mesmo documento novo, sem título, cheio de símbolos digitados em linha reta: ∃ ψ(t) ⇒ 𝒪(S).",
+            "texto": "Planilhas, e-mails, um jogo de paciência. E, em todas as telas, o mesmo documento novo, sem título, cheio de símbolos digitados em linha reta: ∃ ψ(t₀) ⇒ 𝒪(S).",
             "efeitos": {
               "aprenderX": [
                 "existir",
