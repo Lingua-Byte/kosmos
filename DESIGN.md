@@ -146,6 +146,7 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
     jeito nenhum, nem com as dicas, há **penalidade de Dissonância**, e ela vem do jeito natural do jogo: abre uma **missão
     secundária (a lição) que necessariamente envolve um salto no tempo**, e o salto traz a Dissonância.
     Vale em qualquer momento do jogo: o jogador não gasta Ressonância, só ganha Dissonância.
+    As tentativas erradas antes disso **não custam nada** (decidido pelo autor).
   - **Decidido pelo autor:** fácil ou difícil é **aberto em cada missão** (o autor marca no Criador, enigma por enigma).
     Na lição, quem ensina é **uma pessoa ou um objeto sorteado das listas** do gerador.
   - A programar: efeito "aprender palavra de runa", tela do enigma, campos do enigma no Criador, escolha fácil/difícil,
