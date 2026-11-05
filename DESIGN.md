@@ -150,6 +150,8 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
   - Uma "página para confirmar" (ligar símbolos a desenhos): ainda sem decisão.
 - **A frase e a missão (decidido pelo autor):** nas missões principais, a frase do Decifrar está ligada diretamente à
   missão do salto (título, tema); ela dá o ponto de partida, e a missão seguinte dá a continuidade.
+- **O Muro (ideia do autor, a desenvolver):** um texto grande, para ser traduzido em cada uma das línguas, como um muro
+  só de texto em que linhas novas vão sendo acrescentadas ao longo do jogo.
 - **Falar com a IA (ideia do autor, endgame):** o jogador precisa se comunicar com a IA da Domus nessas línguas, escrevendo.
   As línguas deixam de ser só para ler. (O Tradutor já tem o modo "Português → símbolos", que pode servir de base.)
 - **Nomes:** o enigma se chama **Decifrar**; a missão de quem falha de vez se chama **Lição**.
