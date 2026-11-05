@@ -20,11 +20,12 @@ Siga na ordem. Pule só o que não se aplica e diga ao autor o que ficou pulado.
 4. **Mapa.** Cada lugar da missão precisa de um ponto em `CIDADE_X.lugares` (`site/js/cidade-x.js`) e de uma
    entrada em `LIGACOES_X["<id da missão>"]`. Lugar novo no mapa: bairro certo e posição coerente com o mapa
    de referência do autor (comentário no topo do arquivo).
-5. **NPCs novos.** Para cada um, seguir a skill `novo-npc` (voz, fala breve, balbucio, retrato).
-6. **Escrita.** Pedir ao agente `editor-de-texto` para revisar as cenas e ao `guardiao-da-lore` para conferir
+5. **Colecionáveis.** Pensar 1 ou 2 documentos de lore por missão (`site/dados/documentos.json` + efeito `documento` numa ação), escritos na voz de quem escreveu e no ritmo do slow burn. Arte nova em `site/imagens/`: rodar `node ferramentas/indice_artes.js`.
+6. **NPCs novos.** Para cada um, seguir a skill `novo-npc` (voz, fala breve, balbucio, retrato).
+7. **Escrita.** Pedir ao agente `editor-de-texto` para revisar as cenas e ao `guardiao-da-lore` para conferir
    a lore. Aplicar o que o autor aprovar.
-7. **Testar.** `node ferramentas/testar.js` sem nenhum ERRO, e `node ferramentas/continuidade.js` para atualizar o índice de continuidade. Se a missão for grande, pedir ao agente
+8. **Testar.** `node ferramentas/testar.js` sem nenhum ERRO, e `node ferramentas/continuidade.js` para atualizar o índice de continuidade. Se a missão for grande, pedir ao agente
    `testador` para jogá-la no navegador.
-8. **Avisar sobre o Criador.** Dizer ao autor, em uma frase, que no Criador ele deve abrir a missão a partir da
+9. **Avisar sobre o Criador.** Dizer ao autor, em uma frase, que no Criador ele deve abrir a missão a partir da
    versão do jogo antes de editar, para não sobrescrever com uma cópia antiga.
-9. **Salvar.** Commit em português e push, como manda o `CLAUDE.md`.
+10. **Salvar.** Commit em português e push, como manda o `CLAUDE.md`.

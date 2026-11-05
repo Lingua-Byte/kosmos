@@ -53,6 +53,11 @@ Chance de passar (cada dado tem 1/3 de chance):
   anti-herói, vilão) que as cenas podem consultar.
 - **Quests** no Diário, com prazo curto / médio / longo.
 
+### Coleção
+- **Artes:** cada lugar, cena ou retrato de NPC que aparece no palco pela primeira vez entra na Coleção (◈ na barra da missão e na tela de personagens). Mostra "achadas / total"; as que faltam aparecem como "?".
+- **Textos de lore:** documentos escritos por alguém do mundo (escala, aviso, panfleto, livro de ponto…), achados por ações das missões. Abrem na hora, um parágrafo por vez, e ficam guardados.
+- É do jogador (vale para todos os personagens) e vai para a nuvem com a conta.
+
 ### Línguas
 - Três línguas que traduzem **conceitos** (Código Urbano no X, runas Yudur no Y, Interface no Z).
   Cada personagem conhece uma parte. Runas no Y funcionam como **cartas** viradas, aprendidas com testes de Mente.
