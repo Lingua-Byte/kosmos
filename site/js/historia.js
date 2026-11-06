@@ -155,7 +155,8 @@ const HISTORIA = {
       estado: "considerar",
       html: `
         <p><b>Z</b> (intro: o presente real) → <b>X</b> (o jogador é jogado no passado) → <b>Y</b> (mais fundo no passado) → <b>Z</b> (endgame: a volta ao presente) → <b>Lime</b> (onde todos os tempos se encontram).</p>
-        <p>Isso explica por que o Z é o endgame: é para lá que tudo está voltando.</p>`,
+        <p>Isso explica por que o Z é o endgame: é para lá que tudo está voltando.</p>
+        <p><b>Decidido pelo autor (06/11/2026): o jogo é linear, e o Lime deixou de ser pós-jogo.</b> Ele é a última parte da linha principal. O que acontece com o "segundo final" segue em aberto.</p>`,
     },
     {
       titulo: "Os códigos e as línguas",
