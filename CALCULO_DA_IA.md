@@ -21,6 +21,46 @@ um carro que já passou, a 26 mil anos-luz de distância.
 5. **A mira (ficção com números reais).** A mensagem tem de cair a menos de 1 km do alvo:
    **| x_sinal − x(latitude, longitude, t) | < ε**.
 
+## A conta, passo a passo
+
+**Passo 1. O tamanho do nó (física real)**
+- Raio de referência: r_g = GM/c² = 4,297·10⁶ × 1,4766 km = **6.345.058 km**
+- Bordas de Kerr: r± = r_g · (1 ± √(1 − a²)), com a = 0,9998
+- a² = 0,99960004 → 1 − a² = 0,00039996 → √ = **0,019999**
+- r₊ = 1,019999 × r_g = **6.471.953 km** · r₋ = 0,980001 × r_g = **6.218.163 km**
+- **r₊/r₋ = 1,040814**
+
+**Passo 2. A viagem (física real)**
+- γ = Δt_Terra / Δt_bordo = 26.000 / 75 = **346,67**
+- v/c = √(1 − 1/γ²) = √(1 − 0,0000083210) = **0,9999958** (99,99958% da luz)
+
+**Passo 3. As duas respostas (ficção)**
+- t_X = −26.000 − 75 (construção) = **−26.075**
+- t_Y = t_X × r₊/r₋ = −26.075 × 1,040814 = **−27.139,2**
+- t_X − t_Y = **1.064 anos**
+
+**Passo 4. O centro deslocou-se (física real)**
+- d = v_Sol × Δt = 230 km/s × 1.064 anos × 3,15576·10⁷ s/ano = 7,72·10¹² km = **0,816 ano-luz** (de Y até X)
+- Do lançamento ao Lime: 230 × 26.000 anos = 1,89·10¹⁴ km = **19,95 anos-luz**
+- Eixo da Terra: 26.075 / 25.772 = 1,0118 → **uma volta inteira + 1,2%** (X) · 27.139 / 25.772 = 1,0530 → **+5,3%** (Y)
+
+**Passo 5. A posição do alvo (física real)**
+x(t) = x_Sol(t) + x_órbita(t) + x_giro(t), com
+- x_Sol(t) = R₀ · (cos θ, sen θ, 0), θ = v_Sol·t / R₀, R₀ = 8,178 kpc = 2,5235·10¹⁷ km
+- x_órbita(t) = 1 UA · (cos φ, sen φ, 0), φ = 2π·t / 365,25636 dias
+- x_giro(t) = R_Terra · (cos λ_lat cos ω, cos λ_lat sen ω, sen λ_lat), ω = 2π·t / 23h56m04s + longitude,
+  inclinado 23,44° e girado pela precessão 2π·t / 25.772 anos
+
+**Passo 6. A precisão da mira (física real, aplicada à ficção)**
+- Velocidade do chão na latitude 51,6°: 2π × 6.371 km / 86.164 s × cos 51,6° = 0,4646 × 0,6212 = **0,289 km/s** → **17,3 km por minuto**
+- Velocidade total do alvo: 230 + 29,78 + 0,29 ≈ **260 km/s**
+- Tempo para errar 1 km: 1 / 260 = **0,0038 s** (3,8 milésimos de segundo)
+- Ângulo: 1 km / 2,5235·10¹⁷ km = **3,96·10⁻¹⁸ radiano**
+
+**Passo 7. A condição de mira (ficção)**
+| x_sinal(t±) − x(latitude, longitude, t±) | < 1 km, para t± ∈ {−26.075 ; −27.139}
+Duas raízes satisfazem a mesma condição, no mesmo chão. A equação não diz qual delas é a origem.
+
 ## A saída da simulação (registro de mira)
 ```
 DOMUS · NÚCLEO DE NAVEGAÇÃO · REGISTRO DE MIRA
