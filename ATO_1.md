@@ -67,7 +67,7 @@ Esse momento é a virada para o Ato 2 (Conexão).
 
 **X1 · A Manhã Seguinte**
 A noite acabou e a cidade não voltou ao normal. A **Diretoria de Contenção** fechou o centro com
-cercas, toque de recolher e caminhões brancos. O jogador precisa achar as pessoas que salvou no
+toque de recolher e caminhões brancos. O jogador precisa achar as pessoas que salvou no
 prólogo (Danny, Martha e Teddy, o Sr. Hollis, a Dra. Helen) e arrumar água, comida e um lugar seguro.
 - Paga os fios do prólogo: as marcas `salvou:*` mudam quem está vivo e quem ajuda.
 - Foco: sobrevivência e recursos, com o relógio contra o toque de recolher.
