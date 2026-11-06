@@ -43,6 +43,7 @@ const HISTORIA = {
           <li>O Y é o <b>passado</b> da mesma realidade, não um mundo de fantasia à parte.</li>
           <li>As pessoas do Y <b>leem runas</b>. A princípio, é isso.</li>
           <li><b>Nada religioso:</b> sem heresia, sem igreja, sem deuses explicando o fenômeno.</li>
+          <li><b>Mesmo chão:</b> o Y acontece no lugar onde um dia vai existir Port Halden, muito antes da cidade. Andar pelo Y é andar pela mesma terra em outro tempo.</li>
         </ul>`,
     },
     {
@@ -94,6 +95,18 @@ const HISTORIA = {
           <li><b>Falar com a IA (ideia do autor):</b> no endgame, o jogador precisa se comunicar com a IA da Domus nas línguas do jogo, escrevendo, e não só lendo.</li>
           <li><b>Uma missão com a IA:</b> o jogador ajuda a IA a descobrir a ponta inicial do nó (o momento em que a Domus foi criada pela primeira vez) e segue a linha do tempo até o momento em que o jogo está. Escrever <b>junto com os agentes de lore e de mecânica</b>.</li>
         </ul>`,
+    },
+    {
+      titulo: "21h47: a hora em que a Domus cruzou",
+      estado: "decidido",
+      html: `
+        <ul>
+          <li><b>21h47 é a hora do relógio de bordo da Domus quando ela cruzou o horizonte do buraco negro.</b> É por isso que tudo em Port Halden acontece às 21h47.</li>
+          <li>Na intro do Z, a hora aparece num momento banal (um relógio de cozinha, um registro automático), sem ninguém apontar para ela. O jogador só liga os pontos muito depois.</li>
+          <li>Ideia para considerar: o número aparece em objetos (relógios, etiquetas, livros de registro), não na narração apontando para ele, para não cansar.</li>
+        </ul>
+        <p><b>Por que a conta tropeça (para considerar):</b> a DOMUS converte a hora de bordo para a hora da base, e nessa conta a hora da base vai ao infinito exatamente na borda. A conta tropeça e o relógio da cabine pula um minuto. A IA marca as mensagens com o tempo de bordo dela; por isso a mesma hora aparece em Port Halden e em Yudur.</p>
+        <p>Mais propostas para a história (ordem das 17 missões, Travessias entre eixos, personagens e lugares) estão em <b>NARRATIVA.md</b>, <b>PERSONAGENS.md</b> e <b>LUGARES.md</b>.</p>`,
     },
     {
       titulo: "O Lime",
@@ -169,14 +182,6 @@ const HISTORIA = {
         </ul>
         <p><b>Cuidados:</b> evitar o clichê da IA vilã (saída: o motivo dela é literal, não maligno; ela segue uma diretriz da missão de um jeito que ninguém previu, e “tornar-se Interface” vira fundir-se com ela). E o laço no tempo: ela pode ter causado a própria viagem, se a anomalia que a missão foi estudar era o sinal dela mesma.</p>
         <p><b>O que ela quer</b> segue em aberto (veja as perguntas abaixo).</p>`,
-    },
-    {
-      titulo: "Por que 21h47",
-      estado: "considerar",
-      html: `
-        <p>21h47 é a hora de bordo em que a Domus cruzou a borda de fora do buraco negro. Ninguém percebeu: a DOMUS converte a hora de bordo para a hora da base, e nessa conta a hora da base vai ao infinito exatamente na borda. A conta tropeça e o relógio da cabine pula um minuto.</p>
-        <p>A IA marca as mensagens com o tempo de bordo dela. Por isso a mesma hora aparece em Port Halden e em Yudur.</p>
-        <p>Mais propostas para a história (ordem das 17 missões, Travessias entre eixos, personagens e lugares) estão em <b>NARRATIVA.md</b>, <b>PERSONAGENS.md</b> e <b>LUGARES.md</b>.</p>`,
     },
     {
       titulo: "O que é ciência e o que é ficção",
