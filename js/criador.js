@@ -362,7 +362,7 @@ const Criador = (() => {
       resumo: typeof jm.resumo === "string" ? jm.resumo : "", nos: [], ligacoes: [],
       jogo: {
         id: jm.id, subtitulo: jm.subtitulo, fase: jm.fase, faseTag: jm.faseTag, npcs: { ...(jm.npcs || {}) },
-        anterior: jm.id === "x1-manha" ? "prologo-x" : "", proxima: jm.id === "prologo-x" ? "x1-manha" : "", desbloqueio: {},
+        anterior: "", proxima: "", desbloqueio: {},
         avancado: limpar({ radio: jm.radio, centroMapa: jm.centroMapa, aberturas: jm.aberturas }),
       },
     };
