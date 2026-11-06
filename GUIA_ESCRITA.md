@@ -225,6 +225,109 @@ Prólogo: [O prédio de sempre] : [elevador quebrado, cheiro de fritura, a TV al
 Melhor:  [O elevador continua quebrado.] [∅ Sobe a pé.] [No 201, alguém frita alguma coisa.]
 ```
 
+### O que os livros acrescentaram
+
+Em 6/11/2026 o Claude leu os livros que o autor pôs em `referencias/`. Os dois *Game Narrative Toolbox* foram lidos
+nos capítulos de escrita (mundo, personagens, história, diálogo, cenas, edição). Dos romances longos entraram
+trechos. *Harry Potter* e *O Senhor dos Anéis* tiveram o primeiro capítulo e cenas soltas, e *O Problema dos Três
+Corpos* foi lido em inglês. Do *2001* e do *Alien*, que são escaneados, entraram páginas soltas. Aqui só fica o que
+as seções 0 a 6 ainda não diziam, cada regra com a fonte. É técnica: nenhuma cena, nome ou situação desses livros
+entra no jogo.
+
+**Fala de NPC**
+27. O jogador lembra a última coisa que o NPC disse. A fala termina no problema concreto (o porão cheio de rato),
+    nunca no sentimento vago (o medo de perder tudo). *Game Narrative Toolbox*, cap. 7.
+28. O NPC já está fazendo alguma coisa quando o jogador chega, como brigar com o fornecedor ou pôr veneno no canto.
+    "Olá", "tchau" e "obrigado" ocupam a tela e não andam. *Toolbox*, cap. 7.
+29. Quem pede ajuda pede o que precisa e não conta a vida. Uma frase dizendo que levaram o xerife basta. O resto fica
+    no lugar, nos papéis e no corpo: o NPC encolhido no canto vale mais que "estou com medo". *Advanced Game
+    Narrative Toolbox*, cap. 10.
+30. Ninguém diz o que os dois já sabem. "Como você sabe, estamos em guerra há seis anos" é recado do autor para o
+    jogador. *Advanced*, cap. 9 (Brian Kindregan).
+31. O que fazer e para onde ir se diz com todas as letras. O porquê pode vir torto, por baixo da fala. *Toolbox*,
+    cap. 7.
+32. O subtexto entra na segunda versão. Na primeira a pessoa diz o que quer ("quero você fora daqui"). Na revisão ela
+    diz outra coisa que carrega isso ("você está ao menos tentando?"). *Advanced*, cap. 9.
+33. Se outro personagem pudesse dizer a mesma fala, ela ainda não está pronta. A palavra também é dele: um vaqueiro
+    sem estudo não fala como veterinário. *Advanced*, cap. 9 e 12.
+34. Sotaque escrito entra em duas palavras no máximo, sempre com a mesma grafia. Mais que isso vira caricatura.
+    *Toolbox*, cap. 7; *Advanced*, cap. 12.
+35. No máximo uma palavra inventada por fala. Vale para Código Urbano, runas e nomes próprios. Uma fala que manda
+    pegar o Mag-Wave até o Nexus afasta o jogador, e nome inventado é só para o que merece nome. *Toolbox*, cap. 7;
+    *Advanced*, cap. 4 (Danny Wadeson).
+36. Mudança de tom vira presságio. Se o NPC brincalhão fala sério de repente, o jogador lê como aviso, então só
+    fazer quando for aviso. *Advanced*, cap. 12.
+
+**Escolhas**
+37. A opção diz o que o personagem vai falar. Se a opção "gentil" sai grosseira, o jogador para de confiar no
+    diálogo. *Advanced*, cap. 12.
+38. Nada de escolha falsa ("Sim", "Claro", "Pode ser") nem de tela de escolha com uma opção só. Uma opção apressada
+    pula a explicação e vai direto ao que fazer. Recusar não fecha a missão, porque o NPC insiste ou diz para voltar
+    se mudar de ideia. *Toolbox*, cap. 7.
+39. Teste rápido: tirar as falas do jogador. Se o NPC continua fazendo sentido, ele não está ouvindo. *Toolbox*,
+    cap. 7.
+40. Na escolha moral, alguém em cena dá um bom motivo para cada lado. Nunca supor que o jogador vai pelo "certo".
+    *Toolbox*, cap. 5.
+41. A consequência volta duas vezes, logo depois (na mesma missão) e no fim do jogo. *Toolbox*, cap. 5.
+
+**Informação e mistério**
+42. A explicação chega depois que o jogador já se perguntou. Antes disso é intromissão. Entre confundir e
+    entediar, confundir. *Advanced*, cap. 9.
+43. Os 9 sabem coisas de Port Halden que o jogador ainda não sabe. Em vez de perguntar o que já deveriam saber, eles
+    perguntam o que mudou ("O Instituto ainda fecha às seis?"), e a resposta conta o antes e o depois. *Toolbox*,
+    cap. 4.
+44. Toda pista plantada tem resposta guardada com o autor, mesmo que o jogo nunca a dê. Mistério sem resposta é
+    provocação. O fato pode ser concreto e o sentido ficar aberto. *Advanced*, cap. 4, citando Tom Toner.
+45. A lore fica onde a pessoa a guardaria. A sacerdotisa não recita as regras da ordem, porque os livros estão na
+    mesa dela. No X, o manual está na gaveta do técnico. *Toolbox*, cap. 3.
+46. A lore pode vir em meia frase, sem explicação. Quem diz que perdeu a mulher na epidemia já contou que houve
+    uma epidemia. *Toolbox*, cap. 3.
+47. A descrição de item pode contar uma história curta, como quem fez o objeto e o que houve com essa pessoa.
+    *Toolbox*, cap. 3.
+48. Número que o jogador precisa lembrar vai em algarismo ("os 6 reféns"). *Advanced*, cap. 12.
+
+**Cena**
+49. Cada cena tem uma ideia central numa frase, por exemplo "a vizinha só quer achar o cachorro, mesmo com a rua sem
+    luz". Toda mudança passa por ela, e o que não a fere pode entrar. *Advanced*, cap. 9.
+50. O conflito entra, cresce e vira. Quando parece resolvido, aparece o que piora tudo. Se a cena não resolve, ela
+    termina num gancho para o jogo e não para no meio. *Advanced*, cap. 9.
+51. O motivo próximo vem antes do motivo grande. Frodo sai por causa de Bilbo e leva Sam, e o mundo se salva de
+    brinde. No X, o personagem protege alguém. *Toolbox*, cap. 5; *O Senhor dos Anéis*, livro I.
+52. Na revisão, quem diz que um trecho não funciona quase sempre tem razão. Quando aponta onde está o defeito e como
+    consertar, quase sempre erra, porque o defeito costuma estar no trecho anterior. *Advanced*, cap. 9.
+
+**Slow burn, como os livros fazem**
+53. O personagem que não quer ver arranja uma explicação para cada coisa estranha, e cada explicação é mais fraca que
+    a anterior (moda nova, efeito da luz, nome comum). As coisas se espalham pelo dia, da manhã ao jornal da noite,
+    onde o apresentador faz piada com elas. *Harry Potter e a Pedra Filosofal*, cap. 1. O narrador que fecha o
+    capítulo avisando que o homem estava enganado é o que a seção 4 proíbe.
+54. A notícia estranha perde para a fofoca do bairro. Na taverna, os maus presságios da fronteira são esquecidos
+    porque alguém vendeu a casa. A tragédia da família do herói chega pela boca do velho jardineiro, misturada com
+    as implicâncias dele. *O Senhor dos Anéis*, livro I, cap. 1.
+55. A desgraça grande entra como recado do vizinho, e alguém responde com uma alfinetada prática. A morte da esposa
+    aparece no meio de uma discussão na escola, como argumento, e não como confissão. *Interestelar*, primeiras
+    cenas.
+56. O estranho é testado como um cientista testaria. O personagem troca de câmera, deixa a mulher fotografar e
+    descarta uma explicação por vez. O fenômeno sobrevive a todas e passa da foto para os olhos dele. Combina com as
+    explicações científicas do KOSMOS. *O Problema dos Três Corpos*, a contagem de Wang Miao (só a técnica: a
+    contagem nas fotos não entra).
+57. Alívio falso. Antes do pior vem um respiro, como as fotos borradas da mulher, sem número nenhum, ou a tripulação
+    falando em cerveja e em voltar para casa. O pior volta logo depois. *Três Corpos*; *Alien*.
+58. A pane chega como papel de rotina, com código da peça, prazo em horas e pedido de confirmação. Quando o assunto
+    oficial acaba, quem fala troca para a fala comum e pede uma coisa banal. A demora da resposta também pesa.
+    *2001*, de Arthur C. Clarke.
+59. A máquina fere com exatidão. Ela diz os anos, meses e dias que se passaram, e o humano vira o rosto sem
+    responder. Serve à IA da Domus e aos 26.000 anos. *Interestelar*.
+60. Quem não quer explicar repete a mesma frase curta, por mais que o outro insista. *Três Corpos*.
+61. Um personagem aponta a mania do outro (o colega que só sabe concordar). Isso mostra a mania e a relação de uma
+    vez. *Alien*.
+62. A equipe se apresenta pela rotina. As cápsulas abrem uma por uma, e quem já acordou diz o nome de quem está
+    acordando. *Alien*.
+
+**O que não entrou.** A amostra do *Toolbox* (1ª edição) e o `.docx` da 1ª edição repetem a 2ª, que foi a lida.
+*O Problema de Três Corpos* em português é o mesmo livro, escaneado. O PDF do KOSMOS é documento do autor, só para
+olhar, e não serviu de fonte.
+
 ### O medidor
 
 `node ferramentas/medir_texto.js` mede as missões publicadas. Com um id (`prologo-x`) ou com um arquivo `.txt`, mede só
