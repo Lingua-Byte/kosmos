@@ -123,8 +123,8 @@ O registro de mira pode aparecer **como um documento num terminal da Domus**, ac
 em Port Halden reconhece o 21:47, o ψ(t₀) e o ∮(t), e entende de onde vinham os códigos.
 
 ## Como a IA escreveria (o registro cru, sem explicação)
-**Aprovado pelo autor para usar no jogo (06/11/2026).** Documento para um terminal da Domus. A linha "INCONSISTÊNCIA 673 a · IGNORADA" é de propósito: a própria IA
-percebe o furo da distância e segue. Sai se o autor trocar o buraco negro ou o número.
+**Aprovado pelo autor para usar no jogo (06/11/2026).** Documento para um terminal da Domus. A linha "INCONSISTÊNCIA 673 a · IGNORADA" fica, de propósito: a própria IA
+percebe o furo da distância e segue (o autor deixou a critério do Claude: o registro é estético, para imersão).
 ```
 DOMUS/NAV · ROTINA DE MIRA · CICLO ∮(t)
 T_BORDO 21:47:00.000 · ITER 1
