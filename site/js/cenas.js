@@ -544,7 +544,7 @@ const Cenas = (() => {
   //   palavras: [{ escrita, sentido, id?, respostas?, erradas? }], memoria?, … (outros efeitos ao terminar) }
   // A escrita aparece sempre inteira. A tradução se monta com o que o personagem sabe: palavra sem id (ligação) ou
   // com id conhecido aparece traduzida; as outras viram ▢ e são decifradas uma por vez. O jogador não escreve
-  // (decidido pelo autor em 06/11/2026): escolhe entre 4 opções. Fácil: 2 chances; difícil: 1 (provisório).
+  // (decidido pelo autor em 06/11/2026): escolhe entre 4 opções. Fácil: 2 chances; difícil: 1.
   // Errar não custa nada. Acertar ensina a palavra.
   // Falhou de vez numa palavra: Lição (missão com salto no tempo), que traz Dissonância.
   // Abre numa tela própria, por cima da cena (painel "decifrar").
