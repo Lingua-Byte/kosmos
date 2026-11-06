@@ -163,6 +163,8 @@ este arquivo guarda **como o jogo funciona** e o que já foi decidido.
      com peças do autor: lugar, pessoa, onde a palavra aparece, pista). A lição sempre ensina a palavra.
   5. Com a palavra aprendida, o enigma aparece resolvido. A recompensa é a mesma nos dois modos.
   6. Fácil ou difícil: decidido por missão (ver abaixo).
+  - **Decidido pelo autor (06/11/2026): o jogador não escreve.** Os itens 1 a 3 acima ficam assim: cada palavra que
+    falta mostra 4 opções desde o começo; fácil tem 2 chances, difícil tem 1 (número provisório, a testar).
   - **Decidido pelo autor:** a lição que ensina a palavra é ótima. Quando o jogador não consegue completar a frase de
     jeito nenhum, nem com as dicas, há **penalidade de Dissonância**, e ela vem do jeito natural do jogo: abre uma **missão
     secundária (a lição) que necessariamente envolve um salto no tempo**, e o salto traz a Dissonância.

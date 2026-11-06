@@ -543,11 +543,13 @@ const Cenas = (() => {
   // cena.decifrar = { lingua: "x"|"y", modo: "facil"|"dificil", acertou: "cena:…", licao: "cena:…", dissonancia,
   //   palavras: [{ escrita, sentido, id?, respostas?, erradas? }], memoria?, … (outros efeitos ao terminar) }
   // A escrita aparece sempre inteira. A tradução se monta com o que o personagem sabe: palavra sem id (ligação) ou
-  // com id conhecido aparece traduzida; as outras viram ▢ e são decifradas uma por vez, cada uma com 3 tentativas
-  // que não custam nada. No fácil, depois delas, 4 opções e 2 chances. Acertar ensina a palavra.
+  // com id conhecido aparece traduzida; as outras viram ▢ e são decifradas uma por vez. O jogador não escreve
+  // (decidido pelo autor em 06/11/2026): escolhe entre 4 opções. Fácil: 2 chances; difícil: 1 (provisório).
+  // Errar não custa nada. Acertar ensina a palavra.
   // Falhou de vez numa palavra: Lição (missão com salto no tempo), que traz Dissonância.
   // Abre numa tela própria, por cima da cena (painel "decifrar").
-  const DECIFRAR = { tentativas: 3, opcoes: 4, escolhas: 2 };
+  const DECIFRAR = { opcoes: 4, escolhas: { facil: 2, dificil: 1 } };
+  const chancesDe = (d) => DECIFRAR.escolhas[d.modo] || DECIFRAR.escolhas.facil;
   const normal = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
   let avisoDecifrar = "";
   let palavraEscolhida = null;
@@ -583,9 +585,9 @@ const Cenas = (() => {
       salvar();
     }
     return (d.palavras || []).map((w, i) => {
-      const s = (e.palavras[i] = e.palavras[i] || { tent: 0, esc: 0, erradas: [] });
+      const s = (e.palavras[i] = e.palavras[i] || { esc: 0, erradas: [] });
       const sabe = sabeId(p, d.lingua, w.id) || s.ok;
-      const perdida = !sabe && s.tent >= DECIFRAR.tentativas && (d.modo === "dificil" || s.esc >= DECIFRAR.escolhas);
+      const perdida = !sabe && s.esc >= chancesDe(d);
       return { ...w, i, s, sabe, perdida };
     });
   }
@@ -627,13 +629,10 @@ const Cenas = (() => {
       corpo = `<button class="btn-primario" data-acao="decifrar-ok">Continuar <b>▸</b></button>`;
     } else {
       const w = ps[palavraEscolhida];
-      const pips = Array.from({ length: DECIFRAR.tentativas }, (_, k) => `<i class="${k < w.s.tent ? "cheio" : ""}"></i>`).join("");
-      corpo = `<p class="dec-tent">▢${numero[w.i]} = <b class="dec-alvo">${esc(w.escrita)}</b></p>` + (w.s.tent < DECIFRAR.tentativas
-        ? `<form class="dec-form" id="form-decifrar"><input id="texto-decifrar" placeholder="O que quer dizer?" autocomplete="off" autocapitalize="off">
-            <button class="btn-secundario">Tentar</button></form>
-           <p class="dec-tent">Tentativas <span class="pips">${pips}</span></p>`
-        : `<p class="dec-tent">Escolha (${DECIFRAR.escolhas - w.s.esc} ${DECIFRAR.escolhas - w.s.esc === 1 ? "chance" : "chances"}):</p>
-           <div class="chips dec-opcoes">${opcoesDe(w).map((o) => `<button class="chip" data-decifrar-op="${esc(o)}" ${w.s.erradas.includes(o) ? "disabled" : ""}>${esc(o)}</button>`).join("")}</div>`);
+      const resta = chancesDe(d) - w.s.esc;
+      corpo = `<p class="dec-tent">▢${numero[w.i]} = <b class="dec-alvo">${esc(w.escrita)}</b></p>
+           <p class="dec-tent">Escolha (${resta} ${resta === 1 ? "chance" : "chances"}):</p>
+           <div class="chips dec-opcoes">${opcoesDe(w).map((o) => `<button class="chip" data-decifrar-op="${esc(o)}" ${w.s.erradas.includes(o) ? "disabled" : ""}>${esc(o)}</button>`).join("")}</div>`;
     }
     const aviso = avisoDecifrar;
     avisoDecifrar = "";
@@ -648,7 +647,7 @@ const Cenas = (() => {
       <p class="dica">${faltam.length ? "Toque num ▢ para escolher a palavra. Errar não custa nada." : "Você leu a frase inteira."}</p>
     </div>`;
   }
-  function tentarDecifrar(resposta, porOpcao) {
+  function tentarDecifrar(resposta) {
     const cena = missao().cenas[camp.cena];
     const d = cena && cena.decifrar;
     if (!d || palavraEscolhida == null || !normal(resposta)) return;
@@ -665,7 +664,8 @@ const Cenas = (() => {
       }
       avisoDecifrar = "";
     } else {
-      if (porOpcao) { s.esc++; s.erradas.push(resposta); } else s.tent++;
+      s.esc++;
+      s.erradas.push(resposta);
       avisoDecifrar = `“${resposta}” não fecha a frase.`;
     }
     salvar();
@@ -1278,7 +1278,7 @@ const Cenas = (() => {
     }
     if (acao === "decifrar-ok") return concluirDecifrar(false);
     if (acao === "decifrar-licao") return concluirDecifrar(true);
-    if (t.dataset.decifrarOp !== undefined) return tentarDecifrar(t.dataset.decifrarOp, true);
+    if (t.dataset.decifrarOp !== undefined) return tentarDecifrar(t.dataset.decifrarOp);
     if (t.dataset.decPalavra !== undefined) { palavraEscolhida = +t.dataset.decPalavra; avisoDecifrar = ""; return render(); }
     if (acao === "escrever") {
       const f = document.getElementById("form-livre");
@@ -1354,10 +1354,6 @@ const Cenas = (() => {
   });
 
   document.addEventListener("submit", (ev) => {
-    if (ev.target.id === "form-decifrar") {
-      ev.preventDefault();
-      return tentarDecifrar($("#texto-decifrar").value, false);
-    }
     if (ev.target.id !== "form-livre") return;
     ev.preventDefault();
     interpretar($("#texto-livre").value);
