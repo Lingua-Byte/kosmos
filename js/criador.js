@@ -34,7 +34,7 @@ const Criador = (() => {
     tendencia: () => TENDENCIAS.map((t) => [t, NOME_TENDENCIA[t]]),
     eixo: () => [["x", "∃ Urbano"], ["y", "ᛉ Medieval"], ["z", "◉ Espacial"]],
     prazo: () => [["curta", "curta"], ["media", "média"], ["longa", "longa"]],
-    modoDecifrar: () => [["facil", "fácil (com opções)"], ["dificil", "difícil (sem opções)"]],
+    modoDecifrar: () => [["facil", "fácil (2 chances)"], ["dificil", "difícil (1 chance)"]],
     linguaDecifrar: () => [["x", "Código Urbano (X)"], ["y", "Runas (Y)"]],
     estado: () => [["", "aberta"], ["concluida", "concluída"], ["perdida", "perdida"]],
     cidade: () => (typeof CIDADE_X !== "undefined" ? Object.entries(CIDADE_X.lugares).map(([k, l]) => [k, l.nome]) : []),
@@ -215,7 +215,7 @@ const Criador = (() => {
         <div class="cr-duas">${campoNum("Ameaça (perigo com rodadas)", "d.ameaca", d.ameaca)}
           <label class="cr-check"><input type="checkbox" data-p="d.musica" data-k="bool" ${d.musica ? "checked" : ""}> toca a música do rádio</label></div>
         ${secao("Decifrar (enigma de tradução)", `
-          <p class="ajuda">Ponha palavras aqui para esta cena virar um Decifrar (abre numa tela própria). A escrita aparece sempre inteira; a tradução se monta com o que o personagem sabe. Palavra sem id (ligação, como ⇒ "que") aparece sempre traduzida. Cada palavra que falta tem 3 tentativas grátis; no fácil, depois, 4 opções e 2 chances; quem falha de vez vai para a Lição (salto no tempo).</p>
+          <p class="ajuda">Ponha palavras aqui para esta cena virar um Decifrar (abre numa tela própria). A escrita aparece sempre inteira; a tradução se monta com o que o personagem sabe. Palavra sem id (ligação, como ⇒ "que") aparece sempre traduzida. O jogador não escreve: cada palavra que falta mostra 4 opções (a certa é a primeira resposta aceita, mais as 3 erradas). Fácil: 2 chances; difícil: 1. Quem falha de vez vai para a Lição (salto no tempo).</p>
           <div class="cr-duas"><label class="campo"><span>Língua</span>${entrada("sel:linguaDecifrar", "d.decifrar.lingua", d.decifrar?.lingua)}</label>
             <label class="campo"><span>Modo</span>${entrada("sel:modoDecifrar", "d.decifrar.modo", d.decifrar?.modo)}</label></div>
           ${(d.decifrar?.palavras || []).map((w, i) => `<div class="cr-evento"><div class="cr-duas">
@@ -223,7 +223,7 @@ const Criador = (() => {
               <label class="campo"><span>Tradução</span>${entrada("txt", `d.decifrar.palavras.${i}.sentido`, w.sentido)}</label></div>
             <div class="cr-duas"><label class="campo"><span>Id (símbolo no X ou runas no Y; vazio = ligação)</span>${entrada("txt", `d.decifrar.palavras.${i}.id`, w.id)}</label>
               <label class="campo"><span>Respostas aceitas</span>${entrada("lista", `d.decifrar.palavras.${i}.respostas`, w.respostas)}</label></div>
-            <label class="campo"><span>3 opções erradas (modo fácil)</span>${entrada("lista", `d.decifrar.palavras.${i}.erradas`, w.erradas)}</label>
+            <label class="campo"><span>3 opções erradas</span>${entrada("lista", `d.decifrar.palavras.${i}.erradas`, w.erradas)}</label>
             <button class="cr-x" data-tirar-item="d.decifrar.palavras.${i}">✕</button></div>`).join("")}
           <button class="btn" data-novo-item="d.decifrar.palavras">+ Palavra</button>
           <div class="cr-duas">${campoTxt("Ao terminar, vai para (cena:id)", "d.decifrar.acertou", d.decifrar?.acertou, "cena:fim")}

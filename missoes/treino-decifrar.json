@@ -12,7 +12,7 @@
     "muro": {
       "titulo": "O muro da esquina",
       "texto": "Na volta para casa, {nome} para na esquina. Alguém riscou o muro com giz, em letra reta, quase uma conta de escola.\n\nA frase está inteira ali. O que {nome} ainda não sabe ler fica em branco.",
-      "tutorial": "Treino: a tradução se monta com as palavras que o personagem já sabe. As outras viram ▢. Cada uma tem 3 tentativas grátis; no fácil, depois, 4 opções e 2 chances. Falhou de vez: Lição.",
+      "tutorial": "Treino: a tradução se monta com as palavras que o personagem já sabe. As outras viram ▢. Para cada uma, escolha entre 4 opções: 2 chances no fácil. Falhou de vez: Lição.",
       "decifrar": {
         "lingua": "x",
         "modo": "facil",
