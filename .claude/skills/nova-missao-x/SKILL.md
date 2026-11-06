@@ -3,9 +3,6 @@ name: nova-missao-x
 description: Passo a passo para criar ou ampliar uma missão do Eixo X (Port Halden) no KOSMOS. Use sempre que o autor pedir uma missão nova do X, um ato novo, ou novos lugares e cenas numa missão do X.
 ---
 
-> Antes de tudo, leia o `GUIA_MISSOES.md` (esqueleto de missão, três pistas, soluções alternativas, checklist).
-
-
 # Nova missão do Eixo X
 
 Siga na ordem. Pule só o que não se aplica e diga ao autor o que ficou pulado.

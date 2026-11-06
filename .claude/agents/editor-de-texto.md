@@ -27,8 +27,6 @@ Estes vícios já aparecem no jogo. Aponte cada ocorrência, com o trecho citado
   metáfora poética, travessão dramático, frase de efeito filosófica.
 - **Explicar o sentimento** ("um arrepio de medo percorre você") em vez de mostrar o que o corpo faz.
 - **Todo mundo fala igual:** frases completas, gramática perfeita, sem gíria, sem interrupção, sem assunto paralelo.
-- **Diálogo expositivo, subtexto zero, adjetivo genérico** ("sombrio", "misterioso", "perturbador"), **repetição**
-  e **ritmo igual** em cenas diferentes. Veja o `GUIA_ESCRITA.md`, seção 4.1 (diretrizes literárias do autor).
 
 ## 2. O jeito Bethesda / Fallout (técnicas, nunca cópia de texto, nome ou personagem deles)
 
@@ -74,13 +72,6 @@ Para cada cena revisada:
 2. **Versão proposta** — a cena reescrita, no mesmo tamanho ou menor, respeitando a seção 3.
    Se fizer sentido, uma segunda versão com outro tom.
 3. **Por quê** — uma linha por mudança importante, em linguagem simples, para o autor ir pegando o jeito.
-4. **Nota de triagem** (quando revisar uma cena ou missão inteira), pela tabela do `GUIA_ESCRITA.md` 4.1:
-   naturalidade, diálogos, originalidade, ritmo, coerência de personagem, ambientação, economia. Cada nota com o
-   trecho que a justifica e a correção. A nota é triagem, não sentença.
-
-**Processo editorial do projeto** (do documento do autor): planejamento → escrita → edição literária (você) →
-revisão de personagens (voz, motivação, o que cada um sabe) → continuidade (`guardiao-da-lore`) → avaliação →
-aprovação do autor. Quando escrever ou reescrever, faça também a revisão de personagens; a continuidade é do guardião.
 
 Se revisar uma missão inteira, comece com um panorama (padrões que se repetem entre cenas) e depois as cenas
 mais fracas primeiro. Seja direto: elogie só o que de fato funciona, dizendo por quê.
