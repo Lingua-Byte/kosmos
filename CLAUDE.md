@@ -48,7 +48,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Itens:** todo item tem um número de usos, de consumível (1 uso por item) a vários usos. Dois tipos: os do personagem (cada um começa com o seu conjunto inicial) e os encontrados nas missões. Um ou outro item é exclusivo de um personagem; via de regra, os itens também se encontram jogando. A Foto da Família é um item.
 - **O designer de mecânicas pode mudar os dados e equilibrar o jogo** (números, marcas, itens, regras). História e lore continuam do autor.
 - **Eixo X, radiação (decidido em 05/11/2026):** o epicentro da radiação são as **casas dos personagens**. Em algum momento eles passam a ser procurados por isso (ligação possível com o Instituto de Física). A imagem da luz azul com uma espécie de acelerador fica **escondida no subsolo da Atlantic Tower**.
-- **Ordem de trabalho da lore:** primeiro o **Eixo Z**; o Y fica para depois.
+- **Foco agora (06/11/2026):** **Eixo X e as mecânicas**, e **a lore que vem do Eixo Z**. O **Y fica para depois**: é importante e vai ter peso na lore para o jogo funcionar bem, mas não é o foco agora. Sem tarefas grandes em paralelo (gastam muito): uma coisa de cada vez, com o autor.
 - **Domus (confirmado em 05/11/2026):** cruzou o horizonte do buraco negro; vista de fora, parece parada; a "estrela que observa" é luz. Ideias do autor sobre a missão, o loop da IA, o sinal e os 26.000 anos: aba História, "A missão da Domus e o nó".
 - **Quem fala do Lime é a IA da Domus** (decidido). As mensagens e os códigos são dela.
 - **Em aberto:** o objetivo da missão da Domus, o que a IA quer (avisar, chamar ou ambíguo), ancestrais ou ecos.
