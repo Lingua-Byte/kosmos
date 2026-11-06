@@ -1,0 +1,377 @@
+{
+  "id": "treino-frases",
+  "eixo": "x",
+  "titulo": "Treino: cinco frases",
+  "resumo": "Cinco frases da lista, em Código X, espalhadas pela cidade. As três primeiras no fácil, as duas últimas no difícil.",
+  "subtitulo": "Treino do autor",
+  "fase": "Treino",
+  "npcs": {},
+  "desbloqueio": {},
+  "tutorial": true,
+  "cenas": {
+    "f1": {
+      "titulo": "Um poste da Rua 9",
+      "texto": "Um poste da Rua 9 tem giz até a altura do ombro. Alguém escreveu curto, quase com pressa.",
+      "tutorial": "Frase 1 de 5 · modo fácil (2 chances).",
+      "decifrar": {
+        "lingua": "x",
+        "modo": "facil",
+        "acertou": "cena:f2",
+        "licao": "cena:l1",
+        "dissonancia": 1,
+        "palavras": [
+          {
+            "escrita": "v⁺",
+            "sentido": "O pulso",
+            "id": "movimento",
+            "respostas": [
+              "pulso",
+              "o pulso",
+              "batida",
+              "movimento"
+            ],
+            "erradas": [
+              "silencio",
+              "muro",
+              "frio"
+            ]
+          },
+          {
+            "escrita": "tᵢ(t₋)",
+            "sentido": "já começou.",
+            "id": "x-comeco",
+            "respostas": [
+              "ja comecou",
+              "comecou",
+              "comeco",
+              "inicio"
+            ],
+            "erradas": [
+              "acabou",
+              "nunca veio",
+              "vai parar"
+            ]
+          }
+        ]
+      },
+      "opcoes": []
+    },
+    "l1": {
+      "titulo": "Lição",
+      "texto": "Um frio que não é de inverno. Pedra úmida, cheiro de cera.\n\nNuma parede, o mesmo sinal, gravado ao lado de um desenho que mostra o que ele quer dizer.",
+      "tutorial": "Lição: o salto no tempo trouxe Dissonância. Ao voltar, a palavra que faltava está aprendida.",
+      "opcoes": [
+        {
+          "id": "licao1",
+          "texto": "Olhar o sinal ao lado do desenho",
+          "resultado": {
+            "texto": "De volta à rua. A palavra que faltava agora faz sentido.",
+            "efeitos": {},
+            "ir": "cena:f1"
+          }
+        }
+      ]
+    },
+    "f2": {
+      "titulo": "A vitrine da lavanderia",
+      "texto": "Na vitrine embaçada da lavanderia, alguém passou o dedo e deixou uma linha de sinais. A máquina do fundo ainda gira.",
+      "tutorial": "Frase 2 de 5 · modo fácil (2 chances).",
+      "decifrar": {
+        "lingua": "x",
+        "modo": "facil",
+        "acertou": "cena:f3",
+        "licao": "cena:l2",
+        "dissonancia": 1,
+        "palavras": [
+          {
+            "escrita": "Ω",
+            "sentido": "Você",
+            "id": "observador",
+            "respostas": [
+              "voce",
+              "observador",
+              "quem olha",
+              "tu"
+            ],
+            "erradas": [
+              "ninguem",
+              "a cidade",
+              "o vento"
+            ]
+          },
+          {
+            "escrita": "⇒ 𝒞",
+            "sentido": "reconhece",
+            "id": "compreender",
+            "respostas": [
+              "reconhece",
+              "compreende",
+              "entende",
+              "sabe"
+            ],
+            "erradas": [
+              "esquece",
+              "apaga",
+              "teme"
+            ]
+          },
+          {
+            "escrita": "(≡ⁿ)",
+            "sentido": "este padrão?",
+            "id": "ordem",
+            "respostas": [
+              "padrao",
+              "este padrao",
+              "o padrao",
+              "ordem"
+            ],
+            "erradas": [
+              "barulho",
+              "porta",
+              "rua"
+            ]
+          }
+        ]
+      },
+      "opcoes": []
+    },
+    "l2": {
+      "titulo": "Lição",
+      "texto": "Um frio que não é de inverno. Pedra úmida, cheiro de cera.\n\nNuma parede, o mesmo sinal, gravado ao lado de um desenho que mostra o que ele quer dizer.",
+      "tutorial": "Lição: o salto no tempo trouxe Dissonância. Ao voltar, a palavra que faltava está aprendida.",
+      "opcoes": [
+        {
+          "id": "licao2",
+          "texto": "Olhar o sinal ao lado do desenho",
+          "resultado": {
+            "texto": "De volta à rua. A palavra que faltava agora faz sentido.",
+            "efeitos": {},
+            "ir": "cena:f2"
+          }
+        }
+      ]
+    },
+    "f3": {
+      "titulo": "O relógio da estação",
+      "texto": "Embaixo do relógio parado da estação, um papel colado com fita. A tinta escorreu um pouco.",
+      "tutorial": "Frase 3 de 5 · modo fácil (2 chances).",
+      "decifrar": {
+        "lingua": "x",
+        "modo": "facil",
+        "acertou": "cena:f4",
+        "licao": "cena:l3",
+        "dissonancia": 1,
+        "palavras": [
+          {
+            "escrita": "m(t₀)",
+            "sentido": "O instante, agora,",
+            "id": "momento",
+            "respostas": [
+              "instante",
+              "o instante",
+              "momento",
+              "tempo"
+            ],
+            "erradas": [
+              "pedra",
+              "casa",
+              "agua"
+            ]
+          },
+          {
+            "escrita": "→",
+            "sentido": "está sendo"
+          },
+          {
+            "escrita": "mⁿ",
+            "sentido": "alongado.",
+            "id": "muito",
+            "respostas": [
+              "alongado",
+              "longo",
+              "esticado",
+              "maior"
+            ],
+            "erradas": [
+              "parado",
+              "quebrado",
+              "perdido"
+            ]
+          }
+        ]
+      },
+      "opcoes": []
+    },
+    "l3": {
+      "titulo": "Lição",
+      "texto": "Um frio que não é de inverno. Pedra úmida, cheiro de cera.\n\nNuma parede, o mesmo sinal, gravado ao lado de um desenho que mostra o que ele quer dizer.",
+      "tutorial": "Lição: o salto no tempo trouxe Dissonância. Ao voltar, a palavra que faltava está aprendida.",
+      "opcoes": [
+        {
+          "id": "licao3",
+          "texto": "Olhar o sinal ao lado do desenho",
+          "resultado": {
+            "texto": "De volta à rua. A palavra que faltava agora faz sentido.",
+            "efeitos": {},
+            "ir": "cena:f3"
+          }
+        }
+      ]
+    },
+    "f4": {
+      "titulo": "A porta da biblioteca",
+      "texto": "Na porta da biblioteca fechada, riscado no vidro com chave. Do lado de dentro, as luzes de emergência.",
+      "tutorial": "Frase 4 de 5 · modo difícil (1 chance).",
+      "decifrar": {
+        "lingua": "x",
+        "modo": "dificil",
+        "acertou": "cena:f5",
+        "licao": "cena:l4",
+        "dissonancia": 1,
+        "palavras": [
+          {
+            "escrita": "𝒞(ℒ)(t₀)",
+            "sentido": "A leitura, agora,",
+            "id": "linguagem",
+            "respostas": [
+              "leitura",
+              "a leitura",
+              "ler",
+              "palavra"
+            ],
+            "erradas": [
+              "fumaca",
+              "estrada",
+              "chuva"
+            ]
+          },
+          {
+            "escrita": "⇒",
+            "sentido": "está"
+          },
+          {
+            "escrita": "¬∀",
+            "sentido": "incompleta.",
+            "id": "nao",
+            "respostas": [
+              "incompleta",
+              "nao toda",
+              "pela metade",
+              "faltando"
+            ],
+            "erradas": [
+              "pronta",
+              "inteira",
+              "certa"
+            ]
+          }
+        ]
+      },
+      "opcoes": []
+    },
+    "l4": {
+      "titulo": "Lição",
+      "texto": "Um frio que não é de inverno. Pedra úmida, cheiro de cera.\n\nNuma parede, o mesmo sinal, gravado ao lado de um desenho que mostra o que ele quer dizer.",
+      "tutorial": "Lição: o salto no tempo trouxe Dissonância. Ao voltar, a palavra que faltava está aprendida.",
+      "opcoes": [
+        {
+          "id": "licao4",
+          "texto": "Olhar o sinal ao lado do desenho",
+          "resultado": {
+            "texto": "De volta à rua. A palavra que faltava agora faz sentido.",
+            "efeitos": {},
+            "ir": "cena:f4"
+          }
+        }
+      ]
+    },
+    "f5": {
+      "titulo": "O rádio da viatura",
+      "texto": "O rádio de uma viatura vazia chia no meio-fio. Na tela pequena, os sinais passam devagar, um por vez.",
+      "tutorial": "Frase 5 de 5 · modo difícil (1 chance).",
+      "decifrar": {
+        "lingua": "x",
+        "modo": "dificil",
+        "acertou": "cena:fim",
+        "licao": "cena:l5",
+        "dissonancia": 1,
+        "palavras": [
+          {
+            "escrita": "λ(ℒ)",
+            "sentido": "O sinal",
+            "id": "luz",
+            "respostas": [
+              "sinal",
+              "o sinal",
+              "mensagem",
+              "luz"
+            ],
+            "erradas": [
+              "carro",
+              "cachorro",
+              "parede"
+            ]
+          },
+          {
+            "escrita": "⇒ 𝓛(γ)",
+            "sentido": "retorna",
+            "id": "lembrar",
+            "respostas": [
+              "retorna",
+              "volta",
+              "voltar",
+              "regressa"
+            ],
+            "erradas": [
+              "some",
+              "foge",
+              "dorme"
+            ]
+          },
+          {
+            "escrita": "→ λ(ℒ)ⁿ",
+            "sentido": "amplificado.",
+            "id": "muito",
+            "respostas": [
+              "amplificado",
+              "mais forte",
+              "maior",
+              "ampliado"
+            ],
+            "erradas": [
+              "fraco",
+              "cortado",
+              "mudo"
+            ]
+          }
+        ]
+      },
+      "opcoes": []
+    },
+    "l5": {
+      "titulo": "Lição",
+      "texto": "Um frio que não é de inverno. Pedra úmida, cheiro de cera.\n\nNuma parede, o mesmo sinal, gravado ao lado de um desenho que mostra o que ele quer dizer.",
+      "tutorial": "Lição: o salto no tempo trouxe Dissonância. Ao voltar, a palavra que faltava está aprendida.",
+      "opcoes": [
+        {
+          "id": "licao5",
+          "texto": "Olhar o sinal ao lado do desenho",
+          "resultado": {
+            "texto": "De volta à rua. A palavra que faltava agora faz sentido.",
+            "efeitos": {},
+            "ir": "cena:f5"
+          }
+        }
+      ]
+    },
+    "fim": {
+      "titulo": "Fim do treino",
+      "texto": "{nome} volta para casa repetindo as frases baixinho.",
+      "final": true,
+      "opcoes": []
+    }
+  },
+  "lugares": {},
+  "inicio": "f1",
+  "textoFinal": "Fim do treino de frases. Jogue de novo com outro personagem para ver quantas já chegam traduzidas."
+}
