@@ -67,7 +67,6 @@ arquivo com o nome certo na pasta certa e a arte aparece sozinha.
 | `lugar-viaduto` | Viaduto Leste (muros riscados com giz) |
 | `lugar-drogaria` | Drogaria Goodwell (porta com corrente, prateleiras) |
 | `lugar-ginasio` | Ginásio Lincoln, posto de ração da Contenção (fila, caminhões brancos) |
-| `lugar-cerca` | A cerca do centro (grades, guardas da Contenção, holofotes) |
 
 ## Prioridade 3 — Cenas da história · 11 imagens 16:9
 
@@ -80,7 +79,7 @@ arquivo com o nome certo na pasta certa e a arte aparece sozinha.
 | `prologo-x-cena-centro` | O olho do furacão: praça lotada, um rádio de pilha num banco |
 | `prologo-x-cena-ataque` | Centenas de cabeças virando para quem olha |
 | `prologo-x-cena-salto` | O clarão: mãos, luz branca, sugestão de pedra e velas |
-| `x1-manha-cena-abertura` | Quarta, 6h12: manhã cinzenta, cidade cercada, caminhões brancos |
+| `x1-manha-cena-abertura` | Quarta, 6h12: manhã cinzenta, caminhões brancos |
 | `x1-manha-cena-chamado` | O toque de recolher: sirenes, ruas esvaziando |
 | `x1-manha-cena-contagem` | Os fundos da drogaria: Teddy de frente para a parede cheia de números |
 | `x1-manha-cena-salto` | Sexta-feira, 21:47: o fim da contagem |
@@ -97,7 +96,7 @@ arquivo com o nome certo na pasta certa e a arte aparece sozinha.
 | `npc-rita` | Rita Alvarez: mãe latina, barrada na fila da ração com uma caixa e o filho pela mão |
 | `npc-guarda` | Guarda da Contenção: uniforme branco/cinza, máscara, prancheta |
 | `npc-saqueador` | Um saqueador: moletom, mochila cheia, nervoso |
-| `npc-walt` | Walt Brody: aposentado do metrô, braços cruzados encarando a cerca; viu a noite de 1987 |
+| `npc-walt` | Walt Brody: aposentado do metrô, braços cruzados encarando a rua; viu a noite de 1987 |
 
 ## Prioridade 5 — Transições de viagem (vídeo, opcional) · 4 vídeos 1280 × 720, 2–3 s
 

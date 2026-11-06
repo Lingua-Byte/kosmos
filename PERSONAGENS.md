@@ -65,9 +65,9 @@ pergunta "ancestrais ou ecos").
   > "4-12 pra Central. 4-12 pra Central... Positivo, ninguém. Anota aí, senhor: dez e quinze, ninguém na escuta."
 - **Perde:** o Dale.
 - **No Y:** sentinela do portão da paliçada. **Função no Z:** segurança de bordo.
-- **Ponto de virada (X3):** a Contenção oferece a Rosa um lugar do lado de dentro da cerca, com o Dale
+- **Ponto de virada (X3):** a Contenção oferece a Rosa um lugar na equipe dela, com o Dale
   "em observação". Herói: recusa e tira civis. Anti-herói: aceita e usa a farda deles para o que ela quer.
-  Vilão: aceita e fecha a cerca.
+  Vilão: aceita e ajuda a recolher gente.
 
 ### Marcus Bell · Tank
 - **No X (Decidido):** entregador de moto. O aplicativo mandou um pacote de Marcus Bell para Marcus Bell, destino o
@@ -206,7 +206,7 @@ Todos já aparecem no jogo (Decidido). O que está marcado como segredo ou arco 
 | **Sra. Petrakis** | os vinte dólares da Doris | não sai de casa "nem morta"; guarda enlatado desde o furacão. Amiga da June | X1, secundárias de Maple Heights |
 | **Oswald, o vigia** | terminar a contagem dele | anota dias, não minutos: 412. Pergunta a todo mundo se ouviram um alarme às quintas | Prólogo (livro de turnos), X1 (termina a conta e é levado), X4 (pelo livro, ou no 3º andar do St. Luke's) |
 | **Leo, do leito 9** | voltar a dormir | pede o mesmo pudim todo dia e pergunta da Denise pelo nome da mãe dela, que ninguém contou a ele | fio da Denise |
-| **Rita Alvarez** | provar que existe | o endereço dela ficou dentro da cerca e o nome sumiu das listas | X3 |
+| **Rita Alvarez** | provar que existe | o nome dela sumiu das listas da Contenção | X3 |
 | **Walt Brody** | que não escrevam sobre ele | aposentado do metrô (trinta anos); viu a Estação Rua 9 cheia em 87, esperando um trem que nunca chegou. "Disseram que foi vazamento de gás." | X1, X4 (a fonte principal) |
 | **Joe Kessler** (citado) | que o Frank venha | escreveu a verdade na margem em 1987 | fio do Frank, X4 |
 | **Dale Pruitt** (citado) | que a Rosa veja o que ele vê | está na praça há dois dias, sem a jaqueta, e chama a Rosa no rádio de hora em hora para dizer onde ela estacionou | fio da Rosa, X5 |

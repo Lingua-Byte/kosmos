@@ -422,7 +422,7 @@ Começa numa noite comum em Maple Heights e termina com metade do bairro na Pra�
 que ninguém sabe de onde vem. Dali, o salto.
 
 **X1 · A Manhã Seguinte** — *existe (`x1-manha`)*
-Maple Heights acorda com a cerca da Contenção no fim da rua, sem luz, e com o Abe sem ter o que vender além de
+Maple Heights acorda com os caminhões da Contenção no fim da rua, sem luz, e com o Abe sem ter o que vender além de
 água. Paga os fios do prólogo. Descobre a Contagem do Teddy: termina na
 sexta, às 21h47. Abre o mapa e as três missões em paralelo.
 
@@ -434,8 +434,8 @@ Quem chama o jogador é um rapaz da rede que precisa levar uma bateria de carro 
 transmitir, e não tem como subir sozinho. Salvar a Ouvinte ou as fitas, nem sempre as duas.
 - Grupo: a rede da rádio pirata (gente que guarda pedaços da música).
 
-**X3 · A Cerca** — *infiltração e a escolha grande (Proposta)*
-Entrar no perímetro da Contenção, no Prédio Federal, terceiro subsolo, de onde saiu o e-mail de "C.".
+**X3 · O Terceiro Subsolo** — *infiltração e a escolha grande (Proposta)*
+Entrar no Prédio Federal, terceiro subsolo, de onde saiu o e-mail de "C.".
 Lá dentro estão os dados de Eli, o Arquivo de 1987 e uma lista de nomes com endereços de Port Halden: quem a
 Contenção vai recolher na sexta.
 - **A escolha grande do X**: o que fazer com a lista. Ler na KPHN para a cidade inteira (pânico, saques, mas
