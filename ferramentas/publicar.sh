@@ -7,7 +7,7 @@ set -e
 GIT="/c/Program Files/Git/cmd/git.exe"
 cd "$(dirname "$0")/.."
 # missões publicadas pelo Criador (no celular) chegam direto no GitHub: traz antes de enviar
-"$GIT" pull --rebase --autostash origin main
+"$GIT" pull --no-rebase --no-edit --autostash origin main
 "$GIT" push origin main
 "$GIT" subtree split --prefix site -b gh-pages >/dev/null
 "$GIT" push -f origin gh-pages

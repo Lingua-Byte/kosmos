@@ -75,8 +75,8 @@ const EIXOS = {
     nome: "Eixo Y",
     mundo: "Medieval",
     glifo: "ᛉ",
-    lema: "Muitos acreditam que a Tabula foi enviada pelos deuses.",
-    descricao: "Fantasia sombria, horror religioso e investigação rúnica. O fenômeno é lido como magia, heresia ou linguagem proibida.",
+    lema: "Muitos acreditam que a Tabula sempre esteve ali.",
+    descricao: "Fantasia sombria e investigação rúnica. O fenômeno aparece nas runas que eles leem.",
     papelRotulo: "Classe",
     papeis: {
       tank: { nome: "Cavaleiro", desc: "Aço, juramento e a muralha entre o povo e o desconhecido." },

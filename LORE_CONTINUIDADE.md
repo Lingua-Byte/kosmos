@@ -4,13 +4,13 @@
 > É o que o jogador **já viu** nos textos do jogo, não a lore oficial. O que vale como regra está no
 > `CLAUDE.md` e em `site/js/historia.js`. Usado pelo agente `guardiao-da-lore`.
 
-Fontes: missão prologo-x, missão treino-vozes, missão treino-decifrar, origens do Prólogo X (código; a missão publicada vale por cima), mapa de Port Halden.
+Fontes: missão prologo-x, missão treino-vozes, missão treino-decifrar, origens do Prólogo X (código; a missão publicada vale por cima), documentos da Coleção, mapa de Port Halden.
 
 ## NPCs
 - **Dra. Helen Vance** (`helen`) — missão prologo-x
   - falas: “Você é da família de algum deles? Não? Ótimo. Então me escuta. Desorientação, marcha sincronizada, grafia compulsiva. Nenhum exame alterado…” · “Olha isso. Doze pacientes. Bairros diferentes, nunca se viram. Mesmos símbolos, mesma ordem. Fica com uma cópia. E se eu… se eu parar de re…” · “Isso é cansaço. Sugestão. Você viu o que queria ver.”
 - **Agente Moore** (`moore`) — missão prologo-x
-  - falas: “A Defesa Civil informa que a situação está sob controle e que os níveis de radiação estão dentro do normal. Isso é tudo que eu posso dizer.…” · “ARQUIVADO — CONTENÇÃO” · “…entendido, central. Não, ninguém mexeu em nada.”
+  - falas: “A Defesa Civil informa que a situação está sob controle e que os níveis de radiação estão dentro do normal. Isso é tudo que eu posso dizer.…” · “CONTENÇÃO” · “…entendido, central. Não, ninguém mexeu em nada.”
 - **Martha Kowalski** (`martha`) — missão prologo-x
   - falas: “Senta aí. Não, não precisa pedir, eu vou medir sua pressão de qualquer jeito. Doze por nove. Tá todo mundo com a pressão lá em cima hoje. V…” · “É o meu irmão. Teddy. Voltou assim do centro, ontem. Fica de frente para a parede contando vinte e um, quarenta e sete, vinte e um, quarent…” · “É o rádio. Só o rádio.”
 - **Teddy** (`teddy`) — missão prologo-x
@@ -39,11 +39,10 @@ Fontes: missão prologo-x, missão treino-vozes, missão treino-decifrar, origen
   - falas: “Eles não estão indo embora, doutora. Estão indo pra casa. Mas a casa não é aqui.”
 
 ## Datas (anos)
-- **1987** (18×): missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[0].efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[0].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[0].sucesso.efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[0].sucesso.pista; missão prologo-x · lugares.trabalho.acoes[0].falha.texto; missão prologo-x · lugares.trabalho.acoes[0].falha.efeitos.quest.nota; …
-- **1988** (1×): origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.abertura
+
 
 ## Horários
-- **21h47** (39×): missão prologo-x · lugares.trabalho.acoes[0].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[0].sucesso.efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[0].sucesso.pista; missão prologo-x · lugares.trabalho.acoes[12].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[22].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[22].sucesso.pista; …
+- **21h47** (40×): missão prologo-x · lugares.trabalho.acoes[0].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[0].sucesso.efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[0].sucesso.pista; missão prologo-x · lugares.trabalho.acoes[12].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[22].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[22].sucesso.pista; …
 - **21h40** (1×): origens do Prólogo X (código; a missão publicada vale por cima) · ray-okafor.abertura
 
 ## Números marcantes (quantidades, frequências, dinheiro)
@@ -55,16 +54,15 @@ Fontes: missão prologo-x, missão treino-vozes, missão treino-decifrar, origen
 - **$ 95** (1×): missão prologo-x · lugares.trabalho.acoes[32].resultado.texto
 
 ## Motivos que se repetem
-- **Contenção / Diretoria de Contenção** (27×): missão prologo-x · lugares.trabalho.acoes[0].falha.texto; missão prologo-x · lugares.trabalho.acoes[0].falha.efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[12].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[12].sucesso.efeitos.marca; …
+- **Contenção / Diretoria de Contenção** (28×): missão prologo-x · lugares.trabalho.acoes[0].falha.texto; missão prologo-x · lugares.trabalho.acoes[0].falha.efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[12].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[12].sucesso.efeitos.marca; …
+- **Praça Central** (17×): missão prologo-x · centroMapa.nome; missão prologo-x · cenas.abertura.variantes[7].texto; missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[8].efeitos.quest.nota; missão prologo-x · cenas.chamado.texto; …
+- **visão do Eixo Y (capuz, pedra, velas, sino)** (17×): missão prologo-x · cenas.salto.texto; missão prologo-x · cenas.salto.acrescimos[0].texto; missão prologo-x · cenas.salto.acrescimos[1].texto; missão prologo-x · cenas.salto.acrescimos[2].texto; …
 - **ritmo: três curtos, um longo** (16×): missão prologo-x · cenas.abertura.variantes[6].texto; missão prologo-x · cenas.meio.opcoes[2].resultado.texto; missão prologo-x · cenas.salto.texto; missão prologo-x · cenas.salto.memoria; …
-- **visão do Eixo Y (capuz, pedra, velas, sino)** (16×): missão prologo-x · cenas.salto.texto; missão prologo-x · cenas.salto.acrescimos[0].texto; missão prologo-x · cenas.salto.acrescimos[1].texto; missão prologo-x · cenas.salto.acrescimos[2].texto; …
-- **Praça Central** (15×): missão prologo-x · centroMapa.nome; missão prologo-x · cenas.abertura.variantes[7].texto; missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[8].efeitos.quest.nota; missão prologo-x · cenas.chamado.texto; …
-- **incêndio da Delancey Street** (14×): missão prologo-x · cenas.abertura.texto; missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[0].efeitos.quest.nome; missão prologo-x · lugares.trabalho.acoes[0].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[0].sucesso.efeitos.marca; …
 - **Riscadores** (13×): missão prologo-x · npcs.riscador; missão prologo-x · lugares.viaduto.descricao.texto; missão prologo-x · lugares.viaduto.acoes[1].texto; missão prologo-x · lugares.viaduto.acoes[1].npc; …
 - **a música / a melodia** (12×): missão prologo-x · cenas.centro.texto; missão prologo-x · cenas.centro.variantes[0].texto; missão prologo-x · cenas.centro.opcoes[0].sucesso.texto; missão prologo-x · cenas.salto.acrescimos[1].texto; …
-- **Defesa Civil** (10×): missão prologo-x · aberturas.defesa.nome; missão prologo-x · aberturas.defesa.onde; missão prologo-x · aberturas.defesa.desc; missão prologo-x · lugares.trabalho.acoes[31].sucesso.texto; …
+- **Defesa Civil** (12×): missão prologo-x · aberturas.defesa.nome; missão prologo-x · aberturas.defesa.onde; missão prologo-x · aberturas.defesa.desc; missão prologo-x · lugares.trabalho.acoes[31].sucesso.texto; …
 - **Rádio Pirata** (10×): missão prologo-x · aberturas.arte.desc; missão prologo-x · cenas.salto.acrescimos[1].texto; missão prologo-x · lugares.trabalho.acoes[14].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[14].sucesso.efeitos.quest.nota; …
-- **visão do Eixo Z (nave, metal)** (3×): missão prologo-x · cenas.salto.acrescimos[3].texto; missão prologo-x · lugares.atlantico.acoes[1].sucesso.texto; missão prologo-x · lugares.atlantico.acoes[1].sucesso.efeitos.quest.nota
+- **visão do Eixo Z (nave, metal)** (4×): missão prologo-x · cenas.salto.acrescimos[3].texto; missão prologo-x · lugares.atlantico.acoes[1].sucesso.texto; missão prologo-x · lugares.atlantico.acoes[1].sucesso.efeitos.quest.nota; documentos da Coleção · livro-ponto-oswald.texto[3]
 
 ## Símbolos das línguas usados no texto
 - **∃** (12×): missão prologo-x · cenas.meio.texto; missão prologo-x · lugares.trabalho.acoes[8].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[8].sucesso.pista; …
@@ -81,25 +79,27 @@ Fontes: missão prologo-x, missão treino-vozes, missão treino-decifrar, origen
 - **Centro**: Edifício Aurora, Prédio Federal (segredo), Atlantic Tower, Biblioteca Municipal
 - **Maple Heights**: Sua casa, Centro comunitário, Drogaria Goodwell, Conveniência do Abe
 - **Midtown**: Estação Central, St. Luke's Memorial, Pronto-socorro do St. Luke's
-- **Eastside**: Armazém 16, Feira sob o viaduto, Estação 9 dos Bombeiros, Viaduto Leste, Delancey Street (segredo)
+- **Eastside**: Armazém 16, Feira sob o viaduto, Estação 9 dos Bombeiros, Viaduto Leste, Prédio do Eastside (segredo)
 
 ## Nomes próprios (aparecem 2 vezes ou mais)
 - **Abe** (12×): missão prologo-x · lugares.mercado.nome; missão prologo-x · lugares.mercado.loja.nome; missão prologo-x · lugares.mercado.acoes[0].texto; …
 - **Harold** (12×): missão prologo-x · cenas.abertura.variantes[4].texto; missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[5].efeitos.quest.nome; missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[5].efeitos.quest.nota; …
 - **Contenção** (10×): missão prologo-x · lugares.trabalho.acoes[0].falha.efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[12].sucesso.efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[16].sucesso.texto; …
-- **Praça Central** (9×): missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[8].efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[21].sucesso.pista; missão prologo-x · lugares.trabalho.acoes[23].sucesso.texto; …
-- **Delancey Street** (8×): missão prologo-x · cenas.abertura.texto; missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[0].efeitos.quest.nome; missão prologo-x · lugares.trabalho.acoes[0].sucesso.efeitos.quest.nome; …
+- **Eastside** (10×): missão prologo-x · cenas.abertura.texto; missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[0].efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[0].texto; …
+- **Praça Central** (10×): missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[8].efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[21].sucesso.pista; missão prologo-x · lugares.trabalho.acoes[23].sucesso.texto; …
+- **Defesa Civil** (8×): missão prologo-x · aberturas.defesa.nome; missão prologo-x · aberturas.defesa.onde; missão prologo-x · lugares.casa.acoes[0].resultado.texto; …
 - **Edifício Aurora** (8×): missão prologo-x · lugares.trabalho.acoes[29].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[29].sucesso.efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[29].sucesso.pista; …
-- **Defesa Civil** (7×): missão prologo-x · aberturas.defesa.nome; missão prologo-x · aberturas.defesa.onde; missão prologo-x · lugares.casa.acoes[0].resultado.texto; …
 - **Diretoria de Contenção** (6×): missão prologo-x · lugares.trabalho.acoes[12].sucesso.pista; missão prologo-x · lugares.trabalho.acoes[16].sucesso.pista; missão prologo-x · lugares.trabalho.acoes[31].sucesso.texto; …
+- **Joe** (6×): missão prologo-x · lugares.trabalho.acoes[0].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[0].sucesso.efeitos.quest.nota; missão prologo-x · lugares.trabalho.acoes[0].sucesso.pista; …
 - **Dale** (5×): missão prologo-x · lugares.trabalho.acoes[2].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[3].texto; missão prologo-x · lugares.trabalho.acoes[3].resultado.texto; …
 - **Maple Street** (5×): missão prologo-x · cenas.abertura.variantes[4].texto; missão prologo-x · lugares.trabalho.nomeVariantes[5].texto; origens do Prólogo X (código; a missão publicada vale por cima) · june-albright.nome; …
-- **Joe** (4×): missão prologo-x · lugares.trabalho.acoes[0].sucesso.texto; missão prologo-x · lugares.trabalho.acoes[0].sucesso.efeitos.quest.nota; origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.acoes[0].sucesso.texto; …
+- **Corpo de Bombeiros** (4×): missão prologo-x · lugares.trabalho.nomeVariantes[0].texto; origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.nome; origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.onde; …
 - **Leo** (4×): missão prologo-x · cenas.abertura.variantes[2].texto; missão prologo-x · lugares.trabalho.acoes[6].texto; origens do Prólogo X (código; a missão publicada vale por cima) · denise-carter.abertura; …
 - **Marcus Bell** (4×): missão prologo-x · cenas.abertura.variantes[1].texto; missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[2].efeitos.quest.nota; origens do Prólogo X (código; a missão publicada vale por cima) · marcus-bell.abertura; …
 - **Riscador** (4×): missão prologo-x · npcs.riscador; missão prologo-x · lugares.viaduto.descricao.texto; missão prologo-x · lugares.viaduto.acoes[1].texto; …
-- **Corpo de Bombeiros** (3×): missão prologo-x · lugares.trabalho.nomeVariantes[0].texto; origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.nome; origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.onde
 - **Danny** (3×): missão prologo-x · emTodaParte[0].sucesso.texto; missão prologo-x · emTodaParte[0].sucesso.efeitos.marca; missão treino-vozes · cenas.chegada.acrescimos[0].texto
+- **Embaixo** (3×): missão prologo-x · lugares.trabalho.descricao.texto; missão prologo-x · lugares.trabalho.acoes[0].sucesso.texto; origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.acoes[0].sucesso.texto
+- **Estação** (3×): origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.onde; origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.abertura; documentos da Coleção · escala-estacao-9.autor
 - **Homem de Terno** (3×): missão prologo-x · npcs.homem-terno; missão prologo-x · lugares.trabalho.acoes[31].sucesso.efeitos.quest.nome; missão prologo-x · lugares.trabalho.acoes[31].falha.efeitos.quest.nome
 - **Martha** (3×): missão prologo-x · lugares.farmacia.acoes[0].texto; missão prologo-x · lugares.farmacia.acoes[1].texto; missão prologo-x · lugares.farmacia.acoes[2].sucesso.texto
 - **Ouvinte** (3×): missão prologo-x · npcs.ouvinte-x; missão prologo-x · lugares.aurora.acoes[0].sucesso.texto; missão prologo-x · lugares.aurora.acoes[0].sucesso.efeitos.quest.nome
@@ -109,20 +109,20 @@ Fontes: missão prologo-x, missão treino-vozes, missão treino-decifrar, origen
 - **Rosa** (3×): missão prologo-x · cenas.abertura.variantes[0].texto; missão prologo-x · lugares.trabalho.acoes[2].sucesso.pista; origens do Prólogo X (código; a missão publicada vale por cima) · rosa-delgado.acoes[0].sucesso.pista
 - **Teddy** (3×): missão prologo-x · lugares.farmacia.acoes[1].sucesso.efeitos.quest.nota; missão prologo-x · lugares.farmacia.acoes[2].texto; missão prologo-x · lugares.farmacia.acoes[2].sucesso.efeitos.marca
 - **Tess** (3×): missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[7].efeitos.quest.nota; origens do Prólogo X (código; a missão publicada vale por cima) · tess-monroe.abertura; origens do Prólogo X (código; a missão publicada vale por cima) · tess-monroe.fio.nota
+- **Administração** (2×): documentos da Coleção · aviso-sindico.autor; documentos da Coleção · aviso-sindico.texto[3]
 - **Albright** (2×): missão prologo-x · cenas.abertura.variantes[4].texto; origens do Prólogo X (código; a missão publicada vale por cima) · june-albright.abertura
 - **Bell** (2×): missão prologo-x · cenas.abertura.variantes[1].texto; origens do Prólogo X (código; a missão publicada vale por cima) · marcus-bell.abertura
 - **Carter** (2×): missão prologo-x · cenas.abertura.variantes[2].texto; origens do Prólogo X (código; a missão publicada vale por cima) · denise-carter.abertura
 - **Dale Pruitt** (2×): missão prologo-x · cenas.abertura.variantes[0].texto; origens do Prólogo X (código; a missão publicada vale por cima) · rosa-delgado.abertura
-- **Delancey St** (2×): missão prologo-x · lugares.trabalho.acoes[0].sucesso.pista; origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.acoes[0].sucesso.pista
 - **Dissonância** (2×): missão prologo-x · cenas.borda.tutorial; missão treino-decifrar · cenas.licao.tutorial
 - **Doris** (2×): missão prologo-x · cenas.abertura.variantes[4].texto; missão prologo-x · lugares.trabalho.acoes[11].resultado.texto
 - **Edifício Aurora. Prazo** (2×): missão prologo-x · cenas.abertura.opcoes[0].resultado.variantes[2].efeitos.quest.nota; origens do Prólogo X (código; a missão publicada vale por cima) · marcus-bell.fio.nota
 - **Eli** (2×): missão prologo-x · lugares.trabalho.acoes[12].sucesso.pista; origens do Prólogo X (código; a missão publicada vale por cima) · eli-navarro.acoes[0].sucesso.pista
-- **Estação** (2×): origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.onde; origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.abertura
 - **Estação Rua** (2×): missão prologo-x · lugares.metro.acoes[0].resultado.pista; missão prologo-x · lugares.metro.acoes[1].sucesso.pista
 - **Goodwell** (2×): missão prologo-x · lugares.farmacia.nome; missão prologo-x · lugares.farmacia.loja.nome
 - **Halden After Dark** (2×): missão prologo-x · cenas.abertura.variantes[6].texto; origens do Prólogo X (código; a missão publicada vale por cima) · tess-monroe.abertura
 - **Harbor Street** (2×): origens do Prólogo X (código; a missão publicada vale por cima) · marcus-bell.onde; origens do Prólogo X (código; a missão publicada vale por cima) · marcus-bell.abertura
+- **Haskins** (2×): missão prologo-x · cenas.abertura.texto; documentos da Coleção · escala-estacao-9.texto[0]
 - **Hollister & Crane** (2×): missão prologo-x · aberturas.escritorio.nome; missão prologo-x · aberturas.escritorio.onde
 - **Joe Kessler** (2×): missão prologo-x · cenas.abertura.texto; origens do Prólogo X (código; a missão publicada vale por cima) · frank-brennan.abertura
 - **June** (2×): missão prologo-x · cenas.abertura.variantes[4].texto; missão treino-vozes · cenas.chegada.opcoes[2].resultado.variantes[2].texto
@@ -132,8 +132,10 @@ Fontes: missão prologo-x, missão treino-vozes, missão treino-decifrar, origen
 - **Michael Doyle** (2×): missão prologo-x · cenas.abertura.variantes[3].texto; origens do Prólogo X (código; a missão publicada vale por cima) · michael-doyle.abertura
 - **Monroe** (2×): missão prologo-x · cenas.abertura.variantes[6].texto; origens do Prólogo X (código; a missão publicada vale por cima) · tess-monroe.abertura
 - **Moore** (2×): missão prologo-x · npcs.moore; missão prologo-x · lugares.delegacia.acoes[3].texto
+- **Natal** (2×): missão prologo-x · lugares.trabalho.acoes[11].resultado.texto; documentos da Coleção · escala-estacao-9.texto[4]
 - **Navarro** (2×): missão prologo-x · cenas.abertura.variantes[5].texto; origens do Prólogo X (código; a missão publicada vale por cima) · eli-navarro.abertura
 - **Okafor** (2×): missão prologo-x · cenas.abertura.variantes[7].texto; origens do Prólogo X (código; a missão publicada vale por cima) · ray-okafor.abertura
+- **Oswald** (2×): missão prologo-x · lugares.atlantico.acoes[0].texto; documentos da Coleção · livro-ponto-oswald.texto[0]
 - **Rádio Pirata** (2×): missão prologo-x · lugares.casa.acoes[15].sucesso.pista; missão prologo-x · lugares.casa.acoes[16].resultado.pista
 - **Riscadores** (2×): missão prologo-x · emTodaParte[0].texto; missão prologo-x · emTodaParte[0].sucesso.texto
 - **Tess Monroe** (2×): missão prologo-x · lugares.trabalho.acoes[15].resultado.texto; origens do Prólogo X (código; a missão publicada vale por cima) · tess-monroe.acoes[1].resultado.texto

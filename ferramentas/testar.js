@@ -89,6 +89,7 @@ function conferirMissao(id) {
 
   andar(m, (v, k, cam) => {
     if (k === "efeitos" && v && v.flag) [].concat(v.flag).forEach((f) => flagsLigadas.add(f));
+    if (k === "efeitos" && v && v.documento) [].concat(v.documento).forEach((d) => { if (!DOCUMENTOS[d]) erro(onde, `${cam} entrega o documento "${d}", que não está em dados/documentos.json`); });
     if (k === "se" && v && typeof v === "object")
       for (const chave of ["flag", "algum"]) [].concat(v[chave] || []).forEach((f) => flagsUsadas.push([f, cam]));
     if (k === "pista" && typeof v === "string" && !/\.falha\./.test(cam)) pistas++;
@@ -140,6 +141,7 @@ function conferirMissao(id) {
   return m;
 }
 
+const DOCUMENTOS = lerJSON(path.join(SITE, "dados", "documentos.json")) || {};
 const indice = lerJSON(path.join(SITE, "missoes", "indice.json")) || [];
 const missoes = {};
 for (const id of indice) missoes[id] = conferirMissao(id);

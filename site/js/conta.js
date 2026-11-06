@@ -9,7 +9,7 @@
 //   · Sem configuração (conta-config.js vazio), nada disso liga: o jogo segue só no aparelho.
 
 const Conta = (() => {
-  const CHAVES = { personagens: "kosmos.personagens", campanhas: "kosmos.campanhas", saves: "kosmos.saves", cinematicas: "kosmos.cinematicas-vistas" };
+  const CHAVES = { personagens: "kosmos.personagens", campanhas: "kosmos.campanhas", saves: "kosmos.saves", cinematicas: "kosmos.cinematicas-vistas", colecao: "kosmos.colecao" };
   const ATUAL = "kosmos.campanhaAtual"; // texto puro, não JSON
   const ESTADO = "kosmos.conta.estado"; // { enviadoEm, assinatura, alteradoEm }
   const configurada = () => !!(typeof CONTA_CONFIG !== "undefined" && CONTA_CONFIG.url && CONTA_CONFIG.chave);
@@ -42,10 +42,10 @@ const Conta = (() => {
     } catch {}
     return {
       personagens: ler(CHAVES.personagens, []), campanhas: ler(CHAVES.campanhas, {}),
-      saves: ler(CHAVES.saves, []), cinematicas: ler(CHAVES.cinematicas, []), campanhaAtual: atual,
+      saves: ler(CHAVES.saves, []), cinematicas: ler(CHAVES.cinematicas, []), colecao: ler(CHAVES.colecao, {}), campanhaAtual: atual,
     };
   }
-  const assinar = (p) => JSON.stringify([p.personagens, p.campanhas, p.saves, p.cinematicas, p.campanhaAtual]);
+  const assinar = (p) => JSON.stringify([p.personagens, p.campanhas, p.saves, p.cinematicas, p.colecao, p.campanhaAtual]);
 
   // ---------- Carregar o Supabase só quando há configuração ----------
   function iniciarCliente() {
@@ -119,6 +119,11 @@ const Conta = (() => {
       campanhas: juntarObjeto(local.campanhas, remoto.campanhas, localMaisNovo),
       saves: juntarListaPorId(local.saves, remoto.saves, localMaisNovo).sort((a, b) => (a.quando < b.quando ? 1 : -1)),
       cinematicas: [...new Set([...(local.cinematicas || []), ...(remoto.cinematicas || [])])],
+      // coleção: tudo que foi achado em qualquer aparelho fica
+      colecao: {
+        artes: { ...((remoto.colecao || {}).artes || {}), ...((local.colecao || {}).artes || {}) },
+        docs: { ...((remoto.colecao || {}).docs || {}), ...((local.colecao || {}).docs || {}) },
+      },
       campanhaAtual: (localMaisNovo ? local.campanhaAtual : remoto.campanhaAtual) || local.campanhaAtual,
     };
   }
@@ -128,6 +133,7 @@ const Conta = (() => {
     gravar(CHAVES.campanhas, p.campanhas);
     gravar(CHAVES.saves, p.saves);
     gravar(CHAVES.cinematicas, p.cinematicas);
+    if (p.colecao) gravar(CHAVES.colecao, p.colecao);
     try {
       if (p.campanhaAtual) localStorage.setItem(ATUAL, p.campanhaAtual);
     } catch {}

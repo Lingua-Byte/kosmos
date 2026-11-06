@@ -36,6 +36,17 @@ PARADAS = set(
     "male female sex".split()
 )
 
+# O Eixo Y não tem nada religioso (decisão do autor): estas palavras não entram no Yudur.
+FORA_DO_Y = {"temple.n.01", "priest.n.01", "heresy.n.01", "heretic.n.01"}
+PALAVRAS_FORA_DO_Y = set(
+    "templo templos sacerdote sacerdotes sacerdotisa heresia heresias herege hereges "
+    "temple temples priest priests priestess heresy heresies heretic heretics "
+    "herejia hereje herejes tempio tempi sacerdoti eresia eresie eretico eretici "
+    "pretre pretres pretresse heresie heresies heretique heretiques "
+    "heretico hereticos heretica heretical sacerdotal sacerdotais sacerdotale sacerdotessa priestly priestlike "
+    "priestcraft sacerdotalism sacerdotalismo".split()
+)
+
 
 def normalizar(s):
     s = unicodedata.normalize("NFD", s.lower())
@@ -217,7 +228,7 @@ def gerar(curto, longo):
         if "_" in lema or " " in lema or "-" in lema:
             continue
         chave = normalizar(lema)
-        if not re.fullmatch(r"[a-z]+", chave) or len(chave) < 2 or chave in lexico:
+        if not re.fullmatch(r"[a-z]+", chave) or len(chave) < 2 or chave in lexico or chave in PALAVRAS_FORA_DO_Y:
             continue
         sins = wn.synsets(lema, lang=longo)
         if not sins:
@@ -229,6 +240,8 @@ def gerar(curto, longo):
         if not sins:
             continue
         melhor = max(sins, key=lambda s: (pontuacao(s, ingles), -ordem.get(s.pos(), 4)))
+        if melhor.name() in FORA_DO_Y:
+            continue
         r = runas_para(melhor)
         if r:
             lexico[chave] = r

@@ -7,7 +7,7 @@ Este arquivo vale para qualquer conta ou aparelho que abra o projeto. Decisões 
 O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code na web). Ele não usa git: salvar e sincronizar é tarefa do Claude, sem pedir.
 - **Ao terminar cada pedido que mudou arquivos, faça commit e push na hora, sem perguntar.** Mensagem de commit em português.
 - **Na web (Android):** envie para o branch da sessão. Um robô do GitHub (`.github/workflows/juntar.yml`) junta esse branch na `main` sozinho. Não precisa abrir nem aprovar pull request.
-- **No PC:** trabalhe na `main`; ao abrir a sessão, as novidades já são puxadas (gancho local em `.claude/settings.json`, fora do git). Para publicar o site, use `sh ferramentas/publicar.sh`.
+- **No PC:** trabalhe na `main`; ao abrir a sessão, `ferramentas/sincronizar.sh` puxa as novidades e avisa se algum branch ficou fora da main (gancho local em `.claude/settings.json`, fora do git). O `publicar.sh` junta com merge, nunca com rebase. Para publicar o site, use `sh ferramentas/publicar.sh`.
 - Se a junção der conflito, o robô falha: resolva na próxima sessão e avise o autor em uma frase simples, sem termos técnicos.
 
 ## Onde está cada coisa
@@ -16,9 +16,11 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - A conta da IA (simulação fictícia e verossímil de como ela mira os códigos no tempo e no espaço): `CALCULO_DA_IA.md` e `ferramentas/calculo_da_ia.py`. **O registro de mira, "como a IA escreveria", foi aprovado pelo autor para usar no jogo** (06/11/2026). **Os quatro usos (decidido):** (1) o registro inteiro num terminal da Domus, no Z; (2) pedaços dele vazando no X aos poucos, sem explicação (o 1,040814 na tela do Eli, o 21:47:00.000 num relatório, o ∮(t) num muro); (3) o Muro é o registro, uma linha por missão, nas três línguas (easter egg opcional, não a ligação entre missões); (4) a última linha ("não existe critério para saber qual é a origem") vira a escolha do final: o jogador dá o critério, falando com a IA.
 - A frase universal (o que o fenômeno "diz" nas telas), revista pelo autor, com as cortadas e as guardadas para depois: `FRASES.md`.
 - Como escrever (técnicas de Fallout, TES e Resident Evil; o que soa como IA): `GUIA_ESCRITA.md`. O agente `editor-de-texto` segue esse guia.
-- **Agentes e skills** (`.claude/agents/`, `.claude/skills/`): `editor-de-texto`, `guardiao-da-lore`, `designer-de-mecanicas` (números, simulação e equilíbrio das regras), `linguista` (as três línguas: palavras, frases do Decifrar, traduções e regras), `testador`; skills `nova-missao-x`, `novo-npc`, `lore-nova`. Antes de enviar mudança em missão, rodar `node ferramentas/testar.js` (o robô `.github/workflows/testes.yml` roda a cada envio).
+- **Agentes e skills** (`.claude/agents/`, `.claude/skills/`): `editor-de-texto`, `guardiao-da-lore`, `designer-de-mecanicas` (números, simulação e equilíbrio das regras), `linguista` (as três línguas: palavras, frases do Decifrar, traduções e regras), `testador`; skills `nova-missao-x`, `novo-npc`, `lore-nova`, `prompt-de-arte` (prompts de imagem e vídeo no estilo de cada eixo). Antes de enviar mudança em missão, rodar `node ferramentas/testar.js` (o robô `.github/workflows/testes.yml` roda a cada envio).
+- Mecânicas (o que existe, propostas e o que o autor decidiu): `MECANICAS.md`.
 - Índice de continuidade (o que o jogador já viu: NPCs, datas, horários, nomes): `LORE_CONTINUIDADE.md`, gerado por `node ferramentas/continuidade.js` (não editar à mão; o guardião da lore regrava).
 - Blender ligado ao Claude (só no PC): `ferramentas/BLENDER.md`.
+- **Coleção** (`js/colecao.js`): artes entram sozinhas quando aparecem no palco (lista em `dados/artes.json`, gerada por `node ferramentas/indice_artes.js` — rodar quando chegar arte nova); textos de lore ficam em `dados/documentos.json` e entram pelo efeito `"documento": "<id>"` de uma ação. Documento novo: slow burn, voz de quem escreveu (ver `GUIA_ESCRITA.md`, Resident Evil e TES).
 - Visão geral do jogo: `DESIGN.md` (ainda diz "três mundos": vale o que está abaixo).
 - Lore completa, com selos Decidido / Para considerar / Em aberto: `site/js/historia.js`, que aparece na aba **História** da Oficina (`site/oficina.html`). Lore nova: atualizar esse arquivo.
 - Missões: feitas no Criador (`site/diagramas.html` + `js/criador.js`), não em `js/missoes/*.js`. "Publicar no jogo" grava `site/missoes/<id>.json` + `indice.json`; a missão publicada substitui a do código com o mesmo id. Mudanças no motor mantêm o formato do Criador (`Criador.exportar` ↔ `MissoesDados.adaptar`). A Mesa é single player.
@@ -50,6 +52,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Eixo X, radiação (decidido em 05/11/2026):** o epicentro da radiação são as **casas dos personagens**. Em algum momento eles passam a ser procurados por isso (ligação possível com o Instituto de Física). A imagem da luz azul com uma espécie de acelerador fica **escondida no subsolo da Atlantic Tower**.
 - **Foco agora (06/11/2026):** **Eixo X e as mecânicas**, e **a lore que vem do Eixo Z**. O **Y fica para depois**: é importante e vai ter peso na lore para o jogo funcionar bem, mas não é o foco agora. Sem tarefas grandes em paralelo (gastam muito): uma coisa de cada vez, com o autor.
 - **Domus (confirmado em 05/11/2026):** cruzou o horizonte do buraco negro; vista de fora, parece parada; a "estrela que observa" é luz. Ideias do autor sobre a missão, o loop da IA, o sinal e os 26.000 anos: aba História, "A missão da Domus e o nó".
+- **21h47 é a hora de bordo em que a Domus cruzou o horizonte.** Por isso tudo em Port Halden acontece às 21h47.
 - **Quem fala do Lime é a IA da Domus** (decidido). As mensagens e os códigos são dela.
 - **Em aberto:** o objetivo da missão da Domus, o que a IA quer (avisar, chamar ou ambíguo), ancestrais ou ecos.
 
@@ -57,6 +60,8 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Lore nova se faz com o autor, aos poucos:** perguntar o que ele já pensou e partir do texto dele; propor pouco de cada vez (uma ideia, duas ou três opções) e esperar a resposta. Nada de documentos grandes de lore inventada de uma vez.
 - **Frases importantes das línguas são feitas a dois:** o `linguista` monta a escrita e a tradução, e o `guardiao-da-lore` confere se a frase combina com a lore (e não responde nada em aberto). Só depois vão ao autor.
 - **Slow burn em toda missão:** começa na rotina; o estranho entra aos poucos e as pessoas tratam como incômodo do dia a dia ("foi ver a praça", "deve ser gás"), não como apocalipse. O que é pesado chega com o relógio ou com a investigação; sobrevivência total só perto do clímax. Nada de frase de efeito anunciando o perigo.
+- **Nada pode lembrar o Brasil, nem um pouco.** Tudo é americanizado (nomes, instituições, costumes, jeito de falar).
+- **Sem anos 80 por enquanto:** nenhuma data ou evento passado nos anos 80 (o incêndio da Delancey St. e o "1987" foram tirados).
 - **Eixo X é sobrevivência**, não investigação: comida, abrigo, gente para proteger, chegar vivo ao fim da noite.
 - **Telas sem rolagem**, texto em pedaços (um parágrafo por vez, digitado, com "Continuar ▸"), no celular e no PC.
 - **Menus intocados:** a galáxia animada fica nos menus; artes vão para dentro das missões, mapas e retratos.

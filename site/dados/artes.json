@@ -1,0 +1,237 @@
+[
+ {
+  "id": "x/lugar-abe",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-abe.webp"
+ },
+ {
+  "id": "x/lugar-armazem-16",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-armazem-16.webp"
+ },
+ {
+  "id": "x/lugar-atlantico",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-atlantico.webp"
+ },
+ {
+  "id": "x/lugar-aurora",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-aurora.webp"
+ },
+ {
+  "id": "x/lugar-biblioteca",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-biblioteca.webp"
+ },
+ {
+  "id": "x/lugar-cafe-halden",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-cafe-halden.webp"
+ },
+ {
+  "id": "x/lugar-campus",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-campus.webp"
+ },
+ {
+  "id": "x/lugar-casa",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-casa.webp"
+ },
+ {
+  "id": "x/lugar-cerca",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-cerca.webp"
+ },
+ {
+  "id": "x/lugar-comunitario",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-comunitario.webp"
+ },
+ {
+  "id": "x/lugar-delancey",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-delancey.webp"
+ },
+ {
+  "id": "x/lugar-delegacia-9",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-delegacia-9.webp"
+ },
+ {
+  "id": "x/lugar-delegacia-porto",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-delegacia-porto.webp"
+ },
+ {
+  "id": "x/lugar-distrito-4",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-distrito-4.webp"
+ },
+ {
+  "id": "x/lugar-drogaria",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-drogaria.webp"
+ },
+ {
+  "id": "x/lugar-estacao-9",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-estacao-9.webp"
+ },
+ {
+  "id": "x/lugar-estacao-central",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-estacao-central.webp"
+ },
+ {
+  "id": "x/lugar-federal",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-federal.webp"
+ },
+ {
+  "id": "x/lugar-feira-viaduto",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-feira-viaduto.webp"
+ },
+ {
+  "id": "x/lugar-galeria",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-galeria.webp"
+ },
+ {
+  "id": "x/lugar-ginasio",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-ginasio.webp"
+ },
+ {
+  "id": "x/lugar-harbor",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-harbor.webp"
+ },
+ {
+  "id": "x/lugar-hollister",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-hollister.webp"
+ },
+ {
+  "id": "x/lugar-kphn",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-kphn.webp"
+ },
+ {
+  "id": "x/lugar-laboratorio",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-laboratorio.webp"
+ },
+ {
+  "id": "x/lugar-mercy-vale",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-mercy-vale.webp"
+ },
+ {
+  "id": "x/lugar-metro",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-metro.webp"
+ },
+ {
+  "id": "x/lugar-mirante",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-mirante.webp"
+ },
+ {
+  "id": "x/lugar-ponto-linha9",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-ponto-linha9.webp"
+ },
+ {
+  "id": "x/lugar-porto",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-porto.webp"
+ },
+ {
+  "id": "x/lugar-praca",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-praca.webp"
+ },
+ {
+  "id": "x/lugar-st-brendans",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-st-brendans.webp"
+ },
+ {
+  "id": "x/lugar-st-lukes-ps",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-st-lukes-ps.webp"
+ },
+ {
+  "id": "x/lugar-st-lukes",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-st-lukes.webp"
+ },
+ {
+  "id": "x/lugar-universidade",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-universidade.webp"
+ },
+ {
+  "id": "x/lugar-viaduto",
+  "eixo": "x",
+  "imagem": "imagens/x/lugar-viaduto.webp"
+ },
+ {
+  "id": "x/prologo-x-cena-chamado",
+  "eixo": "x",
+  "imagem": "imagens/x/prologo-x-cena-chamado.webp"
+ },
+ {
+  "id": "npcs/npc-abe",
+  "eixo": "npcs",
+  "imagem": "imagens/npcs/npc-abe.webp"
+ },
+ {
+  "id": "npcs/npc-danny",
+  "eixo": "npcs",
+  "imagem": "imagens/npcs/npc-danny.webp"
+ },
+ {
+  "id": "npcs/npc-helen",
+  "eixo": "npcs",
+  "imagem": "imagens/npcs/npc-helen.webp"
+ },
+ {
+  "id": "npcs/npc-hilde",
+  "eixo": "npcs",
+  "imagem": "imagens/npcs/npc-hilde.webp"
+ },
+ {
+  "id": "npcs/npc-homem-terno",
+  "eixo": "npcs",
+  "imagem": "imagens/npcs/npc-homem-terno.webp"
+ },
+ {
+  "id": "npcs/npc-martha",
+  "eixo": "npcs",
+  "imagem": "imagens/npcs/npc-martha.webp"
+ },
+ {
+  "id": "npcs/npc-moore",
+  "eixo": "npcs",
+  "imagem": "imagens/npcs/npc-moore.webp"
+ },
+ {
+  "id": "npcs/npc-riscador",
+  "eixo": "npcs",
+  "imagem": "imagens/npcs/npc-riscador.webp"
+ },
+ {
+  "id": "npcs/npc-sal",
+  "eixo": "npcs",
+  "imagem": "imagens/npcs/npc-sal.webp"
+ },
+ {
+  "id": "npcs/npc-teddy",
+  "eixo": "npcs",
+  "imagem": "imagens/npcs/npc-teddy.webp"
+ }
+]

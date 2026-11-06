@@ -77,7 +77,7 @@ no repositório, então valem no PC e no Android.
 | **testador de missões** | abre o jogo com Playwright, percorre todos os caminhos de uma missão e lista becos sem saída e erros. |
 | **balanceador** | simula mil testes de atributo/combate e diz se uma cena está fácil ou impossível demais. |
 | **revisor de texto** | corta parágrafos longos (telas sem rolagem), confere tom de cada eixo e voz de cada personagem. |
-| **diretor de arte** | escreve o briefing de cada arte faltando (`ARTES_FALTANDO.md`) no estilo do eixo. |
+| **diretor de arte** (feito: skill `prompt-de-arte`) | escreve o briefing de cada arte faltando (`ARTES_FALTANDO.md`) no estilo do eixo. |
 
 **Skills sugeridas** (`.claude/skills/<nome>/SKILL.md`), listas de passos que o Claude segue sempre igual:
 - *nova missão do X* → criar no formato do Criador, entrada em `LIGACOES_X`, barks + perfil de balbucio dos NPCs novos.
