@@ -40,7 +40,7 @@ for (const id of indice) {
   publicadas[id] = m;
   fontes.push({ origem: `missão ${id}`, valor: m });
 }
-const doCodigo = rodarJS(["js/missoes/prologo-x.js", "js/missoes/origens-x.js", "js/missoes/x1-manha.js"], "window.__ORIGENS = typeof ORIGENS_X !== 'undefined' ? ORIGENS_X : null;");
+const doCodigo = rodarJS(["js/missoes/prologo-x.js", "js/missoes/origens-x.js"], "window.__ORIGENS = typeof ORIGENS_X !== 'undefined' ? ORIGENS_X : null;");
 for (const [id, m] of Object.entries(doCodigo.MISSOES || {})) if (!publicadas[id]) fontes.push({ origem: `missão ${id} (código)`, valor: m });
 if (doCodigo.__ORIGENS) fontes.push({ origem: "origens do Prólogo X (código; a missão publicada vale por cima)", valor: doCodigo.__ORIGENS });
 const cidade = rodarJS(["js/cidade-x.js"], "window.__C = CIDADE_X;").__C;

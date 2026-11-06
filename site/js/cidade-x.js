@@ -47,7 +47,6 @@ const CIDADE_X = {
     aurora: { nome: "Edifício Aurora", bairro: "centro", x: 38, y: 45, icone: "▲" },
     federal: { nome: "Prédio Federal", bairro: "centro", x: 50, y: 67, icone: "⊟", segredo: true },
     atlantico: { nome: "Atlantic Tower", bairro: "centro", x: 63, y: 44, icone: "▥" },
-    cerca: { nome: "A cerca do centro", bairro: "centro", x: 39, y: 65, icone: "⊠", segredo: true },
     biblioteca: { nome: "Biblioteca Municipal", bairro: "centro", x: 61, y: 60, icone: "❡" },
     // lugares novos (artes do autor, 04/11): ainda sem missão; ficam à mão no Criador
     "estacao-central": { nome: "Estação Central", bairro: "midtown", x: 76, y: 62, icone: "⇌" },
@@ -80,7 +79,6 @@ const LIGACOES_X = {
     casa: "casa", hospital: "st-lukes", delegacia: "delegacia-9", metro: "metro", mercado: "abe",
     universidade: "universidade", aurora: "aurora", atlantico: "atlantico", viaduto: "viaduto", farmacia: "drogaria",
   },
-  "x1-manha": { casa: "casa", racao: "ginasio", drogaria: "drogaria", hospital: "st-lukes", abe: "abe", cerca: "cerca" },
 };
 
 // Onde fica o "trabalho" de quem não é personagem pronto (pelo ponto de entrada da profissão)

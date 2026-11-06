@@ -13,7 +13,7 @@
 
 const MissoesDados = (() => {
   // desbloqueio das missões que ainda estão só no código
-  const PADRAO = { "x1-manha": { anterior: "prologo-x" }, "prologo-x": { proxima: "x1-manha" } };
+  const PADRAO = {};
   // tendência de cada personagem pronto (herói, anti-herói, vilão): missoes/personagens.json
   let TENDENCIAS = {};
   const tendenciaDe = (p) => (p && (p.tendencia || TENDENCIAS[p.pronto])) || "";

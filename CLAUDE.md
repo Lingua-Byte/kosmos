@@ -26,6 +26,7 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - `publicar.sh` faz pull antes do push, porque o Criador pode gravar direto no GitHub.
 
 ## Lore (decisões do autor)
+- **Agora é tempo de lore (decidido em 06/11/2026):** primeiro se cria a lore (personagens e arcos, background da cidade, a história do jogo); as missões vêm depois, a partir dela. A missão "A Manhã Seguinte" (x1-manha) foi **apagada** do jogo: o que estava nela não vale para a história. **Só o Prólogo fica**, e ele também pode mudar.
 - **Os eixos são três pontos no tempo, não "três mundos".** Y (Medieval) = passado; X (Port Halden) = presente do jogador; Z (Domus) = presente real da história.
 - **Nomes X, Y e Z:** Z é o eixo de rotação do buraco negro, por onde a Domus desce; o anel do centro (o Lime) fica no plano XY; dentro do horizonte, X e Y apontam para tempos. Os nomes foram dados pela tripulação ou pela IA, sem saber que eram épocas (pista). No Lime, o tempo vira lugar: três direções cruzando na origem.
 - **Sem criatura ou entidade:** o fenômeno é consequência. Explicações o mais científicas possível, sem travar a ficção.
