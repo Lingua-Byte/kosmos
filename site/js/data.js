@@ -378,41 +378,47 @@ const FORMAS_RUNICAS = {
 
 // Código Urbano (X) e Interface (Z): ver js/lingua.js
 
+// A frase universal: o que o fenômeno "diz" nas telas (entrada, salto, rádio, Convergência...).
+// Lista revista pelo autor em 06/11/2026 (FRASES.md tem a lista completa, com as cortadas e as guardadas).
+// "A separação foi apenas percepção." fica fora do sorteio: é sempre a última frase da tela de entrada.
+// Ordem por relevância para a lore (o sorteio não muda com a ordem).
 const FRASES = [
-  "O pulso já começou.", "A proximidade altera aquilo que permanece.", "Eles não caminham, eles convergem.",
-  "A estrela não busca destruir.", "O instante está sendo alongado.", "Você já está parcialmente sincronizado.",
-  "Os sinais coincidem nos três domínios.", "A integração exige consentimento.", "A tentativa de contenção acelerou o processo.",
-  "A separação foi apenas percepção.", "Quem está realmente observando?", "Você reconhece este padrão?",
-  "Por que você voltou aqui?", "Alguém esperava por você.", "O observador modifica o evento.",
-  "A repetição indica aproximação.", "O silêncio também transmite dados.", "O atraso é apenas aparente.",
-  "A leitura está incompleta.", "O padrão reapareceu.", "Algo respondeu antes da pergunta.",
-  "A presença foi registrada.", "A ausência também é um sinal.", "O erro revelou o caminho.",
-  "O sistema não reconhece esta forma.", "A convergência está em andamento.", "O limite foi ultrapassado.",
-  "A tradução falhou.", "O significado permanece ativo.", "A observação gerou alteração.",
-  "O campo tornou-se instável.", "O evento ainda não terminou.", "A distância deixou de importar.",
-  "O tempo não está uniforme aqui.", "A leitura exige adaptação.", "A estrutura está mudando.",
-  "A interpretação depende do observador.", "O contato foi estabelecido.", "A conexão persiste.",
-  "O eco antecede a origem.", "O padrão não é natural.", "A resposta foi antecipada.",
-  "O estado anterior não pode ser restaurado.", "A análise indica consciência.", "O sistema registra intenção.",
-  "O sinal retorna amplificado.", "A origem permanece oculta.", "A interface está se formando.",
-  "O processo não pode ser revertido.", "O fenômeno está aprendendo.", "A estabilidade é temporária.",
-  "O alinhamento foi detectado.", "O evento repete-se em múltiplos níveis.", "A realidade ajustou-se ao contato.",
-  "O registro excede parâmetros conhecidos.", "A energia segue aumentando.", "O centro deslocou-se.",
-  "O observador tornou-se participante.", "A leitura exige presença.", "O padrão responde à atenção.",
-  "A tentativa foi percebida.", "O fluxo foi interrompido.", "A continuidade foi preservada.",
-  "O fenômeno reconheceu você.", "A diferença está diminuindo.", "A aproximação é inevitável.",
-  "O processo busca equilíbrio.", "A compreensão altera o resultado.", "O contato deixou marcas.",
-  "O campo reage à intenção.", "A sequência perdeu ordem.", "O início e o fim coincidem.",
-  "O sistema aguarda decisão.", "A escolha redefine o estado.", "A resposta depende de quem observa.",
-  "Você sente isso também?", "Quem você era antes do contato?", "O que você está disposto a perder?",
-  "Você confia naquilo que vê?", "E se o erro for necessário?", "Algo em você mudou.",
-  "Você não deveria lembrar disso.", "Por que apenas você consegue ouvir?", "A estrela já conhece sua decisão.",
-  "Você foi chamado ou escolheu vir?", "Há algo seguindo seus passos.", "Nem todos atravessam intactos.",
-  "Alguém precisa permanecer.", "O caminho correto não é o mais seguro.", "Você ainda pode voltar — por enquanto.",
-  "O que acontece se ninguém decidir?", "Isso já aconteceu antes.", "Você já esteve aqui.",
-  "A história tenta se corrigir.", "Algo espera resposta.", "A decisão não pode ser adiada.",
-  "Quem você salva define quem você se torna.",
+  // 1. núcleo: ligadas ao que o autor já decidiu (tempo, loop, sinal, memória, multidão)
+  "O instante está sendo alongado.", "Isso já aconteceu antes.", "Você já esteve aqui.", "O eco antecede a origem.",
+  "Você não deveria lembrar disso.", "O sinal retorna amplificado.", "Eles não caminham, eles convergem.",
+  "O centro deslocou-se.", "Você já está parcialmente sincronizado.", "A aproximação é inevitável.",
+  "O campo reage à intenção.",
+  // 2. boas, combinam com a lore
+  "A convergência está em andamento.", "O campo tornou-se instável.", "O contato foi estabelecido.",
+  "A conexão persiste.", "O processo não pode ser revertido.", "O fenômeno está aprendendo.",
+  "O alinhamento foi detectado.", "O registro excede parâmetros conhecidos.", "A energia segue aumentando.",
+  "A continuidade foi preservada.", "A diferença está diminuindo.", "O processo busca equilíbrio.",
+  "Você reconhece este padrão?", "O silêncio também transmite dados.", "A leitura está incompleta.",
+  "O sistema não reconhece esta forma.", "A observação gerou alteração.", "O sistema registra intenção.",
+  "A compreensão altera o resultado.", "O padrão responde à atenção.", "Algo respondeu antes da pergunta.",
+  "A presença foi registrada.", "A ausência também é um sinal.", "Por que apenas você consegue ouvir?",
+  "Algo espera resposta.", "O pulso já começou.",
+  // 3. textura: servem em qualquer momento
+  "A proximidade altera aquilo que permanece.", "A tentativa foi percebida.", "O contato deixou marcas.",
+  "A escolha redefine o estado.", "Por que você voltou aqui?", "Alguém esperava por você.",
+  "Você sente isso também?", "Quem você era antes do contato?", "Algo em você mudou.",
+  "O que você está disposto a perder?", "Você confia naquilo que vê?", "O caminho correto não é o mais seguro.",
+  "Você ainda pode voltar — por enquanto.", "Quem você salva define quem você se torna.",
 ];
+
+// Fora do sorteio por enquanto: entram mais adiante no jogo (o autor decide quando ligar cada grupo).
+const FRASES_TARDIAS = {
+  // quando a missão já está andando há tempo (não faz sentido no começo do jogo)
+  depois: ["O evento ainda não terminou."],
+  // só quando a criação da Domus começar a ser mencionada no jogo
+  criacaoDomus: ["A interface está se formando."],
+  // quando a Travessia for liberada
+  travessia: ["Nem todos atravessam intactos."],
+  // perto do fim (a escolha final)
+  endgame: ["Alguém precisa permanecer.", "O sistema aguarda decisão.", "O que acontece se ninguém decidir?", "A decisão não pode ser adiada."],
+  // guardada para uma missão própria (pode virar spoiler se aparecer solta)
+  missao: ["O fluxo foi interrompido."],
+};
 
 function fraseAleatoria() {
   return FRASES[Math.floor(Math.random() * FRASES.length)];
