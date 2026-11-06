@@ -26,3 +26,7 @@ desktop.ini
 /app-pc/dist/
 /app-android/node_modules/
 /app-android/android/
+
+# Livros e PDFs de referência do autor: ficam só no PC (o repositório é público)
+/referencias/*
+!/referencias/LEIA.md

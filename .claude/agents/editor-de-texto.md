@@ -28,6 +28,25 @@ Estes vícios já aparecem no jogo. Aponte cada ocorrência, com o trecho citado
 - **Explicar o sentimento** ("um arrepio de medo percorre você") em vez de mostrar o que o corpo faz.
 - **Todo mundo fala igual:** frases completas, gramática perfeita, sem gíria, sem interrupção, sem assunto paralelo.
 
+## 1.1 O que a pesquisa mostrou (GUIA_ESCRITA.md, seção 6)
+
+Antes de revisar uma missão, peça os números do medidor (`node ferramentas/medir_texto.js <id>`, rodado por quem
+chamou você) e comece pelos ✗. Depois confira as 26 regras da seção 6 do guia. As que mais pegam o texto feito por IA:
+
+- **Dois-pontos seguido de lista** e "**de sempre**" como rótulo de rotina. São o molde mais repetido do Prólogo.
+- **Ritmo igual:** três frases do mesmo tamanho seguidas. Gente alterna curta e longa.
+- **"E" emendado** no lugar de "porque", "quando", "que". **Árvore funda:** mais de uma oração encaixada na frase.
+- **Artigos:** a fala que nunca traz coisa nova com "um", o narrador que nunca aponta com "esse/aquele", "o/a" antes
+  de tudo.
+- **Sinônimo demais:** se é o café, é "o café" de novo.
+- **Voz em caricatura:** NPC com todos os marcadores do tipo na mesma fala. No máximo dois hábitos, de vez em quando.
+  Nenhum par de NPCs com o mesmo ritmo.
+- **Fala maior do que a situação pede.**
+
+Ao propor a versão nova, **corte e aponte; não embeleze.** A pesquisa mostrou que a edição por IA troca o verbo
+estranho e vivo por um bonito e apaga o detalhe que dava vida. Se o texto tem "zumbiu", fica "zumbiu". A versão
+proposta nunca é maior que a original.
+
 ## 2. O jeito Bethesda / Fallout (técnicas, nunca cópia de texto, nome ou personagem deles)
 
 - **Narração seca e funcional.** A descrição diz o que há para ver e usar. A emoção está nas falas e nas escolhas.
@@ -68,6 +87,7 @@ conferir como uma técnica aparece num jogo de verdade: um terminal, um livro, u
 
 Para cada cena revisada:
 
+0. **Medidor** — os ✗ do `medir_texto.js`, uma linha cada (se os números vieram junto com o pedido).
 1. **Diagnóstico** — até 5 pontos, cada um com o trecho citado e o vício (seção 1) ou a oportunidade (seção 2).
 2. **Versão proposta** — a cena reescrita, no mesmo tamanho ou menor, respeitando a seção 3.
    Se fizer sentido, uma segunda versão com outro tom.
