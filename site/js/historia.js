@@ -145,7 +145,7 @@ const HISTORIA = {
       estado: "considerar",
       html: `
         <ul>
-          <li>O fenômeno se concentra <b>nas pessoas, não no planeta</b>: as versões de X dos 9 tripulantes vivem em Port Halden.</li>
+          <li><s>O fenômeno se concentra nas pessoas, não no planeta: as versões de X dos 9 tripulantes vivem em Port Halden.</s> <b>Revisto pelo autor (06/11/2026):</b> os personagens do X e a tripulação da Domus <b>não são os mesmos</b>; não faz sentido serem. A exceção possível é o <b>Eli Navarro</b>, que estaria na Domus bem velho (para considerar). Se for ele, o intervalo de Port Halden ao lançamento fica perto dos 50 anos, para ele ainda estar vivo.</li>
           <li>O epicentro na Praça Central é o ponto de X ligado à nave.</li>
           <li><b>Não é global ainda.</b> O raio cresce conforme a Domus cai: primeiro surtos isolados, depois a cidade, depois o passado mais fundo (Y). Esse é o relógio do jogo.</li>
         </ul>`,
@@ -177,7 +177,7 @@ const HISTORIA = {
         <ul>
           <li><b>Só uma máquina chegaria ao Lime.</b> Corpos humanos não aguentam; uma IA é informação e pode se preservar. Ela não chega antes: ela dura.</li>
           <li><b>Só manda informação, não matéria:</b> por isso chegam mensagens, não pessoas. Canal estreito = mensagens em fragmentos, pistas aos poucos.</li>
-          <li><b>Mira no que conhece:</b> o perfil de cada tripulante (genoma, exames, padrão neural). Procura essas assinaturas no passado, e isso leva a Port Halden.</li>
+          <li><b>Mira no que conhece:</b> o perfil de cada tripulante (genoma, exames, padrão neural). Procura essas assinaturas no passado, e isso leva a Port Halden. <i>(Precisa ser revista: os personagens do X não são a tripulação.)</i></li>
           <li><b>A radiação é efeito colateral</b> da transmissão, não um ataque.</li>
           <li><b>A Interface (língua do Z) é a língua dela.</b> O Código Urbano parece matemático porque é uma máquina tentando se fazer entender.</li>
           <li><b>O jogador a conhece na intro</b> como o sistema de bordo, prestativo e comum. Muito depois, percebe que a voz por trás dos códigos é ela.</li>
