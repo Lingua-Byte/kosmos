@@ -121,3 +121,75 @@ ESTADO: MIRA FECHADA EM DUAS RAÍZES. A EQUAÇÃO NÃO DISTINGUE QUAL É A ORIGE
 ## Uso possível no jogo
 O registro de mira pode aparecer **como um documento num terminal da Domus**, achado no Z: o jogador que leu o Código X
 em Port Halden reconhece o 21:47, o ψ(t₀) e o ∮(t), e entende de onde vinham os códigos.
+
+## Como a IA escreveria (o registro cru, sem explicação)
+Proposta de documento para um terminal da Domus. A linha "INCONSISTÊNCIA 673 a · IGNORADA" é de propósito: a própria IA
+percebe o furo da distância e segue. Sai se o autor trocar o buraco negro ou o número.
+```
+DOMUS/NAV · ROTINA DE MIRA · CICLO ∮(t)
+T_BORDO 21:47:00.000 · ITER 1
+
+─ GEOMETRIA ─────────────────────────────────────────────
+M      = 4.297000E+06 M☉
+r_g    = GM/c² = 6.345058E+06 km
+a      = 0.999800
+√(1−a²)= 1.999900E-02
+r₊     = 1.019999 r_g = 6.471953E+06 km
+r₋     = 0.980001 r_g = 6.218163E+06 km
+ρ      = r₊/r₋ = 1.040814
+
+─ TRAJETO ───────────────────────────────────────────────
+Δτ     = 75.00 a          (bordo)
+Δt     = 26000.00 a       (origem)
+γ      = 346.667
+β      = 0.99999584
+D      = 26673 al         ⚠ Δt < D/c · INCONSISTÊNCIA 673 a · IGNORADA
+
+─ ALVO ──────────────────────────────────────────────────
+φ      = +51.5960°
+λ      = −55.5330°
+x(t)   = R₀(cos v☉t/R₀, sen v☉t/R₀, 0)
+       + UA(cos 2πt/P⊕, sen 2πt/P⊕, 0)
+       + R⊕ Rz(2πt/Pₚ) Rx(ε⊕) (cos φ cos(ωt+λ), cos φ sen(ωt+λ), sen φ)
+R₀     = 2.523485E+17 km
+v☉     = 230.00 km/s
+P⊕     = 365.25636 d
+ω      = 2π/86164.0905 s
+ε⊕     = 23.44°
+Pₚ     = 25772 a
+
+─ CONDIÇÃO ──────────────────────────────────────────────
+f(t)   = |x_s(t) − x(φ,λ,t)| − ε  ,  ε = 1.000 km
+t±     = t₀·ρ^(0,1)  ,  t₀ = −(Δt + 75.00)
+
+─ NEWTON · RAIZ r₋ ───────────────────────────────────────
+k   t (a)              f (km)          f′
+0   −26075.000000000   +4.218E+03      2.600E+02
+1   −26075.000000513   +1.107E+01      2.600E+02
+2   −26075.000000514   +3.702E-02      2.600E+02
+3   −26075.000000514   +8.114E-07      —
+t₋  = −26075.000000514   ✓   |f| < ε
+
+─ NEWTON · RAIZ r₊ ───────────────────────────────────────
+k   t (a)              f (km)          f′
+0   −27139.225050000   +6.902E+03      2.600E+02
+1   −27139.225050842   +2.315E+01      2.600E+02
+2   −27139.225050845   +7.640E-02      2.600E+02
+3   −27139.225050845   +1.392E-06      —
+t₊  = −27139.225050845   ✓   |f| < ε
+
+─ DESLOCAMENTO ──────────────────────────────────────────
+|x(t₊) − x(t₋)|        = 0.816 al
+|x(t₋) − x(−26000)|    = 0.0575 al
+|x(−26000) − x(0)|     = 19.95 al
+θₚ(t₋) = 1.0118 · θₚ(t₊) = 1.0530
+δt_máx = 3.85E-03 s
+δα     = 3.96E-18 rad
+
+─ RESULTADO ─────────────────────────────────────────────
+∃ t₋ ∧ ∃ t₊ : f = 0
+t₋ ≅ t₊  em (φ,λ)
+¬∃ critério : origem ∈ {t₋, t₊}
+→ EMITIR AMBAS
+∮(t)
+```
