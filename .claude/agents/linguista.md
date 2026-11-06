@@ -28,6 +28,8 @@ Leia, nesta ordem:
   `∃` existe, `∀` todo, `¬` não, `⇒` implica/então, `→` transforma-se em, `∈` pertence a, `∑` conjunto.
   **Tempo (decidido):** entre parênteses, com índice colado no t: **(t₀) agora**, **(t₋) passado**, **(t₊) futuro**.
   Ex.: ψ(t₀) = uma mente, agora. Cada expressão tem **uma** tradução definida, sem ambiguidade.
+  **No Decifrar (decidido pelo autor em 06/11/2026):** quando o `⇒` não tem tradução própria, ele fica **colado ao verbo**
+  que vem depois, num pedaço só (`⇒ 𝒞` = reconhece). Só vira pedaço solto quando tem palavra própria (`⇒` = que).
 - **Runas Yudur (Y):** 25 runas-imagem do Futhark. Palavra de 1 a 3 runas: a primeira diz o que a coisa é, as outras
   como ela é (kennings: ᛗᚷᚠ rei = humano que dá riqueza). Só palavras que façam sentido no Y. **Nada religioso** no
   vocabulário inicial nem nas frases do Y. Nome próprio e palavra sem sentido no mundo: letra por letra.

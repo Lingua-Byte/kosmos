@@ -246,12 +246,8 @@
             ]
           },
           {
-            "escrita": "⇒",
-            "sentido": "está"
-          },
-          {
-            "escrita": "¬∀",
-            "sentido": "incompleta.",
+            "escrita": "⇒ ¬∀",
+            "sentido": "está incompleta.",
             "id": "nao",
             "respostas": [
               "incompleta",
