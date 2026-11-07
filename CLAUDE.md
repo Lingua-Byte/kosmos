@@ -56,7 +56,8 @@ O autor trabalha por duas contas: no PC (pasta local) e no Android (Claude Code 
 - **Domus (confirmado em 05/11/2026):** cruzou o horizonte do buraco negro; vista de fora, parece parada; a "estrela que observa" é luz. Ideias do autor sobre a missão, o loop da IA, o sinal e os 26.700 anos: aba História, "A missão da Domus e o nó".
 - **21h47 é a hora de bordo em que a Domus cruzou o horizonte.** Por isso tudo em Port Halden acontece às 21h47.
 - **Quem fala do Lime é a IA da Domus** (decidido). As mensagens e os códigos são dela.
-- **Em aberto:** o objetivo da missão da Domus, o que a IA quer (avisar, chamar ou ambíguo), ancestrais ou ecos.
+- **Os personagens do X não são antepassados da tripulação** (decidido em 07/11/2026). Por que esses 9 importam para a história está em aberto; se a resposta não precisar da radiação nas casas deles, essa decisão antiga pode mudar.
+- **Em aberto:** o objetivo da missão da Domus, o que a IA quer (avisar, chamar ou ambíguo), por que os 9 personagens importam.
 
 ## Jeito de fazer
 - **Lore nova se faz com o autor, aos poucos:** perguntar o que ele já pensou e partir do texto dele; propor pouco de cada vez (uma ideia, duas ou três opções) e esperar a resposta. Nada de documentos grandes de lore inventada de uma vez.
