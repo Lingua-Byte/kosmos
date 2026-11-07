@@ -17,7 +17,7 @@ import math
 PARAMETROS = {
     "massa_sol": 4.297e6,        # Sagitário A*, em massas do Sol (medida real, GRAVITY 2019)
     "giro": 0.9998,              # a: giro do buraco negro, de 0 a 1 (ficção: quase o máximo, como no Interestelar)
-    "viagem_terra": 26000.0,     # anos que passam para quem lançou a Domus, do lançamento ao Lime
+    "viagem_terra": 26675.0,     # anos que passam para quem lançou a Domus, do lançamento ao Lime (pouco mais que os 26.673 anos-luz)
     "viagem_bordo": 75.0,        # anos que passam dentro da Domus na mesma viagem
     "construcao": 75.0,          # anos entre o Instituto receber os códigos e o lançamento (50 a 100)
     "latitude": 51.596,          # EXEMPLO: um ponto nórdico do outro lado do mar (em aberto)

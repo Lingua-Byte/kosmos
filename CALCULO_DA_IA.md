@@ -7,13 +7,13 @@
 ## O problema da IA
 Do Lime, a IA precisa mandar os códigos para **um ponto da Terra num instante exato**. Não basta acertar o ano: a Terra
 gira, dá a volta no Sol, o eixo dela bambeia, e o Sol inteiro anda pela galáxia. Mirar a Terra no passado é como acertar
-um carro que já passou, a 26 mil anos-luz de distância.
+um carro que já passou, a quase 27 mil anos-luz de distância.
 
 ## As peças da conta
 1. **O nó (física real).** As duas bordas de um buraco negro que gira: **r± = M · (1 ± √(1 − a²))**. A mesma equação
    sempre dá duas respostas.
-2. **A viagem (física real).** Dilatação do tempo: **Δt_Terra = γ · Δt_bordo**. 26.000 anos lá fora em 75 a bordo
-   pedem γ ≈ 347, a 99,99958% da velocidade da luz.
+2. **A viagem (física real).** Dilatação do tempo: **Δt_Terra = γ · Δt_bordo**. 26.675 anos lá fora em 75 a bordo
+   pedem γ ≈ 356, a 99,99960% da velocidade da luz.
 3. **As duas respostas (ficção).** A IA usa as duas bordas como "quanto voltar": **Δt± = Δt_X · r±/r₋**. Uma cai em
    Port Halden; a outra, mais longe, em Yudur.
 4. **O alvo se move (física real).** A posição do lugar visto de Sagitário A* é a soma de quatro movimentos:
@@ -31,18 +31,18 @@ um carro que já passou, a 26 mil anos-luz de distância.
 - **r₊/r₋ = 1,040814**
 
 **Passo 2. A viagem (física real)**
-- γ = Δt_Terra / Δt_bordo = 26.000 / 75 = **346,67**
-- v/c = √(1 − 1/γ²) = √(1 − 0,0000083210) = **0,9999958** (99,99958% da luz)
+- γ = Δt_Terra / Δt_bordo = 26.675 / 75 = **355,67**
+- v/c = √(1 − 1/γ²) = √(1 − 0,0000079052) = **0,9999960** (99,99960% da luz)
 
 **Passo 3. As duas respostas (ficção)**
-- t_X = −26.000 − 75 (construção) = **−26.075**
-- t_Y = t_X × r₊/r₋ = −26.075 × 1,040814 = **−27.139,2**
-- t_X − t_Y = **1.064 anos**
+- t_X = −26.675 − 75 (construção) = **−26.750**
+- t_Y = t_X × r₊/r₋ = −26.750 × 1,040814 = **−27.841,8**
+- t_X − t_Y = **1.092 anos**
 
 **Passo 4. O centro deslocou-se (física real)**
-- d = v_Sol × Δt = 230 km/s × 1.064 anos × 3,15576·10⁷ s/ano = 7,72·10¹² km = **0,816 ano-luz** (de Y até X)
-- Do lançamento ao Lime: 230 × 26.000 anos = 1,89·10¹⁴ km = **19,95 anos-luz**
-- Eixo da Terra: 26.075 / 25.772 = 1,0118 → **uma volta inteira + 1,2%** (X) · 27.139 / 25.772 = 1,0530 → **+5,3%** (Y)
+- d = v_Sol × Δt = 230 km/s × 1.092 anos × 3,15576·10⁷ s/ano = 7,93·10¹² km = **0,838 ano-luz** (de Y até X)
+- Do lançamento ao Lime: 230 × 26.675 anos = 1,94·10¹⁴ km = **20,5 anos-luz**
+- Eixo da Terra: 26.750 / 25.772 = 1,0379 → **uma volta inteira + 3,8%** (X) · 27.842 / 25.772 = 1,0803 → **+8,0%** (Y)
 
 **Passo 5. A posição do alvo (física real)**
 x(t) = x_Sol(t) + x_órbita(t) + x_giro(t), com
@@ -58,7 +58,7 @@ x(t) = x_Sol(t) + x_órbita(t) + x_giro(t), com
 - Ângulo: 1 km / 2,5235·10¹⁷ km = **3,96·10⁻¹⁸ radiano**
 
 **Passo 7. A condição de mira (ficção)**
-| x_sinal(t±) − x(latitude, longitude, t±) | < 1 km, para t± ∈ {−26.075 ; −27.139}
+| x_sinal(t±) − x(latitude, longitude, t±) | < 1 km, para t± ∈ {−26.750 ; −27.842}
 Duas raízes satisfazem a mesma condição, no mesmo chão. A equação não diz qual delas é a origem.
 
 ## A saída da simulação (registro de mira)
@@ -71,17 +71,17 @@ DOMUS · NÚCLEO DE NAVEGAÇÃO · REGISTRO DE MIRA
    borda de dentro  0.980001 M  = 6,218,163 km
    razão r₊/r₋      1.040814   ← as duas respostas da mesma equação
 2. TEMPO DA VIAGEM  (dilatação: Δt_terra = γ · Δt_bordo)
-   Terra 26,000 anos · bordo 75 anos · γ 346.7 · velocidade 99.99958 % da luz
+   Terra 26,675 anos · bordo 75 anos · γ 355.7 · velocidade 99.99960 % da luz
    distância        26,673 anos-luz até Sagitário A*
 3. AS DUAS RESPOSTAS  (Δt± = Δt_X · r±/r₋)
-   ponto zero 0 (o Lime) · lançamento −26,000
-   resposta r₋ (X)  −26,075   ← Port Halden: o Instituto recebe os códigos
-   resposta r₊ (Y)  −27,139   ← Yudur
-   distância X–Y    1,064 anos
+   ponto zero 0 (o Lime) · lançamento −26,675
+   resposta r₋ (X)  −26,750   ← Port Halden: o Instituto recebe os códigos
+   resposta r₊ (Y)  −27,842   ← Yudur
+   distância X–Y    1,092 anos
 4. O CENTRO DESLOCOU-SE  (alvo visto de Sagitário A*)
-   de Y até X       o alvo andou 0.816 anos-luz
-   do lançamento ao Lime        19.9 anos-luz (o Sistema Solar inteiro)
-   eixo da Terra    X: 1.2% da volta · Y: 5.3% da volta  (uma volta = 25,772 anos)
+   de Y até X       o alvo andou 0.838 anos-luz
+   do lançamento ao Lime        20.5 anos-luz (o Sistema Solar inteiro)
+   eixo da Terra    X: 3.8% da volta · Y: 8.0% da volta  (uma volta = 25,772 anos)
 5. PRECISÃO DA MIRA
    o alvo corre a   ~260 km/s  (galáxia + Sol + giro da Terra)
    errar o instante 3.8 milissegundos = errar o alvo
@@ -96,8 +96,8 @@ ESTADO: MIRA FECHADA EM DUAS RAÍZES. A EQUAÇÃO NÃO DISTINGUE QUAL É A ORIGE
 ## O que a conta mostra (e serve para a história)
 - **"O centro deslocou-se" vira literal.** Entre Yudur e Port Halden, o alvo andou 0,8 ano-luz; do lançamento ao Lime,
   o Sistema Solar inteiro andou uns 20 anos-luz. A IA precisa corrigir a mira por isso.
-- **Port Halden fica quase exatamente uma volta do eixo da Terra antes do Lime** (só 1,2% de diferença). Uma volta do
-  eixo leva 25.772 anos: é a régua natural da conta, e explica por que o número 26.000 aparece.
+- **Port Halden fica pouco mais de uma volta do eixo da Terra antes do Lime** (3,8% a mais). Uma volta do eixo leva
+  25.772 anos: é a régua natural da conta.
 - **Só uma máquina faria essa conta.** Errar o instante por 4 milésimos de segundo é errar o alvo; a mira precisa de um
   ângulo menor que um fio de cabelo visto a 3 anos-luz.
 - **A última linha é a pista do jogo inteiro:** a equação dá duas raízes e não diz qual é a origem.
@@ -112,9 +112,9 @@ ESTADO: MIRA FECHADA EM DUAS RAÍZES. A EQUAÇÃO NÃO DISTINGUE QUAL É A ORIGE
 | Usar as bordas como "quanto voltar no tempo" e mandar a mensagem pelo nó | ficção |
 
 ## Dois furos que a simulação achou (para o autor)
-1. **A viagem não pode ser mais curta que a distância.** Sagitário A* fica a **26.673 anos-luz**. Mesmo quase na
-   velocidade da luz, a viagem leva **pelo menos uns 26.700 anos** para quem ficou. Com 26.000, ou o buraco negro é
-   outro (inventado, um pouco mais perto), ou o número sobe para uns 26.700.
+1. **A viagem não pode ser mais curta que a distância** (corrigido em 07/11/2026, com aprovação do autor). Sagitário A*
+   fica a **26.673 anos-luz**. A conta agora usa **26.675 anos** para quem ficou: a luz levaria 26.673, e a nave, quase
+   na velocidade dela, chega uns dois anos depois, contando a aceleração.
 2. **O lugar do alvo está em aberto.** A latitude e a longitude da simulação são só um exemplo: um ponto nórdico do outro
    lado do mar (a ambientação B, em aberto). Trocar o lugar muda pouco a conta, só os números da seção 5.
 
@@ -123,8 +123,8 @@ O registro de mira pode aparecer **como um documento num terminal da Domus**, ac
 em Port Halden reconhece o 21:47, o ψ(t₀) e o ∮(t), e entende de onde vinham os códigos.
 
 ## Como a IA escreveria (o registro cru, sem explicação)
-**Aprovado pelo autor para usar no jogo (06/11/2026).** Documento para um terminal da Domus. A linha "INCONSISTÊNCIA 673 a · IGNORADA" fica, de propósito: a própria IA
-percebe o furo da distância e segue (o autor deixou a critério do Claude: o registro é estético, para imersão).
+**Aprovado pelo autor para usar no jogo (06/11/2026).** Documento para um terminal da Domus. Em 07/11/2026 o tempo de fora foi corrigido para 26.675 anos, e a linha que acusava a inconsistência da distância
+saiu, porque o furo deixou de existir.
 ```
 DOMUS/NAV · ROTINA DE MIRA · CICLO ∮(t)
 T_BORDO 21:47:00.000 · ITER 1
@@ -140,10 +140,10 @@ r₋     = 0.980001 r_g = 6.218163E+06 km
 
 ─ TRAJETO ───────────────────────────────────────────────
 Δτ     = 75.00 a          (bordo)
-Δt     = 26000.00 a       (origem)
-γ      = 346.667
-β      = 0.99999584
-D      = 26673 al         ⚠ Δt < D/c · INCONSISTÊNCIA 673 a · IGNORADA
+Δt     = 26675.00 a       (origem)
+γ      = 355.667
+β      = 0.99999605
+D      = 26673 al         ✓ Δt > D/c
 
 ─ ALVO ──────────────────────────────────────────────────
 φ      = +51.5960°
@@ -164,25 +164,25 @@ t±     = t₀·ρ^(0,1)  ,  t₀ = −(Δt + 75.00)
 
 ─ NEWTON · RAIZ r₋ ───────────────────────────────────────
 k   t (a)              f (km)          f′
-0   −26075.000000000   +4.218E+03      2.600E+02
-1   −26075.000000513   +1.107E+01      2.600E+02
-2   −26075.000000514   +3.702E-02      2.600E+02
-3   −26075.000000514   +8.114E-07      —
-t₋  = −26075.000000514   ✓   |f| < ε
+0   −26750.000000000   +4.218E+03      2.600E+02
+1   −26750.000000513   +1.107E+01      2.600E+02
+2   −26750.000000514   +3.702E-02      2.600E+02
+3   −26750.000000514   +8.114E-07      —
+t₋  = −26750.000000514   ✓   |f| < ε
 
 ─ NEWTON · RAIZ r₊ ───────────────────────────────────────
 k   t (a)              f (km)          f′
-0   −27139.225050000   +6.902E+03      2.600E+02
-1   −27139.225050842   +2.315E+01      2.600E+02
-2   −27139.225050845   +7.640E-02      2.600E+02
-3   −27139.225050845   +1.392E-06      —
-t₊  = −27139.225050845   ✓   |f| < ε
+0   −27841.771825000   +6.902E+03      2.600E+02
+1   −27841.771825842   +2.315E+01      2.600E+02
+2   −27841.771825845   +7.640E-02      2.600E+02
+3   −27841.771825845   +1.392E-06      —
+t₊  = −27841.771825845   ✓   |f| < ε
 
 ─ DESLOCAMENTO ──────────────────────────────────────────
-|x(t₊) − x(t₋)|        = 0.816 al
-|x(t₋) − x(−26000)|    = 0.0575 al
-|x(−26000) − x(0)|     = 19.95 al
-θₚ(t₋) = 1.0118 · θₚ(t₊) = 1.0530
+|x(t₊) − x(t₋)|        = 0.838 al
+|x(t₋) − x(−26675)|    = 0.0575 al
+|x(−26675) − x(0)|     = 20.46 al
+θₚ(t₋) = 1.0379 · θₚ(t₊) = 1.0803
 δt_máx = 3.85E-03 s
 δα     = 3.96E-18 rad
 
