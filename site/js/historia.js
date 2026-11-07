@@ -216,6 +216,7 @@ const HISTORIA = {
         <ul>
           <li><b>O objetivo da missão:</b> A) resgate ou investigação de uma nave anterior que parou de transmitir; B) mapeamento de uma anomalia que ninguém sabe que é um buraco negro, com erro de cálculo.</li>
           <li><b>O que a IA da Domus quer?</b> Avisar (“não venham”), chamar (“venham”) ou algo ambíguo. Isso define quais finais são certos: impedir, aceitar ou controlar a convergência.</li>
+          <li><b>Um protagonista oficial (decidido pelo autor em 07/11/2026):</b> a história é de um personagem só, o da lore oficial. Os outros continuam como opção, para resolver o jogo por caminhos diferentes. <i>Para considerar (ideia do autor):</i> o protagonista é linguista, o que casa com as três línguas, o Decifrar e a conversa final com a IA. Referência de técnica: <i>A Chegada</i> (2016), tomando cuidado para não repetir a premissa do filme.</li>
           <li><b>Por que os 9 personagens importam?</b> Não são a tripulação nem antepassados dela (decidido pelo autor em 07/11/2026). A resposta está em aberto; se ela não precisar da radiação nas casas deles, essa decisão antiga pode mudar.</li>
           <li><b>As tendências dos 9</b> (herói, anti-herói, vilão): quem é quem.</li>
         </ul>`,
