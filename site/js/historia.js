@@ -103,6 +103,7 @@ const HISTORIA = {
       estado: "decidido",
       html: `
         <ul>
+          <li><b>21:47 sem os dois-pontos é 2147 (ideia do autor, 10/11/2026, para considerar):</b> o número seria o ano em que a Domus foi lançada. Com a conta da IA (75 anos de construção antes do lançamento, 26.675 anos de viagem vista de fora), as datas ficam assim: <b>Port Halden em 2072</b>, <b>Yudur por volta de 980</b>, e a chegada ao Lime perto do ano <b>28.822</b>. O Y cai perto do ano 1000, como já estava previsto, e o intervalo entre Port Halden e o lançamento volta a caber nos 75 anos.</li>
           <li><b>21h47 é a hora do relógio de bordo da Domus quando ela cruzou o horizonte do buraco negro.</b> É por isso que tudo em Port Halden acontece às 21h47.</li>
           <li>Na intro do Z, a hora aparece num momento banal (um relógio de cozinha, um registro automático), sem ninguém apontar para ela. O jogador só liga os pontos muito depois.</li>
           <li>Ideia para considerar: o número aparece em objetos (relógios, etiquetas, livros de registro), não na narração apontando para ele, para não cansar.</li>
