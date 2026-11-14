@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editor de Vídeo</title>
+  <link rel="stylesheet" href="css/editor.css">
+</head>
+<body>
+  <header class="barra">
+    <strong class="logo">▶ Editor</strong>
+    <input id="nome-projeto" class="nome-projeto" spellcheck="false" title="Nome do projeto">
+    <div class="grupo">
+      <button id="bt-importar" title="Importar vídeo, áudio ou imagem (I)">Importar</button>
+      <button id="bt-desfazer" title="Desfazer (Ctrl+Z)">↶</button>
+      <button id="bt-refazer" title="Refazer (Ctrl+Shift+Z)">↷</button>
+      <button id="bt-novo" title="Começar um projeto vazio">Novo</button>
+      <button id="bt-exportar" class="primario" title="Gravar o vídeo final">Exportar</button>
+    </div>
+    <input id="arquivos" type="file" accept="video/*,audio/*,image/*" multiple hidden>
+  </header>
+
+  <main class="principal">
+    <section class="painel midias">
+      <div class="painel-titulo">Mídia</div>
+      <div id="lista-midias" class="lista-midias">
+        <p class="vazio">Arraste arquivos para cá ou clique em <b>Importar</b>.</p>
+      </div>
+    </section>
+
+    <section class="painel monitor">
+      <div class="painel-titulo">Programa <span id="info-projeto" class="sutil"></span></div>
+      <div class="tela"><canvas id="tela"></canvas></div>
+      <div class="transporte">
+        <span id="tempo-atual" class="tempo">00:00:00</span>
+        <div class="grupo">
+          <button data-transporte="inicio" title="Início (Home)">⏮</button>
+          <button data-transporte="voltar" title="Quadro anterior (←)">◀︎</button>
+          <button data-transporte="tocar" id="bt-tocar" class="tocar" title="Tocar/pausar (Espaço)">▶</button>
+          <button data-transporte="avancar" title="Próximo quadro (→)">▶︎</button>
+          <button data-transporte="fim" title="Fim (End)">⏭</button>
+        </div>
+        <span id="tempo-total" class="tempo sutil">00:00:00</span>
+      </div>
+    </section>
+
+    <section class="painel lateral">
+      <div class="abas">
+        <button class="aba ativa" data-aba="assistente">Claude</button>
+        <button class="aba" data-aba="inspetor">Inspetor</button>
+      </div>
+      <div id="assistente" class="conteudo-aba chat"></div>
+      <div id="inspetor" class="conteudo-aba inspetor" hidden></div>
+    </section>
+  </main>
+
+  <section class="painel linha">
+    <div class="ferramentas">
+      <button id="bt-dividir" title="Dividir no cursor (S)">✂ Dividir</button>
+      <button id="bt-apagar" title="Apagar seleção (Delete). Shift+Delete fecha a lacuna">🗑 Apagar</button>
+      <button id="bt-marcador" title="Marcador no cursor (M)">📍 Marcador</button>
+      <span class="espaco"></span>
+      <button id="bt-caber" title="Mostrar tudo (\)">⤢</button>
+      <input id="zoom" type="range" min="4" max="400" step="1" title="Zoom (Ctrl + roda do mouse)">
+    </div>
+    <div id="linha-do-tempo" class="linha-do-tempo"></div>
+  </section>
+
+  <dialog id="exportacao">
+    <h3>Exportar vídeo</h3>
+    <p id="exp-texto">O vídeo é gravado em tempo real: deixe esta aba aberta e visível até terminar.</p>
+    <progress id="exp-barra" max="1" value="0"></progress>
+    <div class="acoes">
+      <button id="exp-cancelar">Cancelar</button>
+      <a id="exp-baixar" class="botao primario" hidden>Baixar</a>
+      <button id="exp-mp4" hidden>Converter para MP4</button>
+      <button id="exp-iniciar" class="primario">Começar</button>
+    </div>
+  </dialog>
+
+  <script type="module" src="js/interface.js"></script>
+</body>
+</html>

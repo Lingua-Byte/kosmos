@@ -9,6 +9,7 @@ Este arquivo vale para qualquer conta ou aparelho que abra o projeto. Decisões 
 - Missões: feitas no Criador (`site/diagramas.html` + `js/criador.js`), não em `js/missoes/*.js`. "Publicar no jogo" grava `site/missoes/<id>.json` + `indice.json`; a missão publicada substitui a do código com o mesmo id. Mudanças no motor mantêm o formato do Criador (`Criador.exportar` ↔ `MissoesDados.adaptar`). A Mesa é single player.
 - Dados da Oficina e do Criador ficam num repositório privado do GitHub (☁ Nuvem, `js/nuvem.js`); cada aparelho conecta com o próprio token.
 - `publicar.sh` faz pull antes do push, porque o Criador pode gravar direto no GitHub.
+- `editor-video/`: editor de vídeo com o Claude como assistente (ferramenta à parte, não é o jogo). Como usar: `editor-video/README.md`.
 
 ## Lore (decisões do autor)
 - **Os eixos são três pontos no tempo, não "três mundos".** Y (Medieval) = passado; X (Port Halden) = presente do jogador; Z (Domus) = presente real da história.
